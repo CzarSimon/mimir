@@ -37,7 +37,6 @@ def _unpackMeanAndStdev(stocks, hour, curr_date):
         mean = stock[2][is_weekday][hour]
         stdev = stock[3][is_weekday][hour]
         meanAndStdev[str(stock[0])] = {"name": str(stock[1]), "mean": mean, "stdev": stdev}
-    print meanAndStdev
     return meanAndStdev
 
 def _sendToClients(stockUrgency):

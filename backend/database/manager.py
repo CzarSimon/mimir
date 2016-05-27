@@ -2,15 +2,10 @@ import sys
 import psycopg2
 from datetime import datetime
 from pytz import timezone
-from credentials import DATABASES
-import os
+from credentials import database
 sys.path.append("..")
 
-database_key = os.environ.get('MIMIR_DB') or "DEV"
-print database_key
-database = DATABASES[database_key]
-
-conn_string = "host='{}' dbname='{}' user='{}'".format(database["HOST"], database["NAME"], database["USER"])
+conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(database["HOST"], database["NAME"], database["USER"], database["PASSWORD"])
 print conn_string
 conn = psycopg2.connect(conn_string)
 
