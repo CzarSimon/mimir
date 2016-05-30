@@ -1,0 +1,6 @@
+{
+  "name": "Mimir",
+  "tagline": "Stock news app that ranks the urgency the stocks in a of a users portfolio based the Twitter activity around the stocks",
+  "body": "# mimir\r\n\r\nStock news app that ranks the urgency the stocks in a of a users portfolio\r\nbased the Twitter activity around the stocks. Under production :)\r\n\r\nThe idea here is to use the twitter public streams to compare the volume of\r\ntweets of individual stocks against the the average volume. This will be used\r\nto give each stock an urgency score thereby giving the user an indication about\r\nwhich stock to focus her attention on.\r\n\r\nThe second part is to provide the user with a list of the five (or some number)\r\nof the most relevant news articles about each stock and thereby sparing the user\r\nthe trouble of searching for information themselves.\r\n\r\nWhat will be built is a web scraper to gather news, a twitter scraper to get\r\nsome sense of the current public sentiment of a stock and finally a user\r\ninterface to interact with the information. The front-end will be created using\r\nReact-Native because I want to try it out :)\r\n\r\nCheck out the temporary frontend [here](simonlindgren.tech)\r\n\r\n//Simon\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
