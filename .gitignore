@@ -2,4 +2,4 @@ backend/database/credentials.py
 backend/twitterMiner/twitterCredentials.py
 backend/**/*.pyc
 backend/twitterMiner/miner.log
-.idea/workspace.xml
+.idea/
