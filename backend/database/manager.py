@@ -1,6 +1,7 @@
 import sys
 import psycopg2
 from datetime import datetime
+from datetime import date
 from pytz import timezone
 from credentials import database
 sys.path.append("..")
@@ -16,7 +17,7 @@ def setupTables(confirmed):
     if confirmed:
         c = conn.cursor()
 
-        c.execute('DROP TABLE IF EXISTS activeDate')
+        c.execute('DROP TABLE IF EXISTS activeDates')
         c.execute('DROP TABLE IF EXISTS tickerAliases')
         c.execute('DROP TABLE IF EXISTS stockTweets')
         c.execute('DROP TABLE IF EXISTS stocks')
@@ -53,7 +54,7 @@ def setupTables(confirmed):
 
         c.execute('CREATE TABLE stockTweets (tweetId TEXT, userId TEXT, createdAt TIMESTAMP, tweet TEXT, ticker TEXT REFERENCES stocks(ticker), urls TEXT, lang TEXT, followers INTEGER, PRIMARY KEY (tweetId, ticker))')
         c.execute('CREATE TABLE tickerAliases (alias text PRIMARY KEY, ticker text REFERENCES stocks(ticker))')
-        c.execute('CREATE TABLE activeDate (activeDate DATE PRIMARY KEY)')
+        c.execute('CREATE TABLE activeDates (activeDate DATE PRIMARY KEY)')
         c.execute("INSERT INTO tickerAliases VALUES ('$GOOGL', '$GOOG')")
 
         conn.commit()
@@ -115,6 +116,24 @@ def addAlias(alias, ticker):
     except Exception as e:
         print e
         success = False
+    finally:
+        c.close()
+        return success
+
+def logActiveDate():
+    print "Logging date"
+    c = conn.cursor()
+    success = True
+    curr_date = datetime.utcnow()
+    format_date = date(curr_date.year, curr_date.month, curr_date.day)
+    try:
+        c.execute('INSERT INTO activeDates VALUES (%s)', (format_date,))
+        conn.commit()
+    except Exception as e:
+        print e
+        conn.rollback()
+        success = False
+        print "no success"
     finally:
         c.close()
         return success

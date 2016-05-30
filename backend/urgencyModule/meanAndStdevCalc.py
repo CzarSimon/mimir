@@ -32,6 +32,7 @@ def getStockTweets():
             if thread.is_alive():
                 threadsFinished = False
     updateDB(stockMeans, stockStdevs)
+    db.logActiveDate()
     return True
 
     # --- THIS WAS REPLACED BY A CALL TO THE DISPATCH METHOD
@@ -90,7 +91,7 @@ def reduceByDay(dict, days):
 def calcMeanAndStdev(hourlyMentions, days):
     meanList = [0.0]*24
     stdevList = [0.0]*24
-    if days > 0:
+    if ((days - 1) > 0):
         for hour, list in hourlyMentions.iteritems():
             mean = sum(list)/float(days)
             stdev = 0

@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="0f922ce4-7a2f-4690-8770-dfc783c58dcd" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/database/manager.py" afterPath="$PROJECT_DIR$/backend/database/manager.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/urgencyModule/urgency.py" afterPath="$PROJECT_DIR$/backend/urgencyModule/urgency.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/backend/urgencyModule/meanAndStdevCalc.py" afterPath="$PROJECT_DIR$/backend/urgencyModule/meanAndStdevCalc.py" />
     </list>
     <ignored path="mimir.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -29,27 +30,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="manager.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="manager.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/backend/database/manager.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.23690774">
-              <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="128" column="8" selection-start-line="128" selection-start-column="8" selection-end-line="128" selection-end-column="8" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <marker date="1464334421000" expanded="true" signature="471:502" placeholder="DROP TABLE I... " />
-                <marker date="1464334421000" expanded="true" signature="524:558" placeholder="DROP TABLE I... " />
-                <marker date="1464334421000" expanded="true" signature="580:612" placeholder="DROP TABLE I... " />
-                <marker date="1464334421000" expanded="true" signature="634:661" placeholder="DROP TABLE I... " />
-                <marker date="1464334421000" expanded="true" signature="684:808" placeholder="CREATE TABLE... stocks" />
-                <marker date="1464334421000" expanded="true" signature="2402:2466" placeholder="INSERT INTO stocks... " />
-                <marker date="1464334421000" expanded="true" signature="2568:2764" placeholder="CREATE TABLE... stockTweets" />
-                <marker date="1464334421000" expanded="true" signature="2786:2876" placeholder="CREATE TABLE... tickerAliases" />
-                <marker date="1464334421000" expanded="true" signature="2898:2951" placeholder="CREATE TABLE... activeDate" />
-                <marker date="1464334421000" expanded="true" signature="2973:3025" placeholder="INSERT INTO tickerAliases... " />
-                <marker date="1464334421000" expanded="true" signature="3754:3884" placeholder="INSERT INTO stockTweets... " />
-                <marker date="1464334421000" expanded="true" signature="4213:4262" placeholder="UPDATE stock... " />
-                <marker date="1464334421000" expanded="true" signature="4213:4264" placeholder="UPDATE stock... " />
-                <marker date="1464334421000" expanded="true" signature="4572:4613" placeholder="INSERT INTO tickerAliases... " />
+                <marker date="1464592489000" expanded="true" signature="497:528" placeholder="DROP TABLE I... " />
+                <marker date="1464592489000" expanded="true" signature="497:529" placeholder="DROP TABLE I... " />
+                <marker date="1464592489000" expanded="true" signature="551:585" placeholder="DROP TABLE I... " />
+                <marker date="1464592489000" expanded="true" signature="607:639" placeholder="DROP TABLE I... " />
+                <marker date="1464592489000" expanded="true" signature="661:688" placeholder="DROP TABLE I... " />
+                <marker date="1464592489000" expanded="true" signature="711:835" placeholder="CREATE TABLE... stocks" />
+                <marker date="1464592489000" expanded="true" signature="2429:2493" placeholder="INSERT INTO stocks... " />
+                <marker date="1464592489000" expanded="true" signature="2595:2791" placeholder="CREATE TABLE... stockTweets" />
+                <marker date="1464592489000" expanded="true" signature="2813:2903" placeholder="CREATE TABLE... tickerAliases" />
+                <marker date="1464592489000" expanded="true" signature="2925:2979" placeholder="CREATE TABLE... activeDate" />
+                <marker date="1464592489000" expanded="true" signature="3001:3053" placeholder="INSERT INTO tickerAliases... " />
+                <marker date="1464592489000" expanded="true" signature="3782:3912" placeholder="INSERT INTO stockTweets... " />
+                <marker date="1464592489000" expanded="true" signature="4241:4290" placeholder="UPDATE stock... " />
+                <marker date="1464592489000" expanded="true" signature="4241:4292" placeholder="UPDATE stock... " />
+                <marker date="1464592489000" expanded="true" signature="4600:4641" placeholder="INSERT INTO tickerAliases... " />
+                <marker date="1464592489000" expanded="true" signature="5018:5053" placeholder="INSERT INTO activeDate... " />
               </folding>
             </state>
           </provider>
@@ -93,17 +96,17 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="meanAndStdevCalc.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="meanAndStdevCalc.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/backend/urgencyModule/meanAndStdevCalc.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="148" column="13" selection-start-line="148" selection-start-column="13" selection-end-line="148" selection-end-column="13" />
+            <state vertical-scroll-proportion="0.17042254">
+              <caret line="93" column="23" selection-start-line="93" selection-start-column="23" selection-end-line="93" selection-end-column="23" />
               <folding>
-                <marker date="1464292186000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
-                <marker date="1464292186000" expanded="true" signature="4054:4092" placeholder="SELECT MAX(c... stockTweets" />
-                <marker date="1464292186000" expanded="true" signature="4155:4193" placeholder="SELECT MIN(c... stockTweets" />
-                <marker date="1464292186000" expanded="true" signature="4421:4456" placeholder="SELECT ticke... stocks" />
-                <marker date="1464292186000" expanded="true" signature="5553:5589" placeholder="SELECT name,... stocks" />
+                <marker date="1464592801000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
+                <marker date="1464592801000" expanded="true" signature="4085:4123" placeholder="SELECT MAX(c... stockTweets" />
+                <marker date="1464592801000" expanded="true" signature="4186:4224" placeholder="SELECT MIN(c... stockTweets" />
+                <marker date="1464592801000" expanded="true" signature="4452:4487" placeholder="SELECT ticke... stocks" />
+                <marker date="1464592801000" expanded="true" signature="5584:5620" placeholder="SELECT name,... stocks" />
               </folding>
             </state>
           </provider>
@@ -113,7 +116,7 @@
         <entry file="file://$PROJECT_DIR$/backend/urgencyModule/urgency.py">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
+              <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
               <folding>
                 <element signature="e#0#29#0" expanded="true" />
                 <marker date="1464334222000" expanded="true" signature="1229:1273" placeholder="SELECT ticke... stocks" />
@@ -141,13 +144,13 @@
         <option value="$PROJECT_DIR$/backend/database/databaseManager.py" />
         <option value="$PROJECT_DIR$/backend/databaseSQLite/databaseCredentials.py" />
         <option value="$PROJECT_DIR$/backend/twitterMiner/resetLocalDB.py" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/backend/twitterMiner/stocks.py" />
-        <option value="$PROJECT_DIR$/backend/urgencyModule/meanAndStdevCalc.py" />
         <option value="$PROJECT_DIR$/backend/twitterMiner/twitterMiner.py" />
         <option value="$PROJECT_DIR$/backend/database/credentials.py" />
         <option value="$PROJECT_DIR$/backend/urgencyModule/urgency.py" />
         <option value="$PROJECT_DIR$/backend/database/manager.py" />
+        <option value="$PROJECT_DIR$/backend/urgencyModule/meanAndStdevCalc.py" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -187,6 +190,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -275,7 +279,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -523,24 +526,24 @@
     <frame x="0" y="23" width="1440" height="828" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19027181" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.19527897" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.41711956" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41711956" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="Vcs.Log.UiProperties">
@@ -559,26 +562,61 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/backend/database/credentials.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="4" column="4" selection-start-line="4" selection-start-column="4" selection-end-line="4" selection-end-column="14" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/urgencyModule/meanAndStdevCalc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="148" column="13" selection-start-line="148" selection-start-column="13" selection-end-line="148" selection-end-column="13" />
+          <folding>
+            <marker date="1464592801000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4085:4123" placeholder="SELECT MAX(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4186:4224" placeholder="SELECT MIN(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4452:4487" placeholder="SELECT ticke... stocks" />
+            <marker date="1464592801000" expanded="true" signature="5584:5620" placeholder="SELECT name,... stocks" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/urgencyModule/urgency.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1464334222000" expanded="true" signature="1229:1273" placeholder="SELECT ticke... stocks" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/backend/database/manager.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1464334421000" expanded="true" signature="471:502" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="524:558" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="580:612" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="634:661" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="684:808" placeholder="CREATE TABLE... stocks" />
-            <marker date="1464334421000" expanded="true" signature="2402:2466" placeholder="INSERT INTO stocks... " />
-            <marker date="1464334421000" expanded="true" signature="2568:2764" placeholder="CREATE TABLE... stockTweets" />
-            <marker date="1464334421000" expanded="true" signature="2786:2876" placeholder="CREATE TABLE... tickerAliases" />
-            <marker date="1464334421000" expanded="true" signature="2898:2951" placeholder="CREATE TABLE... activeDate" />
-            <marker date="1464334421000" expanded="true" signature="2973:3025" placeholder="INSERT INTO tickerAliases... " />
-            <marker date="1464334421000" expanded="true" signature="3754:3884" placeholder="INSERT INTO stockTweets... " />
-            <marker date="1464334421000" expanded="true" signature="4213:4262" placeholder="UPDATE stock... " />
-            <marker date="1464334421000" expanded="true" signature="4213:4264" placeholder="UPDATE stock... " />
-            <marker date="1464334421000" expanded="true" signature="4572:4613" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="497:528" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="497:529" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="551:585" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="607:639" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="661:688" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="711:835" placeholder="CREATE TABLE... stocks" />
+            <marker date="1464592489000" expanded="true" signature="2429:2493" placeholder="INSERT INTO stocks... " />
+            <marker date="1464592489000" expanded="true" signature="2595:2791" placeholder="CREATE TABLE... stockTweets" />
+            <marker date="1464592489000" expanded="true" signature="2813:2903" placeholder="CREATE TABLE... tickerAliases" />
+            <marker date="1464592489000" expanded="true" signature="2925:2979" placeholder="CREATE TABLE... activeDate" />
+            <marker date="1464592489000" expanded="true" signature="3001:3053" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="3782:3912" placeholder="INSERT INTO stockTweets... " />
+            <marker date="1464592489000" expanded="true" signature="4241:4290" placeholder="UPDATE stock... " />
+            <marker date="1464592489000" expanded="true" signature="4241:4292" placeholder="UPDATE stock... " />
+            <marker date="1464592489000" expanded="true" signature="4600:4641" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="5018:5053" placeholder="INSERT INTO activeDate... " />
           </folding>
         </state>
       </provider>
@@ -620,11 +658,11 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="148" column="13" selection-start-line="148" selection-start-column="13" selection-end-line="148" selection-end-column="13" />
           <folding>
-            <marker date="1464292186000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4054:4092" placeholder="SELECT MAX(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4155:4193" placeholder="SELECT MIN(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4421:4456" placeholder="SELECT ticke... stocks" />
-            <marker date="1464292186000" expanded="true" signature="5553:5589" placeholder="SELECT name,... stocks" />
+            <marker date="1464592801000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4085:4123" placeholder="SELECT MAX(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4186:4224" placeholder="SELECT MIN(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4452:4487" placeholder="SELECT ticke... stocks" />
+            <marker date="1464592801000" expanded="true" signature="5584:5620" placeholder="SELECT name,... stocks" />
           </folding>
         </state>
       </provider>
@@ -646,20 +684,22 @@
           <caret line="82" column="66" selection-start-line="82" selection-start-column="66" selection-end-line="82" selection-end-column="66" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1464334421000" expanded="true" signature="471:502" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="524:558" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="580:612" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="634:661" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="684:808" placeholder="CREATE TABLE... stocks" />
-            <marker date="1464334421000" expanded="true" signature="2402:2466" placeholder="INSERT INTO stocks... " />
-            <marker date="1464334421000" expanded="true" signature="2568:2764" placeholder="CREATE TABLE... stockTweets" />
-            <marker date="1464334421000" expanded="true" signature="2786:2876" placeholder="CREATE TABLE... tickerAliases" />
-            <marker date="1464334421000" expanded="true" signature="2898:2951" placeholder="CREATE TABLE... activeDate" />
-            <marker date="1464334421000" expanded="true" signature="2973:3025" placeholder="INSERT INTO tickerAliases... " />
-            <marker date="1464334421000" expanded="true" signature="3754:3884" placeholder="INSERT INTO stockTweets... " />
-            <marker date="1464334421000" expanded="true" signature="4213:4262" placeholder="UPDATE stock... " />
-            <marker date="1464334421000" expanded="true" signature="4213:4264" placeholder="UPDATE stock... " />
-            <marker date="1464334421000" expanded="true" signature="4572:4613" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="497:528" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="497:529" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="551:585" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="607:639" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="661:688" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="711:835" placeholder="CREATE TABLE... stocks" />
+            <marker date="1464592489000" expanded="true" signature="2429:2493" placeholder="INSERT INTO stocks... " />
+            <marker date="1464592489000" expanded="true" signature="2595:2791" placeholder="CREATE TABLE... stockTweets" />
+            <marker date="1464592489000" expanded="true" signature="2813:2903" placeholder="CREATE TABLE... tickerAliases" />
+            <marker date="1464592489000" expanded="true" signature="2925:2979" placeholder="CREATE TABLE... activeDate" />
+            <marker date="1464592489000" expanded="true" signature="3001:3053" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="3782:3912" placeholder="INSERT INTO stockTweets... " />
+            <marker date="1464592489000" expanded="true" signature="4241:4290" placeholder="UPDATE stock... " />
+            <marker date="1464592489000" expanded="true" signature="4241:4292" placeholder="UPDATE stock... " />
+            <marker date="1464592489000" expanded="true" signature="4600:4641" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="5018:5053" placeholder="INSERT INTO activeDate... " />
           </folding>
         </state>
       </provider>
@@ -701,11 +741,11 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1464292186000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4054:4092" placeholder="SELECT MAX(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4155:4193" placeholder="SELECT MIN(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4421:4456" placeholder="SELECT ticke... stocks" />
-            <marker date="1464292186000" expanded="true" signature="5553:5589" placeholder="SELECT name,... stocks" />
+            <marker date="1464592801000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4085:4123" placeholder="SELECT MAX(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4186:4224" placeholder="SELECT MIN(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4452:4487" placeholder="SELECT ticke... stocks" />
+            <marker date="1464592801000" expanded="true" signature="5584:5620" placeholder="SELECT name,... stocks" />
           </folding>
         </state>
       </provider>
@@ -727,20 +767,22 @@
           <caret line="82" column="66" selection-start-line="82" selection-start-column="66" selection-end-line="82" selection-end-column="66" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1464334421000" expanded="true" signature="471:502" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="524:558" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="580:612" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="634:661" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="684:808" placeholder="CREATE TABLE... stocks" />
-            <marker date="1464334421000" expanded="true" signature="2402:2466" placeholder="INSERT INTO stocks... " />
-            <marker date="1464334421000" expanded="true" signature="2568:2764" placeholder="CREATE TABLE... stockTweets" />
-            <marker date="1464334421000" expanded="true" signature="2786:2876" placeholder="CREATE TABLE... tickerAliases" />
-            <marker date="1464334421000" expanded="true" signature="2898:2951" placeholder="CREATE TABLE... activeDate" />
-            <marker date="1464334421000" expanded="true" signature="2973:3025" placeholder="INSERT INTO tickerAliases... " />
-            <marker date="1464334421000" expanded="true" signature="3754:3884" placeholder="INSERT INTO stockTweets... " />
-            <marker date="1464334421000" expanded="true" signature="4213:4262" placeholder="UPDATE stock... " />
-            <marker date="1464334421000" expanded="true" signature="4213:4264" placeholder="UPDATE stock... " />
-            <marker date="1464334421000" expanded="true" signature="4572:4613" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="497:528" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="497:529" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="551:585" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="607:639" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="661:688" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="711:835" placeholder="CREATE TABLE... stocks" />
+            <marker date="1464592489000" expanded="true" signature="2429:2493" placeholder="INSERT INTO stocks... " />
+            <marker date="1464592489000" expanded="true" signature="2595:2791" placeholder="CREATE TABLE... stockTweets" />
+            <marker date="1464592489000" expanded="true" signature="2813:2903" placeholder="CREATE TABLE... tickerAliases" />
+            <marker date="1464592489000" expanded="true" signature="2925:2979" placeholder="CREATE TABLE... activeDate" />
+            <marker date="1464592489000" expanded="true" signature="3001:3053" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="3782:3912" placeholder="INSERT INTO stockTweets... " />
+            <marker date="1464592489000" expanded="true" signature="4241:4290" placeholder="UPDATE stock... " />
+            <marker date="1464592489000" expanded="true" signature="4241:4292" placeholder="UPDATE stock... " />
+            <marker date="1464592489000" expanded="true" signature="4600:4641" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="5018:5053" placeholder="INSERT INTO activeDate... " />
           </folding>
         </state>
       </provider>
@@ -782,11 +824,11 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1464292186000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4054:4092" placeholder="SELECT MAX(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4155:4193" placeholder="SELECT MIN(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4421:4456" placeholder="SELECT ticke... stocks" />
-            <marker date="1464292186000" expanded="true" signature="5553:5589" placeholder="SELECT name,... stocks" />
+            <marker date="1464592801000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4085:4123" placeholder="SELECT MAX(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4186:4224" placeholder="SELECT MIN(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4452:4487" placeholder="SELECT ticke... stocks" />
+            <marker date="1464592801000" expanded="true" signature="5584:5620" placeholder="SELECT name,... stocks" />
           </folding>
         </state>
       </provider>
@@ -808,20 +850,22 @@
           <caret line="82" column="66" selection-start-line="82" selection-start-column="66" selection-end-line="82" selection-end-column="66" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1464334421000" expanded="true" signature="471:502" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="524:558" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="580:612" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="634:661" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="684:808" placeholder="CREATE TABLE... stocks" />
-            <marker date="1464334421000" expanded="true" signature="2402:2466" placeholder="INSERT INTO stocks... " />
-            <marker date="1464334421000" expanded="true" signature="2568:2764" placeholder="CREATE TABLE... stockTweets" />
-            <marker date="1464334421000" expanded="true" signature="2786:2876" placeholder="CREATE TABLE... tickerAliases" />
-            <marker date="1464334421000" expanded="true" signature="2898:2951" placeholder="CREATE TABLE... activeDate" />
-            <marker date="1464334421000" expanded="true" signature="2973:3025" placeholder="INSERT INTO tickerAliases... " />
-            <marker date="1464334421000" expanded="true" signature="3754:3884" placeholder="INSERT INTO stockTweets... " />
-            <marker date="1464334421000" expanded="true" signature="4213:4262" placeholder="UPDATE stock... " />
-            <marker date="1464334421000" expanded="true" signature="4213:4264" placeholder="UPDATE stock... " />
-            <marker date="1464334421000" expanded="true" signature="4572:4613" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="497:528" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="497:529" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="551:585" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="607:639" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="661:688" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="711:835" placeholder="CREATE TABLE... stocks" />
+            <marker date="1464592489000" expanded="true" signature="2429:2493" placeholder="INSERT INTO stocks... " />
+            <marker date="1464592489000" expanded="true" signature="2595:2791" placeholder="CREATE TABLE... stockTweets" />
+            <marker date="1464592489000" expanded="true" signature="2813:2903" placeholder="CREATE TABLE... tickerAliases" />
+            <marker date="1464592489000" expanded="true" signature="2925:2979" placeholder="CREATE TABLE... activeDate" />
+            <marker date="1464592489000" expanded="true" signature="3001:3053" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="3782:3912" placeholder="INSERT INTO stockTweets... " />
+            <marker date="1464592489000" expanded="true" signature="4241:4290" placeholder="UPDATE stock... " />
+            <marker date="1464592489000" expanded="true" signature="4241:4292" placeholder="UPDATE stock... " />
+            <marker date="1464592489000" expanded="true" signature="4600:4641" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="5018:5053" placeholder="INSERT INTO activeDate... " />
           </folding>
         </state>
       </provider>
@@ -863,11 +907,11 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="20" column="16" selection-start-line="20" selection-start-column="16" selection-end-line="20" selection-end-column="16" />
           <folding>
-            <marker date="1464292186000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4054:4092" placeholder="SELECT MAX(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4155:4193" placeholder="SELECT MIN(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4421:4456" placeholder="SELECT ticke... stocks" />
-            <marker date="1464292186000" expanded="true" signature="5553:5589" placeholder="SELECT name,... stocks" />
+            <marker date="1464592801000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4085:4123" placeholder="SELECT MAX(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4186:4224" placeholder="SELECT MIN(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4452:4487" placeholder="SELECT ticke... stocks" />
+            <marker date="1464592801000" expanded="true" signature="5584:5620" placeholder="SELECT name,... stocks" />
           </folding>
         </state>
       </provider>
@@ -889,20 +933,22 @@
           <caret line="53" column="0" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1464334421000" expanded="true" signature="471:502" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="524:558" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="580:612" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="634:661" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="684:808" placeholder="CREATE TABLE... stocks" />
-            <marker date="1464334421000" expanded="true" signature="2402:2466" placeholder="INSERT INTO stocks... " />
-            <marker date="1464334421000" expanded="true" signature="2568:2764" placeholder="CREATE TABLE... stockTweets" />
-            <marker date="1464334421000" expanded="true" signature="2786:2876" placeholder="CREATE TABLE... tickerAliases" />
-            <marker date="1464334421000" expanded="true" signature="2898:2951" placeholder="CREATE TABLE... activeDate" />
-            <marker date="1464334421000" expanded="true" signature="2973:3025" placeholder="INSERT INTO tickerAliases... " />
-            <marker date="1464334421000" expanded="true" signature="3754:3884" placeholder="INSERT INTO stockTweets... " />
-            <marker date="1464334421000" expanded="true" signature="4213:4262" placeholder="UPDATE stock... " />
-            <marker date="1464334421000" expanded="true" signature="4213:4264" placeholder="UPDATE stock... " />
-            <marker date="1464334421000" expanded="true" signature="4572:4613" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="497:528" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="497:529" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="551:585" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="607:639" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="661:688" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="711:835" placeholder="CREATE TABLE... stocks" />
+            <marker date="1464592489000" expanded="true" signature="2429:2493" placeholder="INSERT INTO stocks... " />
+            <marker date="1464592489000" expanded="true" signature="2595:2791" placeholder="CREATE TABLE... stockTweets" />
+            <marker date="1464592489000" expanded="true" signature="2813:2903" placeholder="CREATE TABLE... tickerAliases" />
+            <marker date="1464592489000" expanded="true" signature="2925:2979" placeholder="CREATE TABLE... activeDate" />
+            <marker date="1464592489000" expanded="true" signature="3001:3053" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="3782:3912" placeholder="INSERT INTO stockTweets... " />
+            <marker date="1464592489000" expanded="true" signature="4241:4290" placeholder="UPDATE stock... " />
+            <marker date="1464592489000" expanded="true" signature="4241:4292" placeholder="UPDATE stock... " />
+            <marker date="1464592489000" expanded="true" signature="4600:4641" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="5018:5053" placeholder="INSERT INTO activeDate... " />
           </folding>
         </state>
       </provider>
@@ -944,11 +990,11 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="24" selection-start-line="0" selection-start-column="24" selection-end-line="0" selection-end-column="24" />
           <folding>
-            <marker date="1464292186000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4054:4092" placeholder="SELECT MAX(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4155:4193" placeholder="SELECT MIN(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4421:4456" placeholder="SELECT ticke... stocks" />
-            <marker date="1464292186000" expanded="true" signature="5553:5589" placeholder="SELECT name,... stocks" />
+            <marker date="1464592801000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4085:4123" placeholder="SELECT MAX(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4186:4224" placeholder="SELECT MIN(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4452:4487" placeholder="SELECT ticke... stocks" />
+            <marker date="1464592801000" expanded="true" signature="5584:5620" placeholder="SELECT name,... stocks" />
           </folding>
         </state>
       </provider>
@@ -969,11 +1015,11 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1464292186000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4054:4092" placeholder="SELECT MAX(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4155:4193" placeholder="SELECT MIN(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4421:4456" placeholder="SELECT ticke... stocks" />
-            <marker date="1464292186000" expanded="true" signature="5553:5589" placeholder="SELECT name,... stocks" />
+            <marker date="1464592801000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4085:4123" placeholder="SELECT MAX(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4186:4224" placeholder="SELECT MIN(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4452:4487" placeholder="SELECT ticke... stocks" />
+            <marker date="1464592801000" expanded="true" signature="5584:5620" placeholder="SELECT name,... stocks" />
           </folding>
         </state>
       </provider>
@@ -1004,11 +1050,11 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1464292186000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4054:4092" placeholder="SELECT MAX(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4155:4193" placeholder="SELECT MIN(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4421:4456" placeholder="SELECT ticke... stocks" />
-            <marker date="1464292186000" expanded="true" signature="5553:5589" placeholder="SELECT name,... stocks" />
+            <marker date="1464592801000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4085:4123" placeholder="SELECT MAX(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4186:4224" placeholder="SELECT MIN(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4452:4487" placeholder="SELECT ticke... stocks" />
+            <marker date="1464592801000" expanded="true" signature="5584:5620" placeholder="SELECT name,... stocks" />
           </folding>
         </state>
       </provider>
@@ -1039,11 +1085,11 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1464292186000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4054:4092" placeholder="SELECT MAX(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4155:4193" placeholder="SELECT MIN(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4421:4456" placeholder="SELECT ticke... stocks" />
-            <marker date="1464292186000" expanded="true" signature="5553:5589" placeholder="SELECT name,... stocks" />
+            <marker date="1464592801000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4085:4123" placeholder="SELECT MAX(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4186:4224" placeholder="SELECT MIN(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4452:4487" placeholder="SELECT ticke... stocks" />
+            <marker date="1464592801000" expanded="true" signature="5584:5620" placeholder="SELECT name,... stocks" />
           </folding>
         </state>
       </provider>
@@ -1074,11 +1120,11 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <marker date="1464292186000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4054:4092" placeholder="SELECT MAX(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4155:4193" placeholder="SELECT MIN(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4421:4456" placeholder="SELECT ticke... stocks" />
-            <marker date="1464292186000" expanded="true" signature="5553:5589" placeholder="SELECT name,... stocks" />
+            <marker date="1464592801000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4085:4123" placeholder="SELECT MAX(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4186:4224" placeholder="SELECT MIN(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4452:4487" placeholder="SELECT ticke... stocks" />
+            <marker date="1464592801000" expanded="true" signature="5584:5620" placeholder="SELECT name,... stocks" />
           </folding>
         </state>
       </provider>
@@ -1091,13 +1137,6 @@
             <element signature="e#0#29#0" expanded="true" />
             <marker date="1464334222000" expanded="true" signature="1229:1273" placeholder="SELECT ticke... stocks" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.107344635">
-          <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
         </state>
       </provider>
     </entry>
@@ -1115,37 +1154,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/backend/urgencyModule/meanAndStdevCalc.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="148" column="13" selection-start-line="148" selection-start-column="13" selection-end-line="148" selection-end-column="13" />
-          <folding>
-            <marker date="1464292186000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4054:4092" placeholder="SELECT MAX(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4155:4193" placeholder="SELECT MIN(c... stockTweets" />
-            <marker date="1464292186000" expanded="true" signature="4421:4456" placeholder="SELECT ticke... stocks" />
-            <marker date="1464292186000" expanded="true" signature="5553:5589" placeholder="SELECT name,... stocks" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/backend/twitterMiner/twitterMiner.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="54" column="34" selection-start-line="54" selection-start-column="34" selection-end-line="54" selection-end-column="34" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/backend/urgencyModule/urgency.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="39" column="22" selection-start-line="39" selection-start-column="22" selection-end-line="39" selection-end-column="22" />
-          <folding>
-            <element signature="e#0#29#0" expanded="true" />
-            <marker date="1464334222000" expanded="true" signature="1229:1273" placeholder="SELECT ticke... stocks" />
           </folding>
         </state>
       </provider>
@@ -1158,26 +1172,61 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/backend/urgencyModule/urgency.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="10" column="28" selection-start-line="10" selection-start-column="28" selection-end-line="10" selection-end-column="28" />
+          <folding>
+            <element signature="e#0#29#0" expanded="true" />
+            <marker date="1464334222000" expanded="true" signature="1229:1273" placeholder="SELECT ticke... stocks" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/backend/database/manager.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.23690774">
-          <caret line="5" column="9" selection-start-line="5" selection-start-column="9" selection-end-line="5" selection-end-column="9" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="128" column="8" selection-start-line="128" selection-start-column="8" selection-end-line="128" selection-end-column="8" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1464334421000" expanded="true" signature="471:502" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="524:558" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="580:612" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="634:661" placeholder="DROP TABLE I... " />
-            <marker date="1464334421000" expanded="true" signature="684:808" placeholder="CREATE TABLE... stocks" />
-            <marker date="1464334421000" expanded="true" signature="2402:2466" placeholder="INSERT INTO stocks... " />
-            <marker date="1464334421000" expanded="true" signature="2568:2764" placeholder="CREATE TABLE... stockTweets" />
-            <marker date="1464334421000" expanded="true" signature="2786:2876" placeholder="CREATE TABLE... tickerAliases" />
-            <marker date="1464334421000" expanded="true" signature="2898:2951" placeholder="CREATE TABLE... activeDate" />
-            <marker date="1464334421000" expanded="true" signature="2973:3025" placeholder="INSERT INTO tickerAliases... " />
-            <marker date="1464334421000" expanded="true" signature="3754:3884" placeholder="INSERT INTO stockTweets... " />
-            <marker date="1464334421000" expanded="true" signature="4213:4262" placeholder="UPDATE stock... " />
-            <marker date="1464334421000" expanded="true" signature="4213:4264" placeholder="UPDATE stock... " />
-            <marker date="1464334421000" expanded="true" signature="4572:4613" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="497:528" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="497:529" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="551:585" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="607:639" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="661:688" placeholder="DROP TABLE I... " />
+            <marker date="1464592489000" expanded="true" signature="711:835" placeholder="CREATE TABLE... stocks" />
+            <marker date="1464592489000" expanded="true" signature="2429:2493" placeholder="INSERT INTO stocks... " />
+            <marker date="1464592489000" expanded="true" signature="2595:2791" placeholder="CREATE TABLE... stockTweets" />
+            <marker date="1464592489000" expanded="true" signature="2813:2903" placeholder="CREATE TABLE... tickerAliases" />
+            <marker date="1464592489000" expanded="true" signature="2925:2979" placeholder="CREATE TABLE... activeDate" />
+            <marker date="1464592489000" expanded="true" signature="3001:3053" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="3782:3912" placeholder="INSERT INTO stockTweets... " />
+            <marker date="1464592489000" expanded="true" signature="4241:4290" placeholder="UPDATE stock... " />
+            <marker date="1464592489000" expanded="true" signature="4241:4292" placeholder="UPDATE stock... " />
+            <marker date="1464592489000" expanded="true" signature="4600:4641" placeholder="INSERT INTO tickerAliases... " />
+            <marker date="1464592489000" expanded="true" signature="5018:5053" placeholder="INSERT INTO activeDate... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14285715">
+          <caret line="4" column="19" selection-start-line="4" selection-start-column="19" selection-end-line="4" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/backend/urgencyModule/meanAndStdevCalc.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.17042254">
+          <caret line="93" column="23" selection-start-line="93" selection-start-column="23" selection-end-line="93" selection-end-column="23" />
+          <folding>
+            <marker date="1464592801000" expanded="true" signature="267:324" placeholder="SELECT ticke... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4085:4123" placeholder="SELECT MAX(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4186:4224" placeholder="SELECT MIN(c... stockTweets" />
+            <marker date="1464592801000" expanded="true" signature="4452:4487" placeholder="SELECT ticke... stocks" />
+            <marker date="1464592801000" expanded="true" signature="5584:5620" placeholder="SELECT name,... stocks" />
           </folding>
         </state>
       </provider>
