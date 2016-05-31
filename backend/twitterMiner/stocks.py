@@ -48,7 +48,8 @@ def addAlias(alias, ticker):
 
 def storeTweet(data, tickers, aliases, report):
     tweet = json.loads(data)
-    print tweet['text']
+    tweet_text = tweet['text'].encode('utf-8')
+    print tweet_text
     expandedUrls = []
     urls = tweet['entities']['urls']
     for url in urls:
@@ -56,7 +57,7 @@ def storeTweet(data, tickers, aliases, report):
     urls = str(expandedUrls)
     createdAt = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y')) # Converting tweet time format to date format
     symbols = tweet['entities']['symbols']
-    updatedVolumeTickers = storeTickerTweets(tweet['id_str'], tweet["user"]["id_str"], createdAt, tweet['text'], urls, tweet['lang'], tweet['user']['followers_count'], symbols, tickers, aliases, report)
+    updatedVolumeTickers = storeTickerTweets(tweet['id_str'], tweet["user"]["id_str"], createdAt, tweet_text, urls, tweet['lang'], tweet['user']['followers_count'], symbols, tickers, aliases, report)
     return updatedVolumeTickers
 
 def storeTickerTweets(tweetId, userId, date, tweet, urls, lang, followers, symbols, tickers, aliases, report):
