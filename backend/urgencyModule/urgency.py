@@ -13,13 +13,13 @@ def rankUrgency(stocks):
     hour = date.hour
     statsAndName = _unpackMeanAndStdev(stocks, hour, date)
     for ticker, volume in stocks.iteritems():
-        threshold = _getThreshold(minute, statsAndName[ticker]["mean"], statsAndName[ticker]["stdev"], 1)
+        threshold = _getThreshold(minute, statsAndName[ticker]["mean"], statsAndName[ticker]["stdev"], 2)
         if float(volume) > threshold:
             print "!!!!!!!! " + ticker + "'s volume above threshold"
         if threshold > 0:
             urgency = float(volume)/threshold
         else:
-            urgency = 0.5
+            urgency = 0.01
         stockUrgency[ticker] = {"name": statsAndName[ticker]["name"], "urgency": urgency}
     _sendToClients(stockUrgency)
     print "Urgency calculation done"
