@@ -5,7 +5,7 @@ var printFn = function() {
 var listItem = function(item) {
   var level = urgencyLevel(item.volume, item.mean, item.stdev, item.minute);
   console.log(level);
-  itemId = (item.name).replace(/\s+/, "")
+  itemId = (item.name).replace(/\s/g, '');
   var hidden_content = "<p>Volume: " + item.volume + "</p><p>Mean: " + item.mean + "</p><p>Stdev: " + item.stdev + "</p>"
   var hidden = "<div class='info' id='" + itemId +"' style='display:none'>" + hidden_content + "</div>"
   var visable_content = "<p class='name'>" + item.name + "</p><p class='urgency'>" + item.urgency + "</p>"
@@ -39,7 +39,7 @@ var makeList = function(list) {
   var roundedList = list.map(function(item) {
     var urg;
     if (item.mean > 0) {
-      urg = ((parseFloat(item.minute)/60.0) * parseFloat(item.volume)/parseFloat(item.mean)).toFixed(2);
+      urg = ((60.0 / parseFloat(item.minute)) * parseFloat(item.volume)/parseFloat(item.mean)).toFixed(2);
     } else{
       urg = 0.01;
     }

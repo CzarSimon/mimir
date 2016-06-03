@@ -11,8 +11,8 @@ const makeStockList = () => {
     {name: 'Apple', minute: 60, volume: 5, mean: 25, stdev: 5  },
     {name: 'LinkedIn', minute: 60, volume: 31, mean: 25, stdev: 5  },
     {name: 'Facebook', minute: 60, volume: 37, mean: 25, stdev: 5  },
-    {name: 'Tesla', minute: 60, volume: 0, mean: 0, stdev: 0  },
-    {name: 'Yelp', minute: 60, volume: 37, mean: 0, stdev: 5  },
+    {name: 'Wal-Mart Stores Inc.', minute: 60, volume: 0, mean: 0, stdev: 0  },
+    {name: 'The Goldman Sachs Group, Inc.', minute: 60, volume: 37, mean: 0, stdev: 5  },
   ];
   return newList;
 }
