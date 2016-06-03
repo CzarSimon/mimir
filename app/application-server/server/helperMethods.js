@@ -6,16 +6,13 @@ const randomUrgency = () => {
 
 const makeStockList = () => {
   let newList = [
-    {name: 'Twitter Inc.', urgency: randomUrgency() },
-    {name: 'Amazon.com', urgency: randomUrgency() },
-    {name: 'Apple', urgency: randomUrgency() },
-    {name: 'LinkedIn', urgency: randomUrgency() },
-    {name: 'Facebook', urgency: randomUrgency() },
-    {name: 'Alphabet Inc.', urgency: randomUrgency() },
-    {name: 'Intel Corp.', urgency: randomUrgency() },
-    {name: 'Nike Inc.', urgency: randomUrgency() },
-    {name: 'Tesla Corp.', urgency: randomUrgency() },
-    {name: 'Accenture', urgency: randomUrgency() }
+    {name: 'Twitter Inc.', minute: 60, volume: 26, mean: 25, stdev: 5  },
+    {name: 'Amazon.com', minute: 60, volume: 24, mean: 25, stdev: 5  },
+    {name: 'Apple', minute: 60, volume: 5, mean: 25, stdev: 5  },
+    {name: 'LinkedIn', minute: 60, volume: 31, mean: 25, stdev: 5  },
+    {name: 'Facebook', minute: 60, volume: 37, mean: 25, stdev: 5  },
+    {name: 'Tesla', minute: 60, volume: 0, mean: 0, stdev: 0  },
+    {name: 'Yelp', minute: 60, volume: 37, mean: 0, stdev: 5  },
   ];
   return newList;
 }

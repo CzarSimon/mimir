@@ -2,22 +2,55 @@ var printFn = function() {
   alert('I am loaded, ES6 works');
 }
 
-var listItem = function(name, value) {
-  var urg = (value < 1.0) ? 'non-urgent' : 'urgent';
-  return "<li><p class='name'>" + name + "</p><p class='urgency " + urg + "'>" + value + "</p></li>";
+var listItem = function(item) {
+  var level = urgencyLevel(item.volume, item.mean, item.stdev, item.minute);
+  console.log(level);
+  itemId = (item.name).replace(/\s+/, "")
+  var hidden_content = "<p>Volume: " + item.volume + "</p><p>Mean: " + item.mean + "</p><p>Stdev: " + item.stdev + "</p>"
+  var hidden = "<div class='info' id='" + itemId +"' style='display:none'>" + hidden_content + "</div>"
+  var visable_content = "<p class='name'>" + item.name + "</p><p class='urgency'>" + item.urgency + "</p>"
+  var visable = "<div onclick=toggleListItem('" + itemId + "')>" + visable_content + "</div>"
+  return "<li class='" + level + "'>" + visable + hidden + "</li>";
+}
+
+var toggleListItem = function(itemId) {
+  var item = document.getElementById(itemId);
+  if (item.style.display === 'none') {
+    item.style.display = 'block';
+  } else {
+    item.style.display = 'none';
+  }
+}
+
+var urgencyLevel = function(volume, mean, stdev, minute) {
+  var damping = parseFloat(minute) / 60.0;
+  console.log(damping);
+  if (volume <= (damping * (mean + stdev))) {
+    return "lvl-normal";
+  } else if (volume <= (damping * (mean + 2 * stdev))) {
+    return "lvl-high";
+  } else {
+    return "lvl-urgent"
+  }
 }
 
 var makeList = function(list) {
   var htmlList = "";
   var roundedList = list.map(function(item) {
+    var urg;
+    if (item.mean > 0) {
+      urg = ((parseFloat(item.minute)/60.0) * parseFloat(item.volume)/parseFloat(item.mean)).toFixed(2);
+    } else{
+      urg = 0.01;
+    }
     return Object.assign({}, item, {
-      urgency: parseFloat(item.urgency).toFixed(2)
+      urgency: urg
     });
   });
   var sortedList = sort(roundedList);
   for (item of sortedList) {
-    console.log(listItem(item.name, item.urgency));
-    htmlList = htmlList + listItem(item.name, item.urgency)
+    console.log(item);
+    htmlList = htmlList + listItem(item);
   }
   document.getElementById('stockList').innerHTML = htmlList;
 }

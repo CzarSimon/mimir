@@ -55,6 +55,7 @@ li {
 
 .urgency {
   text-align: right;
+  color: #006dcc;
 }
 
 .name {
@@ -65,10 +66,23 @@ li {
   margin-bottom: 6%;
 }
 
-.urgent {
-  color: #d9534f;
+.lvl-urgent {
+  background-color: rgba(217, 83, 79, 0.2);
 }
 
-.non-urgent {
-  color: #006dcc;
+.lvl-high {
+  background-color: rgba(240, 173, 78, 0.2);
+}
+
+.info {
+  margin-top: 2%;
+  padding-top: 2%;
+  border-style: solid;
+  border-width: 0;
+  border-top-width: 1px;
+
+}
+
+.info p {
+  font-size: 2.5em;
 }
