@@ -1,0 +1,15 @@
+{
+  "name": "simple-express-server",
+  "version": "1.0.0",
+  "description": "Simple express server to be run on ubuntu 16.04 droplet",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Simon Lingren",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.1",
+    "express": "^4.13.4"
+  }
+}

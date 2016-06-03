@@ -1,0 +1,74 @@
+body {
+  font-family: Lato
+}
+
+
+.headline {
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-color: #d0d0d0;
+  border-style: solid;
+  color: #006dcc;
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+  font-size: 4.5em;
+  padding-left: 5%;
+}
+
+p {
+  font-size: 3em;
+}
+
+ul {
+  list-style-type: none;
+  padding-left: 0px;
+}
+
+footer {
+  border-width: 0;
+  border-style: solid;
+  border-color: #d0d0d0;
+  border-top-width: 1px;
+  text-align: center;
+  margin-bottom: 6%;
+  padding-top: 3%;
+}
+
+li {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #f0f0f0;
+  margin-bottom: 3%;
+  padding: 2% 5% 1% 5%;
+  box-shadow: 0px 7px 20px -15px rgba(0,0,0,0.75);
+}
+
+.btn-text {
+  padding-top: 2%;
+  padding-bottom: 3%;
+  font-size: 3em;
+}
+
+.btn-block {
+  margin-bottom: 4%;
+}
+
+.urgency {
+  text-align: right;
+}
+
+.name {
+  float: left;
+}
+
+#stockList {
+  margin-bottom: 6%;
+}
+
+.urgent {
+  color: #d9534f;
+}
+
+.non-urgent {
+  color: #006dcc;
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html ng-app="mimirApp">
+  <head>
+    <meta charset="utf-8">
+    <title>mimir</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/styles.css" media="screen" title="no title" charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Lato"/>
+  </head>
+  <body>
+    <div class="col-md-6 col-sm-12">
+      <h1 class="headline">Stocks</h1>
+      <ul id="stockList">
+      </ul>
+      <button type="button" class="btn btn-primary btn-block" onclick="makeRequest()"><h1 class="btn-text">Refresh</h1></button>
+      <footer>
+        <p>Temporary site made by </p>
+        <p><a href="https://twitter.com/SimonLindgren9">Simon Lindgren</a></p>
+        <p id="datePlace"></p>
+      </footer>
+    </div>
+    <script src="js/script.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  </body>
+</html>

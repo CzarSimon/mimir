@@ -3,3 +3,5 @@ backend/twitterMiner/twitterCredentials.py
 backend/**/*.pyc
 backend/twitterMiner/miner.log
 .idea/
+app/application-server/node_modules
+app/application-server/credentials.js
