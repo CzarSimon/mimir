@@ -4,7 +4,6 @@ var printFn = function() {
 
 var listItem = function(item) {
   var level = urgencyLevel(item.volume, item.mean, item.stdev, item.minute);
-  console.log(level);
   itemId = (item.name).replace(/\s/g, '');
   var hidden_content = "<p>Volume: " + item.volume + "</p><p>Mean: " + item.mean + "</p><p>Stdev: " + item.stdev + "</p>"
   var hidden = "<div class='info' id='" + itemId +"' style='display:none'>" + hidden_content + "</div>"
@@ -24,7 +23,6 @@ var toggleListItem = function(itemId) {
 
 var urgencyLevel = function(volume, mean, stdev, minute) {
   var damping = parseFloat(minute) / 60.0;
-  console.log(damping);
   if (volume <= (damping * (mean + stdev))) {
     return "lvl-normal";
   } else if (volume <= (damping * (mean + 2 * stdev))) {
@@ -49,7 +47,6 @@ var makeList = function(list) {
   });
   var sortedList = sort(roundedList);
   for (item of sortedList) {
-    console.log(item);
     htmlList = htmlList + listItem(item);
   }
   document.getElementById('stockList').innerHTML = htmlList;
