@@ -4,7 +4,7 @@ from database import manager as db
 import threading
 from datetime import date
 import numpy
-import math, time, schedule
+import math, time
 
 def getStockTweets():
     stockMeans = {}
@@ -34,12 +34,6 @@ def getStockTweets():
     updateDB(stockMeans, stockStdevs)
     db.logActiveDate()
     return True
-
-    # --- THIS WAS REPLACED BY A CALL TO THE DISPATCH METHOD
-    # d = threading.Thread(name=str(prevTicker) + " thread", target=reduceByHour, args=(tickerList, prevTicker, days, stockMeans, stockStdevs, ))
-    # d.setDaemon(True)
-    # threads[prevTicker] = d
-    # d.start()
 
 def dispatch(list, ticker, days, mean, stdev):
     d = threading.Thread(name=str(ticker) + " thread", target=reduceByHour, args=(list, ticker, days, mean, stdev))
@@ -138,18 +132,6 @@ def runTest():
     startTime = time.time()
     getStockTweets()
     print str(int((time.time() - startTime)*1000)) + " milliseconds"
-    # print ""
-    # print "------ Controll -----"
-    # controlList = db.queryDatabase('SELECT name, mean, stdev FROM stocks',True)
-    # for item in controlList:
-    #     print str(item[0]) + " mean is:", item[1]
-    #     print str(item[0]) + " stdev is:", item[2]
-    #     print "---------------------"
 
 if __name__ == "__main__":
     runTest()
-    # schedule.every().day.at('09:22').do(runTest)
-    # schedule.every().day.at('21:32').do(runTest)
-    # while True:
-    #     schedule.run_pending()
-    #     pass

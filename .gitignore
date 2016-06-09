@@ -2,6 +2,9 @@ backend/database/credentials.py
 backend/twitterMiner/twitterCredentials.py
 backend/**/*.pyc
 backend/twitterMiner/miner.log
+backend/database/setup.py
+backend/urgencyModule/credentials.py
 .idea/
 app/application-server/node_modules
 app/application-server/credentials.js
+
