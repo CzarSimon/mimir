@@ -1,6 +1,9 @@
-var printFn = function() {
-  alert('I am loaded, ES6 works');
-}
+var socket = io.connect()
+
+socket.on('update stocklist', function(data) {
+  makeList(data.list);
+  postDate(data.date);
+});
 
 var listItem = function(item) {
   var level = urgencyLevel(item.volume, item.mean, item.stdev, item.minute);
@@ -53,6 +56,7 @@ var makeList = function(list) {
 }
 
 var makeRequest = function() {
+  console.log(socket);
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function() {
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
