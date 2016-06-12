@@ -5,7 +5,6 @@ body {
 .headline {
   color: #006dcc;
   font-size: 4.5em;
-  padding-left: 15%;
 }
 
 .top {
@@ -19,6 +18,7 @@ body {
 
 #top-logo {
   float: left;
+  margin-right: 2%;
 }
 
 p {
