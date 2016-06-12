@@ -2,17 +2,23 @@ body {
   font-family: Lato
 }
 
-
 .headline {
+  color: #006dcc;
+  font-size: 4.5em;
+  padding-left: 15%;
+}
+
+.top {
   border-width: 0;
   border-bottom-width: 1px;
   border-color: #d0d0d0;
   border-style: solid;
-  color: #006dcc;
   padding-bottom: 10px;
   margin-bottom: 20px;
-  font-size: 4.5em;
-  padding-left: 5%;
+}
+
+#top-logo {
+  float: left;
 }
 
 p {

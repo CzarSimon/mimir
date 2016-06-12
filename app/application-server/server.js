@@ -41,5 +41,9 @@ server.listen(serverInfo.port, serverInfo.IP, () => {
 });
 
 io.on('connection', (socket) => {
-  console.log('A connection was made');
+  console.log('connection!');
+  socket.emit('get info from client', "GET INFO");
+  socket.on('send info to server', (data) => {
+    console.log("New user made connection on: " + data.clientMachine);
+  })
 });

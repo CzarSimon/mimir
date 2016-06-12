@@ -4,6 +4,15 @@ var TestConnection = function() {
   return "connected";
 }
 
+socket.on('get info from client', function(data) {
+  console.log('reciveing info request');
+  if (data === 'GET INFO') {
+    socket.emit('send info to server', {
+      clientMachine: navigator.appVersion
+    });
+  }
+})
+
 socket.on('update stocklist', function(data) {
   makeList(data.list);
   postDate(data.date);
