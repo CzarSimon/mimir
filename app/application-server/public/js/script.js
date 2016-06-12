@@ -1,4 +1,8 @@
-var socket = io.connect()
+var socket = io.connect();
+
+var TestConnection = function() {
+  return "connected";
+}
 
 socket.on('update stocklist', function(data) {
   makeList(data.list);
@@ -56,7 +60,6 @@ var makeList = function(list) {
 }
 
 var makeRequest = function() {
-  console.log(socket);
   var xmlHttp = new XMLHttpRequest();
   xmlHttp.onreadystatechange = function() {
     if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {

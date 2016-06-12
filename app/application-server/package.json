@@ -12,5 +12,9 @@
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
     "socket.io": "^1.4.6"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.5.3"
   }
 }
