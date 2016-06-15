@@ -86,16 +86,13 @@ def calcMeanAndStdev(hourlyMentions, days):
     meanList = [0.0]*24
     stdevList = [0.0]*24
     if ((days - 1) > 0):
+        f_days = float(days)
         for hour, list in hourlyMentions.iteritems():
-            mean = sum(list)/float(days)
-            stdev = 0
-            for dayCount in list:
-                stdev += math.pow(float(dayCount) - mean, 2)
-            stdev = round(math.sqrt(stdev/(float(days) - 1.0)), 2)
+            mean = sum(list) / f_days
+            stdev = sum(list(map(lambda x: (x - mean) ** 2, list)) / (f_days - 1.0)
             meanList[hour] = round(mean, 2)
-            stdevList[hour] = stdev
+            stdevList[hour] = round(stdev, 2)
     return {"mean": meanList, "stdev": stdevList}
-
 
 def daysMeasured():
     endDate = datetimeToDate(db.queryDatabase('SELECT MAX(createdAt) FROM stockTweets', False)[0])
