@@ -83,16 +83,20 @@ def reduceByDay(dict, days):
     return calcMeanAndStdev(hourlyMentions, days)
 
 def calcMeanAndStdev(hourlyMentions, days):
-    meanList = [0.0]*24
-    stdevList = [0.0]*24
-    if ((days - 1) > 0):
+    meanList = [0.0] * 24
+    stdevList = [0.0] * 24
+    if (days > 1):
         f_days = float(days)
-        for hour, list in hourlyMentions.iteritems():
-            mean = sum(list) / f_days
-            stdev = sum(list(map(lambda x: (x - mean) ** 2, list)) / (f_days - 1.0)
-            meanList[hour] = round(mean, 2)
-            stdevList[hour] = round(stdev, 2)
+        for hour, volumes in hourlyMentions.iteritems():
+            res = calc(volumes, f_days)
+            meanList[hour] = res["mean"]
+            stdevList[hour] = res["stdev"]
     return {"mean": meanList, "stdev": stdevList}
+
+def calc(seq, n):
+    mean = sum(seq) / n
+    stdev = sum(list(map(lambda x: (x - mean) ** 2, seq))) / (n - 1.0)
+    return {"mean": round(mean, 2), "stdev": round(stdev, 2)}
 
 def daysMeasured():
     endDate = datetimeToDate(db.queryDatabase('SELECT MAX(createdAt) FROM stockTweets', False)[0])
