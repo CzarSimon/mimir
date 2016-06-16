@@ -95,7 +95,7 @@ def calcMeanAndStdev(hourlyMentions, days):
 
 def calc(seq, n):
     mean = sum(seq) / n
-    stdev = sum(list(map(lambda x: (x - mean) ** 2, seq))) / (n - 1.0)
+    stdev = math.sqrt(sum(list(map(lambda x: (x - mean) ** 2, seq))) / (n - 1.0))
     return {"mean": round(mean, 2), "stdev": round(stdev, 2)}
 
 def daysMeasured():
