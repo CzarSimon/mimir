@@ -7,9 +7,15 @@ import { connect } from 'react-redux';
 import io from 'socket.io-client/socket.io';
 
 import Main from '../components/main';
+import Loading from '../components/loading';
+
 import * as user_actions from '../actions/user.actions';
 import * as stock_actions from '../actions/stock.actions';
 import * as twitter_data_actions from '../actions/twitter_data.actions';
+
+import { persist_object } from './../methods/async-storage';
+import { retrive_stock_data } from './../methods/yahoo-api';
+import { array_equals } from '../methods/helper-methods';
 import { SERVER_URL } from '../credentials/server-info';
 
 class MimirApp extends Component {
@@ -25,16 +31,47 @@ class MimirApp extends Component {
     })
   }
 
+  componentWillMount() {
+    const { fetch_user, recive_twitter_data } = this.props.actions;
+    fetch_user();
+    this.socket.on('DISPATCH TWITTER DATA', (payload) => {
+      if (payload.data) { recive_twitter_data(payload.data); }
+    });
+  }
+
+  //Well this is obviously terrible, change soon
+  componentWillReceiveProps(next_props) {
+    const { fetch_stock_data, fetch_twitter_data } = this.props.actions;
+    const { user: next_user, stocks: next_stocks } = next_props.state;
+    const { user } = this.props.state;
+    const { socket } = this;
+
+    if (!user.loaded && next_user.tickers.length) {
+      socket.on('NEW TWITTER DATA', () => {
+        fetch_twitter_data(next_user, socket);
+      });
+    } else if (user.loaded && !array_equals(next_user.tickers, user.tickers)) {
+      persist_object("user", next_user);
+      socket.on('NEW TWITTER DATA', () => {
+        fetch_twitter_data(next_user, socket);
+      });
+    }
+    if (next_user.loaded && !next_user.twitter_data.loaded) {
+      fetch_twitter_data(next_user, socket);
+    } else if (!next_stocks.loaded && next_user.tickers.length) {
+      fetch_stock_data(next_user.tickers);
+    }
+  }
+
   render() {
-    const { state, actions } = this.props;
-    return (
-      <Main
-        user = {state.user}
-        stocks = {state.stocks}
-        socket = {this.socket}
-        {...actions}
-      />
-    );
+    const { actions } = this.props;
+    const { user, stocks } = this.props.state;
+
+    if (user.loaded && stocks.loaded) {
+      return (<Main user={user} stocks={stocks} socket={this.socket} {...actions} />);
+    } else {
+      return (<Loading />);
+    }
   }
 }
 
