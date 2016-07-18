@@ -1,35 +1,45 @@
 'use strict'
+
 const serverInfo = require('./credentials').server,
       express = require('express'),
       path = require('path'),
-      bodyParser = require('body-parser');
+      bodyParser = require('body-parser'),
+      zipObject = require('lodash')['zipObject'],
+      map = require('lodash')['map'];
 
 const makeStockList = require('./server/helperMethods').makeStockList,
       getDate = require('./server/helperMethods').getDate,
       parseStockList = require('./server/helperMethods').parseStockList;
 
-let   app = express(),
-      server = require('http').createServer(app);
-const io = require('socket.io').listen(server);
+const app = express(),
+      server = require('http').createServer(app),
+      io = require('socket.io').listen(server);
 
 let   stockList = makeStockList(),
-      lastUpdated = getDate();
+      lastUpdated = getDate(),
+      stock_dict;
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/stockList', (req, res) => {
-  let payload = {list: stockList, date: lastUpdated};
+  const payload = {
+    data: stock_dict,
+    list: stockList,
+    date: lastUpdated
+  };
   res.send(payload);
 });
 
 app.post('/stockList', (req, res) => {
-  let dict = req.body;
+  const dict = req.body;
   if (dict) {
     stockList = parseStockList(dict);
-    lastUpdated = getDate();
+    lastUpdated = getDate()
+    stock_dict = dict;
     io.sockets.emit('update stocklist', {list: stockList, date: lastUpdated})
+    io.sockets.emit('NEW TWITTER DATA');
     res.send('success');
   } else {
     res.send('failure');
@@ -43,7 +53,17 @@ server.listen(serverInfo.port, serverInfo.IP, () => {
 io.on('connection', (socket) => {
   console.log('connection!');
   socket.emit('get info from client', "GET INFO");
-  socket.on('send info to server', (data) => {
+  socket.on('send info to server', data => {
     console.log("New user made connection on: " + data.clientMachine);
+  })
+
+  socket.on('GET TWITTER DATA', data => {
+    const user_tickers = data.user.tickers;
+    if (user_tickers.length) {
+      socket.emit('DISPATCH TWITTER DATA', {
+        data: zipObject(user_tickers, map(user_tickers, ticker => stock_dict['$' + ticker])),
+        date: lastUpdated
+      });
+    }
   })
 });

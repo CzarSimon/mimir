@@ -98,20 +98,21 @@ def calc(seq, n):
     stdev = math.sqrt(sum(list(map(lambda x: (x - mean) ** 2, seq))) / (n - 1.0))
     return {"mean": round(mean, 2), "stdev": round(stdev, 2)}
 
+def calc_days(first_date, last_date):
+    bus_days = int(numpy.busday_count(first_date, last_date)) + 1
+    all_days = (last_date - first_date).days + 1
+    return { "busdays": bus_days, "weekend_days": (all_days - bus_days)}
+
 def daysMeasured():
-    endDate = datetimeToDate(db.queryDatabase('SELECT MAX(createdAt) FROM stockTweets', False)[0])
-    startDate = datetimeToDate(db.queryDatabase('SELECT MIN(createdAt) FROM stockTweets', False)[0])
-    bus_days = int(numpy.busday_count(startDate, endDate)) + 1
-    all_days = (endDate - startDate).days + 1
-    days = { "busdays": bus_days, "weekend_days": (all_days - bus_days) }
+    end_date = datetimeToDate(db.queryDatabase('SELECT MAX(createdAt) FROM stockTweets', False)[0])
+    start_date = datetimeToDate(db.queryDatabase('SELECT MIN(createdAt) FROM stockTweets', False)[0])
+    days = calc_days(start_date, end_date)
     stocks = db.queryDatabase('SELECT ticker, storedAt FROM stocks', True)
     inDb = {}
     for stock in stocks:
         if stock[1] is not None:
-            storeDate = datetimeToDate(stock[1])
-            store_bus_days = int(numpy.busday_count(storeDate, endDate)) + 1
-            store_all_days = (endDate - storeDate).days + 1
-            inDb[str(stock[0])] = { "busdays": store_bus_days, "weekend_days": (store_all_days - store_bus_days)}
+            store_date = datetimeToDate(stock[1])
+            inDb[str(stock[0])] = calc_days(store_date, end_date)
         else:
             inDb[str(stock[0])] = days
     print inDb
