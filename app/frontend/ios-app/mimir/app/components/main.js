@@ -13,7 +13,7 @@ export default class Main extends Component {
   }
 
   render() {
-    const { user, stocks, nav } = this.props,
+    const { user, stocks, navigate } = this.props,
           twitter_data = (user.twitter_data.loaded) ? user.twitter_data.data : {},
           ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
           user_ticker_list = ds.cloneWithRows(stocks.data);
@@ -24,7 +24,7 @@ export default class Main extends Component {
           dataSource = {user_ticker_list}
           renderHeader = {() => <Text style={styles.header}>Watchlist</Text>}
           renderRow = {(stock_data) => (
-            <StockCard {...stock_data} twitter_data={twitter_data[stock_data.Symbol]} nav={nav}/>
+            <StockCard {...stock_data} twitter_data={twitter_data[stock_data.Symbol]} navigate={navigate}/>
           )}
         />
       </View>
