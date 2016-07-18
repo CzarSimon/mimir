@@ -8,9 +8,12 @@ import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 
 import * as reducers from '../reducers';
-import MimirApp from './main.container';
+import BackButton from './navigation/back-button';
+import SearchButton from './navigation/search-button';
+import render_scene from '../routing/render-scene';
+import { MAIN_ROUTE } from '../routing/routes';
 
-const logger = createLogger()
+const logger = createLogger();
 const createStoreWithMiddleware = applyMiddleware(thunk, logger)(createStore);
 const reducer = combineReducers(reducers);
 const store = createStoreWithMiddleware(reducer);
@@ -20,18 +23,18 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <Navigator
-          initialRoute = {{ title: 'mimir', index: 0 }}
+          initialRoute = {MAIN_ROUTE}
           style = {styles.container}
-          renderScene = {(route, navigator) => <MimirApp />}
+          renderScene = {render_scene}
           navigationBar={
-             <Navigator.NavigationBar
-               routeMapper={{
-                 LeftButton: (route, navigator, index, navState) => (<Text>Back</Text>),
-                 RightButton: (route, navigator, index, navState) => (<Text>Search</Text>),
-                 Title: (route, navigator, index, navState) => (<Text>{route.title}</Text>)
-               }}
-               style={{backgroundColor: 'gray'}}
-             />
+            <Navigator.NavigationBar
+              routeMapper={{
+                LeftButton: (route, navigator, index, navState) => (<BackButton index={index} nav={navigator}/>),
+                RightButton: () => (<SearchButton active={false} />),
+                Title: (route, navigator, index, navState) => (<Text>{route.title}</Text>)
+              }}
+              style={{backgroundColor: 'gray'}}
+            />
           }
         />
       </Provider>

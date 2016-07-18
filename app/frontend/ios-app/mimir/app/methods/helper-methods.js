@@ -10,7 +10,7 @@ export const array_equals = (a1, a2) => {
 }
 
 export const round = (number, decimals = 2) => {
-  return number.toFixed(decimals);
+  return parseFloat(number).toFixed(decimals);
 }
 
 export const format_name = (name, forbidden = ['inc', 'corporation']) => {

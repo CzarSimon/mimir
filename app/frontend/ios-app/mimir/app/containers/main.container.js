@@ -64,11 +64,11 @@ class MimirApp extends Component {
   }
 
   render() {
-    const { actions } = this.props;
+    const { actions, navigator } = this.props;
     const { user, stocks } = this.props.state;
 
     if (user.loaded && stocks.loaded) {
-      return (<Main user={user} stocks={stocks} socket={this.socket} {...actions} />);
+      return (<Main user={user} stocks={stocks} socket={this.socket} {...actions} nav={navigator} />);
     } else {
       return (<Loading />);
     }

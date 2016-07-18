@@ -9,7 +9,7 @@ export default class Price extends Component {
   format_change = () => {
     const is_up = startsWith(this.props.change, '+');
     return {
-      change: ((is_up) ? "+" : "") + round(parseFloat(this.props.change)).toString() + "%",
+      change: ((is_up) ? "+" : "") + round(this.props.change).toString() + "%",
       change_style: (is_up) ? styles.price_up : styles.price_down
     }
   }
@@ -19,7 +19,7 @@ export default class Price extends Component {
     return (
       <View style={styles.price_info}>
         <Text style={change_style}>{ change }</Text>
-        <Text style={styles.price}>{ this.props.price }</Text>
+        <Text style={styles.price}>{ round(this.props.price) }</Text>
       </View>
     );
   }

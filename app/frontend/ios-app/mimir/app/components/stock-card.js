@@ -6,16 +6,17 @@ import Name from './stock-card/name';
 import Price from './stock-card/price';
 import { round, format_name } from '../methods/helper-methods';
 import { color, margin, font } from '../styles/styles';
+import { company_page_route } from '../routing/routes';
 
 export default class StockCard extends Component {
-  handleClick = (ticker) => {
-    console.log(ticker, "was clicked");
+  handleClick = (ticker, navigator) => {
+    navigator.push(company_page_route(ticker));
   }
   render() {
-    const { Name: StockName, Symbol, PercentChange, LastTradePriceOnly, twitter_data } = this.props;
+    const { Name: StockName, Symbol, PercentChange, LastTradePriceOnly, twitter_data, nav } = this.props;
     return (
       <TouchableHighlight
-        onPress = { () => this.handleClick(Symbol)}>
+        onPress = { () => this.handleClick(Symbol, nav)}>
         <View style={styles.card} >
           <UrgencyIndicator {...twitter_data} />
           <Name name={StockName} ticker={Symbol} />
