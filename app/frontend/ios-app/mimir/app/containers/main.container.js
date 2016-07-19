@@ -12,6 +12,7 @@ import Loading from '../components/loading';
 import * as user_actions from '../actions/user.actions';
 import * as stock_actions from '../actions/stock.actions';
 import * as twitter_data_actions from '../actions/twitter_data.actions';
+import { set_active_ticker } from '../actions/navigation.actions';
 
 import { persist_object } from './../methods/async-storage';
 import { retrive_stock_data } from './../methods/yahoo-api';
@@ -65,12 +66,12 @@ class MimirApp extends Component {
   }
 
   navigate_to_company(ticker) {
-    const { navigator } = this.props;
+    const { navigator, actions } = this.props;
+    actions.set_active_ticker(ticker);
     navigator.push(company_page_route(ticker));
   }
 
   render() {
-    const { actions, navigator } = this.props;
     const { user, stocks } = this.props.state;
 
     if (user.loaded && stocks.loaded) {
@@ -85,14 +86,16 @@ export default connect(
   (state) => ({
     state: {
       user: state.user,
-      stocks: state.stocks
+      stocks: state.stocks,
+      navigation: state.navigation
     }
   }),
   (dispatch) => ({
     actions: bindActionCreators({
       ...user_actions,
       ...stock_actions,
-      ...twitter_data_actions
+      ...twitter_data_actions,
+      set_active_ticker
     }, dispatch)
   })
 )(MimirApp);

@@ -11,3 +11,7 @@ export const FETCH_TWITTER_DATA = "FETCH_TWITTER_DATA";
 //Stock data actions
 export const RECIVE_STOCK_DATA = "RECIVE_STOCK_DATA";
 export const FETCH_STOCK_DATA = "FETCH_STOCK_DATA";
+
+//Navigation actions
+export const SET_ACTIVE_TICKER = "SET_ACTIVE_TICKER";
+export const SELECT_TAB = "SELECT_TAB";

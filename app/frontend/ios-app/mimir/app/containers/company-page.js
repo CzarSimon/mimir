@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet, TabBarIOS } from 'react-native';
 
 export default class CompanyPage extends Component {
   render() {
