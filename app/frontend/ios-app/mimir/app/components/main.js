@@ -1,7 +1,8 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ListView } from 'react-native'
+import { View, Text, StyleSheet, ListView } from 'react-native';
+import { margin } from '../styles/styles';
 import { values } from 'lodash';
 
 import StockCard from './stock-card';
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'center',
-    marginTop: 80
+    marginTop: margin.navbar
   },
   header: {
     alignSelf: 'flex-start',

@@ -5,20 +5,32 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import TabMenu from '../components/tab-menu';
+import BasicInfo from '../components/tab-menu/basic-info';
 import { select_tab } from '../actions/navigation.actions';
+import { arr_get_value_by_key } from '../methods/helper-methods';
 
 class TabMenuContainer extends Component {
   handle_tab_click(clicked_tab) {
     this.props.actions.select_tab(clicked_tab);
   }
   render() {
-    const { selected_tab } = this.props.state.navigation;
+    const { user, stocks, navigation } = this.props.state;
+    const { selected_tab, active_ticker } = navigation;
+    const company = arr_get_value_by_key(stocks.data, active_ticker);
+    const twitter_data = user.twitter_data.data[active_ticker];
+
     return (
       <View style={styles.container}>
+        <BasicInfo
+          company = {company}
+          twitter_data = {twitter_data}
+        />
         <TabMenu
-          nav={this.props.navigator}
-          selected_tab={selected_tab}
-          handle_click={this.handle_tab_click.bind(this)}
+          company = {company}
+          twitter_data = {twitter_data}
+          nav = {this.props.navigator}
+          selected_tab = {selected_tab}
+          handle_click = {this.handle_tab_click.bind(this)}
         />
       </View>
     );
@@ -26,7 +38,13 @@ class TabMenuContainer extends Component {
 }
 
 export default connect(
-  (state) => ({ state: { navigation: state.navigation } }),
+  (state) => ({
+    state: {
+      user: state.user,
+      stocks: state.stocks,
+      navigation: state.navigation
+    }
+  }),
   (dispatch) => ({ actions: bindActionCreators({ select_tab }, dispatch) })
 )(TabMenuContainer);
 

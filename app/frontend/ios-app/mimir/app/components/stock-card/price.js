@@ -19,7 +19,7 @@ export default class Price extends Component {
     return (
       <View style={styles.price_info}>
         <Text style={change_style}>{ change }</Text>
-        <Text style={styles.price}>{ round(this.props.price) }</Text>
+        <Text style={styles.price}>{round(this.props.price)} {this.props.currency}</Text>
       </View>
     );
   }

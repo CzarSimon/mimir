@@ -1,4 +1,4 @@
-import { split, map, lowerCase, join, slice, findIndex } from 'lodash';
+import { split, map, lowerCase, join, slice, findIndex, find } from 'lodash';
 
 export const array_equals = (a1, a2) => {
   let i = a1.length;
@@ -23,4 +23,8 @@ export const format_name = (name, forbidden = ['inc', 'corporation']) => {
     }
   }
   return name;
+}
+
+export const arr_get_value_by_key = (arr = [], val, key = 'Symbol') => {
+  return find(arr, (obj) => (obj[key] === val));
 }

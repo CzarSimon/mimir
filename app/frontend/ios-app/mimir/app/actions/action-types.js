@@ -15,3 +15,8 @@ export const FETCH_STOCK_DATA = "FETCH_STOCK_DATA";
 //Navigation actions
 export const SET_ACTIVE_TICKER = "SET_ACTIVE_TICKER";
 export const SELECT_TAB = "SELECT_TAB";
+
+//Company description actions
+export const FETCH_COMPANY_DESC = "FETCH_COMPANY_DESC";
+export const RECIVE_COMPANY_DESC = "RECIVE_COMPANY_DESC";
+export const RECIVE_DESC_FAILURE = "RECIVE_DESC_FAILURE";

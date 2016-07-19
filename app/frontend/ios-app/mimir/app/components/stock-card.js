@@ -12,14 +12,14 @@ export default class StockCard extends Component {
     this.props.navigate(ticker);
   }
   render() {
-    const { Name: StockName, Symbol, PercentChange, LastTradePriceOnly, twitter_data } = this.props;
+    const { Name: StockName, Symbol, PercentChange, LastTradePriceOnly, Currency, twitter_data } = this.props;
     return (
       <TouchableHighlight
         onPress = { () => this.handleClick(Symbol)}>
         <View style={styles.card} >
           <UrgencyIndicator {...twitter_data} />
           <Name name={StockName} ticker={Symbol} />
-          <Price change={PercentChange} tic={Symbol} price={LastTradePriceOnly} />
+          <Price change={PercentChange} tic={Symbol} price={LastTradePriceOnly} currency={Currency} />
         </View>
       </TouchableHighlight>
     );

@@ -32,6 +32,7 @@ export const font = {
 }
 
 export const margin = {
+  navbar: 75,
   medium: 15,
   small: 10,
   mini: 5

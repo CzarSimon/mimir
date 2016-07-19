@@ -3,6 +3,8 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TabBarIOS } from 'react-native';
 import { map, capitalize } from 'lodash';
 import { color } from '../styles/styles';
+import OverviewContainer from '../containers/overview.container';
+import StatisticsContainer from '../containers/statistics.container';
 
 export default class TabMenu extends Component {
   handle_tab_click = (clicked_tab) => {
@@ -12,13 +14,13 @@ export default class TabMenu extends Component {
     }
   }
   render() {
+    const { company, twitter_data, selected_tab, handle_click } = this.props;
     const tabs = {
-      overview: <View style={styles.container}><Text>Overview</Text></View>,
-      news: <View style={styles.container}><Text>News</Text></View>,
-      tweets: <View style={styles.container}><Text>Tweets</Text></View>,
-      statistics: <View style={styles.container}><Text>Statistics</Text></View>
+      overview: <OverviewContainer company={company} twitter_data={twitter_data}/>,
+      news: <View style={styles.container}><Text>News component not started yet...</Text></View>,
+      tweets: <View style={styles.container}><Text>Tweet component not started yet...</Text></View>,
+      statistics: <StatisticsContainer company={company}/> //Should probably be a component
     }
-    const { selected_tab, handle_click } = this.props;
     return (
       <TabBarIOS
         style={styles.tab_bar}
