@@ -3,7 +3,7 @@ import * as types from '../actions/action-types';
 
 const initial_state = {
   active_ticker: null,
-  select_tab: 'overview'
+  selected_tab: 'overview'
 };
 
 const navigation = (state = initial_state, action = {}) => {
@@ -16,7 +16,7 @@ const navigation = (state = initial_state, action = {}) => {
     case types.SELECT_TAB:
       return {
         ...state,
-        select_tab: action.payload.tab
+        selected_tab: action.payload.tab
       }
     default:
       return state;
