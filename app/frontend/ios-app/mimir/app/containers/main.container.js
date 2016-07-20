@@ -14,8 +14,9 @@ import * as stock_actions from '../actions/stock.actions';
 import * as twitter_data_actions from '../actions/twitter_data.actions';
 import { set_active_ticker } from '../actions/navigation.actions';
 
+import { logon_user } from '../actions/logon.actions';
+
 import { persist_object } from './../methods/async-storage';
-import { retrive_stock_data } from './../methods/yahoo-api';
 import { array_equals } from '../methods/helper-methods';
 import { company_page_route } from '../routing/routes';
 import { SERVER_URL } from '../credentials/server-info';
@@ -34,16 +35,15 @@ class MimirApp extends Component {
   }
 
   componentWillMount() {
-    const { fetch_user, recive_twitter_data } = this.props.actions;
-    fetch_user();
+    const { logon_user, recive_twitter_data } = this.props.actions;
+    logon_user(this.socket);
     this.socket.on('DISPATCH TWITTER DATA', (payload) => {
       if (payload.data) { recive_twitter_data(payload.data); }
     });
   }
 
-  //Well this is obviously terrible, change soon
   componentWillReceiveProps(next_props) {
-    const { fetch_stock_data, fetch_twitter_data } = this.props.actions;
+    const { fetch_twitter_data } = this.props.actions;
     const { user: next_user, stocks: next_stocks } = next_props.state;
     const { user } = this.props.state;
     const { socket } = this;
@@ -57,11 +57,6 @@ class MimirApp extends Component {
       socket.on('NEW TWITTER DATA', () => {
         fetch_twitter_data(next_user, socket);
       });
-    }
-    if (next_user.loaded && !next_user.twitter_data.loaded) {
-      fetch_twitter_data(next_user, socket);
-    } else if (!next_stocks.loaded && next_user.tickers.length) {
-      fetch_stock_data(next_user.tickers);
     }
   }
 
@@ -95,7 +90,8 @@ export default connect(
       ...user_actions,
       ...stock_actions,
       ...twitter_data_actions,
-      set_active_ticker
+      set_active_ticker,
+      logon_user
     }, dispatch)
   })
 )(MimirApp);
