@@ -19,7 +19,7 @@ export default class TabMenu extends Component {
       overview: <OverviewContainer company={company} twitter_data={twitter_data}/>,
       news: <View style={styles.container}><Text>News component not started yet...</Text></View>,
       tweets: <View style={styles.container}><Text>Tweet component not started yet...</Text></View>,
-      statistics: <StatisticsContainer company={company}/> //Should probably be a component
+      statistics: <StatisticsContainer company={company}/>
     }
     return (
       <TabBarIOS

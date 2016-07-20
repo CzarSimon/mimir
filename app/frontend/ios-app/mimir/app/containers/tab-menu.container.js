@@ -9,6 +9,7 @@ import BasicInfo from '../components/tab-menu/basic-info';
 import { select_tab } from '../actions/navigation.actions';
 import { arr_get_value_by_key } from '../methods/helper-methods';
 
+//This is the container that should be able to add a ticker
 class TabMenuContainer extends Component {
   handle_tab_click(clicked_tab) {
     this.props.actions.select_tab(clicked_tab);
@@ -16,7 +17,7 @@ class TabMenuContainer extends Component {
   render() {
     const { user, stocks, navigation } = this.props.state;
     const { selected_tab, active_ticker } = navigation;
-    const company = arr_get_value_by_key(stocks.data, active_ticker);
+    const company = stocks.data[active_ticker]
     const twitter_data = user.twitter_data.data[active_ticker];
 
     return (

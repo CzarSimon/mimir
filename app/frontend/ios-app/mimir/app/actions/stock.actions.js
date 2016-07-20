@@ -6,7 +6,10 @@ import { get_twitter_data } from '../methods/server/twitter-miner';
 export const fetch_stock_data = (tickers) => {
   return (dispatch) => {
     return retrive_stock_data(tickers)
-    .then(data => dispatch(recive_stock_data(data)))
+    .then(data => {
+      console.log(data);
+      return dispatch(recive_stock_data(data))
+    })
   };
 }
 

@@ -1,17 +1,38 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-export default class StatisticsContainer extends Component {
+import { fetch_stock_data } from '../actions/stock.actions';
+import Statistics from '../components/statistics';
+import Loading from '../components/loading';
+
+class StatisticsContainer extends Component {
+  componentWillMount() {
+    const { actions, state } = this.props;
+    actions.fetch_stock_data([state.navigation.active_ticker]);
+  }
   render() {
-    return (<View style={styles.container}><Text>Statistics</Text></View>);
+    const { stocks, navigation } = this.props.state;
+    const company = stocks.data[navigation.active_ticker];
+    if (company.EBITDA) {
+      return <Statistics {...company} />
+    } else {
+      return <Loading />
+    }
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
-  }
-})
+export default connect(
+  (state) => ({
+    state: {
+      stocks: state.stocks,
+      navigation: state.navigation
+    }
+  }),
+  (dispatch) => ({
+    actions: bindActionCreators({
+      fetch_stock_data
+    }, dispatch)
+  })
+)(StatisticsContainer);

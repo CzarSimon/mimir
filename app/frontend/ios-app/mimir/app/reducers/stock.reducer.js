@@ -9,9 +9,13 @@ const initial_state = {
 const stocks = (state = initial_state, action = {}) => {
   switch (action.type) {
     case types.RECIVE_STOCK_DATA:
+      console.log(action.payload.data);
       return {
         ...state,
-        data: action.payload.data,
+        data: {
+          ...state.data,
+          ...action.payload.data
+        },
         loaded: true
       };
     default:
@@ -20,3 +24,15 @@ const stocks = (state = initial_state, action = {}) => {
 }
 
 export default stocks;
+
+/*
+case types.UPDATE_STOCK_DATA:
+  return {
+    ...state,
+    data: map(state.data, (val, key) => ({
+      ...val,
+      ...action.payload.data[key]
+    })),
+    loaded: true
+  };
+*/

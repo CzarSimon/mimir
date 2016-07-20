@@ -1,4 +1,4 @@
-import { split, map, lowerCase, join, slice, findIndex, find } from 'lodash';
+import { split, map, lowerCase, join, slice, findIndex, find, replace } from 'lodash';
 
 export const array_equals = (a1, a2) => {
   let i = a1.length;
@@ -27,4 +27,8 @@ export const format_name = (name, forbidden = ['inc', 'corporation']) => {
 
 export const arr_get_value_by_key = (arr = [], val, key = 'Symbol') => {
   return find(arr, (obj) => (obj[key] === val));
+}
+
+export const format_thousands = (num_str) => {
+  return replace(num_str, /\B(?=(\d{3})+(?!\d))/g, " ");
 }
