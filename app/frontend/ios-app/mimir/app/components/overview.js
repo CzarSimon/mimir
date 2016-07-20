@@ -2,6 +2,9 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Description from './overview/description';
+import TwitterDiagram from './overview/twitter-diagram';
+import Topics from './overview/topics';
+import { length } from '../styles/styles';
 
 export default class Overview extends Component {
   render() {
@@ -9,6 +12,8 @@ export default class Overview extends Component {
     return (
       <View style={styles.container}>
         <Description description={description} />
+        <TwitterDiagram data={twitter_data} />
+        <Topics data={twitter_data}/>
       </View>
     );
   }
@@ -17,7 +22,8 @@ export default class Overview extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+    marginLeft: length.medium
   }
 })
