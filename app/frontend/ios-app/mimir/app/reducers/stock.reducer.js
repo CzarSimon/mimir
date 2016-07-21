@@ -29,6 +29,18 @@ const stocks = (state = initial_state, action = {}) => {
         )),
         loaded: true
       };
+    case types.RECIVE_HISTORICAL_DATA:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [action.payload.ticker]: {
+            ...state.data[action.payload.ticker],
+            historical_data: action.payload.data
+          }
+        },
+        loaded: true
+      }
     default:
       return state;
   }

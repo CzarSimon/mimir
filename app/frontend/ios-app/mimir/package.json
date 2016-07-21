@@ -7,8 +7,10 @@
   },
   "dependencies": {
     "lodash": "^4.13.1",
+    "moment": "^2.14.1",
     "react": "15.2.1",
     "react-native": "0.29.1",
+    "react-native-chart": "^1.0.7-beta",
     "react-native-device-info": "^0.9.3",
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",

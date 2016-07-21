@@ -12,7 +12,6 @@ const styles = StyleSheet.create({
   separator: {
     alignSelf: 'stretch',
     backgroundColor: color.green,
-    flex: 1,
     height: 1,
     justifyContent: 'center'
   }
