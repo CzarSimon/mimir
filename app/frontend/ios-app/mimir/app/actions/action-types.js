@@ -14,6 +14,8 @@ export const FETCH_TWITTER_DATA = "FETCH_TWITTER_DATA"; //Add failure scenario
 //Stock data actions
 export const RECIVE_STOCK_DATA = "RECIVE_STOCK_DATA";
 export const FETCH_STOCK_DATA = "FETCH_STOCK_DATA"; //Add failure scenario
+export const RECIVE_UPDATED_STOCK_DATA = "RECIVE_UPDATED_STOCK_DATA";
+export const UPDATE_STOCK_DATA = "UPDATE_STOCK_DATA"; //Add failure scenario
 
 //Navigation actions
 export const SET_ACTIVE_TICKER = "SET_ACTIVE_TICKER";

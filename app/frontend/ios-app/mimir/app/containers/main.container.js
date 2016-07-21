@@ -35,11 +35,14 @@ class MimirApp extends Component {
   }
 
   componentWillMount() {
-    const { logon_user, recive_twitter_data } = this.props.actions;
+    const { logon_user, recive_twitter_data, update_stock_data } = this.props.actions;
     logon_user(this.socket);
     this.socket.on('DISPATCH TWITTER DATA', (payload) => {
       if (payload.data) { recive_twitter_data(payload.data); }
     });
+    setInterval(() => {
+      update_stock_data(this.props.state.user.tickers);
+    }, 30000);
   }
 
   componentWillReceiveProps(next_props) {

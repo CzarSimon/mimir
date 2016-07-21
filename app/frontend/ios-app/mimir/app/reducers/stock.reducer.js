@@ -1,4 +1,4 @@
-import { map } from 'lodash';
+import { map, mapValues } from 'lodash';
 import * as types from './../actions/action-types';
 
 const initial_state = {
@@ -18,21 +18,20 @@ const stocks = (state = initial_state, action = {}) => {
         },
         loaded: true
       };
+    case types.RECIVE_UPDATED_STOCK_DATA:
+      return {
+        ...state,
+        data: mapValues(state.data, (val) => (
+          {
+            ...val,
+            ...action.payload.data[val.Symbol]
+          }
+        )),
+        loaded: true
+      };
     default:
       return state;
   }
 }
 
 export default stocks;
-
-/*
-case types.UPDATE_STOCK_DATA:
-  return {
-    ...state,
-    data: map(state.data, (val, key) => ({
-      ...val,
-      ...action.payload.data[key]
-    })),
-    loaded: true
-  };
-*/

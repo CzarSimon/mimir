@@ -7,7 +7,6 @@ export const fetch_stock_data = (tickers) => {
   return (dispatch) => {
     return retrive_stock_data(tickers)
     .then(data => {
-      console.log(data);
       return dispatch(recive_stock_data(data))
     })
   };
@@ -17,13 +16,13 @@ export const recive_stock_data = createAction(types.RECIVE_STOCK_DATA, data => (
   { data }
 ))
 
-export const fetch_twitter_data = (tickers) => {
+export const update_stock_data = (tickers) => {
   return (dispatch) => {
-    return get_twitter_data(tickers)
-    .then(data => dispatch(recive_twitter_data(data)))
+    return retrive_stock_data(tickers)
+    .then(data => dispatch(recive_updated_stock_data(data)))
   }
 }
 
-export const recive_twitter_data = createAction(types.RECIVE_TWITTER_DATA, data => (
+export const recive_updated_stock_data = createAction(types.RECIVE_UPDATED_STOCK_DATA, data => (
   { data }
 ))

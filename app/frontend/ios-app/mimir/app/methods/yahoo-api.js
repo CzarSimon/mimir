@@ -19,10 +19,6 @@ export const retrive_stock_data = (tickers) => {
     return (
       fetch(api + data + format)
       .then(res => res.json())
-      .then(json => {
-        console.log(json);
-        return json;
-      })
       .then(json => zipObject(tickers, [json.query.results.quote]))
     );
   }
