@@ -28,6 +28,7 @@ export const font = {
   h2: 22,
   h3: 20,
   h4: 17,
+  h5: 15,
   text: 20,
   mediumBold: '500'
 }

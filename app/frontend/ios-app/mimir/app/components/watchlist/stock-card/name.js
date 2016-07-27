@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
-import { color, margin, font } from '../../styles/styles';
-import { format_name } from '../../methods/helper-methods';
+import { color, margin, font } from '../../../styles/styles';
+import { format_name } from '../../../methods/helper-methods';
 
 export default class Name extends Component {
   render() {

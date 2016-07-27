@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
 
-import UrgencyIndicator from '../stock-card/urgency-indicator';
+import UrgencyIndicator from '../watchlist/stock-card/urgency-indicator';
 import SearchResultContainer from '../../containers/search-result.container';
 import Separator from '../helpers/separator';
 import { round, format_name } from '../../methods/helper-methods';

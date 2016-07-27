@@ -3,6 +3,7 @@ export const RECIVE_USER = "RECIVE_USER";
 export const FETCH_USER = "FETCH_USER";
 export const ADD_TICKER = "ADD_TICKER";
 export const REMOVE_TICKER = "REMOVE_TICKER";
+export const TOGGLE_MODIFIABLE = "TOGGLE_MODIFIABLE";
 
 //Logon actions
 export const USER_LOGON = "USER_LOGON";

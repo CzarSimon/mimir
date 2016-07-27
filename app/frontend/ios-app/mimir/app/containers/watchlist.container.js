@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import io from 'socket.io-client/socket.io'; //Remove
 
-import Main from '../components/main';
+import Watchlist from '../components/watchlist';
 import Loading from '../components/loading';
 
 import * as user_actions from '../actions/user.actions';
@@ -22,7 +22,7 @@ import { array_equals } from '../methods/helper-methods';
 import { company_page_route } from '../routing/routes';
 import { SERVER_URL } from '../credentials/server-info';
 
-class MimirApp extends Component {
+class WatchlistContainer extends Component {
   constructor(props) {
     super(props);
     this.socket = socket;
@@ -63,11 +63,23 @@ class MimirApp extends Component {
     navigator.push(company_page_route(ticker));
   }
 
+  remove_ticker(ticker) {
+    console.log("will remove this ticker:", ticker);
+    this.props.actions.remove_ticker(ticker);
+  }
+
   render() {
     const { user, stocks } = this.props.state;
 
     if (user.loaded && stocks.loaded) {
-      return (<Main user={user} stocks={stocks} navigate={this.navigate_to_company.bind(this)} />);
+      return (
+        <Watchlist
+          user={user}
+          stocks={stocks}
+          remove_ticker={this.remove_ticker.bind(this)}
+          navigate={this.navigate_to_company.bind(this)}
+        />
+      );
     } else {
       return (<Loading />);
     }
@@ -91,4 +103,4 @@ export default connect(
       logon_user
     }, dispatch)
   })
-)(MimirApp);
+)(WatchlistContainer);

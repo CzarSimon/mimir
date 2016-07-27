@@ -18,3 +18,5 @@ export const add_ticker = createAction(types.ADD_TICKER, (ticker) => (
 export const remove_ticker = createAction(types.REMOVE_TICKER, (ticker) => (
   { ticker }
 ))
+
+export const toggle_modifiable = createAction(types.TOGGLE_MODIFIABLE)

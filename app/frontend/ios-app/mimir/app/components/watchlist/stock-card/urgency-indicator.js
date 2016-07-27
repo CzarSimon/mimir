@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native'
-import { color, margin } from '../../styles/styles';
-import { urgency_level } from '../../methods/server/twitter-miner';
+import { color, margin } from '../../../styles/styles';
+import { urgency_level } from '../../../methods/server/twitter-miner';
 
 export default class UrgencyIndicator extends Component {
   render() {

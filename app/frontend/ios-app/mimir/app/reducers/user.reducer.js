@@ -7,6 +7,7 @@ const initial_state = {
   name: null,
   tickers: [],
   twitter_data: twitter_data(),
+  modifiable: false,
   loaded: false
 };
 
@@ -36,6 +37,11 @@ const user = (state = initial_state, action = {}) => {
         ...state,
         twitter_data: twitter_data(state, action)
       };
+    case types.TOGGLE_MODIFIABLE:
+      return {
+        ...state,
+        modifiable: !state.modifiable
+      }
     default:
       return state;
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
-import { color, margin, font } from '../../styles/styles';
-import { round } from '../../methods/helper-methods';
+import { color, margin, font } from '../../../styles/styles';
+import { round } from '../../../methods/helper-methods';
 import { startsWith } from 'lodash';
 
 
