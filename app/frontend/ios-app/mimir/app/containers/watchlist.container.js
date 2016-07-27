@@ -40,7 +40,7 @@ class WatchlistContainer extends Component {
   }
 
   componentWillReceiveProps(next_props) {
-    const { fetch_twitter_data } = this.props.actions;
+    const { fetch_twitter_data, fetch_stock_data } = this.props.actions;
     const { user: next_user, stocks: next_stocks } = next_props.state;
     const { user } = this.props.state;
     const { socket } = this;
@@ -50,10 +50,15 @@ class WatchlistContainer extends Component {
         fetch_twitter_data(next_user, socket);
       });
     } else if (user.loaded && !array_equals(next_user.tickers, user.tickers)) {
-      persist_object("user", next_user);
+      const { id, tickers } = next_user;
+      console.log(tickers);
+      persist_object("user", { id, tickers });
+      socket.removeListener('NEW TWITTER DATA');
       socket.on('NEW TWITTER DATA', () => {
         fetch_twitter_data(next_user, socket);
       });
+      fetch_twitter_data(next_user, socket);
+      fetch_stock_data(tickers);
     }
   }
 
@@ -64,7 +69,6 @@ class WatchlistContainer extends Component {
   }
 
   remove_ticker(ticker) {
-    console.log("will remove this ticker:", ticker);
     this.props.actions.remove_ticker(ticker);
   }
 

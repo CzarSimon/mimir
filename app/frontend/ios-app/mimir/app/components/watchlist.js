@@ -28,15 +28,21 @@ export default class Watchlist extends Component {
         <ListView
           dataSource = {user_ticker_list}
           renderHeader = {() => <HeaderContainer />}
-          renderRow = {(stock_data) => (
-            <StockCard
-              {...stock_data}
-              twitter_data={twitter_data[stock_data.Symbol]}
-              navigate={navigate}
-              modifiable={user.modifiable}
-              remove_ticker={remove_ticker}
-            />
-          )}
+          renderRow = {(stock_data) => {
+            if (user.tickers.includes(stock_data.Symbol)) {
+              return (
+                <StockCard
+                  {...stock_data}
+                  twitter_data={twitter_data[stock_data.Symbol]}
+                  navigate={navigate}
+                  modifiable={user.modifiable}
+                  remove_ticker={remove_ticker}
+                  />
+              );
+            } else {
+              return (<View />);
+            }
+          }}
         />
       </View>
     )

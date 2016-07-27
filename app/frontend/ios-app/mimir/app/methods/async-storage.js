@@ -7,7 +7,6 @@ export const persist = (key, val) => {
 }
 
 export const persist_object = (key, obj) => {
-  console.log(JSON.stringify(obj));
   AsyncStorage.setItem(key, JSON.stringify(obj))
   .catch(err => console.log(err))
   .done(); //remove
@@ -38,5 +37,13 @@ export const retrive_object = (key, show = false) => {
         return JSON.parse(res);
       }
     })
+  );
+}
+
+export const remove = key => {
+  return (
+    AsyncStorage.removeItem(key)
+    .then(res => console.log("Success:", res))
+    .catch(err => console.log("Failure:", err))
   );
 }

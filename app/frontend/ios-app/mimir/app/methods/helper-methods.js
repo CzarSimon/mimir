@@ -13,7 +13,7 @@ export const round = (number, decimals = 2) => {
   return parseFloat(number).toFixed(decimals);
 }
 
-export const format_name = (name, forbidden = ['inc', 'corporation']) => {
+export const format_name = (name, forbidden = ['inc', 'corporation', 'plc']) => {
   const words = split(name, ' ');
   const lower_words = map(words, (word) => lowerCase(word));
 

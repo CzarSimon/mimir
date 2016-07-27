@@ -7,7 +7,7 @@ import { length, color, font } from '../../styles/styles';
 export default class Header extends Component {
   render() {
     const { modifiable, handle_click } = this.props,
-          button_text = (this.props.modifiable) ? "Done" : "Change";
+          button_text = (!this.props.modifiable) ? "Change" : "Done";
     return (
       <View style = {styles.container}>
         <Text style={styles.header_text}>Watchlist</Text>

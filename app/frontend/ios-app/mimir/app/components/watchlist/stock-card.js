@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
     marginHorizontal: margin.medium,
     marginBottom: margin.small,
     borderColor: color.grey.background,
-    borderWidth: 1
+    borderWidth: 1,
+    borderBottomWidth: 2
   }
 });

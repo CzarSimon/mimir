@@ -11,12 +11,21 @@ const initial_state = {
   loaded: false
 };
 
+// modifiable is chaned to true on recive user --> modifiable is stored in async-storage
+
 const user = (state = initial_state, action = {}) => {
   switch (action.type) {
     case types.RECIVE_USER:
       return {
         ...state,
-        ...action.payload
+        ...action.payload.user,
+        loaded: true
+      };
+    case types.CREATE_NEW_USER:
+      return {
+        ...state,
+        ...action.payload.user,
+        loaded: true
       };
     case types.ADD_TICKER:
       return {

@@ -9,7 +9,13 @@ export const fetch_user = () => {
   }
 }
 
-export const recive_user = createAction(types.RECIVE_USER, (user) => user)
+export const recive_user = createAction(types.RECIVE_USER, user => (
+  { user }
+))
+
+export const create_new_user = createAction(types.CREATE_NEW_USER, user => (
+  { user }
+))
 
 export const add_ticker = createAction(types.ADD_TICKER, (ticker) => (
   { ticker }
