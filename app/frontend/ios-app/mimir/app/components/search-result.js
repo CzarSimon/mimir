@@ -7,15 +7,20 @@ import { length } from '../styles/styles';
 
 export default class SearchResult extends Component {
   render() {
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    const result_list = ds.cloneWithRows(this.props.results);
+    const { results, add_ticker } = this.props,
+          ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+          result_list = ds.cloneWithRows(results);
     return (
       <View style = {styles.container}>
         <ListView
           dataSource = {result_list}
           renderHeader = {() => <Text style={styles.header}>Search results</Text>}
           renderRow = {(result) => (
-            <ResultCard name={result.name} ticker={result.ticker} />
+            <ResultCard
+              name = {result.name}
+              ticker = {result.ticker}
+              add_ticker = {add_ticker}
+            />
           )}
         />
       </View>

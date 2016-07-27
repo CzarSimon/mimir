@@ -7,6 +7,7 @@ import { color, length, font } from '../../styles/styles';
 export default class ResultCard extends Component {
   handle_click(ticker) {
     console.log('Adding ticker:', ticker);
+    this.props.add_ticker(ticker);
   }
 
   render() {
