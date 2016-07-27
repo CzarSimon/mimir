@@ -4,7 +4,10 @@ import { Platform } from 'react-native';
 import io from 'socket.io-client/socket.io';
 import { SERVER_URL } from '../../credentials/server-info';
 
-const socket = io.connect(SERVER_URL, {jsonp: false});
+const socket = io.connect(SERVER_URL, {
+  jsonp: false,
+  transports: ['websocket']
+});
 
 socket.on('get info from client', (data) => {
   if (data === 'GET INFO') {

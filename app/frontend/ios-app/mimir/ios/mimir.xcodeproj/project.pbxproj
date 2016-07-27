@@ -24,6 +24,8 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		F40F2E2F1D41241B0022BE76 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F40F2E2E1D4123E50022BE76 /* libART.a */; };
+		F4ABF71D1D49415D0059CC98 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4ABF71B1D4940420059CC98 /* Lato-Bold.ttf */; };
+		F4ABF71E1D49415D0059CC98 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4ABF71C1D4940420059CC98 /* Lato-Regular.ttf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +138,8 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		F40F2E291D4123E40022BE76 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
+		F4ABF71B1D4940420059CC98 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
+		F4ABF71C1D4940420059CC98 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -244,6 +248,7 @@
 		13B07FAE1A68108700A75B9A /* mimir */ = {
 			isa = PBXGroup;
 			children = (
+				F4ABF70F1D493FB20059CC98 /* Resources */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
@@ -324,6 +329,15 @@
 				F40F2E2E1D4123E50022BE76 /* libART.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		F4ABF70F1D493FB20059CC98 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				F4ABF71B1D4940420059CC98 /* Lato-Bold.ttf */,
+				F4ABF71C1D4940420059CC98 /* Lato-Regular.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -537,6 +551,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4ABF71D1D49415D0059CC98 /* Lato-Bold.ttf in Resources */,
+				F4ABF71E1D49415D0059CC98 /* Lato-Regular.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 			);

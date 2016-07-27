@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import io from 'socket.io-client/socket.io'; //Remove
 
 import Watchlist from '../components/watchlist';
 import Loading from '../components/loading';
