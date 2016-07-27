@@ -1,6 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, Text, StyleSheet,TouchableHighlight } from 'react-native'
+import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
+import { length } from '../../styles/styles';
 
 export default class BackButton extends Component {
   handleClick = (navigator) => {
@@ -9,13 +10,24 @@ export default class BackButton extends Component {
   render() {
     const { index, nav } = this.props;
     if (index === 0) {
-      return (<View />);
+      return (<View style={styles.container}/>);
     } else {
       return (
-        <TouchableHighlight onPress={() => this.handleClick(nav)}>
-          <Text>back</Text>
-        </TouchableHighlight>
+        <View style={styles.container}>
+          <TouchableHighlight onPress={() => this.handleClick(nav)}>
+            <Text>back</Text>
+          </TouchableHighlight>
+        </View>
       );
     }
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: length.button
+  }
+})

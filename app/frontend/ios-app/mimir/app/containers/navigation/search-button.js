@@ -1,19 +1,35 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Text, Image, TouchableHighlight, StyleSheet } from 'react-native'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-export default class SearchButton extends Component {
-  handleClick = () => {
-    console.log('searching');
-    //this.props.toggle_search_bar();
+import { toggle_search_active } from '../../actions/search.actions';
+import SearchButton from '../../components/navigation/search-button';
+
+class SearchButtonContainer extends Component {
+  toggle_search() {
+    this.props.actions.toggle_search_active();
   }
+
   render() {
-    const image = (!this.props.active) ? "search" : "close";
     return (
-      <TouchableHighlight onPress={() => this.handleClick()}>
-        <Text>{image}</Text>
-      </TouchableHighlight>
+      <SearchButton
+        active = {this.props.state.search.active}
+        action = {this.toggle_search.bind(this)}
+      />
     );
   }
 }
+export default connect(
+  (state) => ({
+    state: {
+      search: state.search
+    }
+  }),
+  (dispatch) => ({
+    actions: bindActionCreators({
+      toggle_search_active
+    }, dispatch)
+  })
+)(SearchButtonContainer);

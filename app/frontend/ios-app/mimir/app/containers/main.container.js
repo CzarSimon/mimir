@@ -1,10 +1,10 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { Platform } from 'react-native'
+import { Platform } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import io from 'socket.io-client/socket.io';
+import io from 'socket.io-client/socket.io'; //Remove
 
 import Main from '../components/main';
 import Loading from '../components/loading';
@@ -13,8 +13,9 @@ import * as user_actions from '../actions/user.actions';
 import * as stock_actions from '../actions/stock.actions';
 import * as twitter_data_actions from '../actions/twitter_data.actions';
 import { set_active_ticker } from '../actions/navigation.actions';
-
 import { logon_user } from '../actions/logon.actions';
+
+import socket from '../methods/server/socket';
 
 import { persist_object } from './../methods/async-storage';
 import { array_equals } from '../methods/helper-methods';
@@ -24,14 +25,7 @@ import { SERVER_URL } from '../credentials/server-info';
 class MimirApp extends Component {
   constructor(props) {
     super(props);
-    this.socket = io.connect(SERVER_URL, {jsonp: false});
-    this.socket.on('get info from client', (data) => {
-      if (data === 'GET INFO') {
-        this.socket.emit('send info to server', {
-          clientMachine: (Platform.OS + " running React Native")
-        });
-      }
-    })
+    this.socket = socket;
   }
 
   componentWillMount() {

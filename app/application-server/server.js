@@ -66,4 +66,15 @@ io.on('connection', (socket) => {
       });
     }
   })
+  //Have made changes here
+  socket.on("FETCH_SEARCH_RESULTS", data => {
+    const result = stock_dict['$' + data.query];
+    if (result) {
+      socket.emit('DISPATCH_SEARCH_RESULTS', {
+        results: [Object.assign({}, result, { ticker: data.query })]
+      })
+    } else {
+      socket.emit('DISPATCH_SEARCH_FAILURE', { results: null })
+    }
+  })
 });

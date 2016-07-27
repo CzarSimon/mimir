@@ -24,6 +24,7 @@ export const font = {
       bold: 'ACaslonPro-Bold'
     }
   },
+  h1: 28,
   h2: 22,
   h3: 20,
   h4: 17,
@@ -40,6 +41,7 @@ export const margin = {
 
 export const length = {
   navbar: 75,
+  button: 50,
   medium: 15,
   small: 10,
   mini: 5

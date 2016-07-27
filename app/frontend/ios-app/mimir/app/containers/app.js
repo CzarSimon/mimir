@@ -9,7 +9,8 @@ import createLogger from 'redux-logger';
 
 import * as reducers from '../reducers';
 import BackButton from './navigation/back-button';
-import SearchButton from './navigation/search-button';
+import SearchButtonContainer from './navigation/search-button';
+import TitleContainer from './navigation/title';
 import render_scene from '../routing/render-scene';
 import { MAIN_ROUTE } from '../routing/routes';
 
@@ -26,14 +27,14 @@ export default class App extends Component {
           initialRoute = {MAIN_ROUTE}
           style = {styles.container}
           renderScene = {render_scene}
-          navigationBar={
+          navigationBar = {
             <Navigator.NavigationBar
               routeMapper={{
                 LeftButton: (route, navigator, index, navState) => (<BackButton index={index} nav={navigator}/>),
-                RightButton: () => (<SearchButton active={false} />),
-                Title: (route, navigator, index, navState) => (<Text>{route.title}</Text>)
+                RightButton: () => (<SearchButtonContainer />),
+                Title: (route) => (<TitleContainer title={route.title} />)
               }}
-              style={{backgroundColor: 'gray'}}
+              style={{borderBottomWidth: 1, borderColor: 'lightgrey'}}
             />
           }
         />

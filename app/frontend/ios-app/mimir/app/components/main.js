@@ -2,10 +2,11 @@
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView } from 'react-native';
-import { margin } from '../styles/styles';
+import { length } from '../styles/styles';
 import { values } from 'lodash';
 
 import StockCard from './stock-card';
+import SearchResultContainer from '../containers/search-result.container';
 
 //Should probably be named StockList
 export default class Main extends Component {
@@ -21,6 +22,9 @@ export default class Main extends Component {
 
     return (
       <View style = {styles.container}>
+        <View style={styles.search_result}>
+          <SearchResultContainer />
+        </View>
         <ListView
           dataSource = {user_ticker_list}
           renderHeader = {() => <Text style={styles.header}>Watchlist</Text>}
@@ -38,11 +42,14 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'center',
-    marginTop: margin.navbar
+    marginTop: length.navbar
   },
   header: {
     alignSelf: 'flex-start',
     fontSize: 20,
     paddingLeft: 10
+  },
+  search_result: {
+    marginLeft: length.medium
   }
 });
