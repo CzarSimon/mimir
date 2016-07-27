@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import { round, format_name } from '../../methods/helper-methods';
-import { length } from '../../styles/styles';
+import { length, font, color } from '../../styles/styles';
 
 export default class Description extends Component {
   render() {
@@ -15,7 +15,7 @@ export default class Description extends Component {
           ) : (
             <TouchableHighlight
               onPress={() => {console.log("Adding a description")}}>
-              <Text>Add a description</Text>
+              <Text style={styles.button_text}>Add a description</Text>
             </TouchableHighlight>
           )
         }
@@ -30,6 +30,17 @@ const styles = StyleSheet.create({
     marginRight: length.medium
   },
   text: {
-    textAlign: 'justify'
+    textAlign: 'justify',
+    fontFamily: font.type.sans.normal,
+    fontSize: font.text
+  },
+  button_text: {
+    alignSelf: 'center',
+    fontFamily: font.type.sans.bold,
+    fontSize: font.text,
+    color: color.yellow,
+    borderColor: color.yellow,
+    borderWidth: 2,
+    padding: length.mini
   }
 })

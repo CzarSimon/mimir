@@ -15,8 +15,8 @@ export default class ResultCard extends Component {
     return (
       <View style = {styles.container}>
         <View style = {styles.name_info}>
-          <Text>{name}</Text>
-          <Text>{ticker}</Text>
+          <Text style={styles.text}>{name}</Text>
+          <Text style={styles.text}>{ticker}</Text>
         </View>
         <TouchableHighlight
           onPress = { () => this.handle_click(ticker)}>
@@ -42,10 +42,14 @@ const styles = StyleSheet.create({
     flex: 3,
     alignSelf: 'stretch'
   },
+  text: {
+    fontSize: font.text,
+    fontFamily: font.type.sans.normal,
+  },
   button_text: {
     color: color.green,
     fontSize: font.h1,
-    fontFamily: font.type.dev,
+    fontFamily: font.type.sans.normal,
     paddingHorizontal: length.medium
   }
 })

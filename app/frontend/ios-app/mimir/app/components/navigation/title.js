@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   title: {
     color: color.green,
-    fontFamily: font.type.dev,
+    fontFamily: font.type.sans.normal,
     fontSize: font.h4
   }
 })

@@ -1,6 +1,6 @@
 'use strict';
 import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Description from './overview/description';
 import TwitterDiagram from './overview/twitter-diagram';
 import Topics from './overview/topics';

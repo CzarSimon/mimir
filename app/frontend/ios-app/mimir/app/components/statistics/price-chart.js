@@ -1,7 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { color, length } from '../../styles/styles';
+import { color, length, font } from '../../styles/styles';
 import Chart from 'react-native-chart';
 import { map, reverse } from 'lodash';
 

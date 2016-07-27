@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
   button_text: {
     fontSize: font.h4,
     fontWeight: 'bold',
-    fontFamily: font.type.dev,
+    fontFamily: font.type.sans.normal,
     color: color.red,
     padding: length.mini
   }

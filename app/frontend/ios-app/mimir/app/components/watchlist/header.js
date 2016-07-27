@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   },
   header_text: {
     fontSize: font.h3,
-    fontFamily: font.type.dev,
+    fontFamily: font.type.sans.normal,
     color: color.grey.dark
   },
   button: {
@@ -47,8 +47,8 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     fontWeight: 'bold',
-    fontSize: font.h5,
-    fontFamily: font.type.dev,
+    fontSize: font.text,
+    fontFamily: font.type.sans.normal,
     color: color.grey.dark,
     padding: length.mini
   }

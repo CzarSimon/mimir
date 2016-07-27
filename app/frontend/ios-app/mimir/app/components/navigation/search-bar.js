@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { View, Text, TextInput, StyleSheet } from 'react-native';
 import { trim } from 'lodash';
-import { length, color } from '../../styles/styles';
+import { length, color, font } from '../../styles/styles';
 
 export default class SearchBar extends Component {
   constructor(props) {
@@ -54,6 +54,8 @@ const styles = StyleSheet.create({
     margin: length.mini + 3,
     borderRadius: 3,
     backgroundColor: color.grey.background,
-    color: color.green
+    color: color.green,
+    fontFamily: font.type.sans.normal,
+    fontSize: font.text
   }
 })

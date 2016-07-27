@@ -18,8 +18,8 @@ export default class BasicInfo extends Component {
           <View style={styles.info}>
             <Text style={styles.name}>{format_name(Name)}</Text>
             <View style={styles.price}>
-              <Text>{round(LastTradePriceOnly)} {Currency}</Text>
-              <Text>  {PercentChange}</Text>
+              <Text style={styles.price_text}>{round(LastTradePriceOnly)} {Currency}</Text>
+              <Text style={styles.price_text}>  {PercentChange}</Text>
             </View>
           </View>
         </View>
@@ -43,9 +43,14 @@ const styles = StyleSheet.create({
     paddingLeft: length.small
   },
   name: {
-    fontWeight: 'bold'
+    fontFamily: font.type.sans.bold,
+    fontSize: font.h5
   },
   price: {
     flexDirection: 'row'
+  },
+  price_text: {
+    fontFamily: font.type.sans.normal,
+    fontSize: font.text
   }
 });

@@ -23,12 +23,13 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: font.h3,
-    color: color.black
+    color: color.black,
+    fontFamily: font.type.sans.normal
   },
   ticker: {
     color: color.grey.dark,
     paddingTop: margin.mini,
-    fontSize: font.h5,
-    fontFamily: font.dev
+    fontSize: font.text,
+    fontFamily: font.type.sans.normal
   }
 });

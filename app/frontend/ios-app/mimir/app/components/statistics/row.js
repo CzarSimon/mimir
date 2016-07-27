@@ -1,14 +1,14 @@
 'use strict';
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { color, length } from '../../styles/styles';
+import { color, length, font } from '../../styles/styles';
 
 export default class Row extends Component {
   render() {
     const { name, value } = this.props;
     return (
       <View style={styles.container}>
-        <Text>{name}</Text>
+        <Text style={styles.name}>{name}</Text>
         <Text style={styles.value}>{value}</Text>
       </View>
     );
@@ -26,6 +26,11 @@ const styles = StyleSheet.create({
     borderBottomColor: color.grey.background
   },
   value: {
-    fontWeight: 'bold'
+    fontFamily: font.type.sans.bold,
+    fontSize: font.text
+  },
+  name: {
+    fontFamily: font.type.sans.normal,
+    fontSize: font.text
   }
 })

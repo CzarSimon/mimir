@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView } from 'react-native'
 import ResultCard from './search-result/result-card';
-import { length } from '../styles/styles';
+import { length, font } from '../styles/styles';
 
 export default class SearchResult extends Component {
   render() {
@@ -36,6 +36,8 @@ const styles = StyleSheet.create({
   },
   header: {
     marginLeft: length.small,
-    marginBottom: length.mini
+    marginBottom: length.mini,
+    fontSize: font.h5,
+    fontFamily: font.type.sans.normal
   }
 })

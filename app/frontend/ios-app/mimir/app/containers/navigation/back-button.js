@@ -1,7 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
-import { length } from '../../styles/styles';
+import { length, font, color } from '../../styles/styles';
 
 export default class BackButton extends Component {
   handleClick = (navigator) => {
@@ -15,7 +15,7 @@ export default class BackButton extends Component {
       return (
         <View style={styles.container}>
           <TouchableHighlight onPress={() => this.handleClick(nav)}>
-            <Text>back</Text>
+            <Text style={styles.button_text}>Back</Text>
           </TouchableHighlight>
         </View>
       );
@@ -29,5 +29,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: length.button
+  },
+  button_text: {
+    fontFamily: font.type.sans.normal,
+    fontSize: font.text,
+    color: color.green
   }
 })

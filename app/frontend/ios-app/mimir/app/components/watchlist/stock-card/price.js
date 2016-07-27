@@ -7,10 +7,18 @@ import { startsWith } from 'lodash';
 
 export default class Price extends Component {
   format_change = () => {
-    const is_up = startsWith(this.props.change, '+');
-    return {
-      change: ((is_up) ? "+" : "") + round(this.props.change).toString() + "%",
-      change_style: (is_up) ? styles.price_up : styles.price_down
+    const { change } = this.props;
+    if (change) {
+      const is_up = startsWith(change, '+');
+      return {
+        change: ((is_up) ? "+" : "") + round(change).toString() + "%",
+        change_style: (is_up) ? styles.price_up : styles.price_down
+      }
+    } else {
+      return {
+        change: "-",
+        change_style: styles.change_null
+      }
     }
   }
 
@@ -34,16 +42,23 @@ const styles = StyleSheet.create({
   },
   price_up :{
     fontSize: font.h3,
-    color: color.green
+    color: color.green,
+    fontFamily: font.type.sans.normal
   },
   price_down :{
     fontSize: font.h3,
-    color: color.red
+    color: color.red,
+    fontFamily: font.type.sans.normal
+  },
+  change_null: {
+    fontSize: font.h3,
+    color: color.grey.dark,
+    fontFamily: font.type.sans.bold
   },
   price: {
     color: color.grey.dark,
     paddingTop: margin.mini,
     fontSize: font.h5,
-    fontFamily: font.dev
+    fontFamily: font.type.sans.normal
   }
 });
