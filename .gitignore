@@ -7,4 +7,7 @@ backend/urgencyModule/credentials.py
 .idea/
 app/application-server/node_modules
 app/application-server/credentials.js
-
+app/application-server/config.js
+app/application-server/Dockerfile
+app/application-server/npm-debug.log
+app/rethinkdb_data

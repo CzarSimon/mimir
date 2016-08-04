@@ -30,7 +30,7 @@ class WatchlistContainer extends Component {
   componentWillMount() {
     const { logon_user, recive_twitter_data, update_stock_data } = this.props.actions;
     logon_user(this.socket);
-    this.socket.on('DISPATCH TWITTER DATA', (payload) => {
+    this.socket.on("DISPATCH_TWITTER_DATA", (payload) => {
       if (payload.data) { recive_twitter_data(payload.data); }
     });
     setInterval(() => {
@@ -45,15 +45,15 @@ class WatchlistContainer extends Component {
     const { socket } = this;
 
     if (!user.loaded && next_user.tickers.length) {
-      socket.on('NEW TWITTER DATA', () => {
+      socket.on("NEW_TWITTER_DATA", () => {
         fetch_twitter_data(next_user, socket);
       });
     } else if (user.loaded && !array_equals(next_user.tickers, user.tickers)) {
       const { id, tickers } = next_user;
       console.log(tickers);
       persist_object("user", { id, tickers });
-      socket.removeListener('NEW TWITTER DATA');
-      socket.on('NEW TWITTER DATA', () => {
+      socket.removeListener("NEW_TWITTER_DATA");
+      socket.on("NEW_TWITTER_DATA", () => {
         fetch_twitter_data(next_user, socket);
       });
       fetch_twitter_data(next_user, socket);

@@ -4,21 +4,22 @@ var TestConnection = function() {
   return "connected";
 }
 
-socket.on('get info from client', function(data) {
-  console.log('reciveing info request');
+socket.on("GET_CLIENT_INFO", function(data) {
   if (data === 'GET INFO') {
-    socket.emit('send info to server', {
-      clientMachine: navigator.appVersion
+    socket.emit("DISPATCH_CLIENT_INFO", {
+      client_machine: navigator.appVersion
     });
   }
 })
 
-socket.on('update stocklist', function(data) {
+socket.on("UPDATE_STOCKLIST", function(data) {
+  console.log(data);
   makeList(data.list);
   postDate(data.date);
 });
 
 var listItem = function(item) {
+  if (!item.name) return "";
   var level = urgencyLevel(item.volume, item.mean, item.stdev, item.minute);
   itemId = (item.name).replace(/\s/g, '');
   var hidden_content = "<p>Volume: " + item.volume + "</p><p>Mean: " + item.mean + "</p><p>Stdev: " + item.stdev + "</p>"

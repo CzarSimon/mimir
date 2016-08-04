@@ -30,7 +30,6 @@ export default class SearchBar extends Component {
           style={styles.search_box}
           onChangeText={(text) => this.handle_new_text(text)}
           value={"   " + this.state.text}
-          autoCapitalize='characters'
           selectionColor={color.green}
           clearButtonMode='always'
           returnKeyType='search'

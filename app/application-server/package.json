@@ -1,10 +1,11 @@
 {
   "name": "simple-express-server",
   "version": "1.0.0",
-  "description": "Simple express server to be run on ubuntu 16.04 droplet",
+  "description": "Application server for mimir iOS-app and temporary frontend",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "Simon Lingren",
   "license": "ISC",
@@ -12,6 +13,7 @@
     "body-parser": "^1.15.1",
     "express": "^4.13.4",
     "lodash": "^4.13.1",
+    "rethinkdb": "^2.3.2",
     "socket.io": "^1.4.6"
   },
   "devDependencies": {
