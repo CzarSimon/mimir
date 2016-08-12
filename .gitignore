@@ -11,3 +11,12 @@ app/application-server/config.js
 app/application-server/Dockerfile
 app/application-server/npm-debug.log
 app/rethinkdb_data
+.gitignore
+Dockerfile
+article_ranker/test_news_corpus.py
+article_ranker/test_stopwords.py
+config.js
+node_modules/
+package.json
+server.js
+server/
