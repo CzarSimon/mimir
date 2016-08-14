@@ -6,7 +6,7 @@ import { color } from '../styles/styles';
 export default class Loading extends Component {
   render = () => (
     <View style={styles.container}>
-      <ActivityIndicator size="large" color={color.green}/>
+      <ActivityIndicator size="large" color={color.blue}/>
     </View>
   )
 }

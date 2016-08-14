@@ -33,6 +33,6 @@ const styles = StyleSheet.create({
   button_text: {
     fontFamily: font.type.sans.normal,
     fontSize: font.text,
-    color: color.green
+    color: color.blue
   }
 })

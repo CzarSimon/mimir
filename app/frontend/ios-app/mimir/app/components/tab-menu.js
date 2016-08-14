@@ -24,7 +24,7 @@ export default class TabMenu extends Component {
     return (
       <TabBarIOS
         style={styles.tab_bar}
-        tintColor={color.green}>
+        tintColor={color.blue}>
         {
           map(tabs, (component, name) => (
             <TabBarIOS.Item

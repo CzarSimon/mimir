@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   title: {
-    color: color.green,
+    color: color.blue,
     fontFamily: font.type.sans.normal,
     fontSize: font.h4
   }

@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
   search_text: {
     fontFamily: font.type.sans.normal,
     fontSize: font.text,
-    color: color.green
+    color: color.blue
   },
   close_text: {
     fontFamily: font.type.sans.normal,

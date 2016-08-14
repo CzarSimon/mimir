@@ -30,7 +30,7 @@ export default class SearchBar extends Component {
           style={styles.search_box}
           onChangeText={(text) => this.handle_new_text(text)}
           value={"   " + this.state.text}
-          selectionColor={color.green}
+          selectionColor={color.blue}
           clearButtonMode='always'
           returnKeyType='search'
           autoCorrect={false}
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
     margin: length.mini + 3,
     borderRadius: 3,
     backgroundColor: color.grey.background,
-    color: color.green,
+    color: color.blue,
     fontFamily: font.type.sans.normal,
     fontSize: font.text
   }

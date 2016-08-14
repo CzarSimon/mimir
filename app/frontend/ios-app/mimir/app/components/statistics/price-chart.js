@@ -19,7 +19,7 @@ export default class PriceChart extends Component {
           showXAxisLabels={false}
           tightBounds={true}
           showGrid={false}
-          color={color.green}
+          color={color.blue}
           axisColor={color.black}
           axisLabelColor={color.black}
         />

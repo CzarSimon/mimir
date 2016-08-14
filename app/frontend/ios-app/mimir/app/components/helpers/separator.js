@@ -11,7 +11,7 @@ export default class Separator extends Component {
 const styles = StyleSheet.create({
   separator: {
     alignSelf: 'stretch',
-    backgroundColor: color.green,
+    backgroundColor: color.blue,
     height: 1,
     justifyContent: 'center'
   }

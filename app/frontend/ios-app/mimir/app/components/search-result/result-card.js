@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     fontFamily: font.type.sans.normal,
   },
   button_text: {
-    color: color.green,
+    color: color.blue,
     fontSize: font.h1,
     fontFamily: font.type.sans.normal,
     paddingHorizontal: length.medium
