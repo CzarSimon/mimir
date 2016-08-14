@@ -9,6 +9,7 @@ const config = require('./config')
     , sockets = require('./server/sockets')
     , events = require('./server/events')
     , database = require('./server/database')
+    , routes = require('./server/routes')
     , get_date = require('./server/helperMethods').getDate;
 
 const express = require('express')
@@ -33,6 +34,8 @@ app.get('/stockList', (req, res) => {
     }
   });
 });
+
+app.get('/news/:ticker', (req, res) => { routes.get_news(req, res) });
 
 app.post('/stockList', (req, res) => {
   const dict = req.body;
