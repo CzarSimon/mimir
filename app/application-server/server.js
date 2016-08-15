@@ -64,6 +64,7 @@ r.connect(config.rethinkdb, (err, conn) => {
     sockets.client_info(socket);
     sockets.stock_data(socket, conn);
     sockets.search_stocks(socket, conn);
+    sockets.news_data(socket);
   });
   start_express(conn);
 });

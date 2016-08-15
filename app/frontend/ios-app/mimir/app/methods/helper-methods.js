@@ -1,4 +1,4 @@
-import { split, map, lowerCase, join, slice, findIndex, find, replace } from 'lodash';
+import { split, map, lowerCase, join, slice, findIndex, find, replace, keys, orderBy, invert } from 'lodash';
 
 export const array_equals = (a1, a2) => {
   let i = a1.length;
@@ -23,6 +23,11 @@ export const format_name = (name, forbidden = ['inc', 'corporation', 'plc']) => 
     }
   }
   return name;
+}
+
+export const create_subject_string = (score_object) => {
+  const i_obj = invert(score_object);
+  return join(map(orderBy(keys(i_obj),'desc'), val => i_obj[val]), ', ');
 }
 
 export const arr_get_value_by_key = (arr = [], val, key = 'Symbol') => {

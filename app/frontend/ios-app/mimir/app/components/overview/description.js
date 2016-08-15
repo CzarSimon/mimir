@@ -30,7 +30,6 @@ const styles = StyleSheet.create({
     marginRight: length.medium
   },
   text: {
-    textAlign: 'justify',
     fontFamily: font.type.sans.normal,
     fontSize: font.text
   },

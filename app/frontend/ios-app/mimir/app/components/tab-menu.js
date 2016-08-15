@@ -4,6 +4,7 @@ import { View, Text, StyleSheet, TabBarIOS } from 'react-native';
 import { map, capitalize } from 'lodash';
 import { color } from '../styles/styles';
 import OverviewContainer from '../containers/overview.container';
+import NewsContainer from '../containers/news.container';
 import StatisticsContainer from '../containers/statistics.container';
 
 export default class TabMenu extends Component {
@@ -17,8 +18,7 @@ export default class TabMenu extends Component {
     const { company, twitter_data, selected_tab, handle_click } = this.props;
     const tabs = {
       overview: <OverviewContainer company={company} twitter_data={twitter_data}/>,
-      news: <View style={styles.container}><Text>News component not started yet...</Text></View>,
-      tweets: <View style={styles.container}><Text>Tweet component not started yet...</Text></View>,
+      news: <NewsContainer company={company} />,
       statistics: <StatisticsContainer company={company}/>
     }
     return (

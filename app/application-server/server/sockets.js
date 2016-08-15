@@ -7,9 +7,28 @@
 
 const events = require('./events')
     , database = require('./database')
-    , helper_methods = require('./helperMethods');
+    , helper_methods = require('./helperMethods')
+    , config = require('../config')
+    , request = require('request')
+    , _ = require('lodash');
+
+
+const news_data = (socket) => {
+  socket.on(events.FETCH_NEWS_ITEMS, payload => {
+    const ticker = _.upperCase(payload.ticker)
+        , { address, port } = config.news_server
+        , fetch_address = `${address}:${port}/news/${ticker}/5`;
+    request(fetch_address, (error, response, body) => {
+      if (!error && response.statusCode === 200) {
+        socket.emit(events.DISPATCH_NEWS_ITEMS, { data: body });
+      }
+    });
+  });
+}
 
 module.exports = {
+
+  news_data,
 
   client_info: (socket) => {
     socket.emit(events.GET_CLIENT_INFO, "GET INFO");
