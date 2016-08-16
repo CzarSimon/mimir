@@ -6,7 +6,7 @@ import Name from './stock-card/name';
 import Price from './stock-card/price';
 import Remove from './stock-card/remove';
 import { round, format_name } from '../../methods/helper-methods';
-import { color, margin, font } from '../../styles/styles';
+import { color, font, length } from '../../styles/styles';
 
 export default class StockCard extends Component {
   handle_click = (ticker) => {
@@ -17,7 +17,8 @@ export default class StockCard extends Component {
     const { Name: StockName, Symbol, PercentChange, LastTradePriceOnly, Currency, twitter_data, modifiable, remove_ticker } = this.props;
     return (
       <TouchableHighlight
-        onPress = { () => this.handle_click(Symbol)}>
+        onPress = { () => this.handle_click(Symbol)}
+        underlayColor = {color.grey.background}>
         <View style={styles.card}>
           <UrgencyIndicator {...twitter_data} />
           <Name name={StockName} ticker={Symbol} />
@@ -34,9 +35,10 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignSelf: 'stretch',
-    paddingVertical: margin.small,
-    marginHorizontal: margin.medium,
-    marginBottom: margin.small,
+    paddingVertical: length.small,
+    paddingHorizontal: length.medium,
+    marginHorizontal: length.medium,
+    marginBottom: length.small,
     borderColor: color.grey.background,
     borderWidth: 1,
     borderBottomWidth: 2

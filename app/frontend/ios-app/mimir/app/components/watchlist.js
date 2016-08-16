@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView } from 'react-native';
-import { length } from '../styles/styles';
+import { length, font } from '../styles/styles';
 import { values } from 'lodash';
 
 import HeaderContainer from '../containers/watchlist/header.container';
@@ -58,8 +58,8 @@ const styles = StyleSheet.create({
   },
   header: {
     alignSelf: 'flex-start',
-    fontSize: 20,
-    paddingLeft: 10
+    fontSize: font.h3,
+    paddingLeft: length.small,
   },
   search_result: {
     marginLeft: length.medium

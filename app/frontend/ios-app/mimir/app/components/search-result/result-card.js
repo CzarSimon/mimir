@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
 import { color, length, font } from '../../styles/styles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class ResultCard extends Component {
   handle_click(ticker) {
@@ -20,7 +21,9 @@ export default class ResultCard extends Component {
         </View>
         <TouchableHighlight
           onPress = { () => this.handle_click(ticker)}>
-            <Text style={styles.button_text}>+</Text>
+            <View style={styles.button}>
+              <Icon name='ios-add-circle-outline' size={length.icons.medium} color={color.green} />
+            </View>
         </TouchableHighlight>
       </View>
     );
@@ -46,10 +49,9 @@ const styles = StyleSheet.create({
     fontSize: font.text,
     fontFamily: font.type.sans.normal,
   },
-  button_text: {
-    color: color.blue,
-    fontSize: font.h1,
-    fontFamily: font.type.sans.normal,
-    paddingHorizontal: length.medium
+  button: {
+    justifyContent: 'center',
+    paddingTop: length.mini,
+    paddingHorizontal: length.mini
   }
 })

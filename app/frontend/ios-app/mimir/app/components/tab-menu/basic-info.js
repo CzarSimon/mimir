@@ -15,7 +15,7 @@ export default class BasicInfo extends Component {
         <SearchResultContainer />
         <View style={styles.card}>
           <UrgencyIndicator {...this.props.twitter_data} />
-          <View style={styles.info}>
+          <View>
             <Text style={styles.name}>{format_name(Name)}</Text>
             <View style={styles.price}>
               <Text style={styles.price_text}>{round(LastTradePriceOnly)} {Currency}</Text>
@@ -37,10 +37,7 @@ const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
     alignSelf: 'stretch',
-    paddingBottom: length.small
-  },
-  info: {
-    paddingLeft: length.small
+    paddingVertical: length.small,
   },
   name: {
     fontFamily: font.type.sans.bold,

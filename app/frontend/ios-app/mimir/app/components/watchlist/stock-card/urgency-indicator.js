@@ -1,16 +1,25 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native'
-import { color, margin } from '../../../styles/styles';
+import { color, length } from '../../../styles/styles';
 import { urgency_level } from '../../../methods/server/twitter-miner';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class UrgencyIndicator extends Component {
   render() {
     const { volume, mean, stdev, minute } = this.props;
     switch (urgency_level(volume, mean, stdev, minute)) {
       case 'high':
-        return (<View style={styles.urgent} />);
+        return (
+          <View style={styles.alert}>
+            <Icon name='ios-alert-outline' size={length.icons.medium} color={color.yellow} />
+          </View>
+        );
       case 'urgent':
-        return (<View style={styles.very_urgent} />);
+        return (
+          <View style={styles.alert}>
+            <Icon name='ios-alert-outline' size={length.icons.medium} color={color.red} />
+          </View>
+        );
       default:
         return (<View />);
     }
@@ -18,12 +27,8 @@ export default class UrgencyIndicator extends Component {
 }
 
 const styles = StyleSheet.create({
-  very_urgent: {
-    backgroundColor: color.red,
-    width: margin.medium
-  },
-  urgent: {
-    backgroundColor: color.yellow,
-    width: margin.medium
+  alert: {
+    paddingRight: length.small,
+    justifyContent: 'center'
   }
 });

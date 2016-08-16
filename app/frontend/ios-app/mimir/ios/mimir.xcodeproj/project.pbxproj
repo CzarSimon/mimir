@@ -24,6 +24,8 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		F40F2E2F1D41241B0022BE76 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F40F2E2E1D4123E50022BE76 /* libART.a */; };
+		F45FA4471D63653000F6B3ED /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F45FA4461D63653000F6B3ED /* Ionicons.ttf */; };
+		F45FA4591D63D1D100F6B3ED /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45FA4581D63D17700F6B3ED /* libRNVectorIcons.a */; };
 		F4ABF71D1D49415D0059CC98 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4ABF71B1D4940420059CC98 /* Lato-Bold.ttf */; };
 		F4ABF71E1D49415D0059CC98 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4ABF71C1D4940420059CC98 /* Lato-Regular.ttf */; };
 /* End PBXBuildFile section */
@@ -113,6 +115,13 @@
 			remoteGlobalIDString = 0CF68AC11AF0540F00FF9E5C;
 			remoteInfo = ART;
 		};
+		F45FA4571D63D17700F6B3ED /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F45FA4531D63D17600F6B3ED /* RNVectorIcons.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
+			remoteInfo = RNVectorIcons;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -138,6 +147,8 @@
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		F40F2E291D4123E40022BE76 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
+		F45FA4461D63653000F6B3ED /* Ionicons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Ionicons.ttf; sourceTree = "<group>"; };
+		F45FA4531D63D17600F6B3ED /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		F4ABF71B1D4940420059CC98 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
 		F4ABF71C1D4940420059CC98 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -155,6 +166,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F45FA4591D63D1D100F6B3ED /* libRNVectorIcons.a in Frameworks */,
 				F40F2E2F1D41241B0022BE76 /* libART.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
 				00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */,
@@ -279,6 +291,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				F45FA4531D63D17600F6B3ED /* RNVectorIcons.xcodeproj */,
 				F40F2E291D4123E40022BE76 /* ART.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
 				00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */,
@@ -331,9 +344,18 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		F45FA4541D63D17600F6B3ED /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F45FA4581D63D17700F6B3ED /* libRNVectorIcons.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		F4ABF70F1D493FB20059CC98 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				F45FA4461D63653000F6B3ED /* Ionicons.ttf */,
 				F4ABF71B1D4940420059CC98 /* Lato-Bold.ttf */,
 				F4ABF71C1D4940420059CC98 /* Lato-Regular.ttf */,
 			);
@@ -453,6 +475,10 @@
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
+				{
+					ProductGroup = F45FA4541D63D17600F6B3ED /* Products */;
+					ProjectRef = F45FA4531D63D17600F6B3ED /* RNVectorIcons.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -540,6 +566,13 @@
 			remoteRef = F40F2E2D1D4123E50022BE76 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		F45FA4581D63D17700F6B3ED /* libRNVectorIcons.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNVectorIcons.a;
+			remoteRef = F45FA4571D63D17700F6B3ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 /* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
@@ -554,6 +587,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F45FA4471D63653000F6B3ED /* Ionicons.ttf in Resources */,
 				F4ABF71D1D49415D0059CC98 /* Lato-Bold.ttf in Resources */,
 				F4ABF71E1D49415D0059CC98 /* Lato-Regular.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,

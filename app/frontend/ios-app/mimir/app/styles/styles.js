@@ -42,9 +42,14 @@ export const margin = {
 }
 
 export const length = {
-  navbar: 75,
+  navbar: 65,
   button: 50,
   medium: 15,
   small: 10,
-  mini: 5
+  mini: 5,
+  icons: {
+    large: 40,
+    medium: 30,
+    small: 20
+  }
 }

@@ -4,14 +4,22 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import { color, font, length } from '../../styles/styles';
 import { create_subject_string } from '../../methods/helper-methods';
+const _ = require('lodash');
 
 export default class NewsCard extends Component {
+  handle_click = (title) => {
+    const { url } = this.props.article_info;
+    console.log(`Going to URL: ${url}`);
+  }
   render() {
     const { title, compound_score, timestamp, twitter_references } = this.props.article_info;
+    const clean_title = _clean_title(title);
     return (
-      <TouchableHighlight>
+      <TouchableHighlight
+        onPress = {() => this.handle_click(clean_title)}
+        underlayColor = {color.grey.background}>
         <View style={styles.card}>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>{clean_title}</Text>
           <Text style={styles.subject_line}>Subjects: {create_subject_string(compound_score)}</Text>
           <View style={styles.last_row}>
             <Text style={styles.text}>Tweet References: {twitter_references.length}</Text>
@@ -21,6 +29,13 @@ export default class NewsCard extends Component {
       </TouchableHighlight>
     );
   }
+}
+
+const _clean_title = (title) => {
+  const forbidden = ['TickerLens'];
+  const split_title = _.split(_.trim(title), '-');
+  const formated_title = (split_title.length < 2) ? split_title : _.join(_.initial(split_title), '-');
+  return _.reduce(forbidden, (prev, forb) => _.replace(prev, forb, ""), formated_title);
 }
 
 const styles = StyleSheet.create({

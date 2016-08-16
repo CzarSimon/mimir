@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
 import { color, length, font } from '../../../styles/styles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class Remove extends Component {
   render() {
@@ -11,9 +12,10 @@ export default class Remove extends Component {
       return (
         <View style={styles.container}>
           <TouchableHighlight
-            onPress = {() => { remove_ticker(ticker) }}>
+            onPress = {() => { remove_ticker(ticker) }}
+            underlayColor={color.green}>
             <View style={styles.button}>
-              <Text style={styles.button_text}>-</Text>
+              <Icon name='ios-remove-circle-outline' size={length.icons.medium} color={color.red} />
             </View>
           </TouchableHighlight>
         </View>
@@ -26,22 +28,10 @@ export default class Remove extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   button: {
-    opacity: 0.5,
-    borderWidth: 2,
-    borderRadius: 50,
-    borderColor: color.red,
-    width: 35,
-    marginHorizontal: length.small,
+    paddingLeft: length.small,
     alignItems: 'center'
-  },
-  button_text: {
-    fontSize: font.h4,
-    fontWeight: 'bold',
-    fontFamily: font.type.sans.normal,
-    color: color.red,
-    padding: length.mini
   }
 });

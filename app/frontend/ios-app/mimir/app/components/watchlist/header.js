@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     marginHorizontal: length.medium,
     paddingHorizontal: length.small,
-    marginBottom: length.small,
+    marginVertical: length.small,
   },
   header_text: {
     fontSize: font.h3,

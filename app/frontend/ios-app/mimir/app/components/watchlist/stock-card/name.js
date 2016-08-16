@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
-import { color, margin, font } from '../../../styles/styles';
+import { color, font, length } from '../../../styles/styles';
 import { format_name } from '../../../methods/helper-methods';
 
 export default class Name extends Component {
@@ -19,7 +19,6 @@ const styles = StyleSheet.create({
   name_info: {
     flex: 2,
     alignSelf: 'flex-start',
-    paddingLeft: margin.small,
   },
   name: {
     fontSize: font.h3,
@@ -28,7 +27,7 @@ const styles = StyleSheet.create({
   },
   ticker: {
     color: color.grey.dark,
-    paddingTop: margin.mini,
+    paddingTop: length.mini,
     fontSize: font.text,
     fontFamily: font.type.sans.normal
   }

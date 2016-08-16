@@ -3,17 +3,18 @@
 import React, { Component } from 'react';
 import { View, Text, Image, TouchableHighlight, StyleSheet } from 'react-native'
 import { length, font, color } from '../../styles/styles';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class SearchButton extends Component {
   render() {
     const image = (!this.props.active)
-    ? {text: "Search", style: styles.search_text}
-    : {text: "Close", style: styles.close_text};
+    ? <Icon name='ios-search-outline' size={length.icons.medium} color={color.blue} />
+    : <Icon name='ios-close-outline' size={length.icons.large} color={color.yellow} />;
 
     return (
       <View style={styles.container}>
         <TouchableHighlight onPress={() => this.props.action()}>
-          <Text style={image.style}>{image.text}</Text>
+          <View style={styles.button}>{image}</View>
         </TouchableHighlight>
       </View>
     );
@@ -27,14 +28,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: length.button
   },
-  search_text: {
-    fontFamily: font.type.sans.normal,
-    fontSize: font.text,
-    color: color.blue
-  },
-  close_text: {
-    fontFamily: font.type.sans.normal,
-    fontSize: font.text,
-    color: color.yellow
+  button: {
+    paddingRight: length.mini
   }
 })

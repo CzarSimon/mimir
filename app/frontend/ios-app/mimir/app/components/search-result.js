@@ -32,11 +32,10 @@ const styles = StyleSheet.create({
   container: {
     alignSelf: 'stretch',
     alignItems: 'stretch',
-    marginBottom: length.medium
+    marginBottom: length.mini
   },
   header: {
-    marginLeft: length.small,
-    marginBottom: length.mini,
+    margin: length.small,
     fontSize: font.h5,
     fontFamily: font.type.sans.normal
   }

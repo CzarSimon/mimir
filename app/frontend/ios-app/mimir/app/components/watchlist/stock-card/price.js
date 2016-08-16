@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
-import { color, margin, font } from '../../../styles/styles';
+import { color, length, font } from '../../../styles/styles';
 import { round } from '../../../methods/helper-methods';
 import { startsWith } from 'lodash';
 
@@ -37,8 +37,7 @@ const styles = StyleSheet.create({
   price_info: {
     flex: 1,
     alignSelf: 'flex-end',
-    alignItems: 'flex-end',
-    paddingRight: margin.small,
+    alignItems: 'flex-end'
   },
   price_up :{
     fontSize: font.h3,
@@ -57,7 +56,7 @@ const styles = StyleSheet.create({
   },
   price: {
     color: color.grey.dark,
-    paddingTop: margin.mini,
+    paddingTop: length.mini,
     fontSize: font.h5,
     fontFamily: font.type.sans.normal
   }
