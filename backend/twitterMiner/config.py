@@ -11,3 +11,5 @@ NEWS_SERVER = {
         "RANK": "/rankArticle"
     }
 }
+
+forbidden_domains = ["owler.us", "owler.com", "stocktwits.com", "investorshangout.com", "1broker.com"]

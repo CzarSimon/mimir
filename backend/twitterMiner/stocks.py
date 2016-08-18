@@ -4,7 +4,7 @@ import time
 import threading
 import requests
 from urlparse import urlparse
-from config import APP_SERVER, NEWS_SERVER
+from config import APP_SERVER, NEWS_SERVER, forbidden_domains
 sys.path.append("..")
 
 from database import manager as db
@@ -68,7 +68,7 @@ def send_url_to_ranker(data, stock_querys):
     tweet = json.loads(data)
     entities = tweet["entities"]
     urls = map(lambda url: url["expanded_url"], entities["urls"])
-    filtered_urls = filter(lambda url: urlparse(url).netloc != "owler.us", urls)
+    filtered_urls = filter(lambda url: urlparse(url).netloc not in forbidden_domains, urls)
     if (len(filtered_urls) > 0):
         rank_object = _create_rank_object(stock_querys, filtered_urls, entities["symbols"], tweet["user"], tweet["lang"])
         if (_control_rank_object(rank_object)):

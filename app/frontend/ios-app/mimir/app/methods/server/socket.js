@@ -2,7 +2,7 @@
 
 import { Platform } from 'react-native';
 //The line below needs to be commented out before running with debugger.
-window.navigator.userAgent = "react-native";
+//window.navigator.userAgent = "react-native";
 let io = require('socket.io-client/socket.io');
 import { SERVER_URL } from '../../credentials/server-info';
 

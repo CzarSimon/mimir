@@ -1,4 +1,6 @@
-import { split, map, lowerCase, join, slice, findIndex, find, replace, keys, orderBy, invert } from 'lodash';
+'use strict';
+
+const _ = require('lodash');
 
 export const array_equals = (a1, a2) => {
   let i = a1.length;
@@ -14,26 +16,36 @@ export const round = (number, decimals = 2) => {
 }
 
 export const format_name = (name, forbidden = ['inc', 'corporation', 'plc']) => {
-  const words = split(name, ' ');
-  const lower_words = map(words, (word) => lowerCase(word));
+  const words = _.split(name, ' ');
+  const lower_words = _.map(words, (word) => _.lowerCase(word));
 
   for (let word of lower_words) {
     if (forbidden.includes(word)) {
-      return join(slice(words, 0, findIndex(word, null, 1) + 1), ' ');
+      return _.join(_.slice(words, 0, _.findIndex(word, null, 1) + 1), ' ');
     }
   }
   return name;
 }
 
+export const create_clean_title = (title) => {
+  const forbidden = ['TickerLens'];
+  const split_title = _.split(_.trim(title), ' - ');
+  const formated_title = (split_title.length < 2) ? split_title : _.join(_.initial(split_title), ' - ');
+  const no_double_whitespace = _.replace(formated_title, new RegExp("\\s+", "g"), " ");
+  const no_url = _.replace(no_double_whitespace, new RegExp("(https?|ftp):\/\/[\.[a-zA-Z0-9\/\-]+", "g"), "");
+  const clean_title =  _.reduce(forbidden, (prev, forb) => _.replace(prev, forb, ""), no_url);
+  return clean_title;
+}
+
 export const create_subject_string = (score_object) => {
-  const i_obj = invert(score_object);
-  return join(map(orderBy(keys(i_obj),'desc'), val => i_obj[val]), ', ');
+  const i_obj = _.invert(score_object);
+  return _.join(_.map(_.orderBy(_.keys(i_obj),'desc'), val => i_obj[val]), ', ');
 }
 
 export const arr_get_value_by_key = (arr = [], val, key = 'Symbol') => {
-  return find(arr, (obj) => (obj[key] === val));
+  return _.find(arr, (obj) => (obj[key] === val));
 }
 
 export const format_thousands = (num_str) => {
-  return replace(num_str, /\B(?=(\d{3})+(?!\d))/g, " ");
+  return _.replace(num_str, /\B(?=(\d{3})+(?!\d))/g, " ");
 }

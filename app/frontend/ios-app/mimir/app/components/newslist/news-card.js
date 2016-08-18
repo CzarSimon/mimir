@@ -3,8 +3,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import { color, font, length } from '../../styles/styles';
-import { create_subject_string } from '../../methods/helper-methods';
-const _ = require('lodash');
+import { create_subject_string, create_clean_title } from '../../methods/helper-methods';
 
 export default class NewsCard extends Component {
   handle_click = (title) => {
@@ -13,7 +12,7 @@ export default class NewsCard extends Component {
   }
   render() {
     const { title, compound_score, timestamp, twitter_references } = this.props.article_info;
-    const clean_title = _clean_title(title);
+    const clean_title = create_clean_title(title);
     return (
       <TouchableHighlight
         onPress = {() => this.handle_click(clean_title)}
@@ -29,13 +28,6 @@ export default class NewsCard extends Component {
       </TouchableHighlight>
     );
   }
-}
-
-const _clean_title = (title) => {
-  const forbidden = ['TickerLens'];
-  const split_title = _.split(_.trim(title), '-');
-  const formated_title = (split_title.length < 2) ? split_title : _.join(_.initial(split_title), '-');
-  return _.reduce(forbidden, (prev, forb) => _.replace(prev, forb, ""), formated_title);
 }
 
 const styles = StyleSheet.create({
