@@ -2,7 +2,7 @@
 ![mimir-tiny-icon](https://cloud.githubusercontent.com/assets/9406331/15993573/7a8097b0-30ea-11e6-9375-70469828c217.png)
 
 Stock news app that ranks the urgency the stocks in a of a users portfolio
-based the Twitter activity around the stocks. Under production :)
+based the Twitter activity around the stocks. Under development :)
 
 The idea here is to use the twitter public streams to compare the volume of
 tweets of individual stocks against the the average volume. This will be used
