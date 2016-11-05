@@ -3,7 +3,8 @@ import * as types from '../actions/action-types';
 
 const initial_state = {
   active_ticker: null,
-  selected_tab: 'overview'
+  selected_tab: 'news',
+  article_url: null
 };
 
 const navigation = (state = initial_state, action = {}) => {

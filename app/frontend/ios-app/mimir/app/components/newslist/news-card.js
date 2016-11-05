@@ -4,18 +4,23 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
 import { color, font, length } from '../../styles/styles';
 import { create_subject_string, create_clean_title } from '../../methods/helper-methods';
+import SafariView from 'react-native-safari-view';
 
 export default class NewsCard extends Component {
-  handle_click = (title) => {
-    const { url } = this.props.article_info;
-    console.log(`Going to URL: ${url}`);
+  handle_click = () => {
+    SafariView.isAvailable()
+    .then(SafariView.show({
+      url: this.props.article_info.url,
+      tintColor: color.blue
+    }))
+    .catch(err => {console.log(err)})
   }
   render() {
     const { title, compound_score, timestamp, twitter_references } = this.props.article_info;
     const clean_title = create_clean_title(title);
     return (
       <TouchableHighlight
-        onPress = {() => this.handle_click(clean_title)}
+        onPress = {() => this.handle_click()}
         underlayColor = {color.grey.background}>
         <View style={styles.card}>
           <Text style={styles.title}>{clean_title}</Text>

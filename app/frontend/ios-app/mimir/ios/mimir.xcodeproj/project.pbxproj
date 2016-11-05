@@ -28,6 +28,7 @@
 		F45FA4591D63D1D100F6B3ED /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F45FA4581D63D17700F6B3ED /* libRNVectorIcons.a */; };
 		F4ABF71D1D49415D0059CC98 /* Lato-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4ABF71B1D4940420059CC98 /* Lato-Bold.ttf */; };
 		F4ABF71E1D49415D0059CC98 /* Lato-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = F4ABF71C1D4940420059CC98 /* Lato-Regular.ttf */; };
+		F4FBE5A61D6608E1005444BA /* libSafariViewManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F4FBE5A51D6608D4005444BA /* libSafariViewManager.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -122,6 +123,13 @@
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
 		};
+		F4FBE5A41D6608D4005444BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F4FBE5941D6608D3005444BA /* SafariViewManager.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = SafariViewManager;
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
@@ -151,6 +159,7 @@
 		F45FA4531D63D17600F6B3ED /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		F4ABF71B1D4940420059CC98 /* Lato-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Bold.ttf"; sourceTree = "<group>"; };
 		F4ABF71C1D4940420059CC98 /* Lato-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Lato-Regular.ttf"; sourceTree = "<group>"; };
+		F4FBE5941D6608D3005444BA /* SafariViewManager.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SafariViewManager.xcodeproj; path = "../node_modules/react-native-safari-view/SafariViewManager.xcodeproj"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +175,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4FBE5A61D6608E1005444BA /* libSafariViewManager.a in Frameworks */,
 				F45FA4591D63D1D100F6B3ED /* libRNVectorIcons.a in Frameworks */,
 				F40F2E2F1D41241B0022BE76 /* libART.a in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -291,6 +301,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				F4FBE5941D6608D3005444BA /* SafariViewManager.xcodeproj */,
 				F45FA4531D63D17600F6B3ED /* RNVectorIcons.xcodeproj */,
 				F40F2E291D4123E40022BE76 /* ART.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -360,6 +371,14 @@
 				F4ABF71C1D4940420059CC98 /* Lato-Regular.ttf */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		F4FBE5951D6608D3005444BA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F4FBE5A51D6608D4005444BA /* libSafariViewManager.a */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -479,6 +498,10 @@
 					ProductGroup = F45FA4541D63D17600F6B3ED /* Products */;
 					ProjectRef = F45FA4531D63D17600F6B3ED /* RNVectorIcons.xcodeproj */;
 				},
+				{
+					ProductGroup = F4FBE5951D6608D3005444BA /* Products */;
+					ProjectRef = F4FBE5941D6608D3005444BA /* SafariViewManager.xcodeproj */;
+				},
 			);
 			projectRoot = "";
 			targets = (
@@ -571,6 +594,13 @@
 			fileType = archive.ar;
 			path = libRNVectorIcons.a;
 			remoteRef = F45FA4571D63D17700F6B3ED /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		F4FBE5A51D6608D4005444BA /* libSafariViewManager.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSafariViewManager.a;
+			remoteRef = F4FBE5A41D6608D4005444BA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */

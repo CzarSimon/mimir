@@ -16,7 +16,7 @@ export default class TabMenu extends Component {
     }
   }
   render() {
-    const { company, twitter_data, selected_tab, handle_click } = this.props;
+    const { company, twitter_data, selected_tab, handle_click, select_article } = this.props;
     const tabs = {
       overview: <OverviewContainer company={company} twitter_data={twitter_data}/>,
       news: <NewsContainer company={company} />,

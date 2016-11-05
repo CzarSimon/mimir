@@ -12,4 +12,5 @@ NEWS_SERVER = {
     }
 }
 
+# perhaps include dlvr.it here?
 forbidden_domains = ["owler.us", "owler.com", "stocktwits.com", "investorshangout.com", "1broker.com"]

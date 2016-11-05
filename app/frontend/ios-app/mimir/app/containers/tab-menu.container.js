@@ -7,12 +7,14 @@ import { connect } from 'react-redux';
 import TabMenu from '../components/tab-menu';
 import BasicInfo from '../components/tab-menu/basic-info';
 import { select_tab } from '../actions/navigation.actions';
+import { article_route } from '../routing/routes';
 import { arr_get_value_by_key } from '../methods/helper-methods';
 
 class TabMenuContainer extends Component {
   handle_tab_click(clicked_tab) {
     this.props.actions.select_tab(clicked_tab);
   }
+
   render() {
     const { user, stocks, navigation } = this.props.state;
     const { selected_tab, active_ticker } = navigation;
@@ -28,7 +30,6 @@ class TabMenuContainer extends Component {
         <TabMenu
           company = {company}
           twitter_data = {twitter_data}
-          nav = {this.props.navigator}
           selected_tab = {selected_tab}
           handle_click = {this.handle_tab_click.bind(this)}
         />
@@ -45,7 +46,11 @@ export default connect(
       navigation: state.navigation
     }
   }),
-  (dispatch) => ({ actions: bindActionCreators({ select_tab }, dispatch) })
+  (dispatch) => ({
+    actions: bindActionCreators({
+      select_tab
+    }, dispatch)
+  })
 )(TabMenuContainer);
 
 const styles = StyleSheet.create({
