@@ -1,13 +1,11 @@
 from tweepy import OAuthHandler
 from tweepy import Stream
 from tweepy.streaming import StreamListener
-import sys
-import logging, schedule, threading, time
+import sys, logging, schedule, threading, time, traceback
 from datetime import datetime
 
 sys.path.append("..")
-import twitterCredentials
-import stocks
+import twitterCredentials, stocks
 from urgencyModule import meanAndStdevCalc as calc
 
 consumerKey = twitterCredentials.consumerKey
@@ -76,7 +74,8 @@ def main():
         if str(type(e)) == "<type 'exceptions.KeyboardInterrupt'>":
             plannedExit = True
         else:
-            print "This was the error: " + str(e)
+            print "This was the error: " + str(e), type(e)
+            traceback.print_exc()
             logging.error("In twitterMiner.main() - " + str(e) + " - " + str(datetime.utcnow()))
             twitterStream.disconnect()
     finally:
