@@ -73,7 +73,10 @@ def send_url_to_ranker(data, stock_querys):
         rank_object = _create_rank_object(stock_querys, filtered_urls, entities["symbols"], tweet["user"], tweet["lang"])
         if (_control_rank_object(rank_object)):
             rank_url = "".join([NEWS_SERVER["ADDRESS"], NEWS_SERVER["routes"]["RANK"]])
-            requests.post(url=rank_url, data=json.dumps(rank_object), headers={'content-type': 'application/json'})
+            try:
+                requests.post(url=rank_url, data=json.dumps(rank_object), headers={'content-type': 'application/json'})
+            except requests.ConnectionError as e:
+                print "Connection error in send_url_to_ranker. Check status of endpoint"
         else:
             pass
     else:
@@ -152,4 +155,3 @@ def checkTicker(candidate, tickers, aliases):
         return {"success": True, "ticker": aliases[candidate]}
     else:
         return {"success": False, "ticker": candidate}
-
