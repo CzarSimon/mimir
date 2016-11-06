@@ -12,5 +12,9 @@ NEWS_SERVER = {
     }
 }
 
+timing = {
+    "TIMEOUT": 0.5
+}
+
 # perhaps include dlvr.it here?
 forbidden_domains = ["owler.us", "owler.com", "stocktwits.com", "investorshangout.com", "1broker.com"]

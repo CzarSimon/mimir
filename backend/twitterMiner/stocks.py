@@ -1,8 +1,4 @@
-import sys
-import json
-import time
-import threading
-import requests
+import sys, json, time, threading, requests, communication as comm
 from urlparse import urlparse
 from config import APP_SERVER, NEWS_SERVER, forbidden_domains
 sys.path.append("..")
@@ -68,12 +64,12 @@ def send_url_to_ranker(data, stock_querys):
     tweet = json.loads(data)
     entities = tweet["entities"]
     urls = map(lambda url: url["expanded_url"], entities["urls"])
-    filtered_urls = filter(lambda url: urlparse(url).netloc not in forbidden_domains, urls)
+    filtered_urls = filter(lambda url: (url is not None) and (urlparse(url).netloc not in forbidden_domains), urls)
     if (len(filtered_urls) > 0):
         rank_object = _create_rank_object(stock_querys, filtered_urls, entities["symbols"], tweet["user"], tweet["lang"])
         if (_control_rank_object(rank_object)):
             rank_url = "".join([NEWS_SERVER["ADDRESS"], NEWS_SERVER["routes"]["RANK"]])
-            requests.post(url=rank_url, data=json.dumps(rank_object), headers={'content-type': 'application/json'})
+            comm.post_request(rank_url, json.dumps(rank_object), {'content-type': 'application/json'}, "send_url_to_ranker", is_threaded=True)
         else:
             pass
     else:
@@ -152,4 +148,3 @@ def checkTicker(candidate, tickers, aliases):
         return {"success": True, "ticker": aliases[candidate]}
     else:
         return {"success": False, "ticker": candidate}
-
