@@ -4,7 +4,7 @@ import db, sys, json, req
 
 def _send_results(volume_count, timestamp):
     endpoint = "".join([reciving_server["ADDRESS"], reciving_server["ROUTE"]])
-    print volume_count
+    print "Current volumes:", volume_count, "end\n"
     req_data = json.dumps({"data": volume_count, "message": "sending latest volume count"})
     req.post_volumes(endpoint, req_data, {'content-type': 'application/json'}, timestamp)
 

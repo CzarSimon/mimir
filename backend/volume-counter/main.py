@@ -1,9 +1,11 @@
 import schedule, time, sys, db, counter
-from config import timimg_config
+from config import timimg
 
 def main():
+    print "Running volume counter"
     try:
         tickers = _get_unique_tickers()
+        print tickers, "\n"
         _run_service(tickers)
     except KeyboardInterrupt as e:
         db.close_connection()
@@ -11,11 +13,10 @@ def main():
         sys.exit(0)
 
 def _run_service(tickers):
-    #schedule.every().minute.do(counter.count_volume, tickers)
+    schedule.every().minute.do(counter.count_volume, tickers)
     while True:
-        #schedule.run_pending()
-        counter.count_volume(tickers)
-        time.sleep(timimg_config["SLEEP"])
+        schedule.run_pending()
+        time.sleep(timimg["SLEEP"])
 
 def _get_unique_tickers():
     db_result = db.get_unique_tickers()
