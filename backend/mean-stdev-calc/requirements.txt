@@ -1,0 +1,4 @@
+schedule==0.3.2
+psycopg2==2.6.1
+requests==2.11.1
+numpy==1.11.1
