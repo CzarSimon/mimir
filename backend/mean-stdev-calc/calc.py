@@ -8,9 +8,10 @@ def retrive_and_calc(tickers):
     for ticker in tickers:
         db_result = db.get_tweets_for_ticker(ticker)
         if db_result["success"]:
+            result = {}
             timestamps = _format_timestamps(db_result["data"])
-            result = _filter_and_calc(timestamps, ticker)
-            result["ticker"] = ticker.replace("$", "")
+            result[ticker] = _filter_and_calc(timestamps, ticker)
+            #result["ticker"] = ticker.replace("$", "")
             _send_result(result)
         else:
             print db_result["data"]
@@ -18,14 +19,14 @@ def retrive_and_calc(tickers):
 def _format_timestamps(timestamps):
     return map(lambda row: datetime.strftime(row[0], "%Y-%m-%d:%H"), timestamps)
 
+#Needs data needs ticker as key
 def _filter_and_calc(timestamps, ticker):
-    result = {}
+    result = {"mean": {}, "stdev": {}}
     filtered_timestamps = _separate_busdays(timestamps)
     days = _calc_days_meassured(ticker)
     for key, timestamps in filtered_timestamps.iteritems():
         hourly_volumes = _reduce_by_day(_reduce_by_hour(timestamps), days[key])
-        mean, stdev = _calc_mean_stdev(hourly_volumes)
-        result[key] = {"mean": mean, "stdev": stdev}
+        result["mean"][key], result["stdev"][key] = _calc_mean_stdev(hourly_volumes)
     return result
 
 def _calc_mean_stdev(hourly_volumes):
@@ -63,13 +64,13 @@ def _is_busday(date_str):
 def _calc_days_meassured(ticker):
     db_result = db.get_first_day_stored(ticker)
     if db_result["success"]:
-        start_date = datetime_to_date(db_result["data"][0][0])
-        today = datetime_to_date(datetime.now())
+        start_date = _datetime_to_date(db_result["data"][0][0])
+        today = _datetime_to_date(datetime.now())
         bus_days = int(np.busday_count(start_date, today)) + 1
         all_days = (today - start_date).days + 1
         return {"busdays": bus_days, "weekend_days": (all_days - bus_days)}
 
-def datetime_to_date(dt):
+def _datetime_to_date(dt):
     return date(dt.year, dt.month, dt.day)
 
 def _send_result(result):

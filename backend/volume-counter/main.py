@@ -13,6 +13,7 @@ def main():
         sys.exit(0)
 
 def _run_service(tickers):
+    counter.count_volume(tickers)
     schedule.every().minute.do(counter.count_volume, tickers)
     while True:
         schedule.run_pending()

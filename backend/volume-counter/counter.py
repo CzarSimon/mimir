@@ -26,4 +26,11 @@ def format_ticker(ticker):
 def count_volume(tickers):
     now = datetime.utcnow()
     volume_count = _retrive_count(_get_current_hour(now), tickers)
-    _send_results(volume_count, now)
+    minute = now.minute + 1
+    req_object = {}
+    for ticker, volume in volume_count.iteritems():
+        req_object[ticker] = {
+            "volume": volume,
+            "minute": minute
+        }
+    _send_results(req_object, now)

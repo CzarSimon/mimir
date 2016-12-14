@@ -12,7 +12,6 @@ def main():
         sys.exit(0)
 
 def _run_service(tickers):
-    tickers = ["$AMZN"]
     calc.retrive_and_calc(tickers)
     schedule.every().day.at(timimg["EXEC_TIME"]).do(calc.retrive_and_calc, tickers)
     while True:

@@ -65,7 +65,8 @@ module.exports = {
   },
 
   alert_new_twitter_data: (sockets, data, conn) => {
-    database.insert_stock_data(data, conn);
+    console.log(data.message);
+    database.insert_stock_data(data.data, conn);
     sockets.emit(events.NEW_TWITTER_DATA);
   },
 

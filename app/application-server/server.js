@@ -8,6 +8,7 @@
 const config = require('./config')
     , sockets = require('./server/sockets')
     , events = require('./server/events')
+    , routes = require('./server/routes')
     , database = require('./server/database')
     , get_date = require('./server/helperMethods').getDate;
 
@@ -44,6 +45,20 @@ app.post('/stockList', (req, res) => {
     res.send('failure');
   }
 });
+
+app.post('/tweet_volumes', (req, res) => {
+  const dict = req.body;
+  if (dict) {
+    sockets.alert_new_twitter_data(io.sockets, dict, app._rdb_conn);
+    sockets.update_stocklist(io.sockets, app._rdb_conn);
+    res.send('success');
+  } else {
+    res.send('failure');
+  }
+});
+
+//No need for real time updateing socket does not nees to be involved
+app.post('/mean_and_stdev', (req, res) => routes.update_stock_stats(req, res, app._rdb_conn));
 
 const start_express = (connection) => {
   app._rdb_conn = connection;
