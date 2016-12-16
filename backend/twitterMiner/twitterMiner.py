@@ -20,23 +20,11 @@ class MyListener(StreamListener):
         self.tickers = tickers
         self.aliases = aliases
         self.stock_querys = stock_querys
-        self.lastReportMinute = -1
 
     def on_data(self, data):
-        minute = datetime.utcnow().minute
-        if minute < self.lastReportMinute:
-            for ticker in self.tickers.iteritems():
-                self.tickers[ticker] = 0
-            report = True
-            self.lastReportMinute = minute
-        elif self.lastReportMinute < 0 or (self.lastReportMinute+1 <= minute):
-            report = True
-            self.lastReportMinute = minute
-        else:
-            report = False
         print '----- New tweet -----'
         logging.info("New tweet added at: " + str(datetime.utcnow()))
-        self.tickers = stocks.storeTweet(data, self.tickers, self.aliases, report)
+        stocks.storeTweet(data, self.tickers, self.aliases, False)
         stocks.send_url_to_ranker(data, self.stock_querys)
         return True
 
@@ -50,13 +38,7 @@ def list2Dict(list):
     for item in list:
         dict[str(item)] = 0
     return dict
-
-def doMeanAndStdevCalc():
-    schedule.every().day.at('23:50').do(calc.getStockTweets) # Adjust this run to time zone
-    while True:
-        schedule.run_pending()
-        time.sleep(60)
-
+    
 def main():
     print "Runnig"
     auth = OAuthHandler(consumerKey, consumerSecret)
@@ -88,18 +70,7 @@ def main():
         return plannedExit
 
 
-def test_run():
-    print "Starting test"
-    result = stocks.get_stocks_info()
-    print result["ticker_list"]
-    print result["stock_querys"]
-    print "Done"
-
 if __name__ == "__main__":
-    # test_run()
-    d = threading.Thread(name="caluclation thread", target=doMeanAndStdevCalc)
-    d.setDaemon(True)
-    d.start()
     plannedExit = False
     while not plannedExit:
         plannedExit = main()
