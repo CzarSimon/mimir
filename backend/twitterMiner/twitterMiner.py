@@ -5,13 +5,14 @@ import sys, logging, schedule, threading, time, traceback
 from datetime import datetime
 
 sys.path.append("..")
-import twitterCredentials, stocks
+import stocks
+from config import twitter_credentials
 from urgencyModule import meanAndStdevCalc as calc
 
-consumerKey = twitterCredentials.consumerKey
-consumerSecret = twitterCredentials.consumerSecret
-accessToken = twitterCredentials.accessToken
-accessSecret = twitterCredentials.accessSecret
+consumerKey = twitter_credentials.consumerKey
+consumerSecret = twitter_credentials.consumerSecret
+accessToken = twitter_credentials.accessToken
+accessSecret = twitter_credentials.accessSecret
 
 logging.basicConfig(filename="miner.log", level=logging.ERROR)
 
@@ -38,7 +39,7 @@ def list2Dict(list):
     for item in list:
         dict[str(item)] = 0
     return dict
-    
+
 def main():
     print "Runnig"
     auth = OAuthHandler(consumerKey, consumerSecret)

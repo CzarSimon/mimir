@@ -11,8 +11,25 @@ const r = require('rethinkdb')
     , upperCase = require('lodash')['upperCase']
     , map = require('lodash')['map']
     , replace = require('lodash')['replace']
-    , mapKeys = require('lodash')['mapKeys'];
+    , mapKeys = require('lodash')['mapKeys']
+    , { dayType, nowUTC } = require('./helper-methods');
 
+const fetch_stock_data = (tickers, conn, callback) => {
+  r.table('stocks').filter(stock => {
+    return r.expr(tickers).contains(stock('ticker'))
+  }).without('id').run(conn, (err, res) => {
+    const day_type = dayType();
+    const hour = nowUTC().getHours();
+    res.toArray((err, res) => {
+      callback(err, _.mapKeys(pluck_stats(res, day_type, hour), val => val.ticker));
+    });
+  });
+}
+
+const pluck_stats = (res, day_type, hour) => Object.assign({}, res, {
+  stdev: res.stdev[day_type][hour],
+  mean: res.mean[day_type][hour]
+});
 
 module.exports = {
 
@@ -30,15 +47,7 @@ module.exports = {
     });
   },
 
-  fetch_stock_data: (tickers, conn, callback) => {
-    r.table('stocks').filter(stock => {
-      return r.expr(tickers).contains(stock('ticker'))
-    }).without('id').run(conn, (err, res) => {
-      res.toArray((err, res) => {
-        callback(err, _.mapKeys(Object.assign({}, res), val => val.ticker));
-      });
-    });
-  },
+  fetch_stock_data,
 
   insert_stock_data: (data, conn) => {
     const formated_data = _format_data(data);

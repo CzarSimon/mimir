@@ -13,25 +13,25 @@ def _setupTables(confirmed):
         stdev = mean
         current_date = datetime.now(tz=timezone('UTC'))
         initial_stocks = [
-            ('$LNKD', 'LinkedIn Corporation', current_date, mean, stdev),
-            ('$FB', 'Facebook Inc.', current_date, mean, stdev),
-            ('$TWTR', 'Twitter, Inc.', current_date, mean, stdev),
-            ('$ACN', 'Accenture plc', current_date, mean, stdev),
-            ('$AAPL', 'Apple Inc.', current_date, mean, stdev),
-            ('$NKE', 'Nike, Inc.', current_date, mean, stdev),
-            ('$AMZN', 'Amazon.com, Inc.', current_date, mean, stdev),
-            ('$NFLX', 'Netflix, Inc.', current_date, mean, stdev),
-            ('$MSFT', 'Microsoft Corporation', current_date, mean, stdev),
-            ('$TSLA', 'Tesla Motors, Inc.', current_date, mean, stdev),
-            ('$INTC', 'Intel Corporation', current_date, mean, stdev),
-            ('$WMT', 'Wal-Mart Stores Inc.', current_date, mean, stdev),
-            ('$GS', 'The Goldman Sachs Group, Inc.', current_date, mean, stdev),
-            ('$SCTY', 'SolarCity Corporation', current_date, mean, stdev),
-            ('$T', 'AT&T, Inc.', current_date, mean, stdev),
-            ('$YELP', 'Yelp Inc.', current_date, mean, stdev),
-            ('$EBAY', 'eBay Inc.', current_date, mean, stdev),
-            ('$PYPL', 'PayPal Holdings, Inc.', current_date, mean, stdev),
-            ('$GOOG', 'Alphabet Inc.', current_date, mean, stdev)
+            ('LNKD', 'LinkedIn Corporation', current_date, mean, stdev),
+            ('FB', 'Facebook Inc.', current_date, mean, stdev),
+            ('TWTR', 'Twitter, Inc.', current_date, mean, stdev),
+            ('ACN', 'Accenture plc', current_date, mean, stdev),
+            ('AAPL', 'Apple Inc.', current_date, mean, stdev),
+            ('NKE', 'Nike, Inc.', current_date, mean, stdev),
+            ('AMZN', 'Amazon.com, Inc.', current_date, mean, stdev),
+            ('NFLX', 'Netflix, Inc.', current_date, mean, stdev),
+            ('MSFT', 'Microsoft Corporation', current_date, mean, stdev),
+            ('TSLA', 'Tesla Motors, Inc.', current_date, mean, stdev),
+            ('INTC', 'Intel Corporation', current_date, mean, stdev),
+            ('WMT', 'Wal-Mart Stores Inc.', current_date, mean, stdev),
+            ('GS', 'The Goldman Sachs Group, Inc.', current_date, mean, stdev),
+            ('SCTY', 'SolarCity Corporation', current_date, mean, stdev),
+            ('T', 'AT&T, Inc.', current_date, mean, stdev),
+            ('YELP', 'Yelp Inc.', current_date, mean, stdev),
+            ('EBAY', 'eBay Inc.', current_date, mean, stdev),
+            ('PYPL', 'PayPal Holdings, Inc.', current_date, mean, stdev),
+            ('GOOG', 'Alphabet Inc.', current_date, mean, stdev)
         ]
         record_list_template = ','.join(['%s'] * len(initial_stocks))
         insert_query = 'INSERT INTO stocks (ticker, name, storedAt, mean, stdev) VALUES {0}'.format(record_list_template)
