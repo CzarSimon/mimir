@@ -7,7 +7,6 @@ from datetime import datetime
 sys.path.append("..")
 import stocks
 from config import twitter_credentials
-from urgencyModule import meanAndStdevCalc as calc
 
 consumerKey = twitter_credentials.consumerKey
 consumerSecret = twitter_credentials.consumerSecret
@@ -25,7 +24,7 @@ class MyListener(StreamListener):
     def on_data(self, data):
         print '----- New tweet -----'
         logging.info("New tweet added at: " + str(datetime.utcnow()))
-        stocks.storeTweet(data, self.tickers, self.aliases, False)
+        stocks.storeTweet(data, self.tickers, self.aliases)
         stocks.send_url_to_ranker(data, self.stock_querys)
         return True
 

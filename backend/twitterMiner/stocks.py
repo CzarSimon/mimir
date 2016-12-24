@@ -4,7 +4,6 @@ from config import APP_SERVER, NEWS_SERVER, forbidden_domains
 sys.path.append("..")
 
 from database import manager as db
-from urgencyModule import urgency
 
 def dbSetup(do):
     if do:
