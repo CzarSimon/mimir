@@ -96,7 +96,7 @@ def _control_rank_object(rank_obj):
         return True
 
 
-def storeTweet(data, tickers, aliases, report):
+def storeTweet(data, tickers, aliases):
     tweet = json.loads(data)
     tweet_text = tweet['text'].encode('utf-8')
     print tweet_text
@@ -107,14 +107,14 @@ def storeTweet(data, tickers, aliases, report):
     urls = str(expandedUrls)
     createdAt = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y')) # Converting tweet time format to date format
     symbols = tweet['entities']['symbols']
-    updatedVolumeTickers = storeTickerTweets(tweet['id_str'], tweet["user"]["id_str"], createdAt, tweet_text, urls, tweet['lang'], tweet['user']['followers_count'], symbols, tickers, aliases, report)
+    updatedVolumeTickers = storeTickerTweets(tweet['id_str'], tweet["user"]["id_str"], createdAt, tweet_text, urls, tweet['lang'], tweet['user']['followers_count'], symbols, tickers, aliases)
     return updatedVolumeTickers
 
-def storeTickerTweets(tweetId, userId, date, tweet, urls, lang, followers, symbols, tickers, aliases, report):
+def storeTickerTweets(tweetId, userId, date, tweet, urls, lang, followers, symbols, tickers, aliases):
     # Add check for unique tickers
     upper_symbols = []
     for symbol in symbols:
-        upper_symbols += ["$" + symbol['text'].upper()]
+        upper_symbols += ["$" + symbol['text'].upper()] # Stupid and should be removed
     unique_symbols = list(set(upper_symbols))
     for symbol in unique_symbols:
         sym = checkTicker(symbol, tickers, aliases)
@@ -123,15 +123,7 @@ def storeTickerTweets(tweetId, userId, date, tweet, urls, lang, followers, symbo
             db.insertTweet(tweetId, userId, date, tweet, sym["ticker"], urls, lang, followers)
         else:
             addStock(sym["ticker"])
-    if report:
-        threadedUrgency(tickers)
     return tickers
-
-def threadedUrgency(tickers):
-    daemonThread = threading.Thread(name="rank urgency thread", target=urgency.rankUrgency, args=(tickers,))
-    daemonThread.setDaemon(True)
-    daemonThread.start()
-    return True
 
 def threadedInsert(tweetId, userId, date, tweet, urls, lang, followers, symbols, tickers, aliases):
     d = threading.Thread(name="Tweet insert thread", target=storeTickerTweets, args=(tweetId, userId, date, tweet, urls, lang, followers, symbols, tickers, aliases,))

@@ -32,4 +32,5 @@ twitter_credentials = {
 }
 
 # perhaps include dlvr.it here?
-forbidden_domains = ["owler.us", "owler.com", "stocktwits.com", "investorshangout.com", "1broker.com"]
+# Should be chaged to set for faster lookup.
+forbidden_domains = set(["owler.us", "owler.com", "stocktwits.com", "investorshangout.com", "1broker.com"])
