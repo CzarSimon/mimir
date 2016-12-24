@@ -28,11 +28,11 @@ def queryDatabase(query, multiple):
         c.close()
         return return_item
 
-def insertTweet(tweetId, userId, date, tweet, ticker, urls, lang, followers):
-    stockTweet = (tweetId, userId, date, tweet, ticker, urls, lang, followers)
+def insert_tweet(tweetId, userId, date, tweet, ticker, lang, followers):
+    stockTweet = (tweetId, userId, date, tweet, ticker, lang, followers)
     c = conn.cursor()
     try:
-        c.execute('INSERT INTO stockTweets (tweetId, userId, createdAt, tweet, ticker, urls, lang, followers) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)', stockTweet)
+        c.execute('INSERT INTO stockTweets (tweetId, userId, createdAt, tweet, ticker, lang, followers) VALUES (%s, %s, %s, %s, %s, %s, %s)', stockTweet)
         conn.commit()
     except Exception as e:
         print "-#-#-#-#-#-#-#-the problem occured here"
@@ -41,19 +41,6 @@ def insertTweet(tweetId, userId, date, tweet, ticker, urls, lang, followers):
     finally:
         c.close()
         return True
-
-def updateMeanAndStdev(tic, newMean, newStdev):
-    c = conn.cursor()
-    success = True
-    try:
-        c.execute('UPDATE stocks SET mean=%s, stdev=%s WHERE ticker=%s', (newMean, newStdev, tic))
-        conn.commit()
-    except Exception as e:
-        print e
-        conn.rollback()
-        success = False
-    finally:
-        return success
 
 def addAlias(alias, ticker):
     c = conn.cursor()

@@ -5,16 +5,6 @@ sys.path.append("..")
 
 from database import manager as db
 
-def dbSetup(do):
-    if do:
-        print "Press 1 - to reset database"
-        reset = input()
-        if reset == 1:
-            print "Setting up database"
-            db.setupTables(do)
-            return True
-    print "Not setting up db"
-
 def get_stocks_info():
     url = "".join([APP_SERVER["ADDRESS"], APP_SERVER["routes"]["STOCKLIST"]])
     stock_querys = {}
@@ -24,11 +14,10 @@ def get_stocks_info():
         ticker_list = map(lambda stock: "$" + str(stock["ticker"]), stock_list)
         for stock in stock_list:
             stock_querys[str(stock["ticker"])] = {"ticker": str(stock["ticker"]), "name": str(stock["name"])}
-        return {"success": True, "ticker_list": ticker_list, "stock_querys": stock_querys}
+        return ticker_list, stock_querys
     except Exception as e:
         print e
-        return {"success": False, "error": e}
-
+        return [], {}
 
 def getStockTickers():
     dbTickers = db.queryDatabase('SELECT ticker FROM stocks ORDER BY name', True)
@@ -55,10 +44,6 @@ def getAliases():
 def addStock(ticker):
     print 'Adding stock with ticker: ' + ticker
 
-def addAlias(alias, ticker):
-    db.addAlias(alias, ticker)
-    return True
-
 def send_url_to_ranker(data, stock_querys):
     tweet = json.loads(data)
     entities = tweet["entities"]
@@ -69,10 +54,6 @@ def send_url_to_ranker(data, stock_querys):
         if (_control_rank_object(rank_object)):
             rank_url = "".join([NEWS_SERVER["ADDRESS"], NEWS_SERVER["routes"]["RANK"]])
             comm.post_request(rank_url, json.dumps(rank_object), {'content-type': 'application/json'}, "send_url_to_ranker", is_threaded=True)
-        else:
-            pass
-    else:
-        pass
 
 def _create_rank_object(stock_querys, urls, symbols, author, lang):
     tickers = map(lambda symbol: symbol["text"].upper(), symbols)
@@ -94,38 +75,26 @@ def _control_rank_object(rank_obj):
     else:
         return True
 
-
-def storeTweet(data, tickers, aliases):
+def store_tweet(data, tickers, aliases):
     tweet = json.loads(data)
     tweet_text = tweet['text'].encode('utf-8')
     print tweet_text
-    expandedUrls = []
-    urls = tweet['entities']['urls']
-    for url in urls:
-        expandedUrls += [str(url['expanded_url'])]
-    urls = str(expandedUrls)
-    createdAt = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y')) # Converting tweet time format to date format
+    created_at = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(tweet['created_at'],'%a %b %d %H:%M:%S +0000 %Y')) # Converting tweet time format to date format
     symbols = tweet['entities']['symbols']
-    updatedVolumeTickers = storeTickerTweets(tweet['id_str'], tweet["user"]["id_str"], createdAt, tweet_text, urls, tweet['lang'], tweet['user']['followers_count'], symbols, tickers, aliases)
-    return updatedVolumeTickers
+    check_and_store(tweet['id_str'], tweet["user"]["id_str"], created_at, tweet_text, tweet['lang'], tweet['user']['followers_count'], symbols, tickers, aliases)
 
-def storeTickerTweets(tweetId, userId, date, tweet, urls, lang, followers, symbols, tickers, aliases):
-    # Add check for unique tickers
-    upper_symbols = []
-    for symbol in symbols:
-        upper_symbols += ["$" + symbol['text'].upper()] # Stupid and should be removed
+def check_and_store(tweetId, userId, date, tweet, lang, followers, symbols, tickers, aliases):
+    upper_symbols = map(lambda symbol: "$" + symbol["text"].upper(), symbols)
     unique_symbols = list(set(upper_symbols))
     for symbol in unique_symbols:
         sym = checkTicker(symbol, tickers, aliases)
         if sym['success']:
-            tickers[sym["ticker"]] += 1
-            db.insertTweet(tweetId, userId, date, tweet, sym["ticker"], urls, lang, followers)
+            db.insert_tweet(tweetId, userId, date, tweet, sym["ticker"], lang, followers)
         else:
             addStock(sym["ticker"])
-    return tickers
 
-def threadedInsert(tweetId, userId, date, tweet, urls, lang, followers, symbols, tickers, aliases):
-    d = threading.Thread(name="Tweet insert thread", target=storeTickerTweets, args=(tweetId, userId, date, tweet, urls, lang, followers, symbols, tickers, aliases,))
+def threadedInsert(tweetId, userId, date, tweet, lang, followers, symbols, tickers, aliases):
+    d = threading.Thread(name="Tweet insert thread", target=storeTickerTweets, args=(tweetId, userId, date, tweet, lang, followers, symbols, tickers, aliases,))
     d.setDaemon(True)
     d.start()
     return True

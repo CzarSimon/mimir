@@ -1,7 +1,7 @@
 backend/database/credentials.py
-backend/twitterMiner/twitterCredentials.py
+backend/stream-listener/config.py
 backend/**/*.pyc
-backend/twitterMiner/miner.log
+backend/stream-listener/miner.log
 backend/database/setup.py
 backend/urgencyModule/credentials.py
 .idea/
