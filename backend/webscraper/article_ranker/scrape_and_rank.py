@@ -1,6 +1,5 @@
 import scraper
 import json
-import gc
 import sys
 from sys import argv
 from hashlib import md5
@@ -36,5 +35,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-    gc.collect()
     sys.exit(0)

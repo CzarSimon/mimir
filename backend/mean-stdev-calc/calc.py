@@ -5,16 +5,15 @@ from collections import Counter
 from config import reciving_server
 
 def retrive_and_calc(tickers):
+    result = {}
     for ticker in tickers:
         db_result = db.get_tweets_for_ticker(ticker)
         if db_result["success"]:
-            result = {}
             timestamps = _format_timestamps(db_result["data"])
-            result[ticker] = _filter_and_calc(timestamps, ticker)
-            #result["ticker"] = ticker.replace("$", "")
-            _send_result(result)
+            result[ticker.replace("$", "")] = _filter_and_calc(timestamps, ticker)
         else:
             print db_result["data"]
+    _send_result(result)
 
 def _format_timestamps(timestamps):
     return map(lambda row: datetime.strftime(row[0], "%Y-%m-%d:%H"), timestamps)
@@ -76,5 +75,5 @@ def _datetime_to_date(dt):
 def _send_result(result):
     print result
     endpoint = "".join([reciving_server["ADDRESS"], reciving_server["ROUTE"]])
-    request_data = json.dumps({"data": result, "message": "Updated mean and stdev for {}".format(result["ticker"])})
-    req.send_stats_to_server(endpoint, request_data, result["ticker"])
+    request_data = json.dumps({"data": result, "message": "Updated mean and stdev for {}".format(result.keys())})
+    req.send_stats_to_server(endpoint, request_data, result.keys())

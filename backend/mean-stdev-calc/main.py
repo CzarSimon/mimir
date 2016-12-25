@@ -12,7 +12,7 @@ def main():
         sys.exit(0)
 
 def _run_service(tickers):
-    calc.retrive_and_calc(tickers)
+    calc.retrive_and_calc(tickers) # For testing imidiate result
     schedule.every().day.at(timimg["EXEC_TIME"]).do(calc.retrive_and_calc, tickers)
     while True:
         schedule.run_pending()

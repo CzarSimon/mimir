@@ -10,7 +10,7 @@ const config = require('./config')
     , events = require('./server/events')
     , routes = require('./server/routes')
     , database = require('./server/database')
-    , get_date = require('./server/helperMethods').getDate;
+    , { nowUTC } = require('./server/helper-methods');
 
 const express = require('express')
     , path = require('path')
@@ -30,7 +30,7 @@ app.get('/stockList', (req, res) => {
     if (error) {
       console.log(error.message);
     } else {
-      res.send({ list: result, date: get_date()})
+      res.send({ list: result, date: nowUTC()})
     }
   });
 });
