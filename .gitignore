@@ -20,3 +20,5 @@ node_modules/
 package.json
 server.js
 server/
+db-backups/
+docker_commands.txt

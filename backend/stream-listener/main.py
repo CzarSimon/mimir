@@ -1,12 +1,10 @@
 from tweepy import OAuthHandler
 from tweepy import Stream
 from tweepy.streaming import StreamListener
-import sys, logging, traceback
+import sys, logging, traceback, time
 from datetime import datetime
-
-sys.path.append("..")
 import stocks
-from config import twitter_credentials
+from config import twitter_credentials, timing
 
 logging.basicConfig(filename="miner.log", level=logging.ERROR)
 
@@ -24,8 +22,13 @@ class MyListener(StreamListener):
         return True
 
     def on_error(self, status_code):
-        print (status_code)
-        return True
+        print "Tweepy error code: {}".format(status_code)
+        _check_for_rate_limit(status_code)
+
+def _check_for_rate_limit(status_code):
+    if status_code == 420:
+        print "Rate limit response. Pausing for {} seconds".format(timing["RATE_LIMIT_PAUSE"])
+        time.sleep(timing["RATE_LIMIT_PAUSE"])
 
 def _get_twtr_auth(credentials):
     auth = OAuthHandler(credentials["consumer_key"], credentials["consumer_secret"])
