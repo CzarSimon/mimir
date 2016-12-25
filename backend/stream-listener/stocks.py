@@ -1,9 +1,7 @@
-import sys, json, time, threading, requests, communication as comm
+import json, time, threading, requests, communication as comm
 from urlparse import urlparse
 from config import APP_SERVER, NEWS_SERVER, forbidden_domains
-sys.path.append("..")
-
-from database import manager as db
+import db
 
 def get_stocks_info():
     url = "".join([APP_SERVER["ADDRESS"], APP_SERVER["routes"]["STOCKLIST"]])

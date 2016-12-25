@@ -2,13 +2,15 @@ import sys
 import psycopg2
 from datetime import datetime
 from datetime import date
-from credentials import database
-sys.path.append("..")
+from config import database
 
-print "usring manager"
 conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(database["HOST"], database["NAME"], database["USER"], database["PASSWORD"])
-print conn_string
-conn = psycopg2.connect(conn_string)
+try:
+    print conn_string
+    conn = psycopg2.connect(conn_string)
+except Exception as e:
+    print "Db connedction failed: " + str(e)
+    sys.exit(1)
 
 def closeDatabase():
     conn.close()
