@@ -1,22 +1,30 @@
-import sys, time, schedule, calc, db
+import sys
+import time
+import schedule
+import calc
+import db
 from config import service_name, timimg
 
+
 def main():
-    print "Running {}".format(service_name)
+    print("Running {}".format(service_name))
     try:
         tickers = _get_unique_tickers()
         _run_service(tickers)
     except KeyboardInterrupt as e:
         db.close_connection()
-        print " Exiting"
+        print(" Exiting")
         sys.exit(0)
 
+
 def _run_service(tickers):
-    calc.retrive_and_calc(tickers) # For testing imidiate result
-    schedule.every().day.at(timimg["EXEC_TIME"]).do(calc.retrive_and_calc, tickers)
+    calc.retrive_and_calc(tickers)  # For testing imidiate result
+    exec_time = timimg["EXEC_TIME"]
+    schedule.every().day.at(exec_time).do(calc.retrive_and_calc, tickers)
     while True:
         schedule.run_pending()
         time.sleep(timimg["SLEEP"])
+
 
 def _get_unique_tickers():
     db_result = db.get_unique_tickers()
@@ -25,9 +33,11 @@ def _get_unique_tickers():
     else:
         sys.exit(1)
 
+
 def _format_ticker(ticker):
     return ticker
-    #return ticker.replace("$", "")
+    # return ticker.replace("$", "")
+
 
 if __name__ == '__main__':
     main()

@@ -14,15 +14,6 @@ const r = require('rethinkdb')
     , mapKeys = require('lodash')['mapKeys']
     , { dayType, nowUTC } = require('./helper-methods');
 
-/* ---- Public API ---- */
-
-module.exports = {
-  search_stocks,
-  fetch_stock_data,
-  insert_stock_data,
-  get_all_stocks,
-};
-
 /* ---- API implementation ---- */
 
 const fetch_stock_data = (tickers, conn, callback) => {
@@ -75,6 +66,15 @@ const get_all_stocks = (conn, callback) => {
     })
   });
 }
+
+/* ---- Public API ---- */
+
+module.exports = {
+  search_stocks,
+  fetch_stock_data,
+  insert_stock_data,
+  get_all_stocks
+};
 
 /* ---- Private functions ---- */
 

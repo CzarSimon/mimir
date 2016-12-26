@@ -7,7 +7,7 @@
 
 const events = require('./events')
     , database = require('./database')
-    , helper_methods = require('./helperMethods')
+    , { nowUTC } = require('./helper-methods')
     , config = require('../config')
     , request = require('request')
     , _ = require('lodash');
@@ -74,7 +74,7 @@ module.exports = {
       if (err) {
         console.log("In update stocklist:", err.message);
       } else {
-        sockets.emit(events.UPDATE_STOCKLIST, { list: res, date: helper_methods.getDate() })
+        sockets.emit(events.UPDATE_STOCKLIST, { list: res, date: nowUTC })
       }
     });
   }

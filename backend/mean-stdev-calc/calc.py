@@ -1,8 +1,14 @@
-import db, math, time, sys, json, req
+import db
+import math
+import time
+import sys
+import json
+import req
 import numpy as np
 from datetime import datetime, date
 from collections import Counter
 from config import reciving_server
+
 
 def retrive_and_calc(tickers):
     result = {}
@@ -12,13 +18,15 @@ def retrive_and_calc(tickers):
             timestamps = _format_timestamps(db_result["data"])
             result[ticker.replace("$", "")] = _filter_and_calc(timestamps, ticker)
         else:
-            print db_result["data"]
+            print(db_result["data"])
     _send_result(result)
+
 
 def _format_timestamps(timestamps):
     return map(lambda row: datetime.strftime(row[0], "%Y-%m-%d:%H"), timestamps)
 
-#Needs data needs ticker as key
+
+# Needs data needs ticker as key
 def _filter_and_calc(timestamps, ticker):
     result = {"mean": {}, "stdev": {}}
     filtered_timestamps = _separate_busdays(timestamps)
@@ -28,10 +36,12 @@ def _filter_and_calc(timestamps, ticker):
         result["mean"][key], result["stdev"][key] = _calc_mean_stdev(hourly_volumes)
     return result
 
+
 def _calc_mean_stdev(hourly_volumes):
     mean_list = map(lambda volumes: round(np.mean(volumes), 2), hourly_volumes)
     stdev_list = map(lambda volumes: round(np.std(volumes), 2), hourly_volumes)
     return mean_list, stdev_list
+
 
 def _reduce_by_day(volume_day_hour, no_days):
     hourly_volumes = [0] * 24
@@ -41,6 +51,7 @@ def _reduce_by_day(volume_day_hour, no_days):
         hourly_volumes[hour] = _add_missing_days(map(lambda item: float(item[1]), temp), no_days)
     return hourly_volumes
 
+
 def _add_missing_days(volume_list, no_days):
     list_length = len(volume_list)
     if list_length < no_days:
@@ -48,17 +59,21 @@ def _add_missing_days(volume_list, no_days):
     else:
         return volume_list
 
+
 def _separate_busdays(timestamps):
     busdays = filter(lambda date_str: _is_busday(date_str), timestamps)
     weekdays = filter(lambda date_str: not _is_busday(date_str), timestamps)
     return {"busdays": busdays, "weekend_days": weekdays}
 
+
 def _reduce_by_hour(timestamps):
     return dict(Counter(timestamps))
+
 
 def _is_busday(date_str):
     dates = [date_str.split(":")[0]]
     return np.is_busday(dates)[0]
+
 
 def _calc_days_meassured(ticker):
     db_result = db.get_first_day_stored(ticker)
@@ -69,8 +84,10 @@ def _calc_days_meassured(ticker):
         all_days = (today - start_date).days + 1
         return {"busdays": bus_days, "weekend_days": (all_days - bus_days)}
 
+
 def _datetime_to_date(dt):
     return date(dt.year, dt.month, dt.day)
+
 
 def _send_result(result):
     print result
