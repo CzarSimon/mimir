@@ -23,7 +23,8 @@ const fetch_stock_data = (tickers, conn, callback) => {
     const dt = dayType();
     const hour = nowUTC().getHours();
     res.toArray((err, res) => {
-      callback(err, _.mapKeys(_pluck_stats(res, dt, hour), val => val.ticker));
+      const trimed_data = _.map(res, stock_data => _pluck_stats(stock_data, dt, hour))
+      callback(err, _.mapKeys(trimed_data, val => val.ticker));
     });
   });
 }
@@ -78,10 +79,12 @@ module.exports = {
 
 /* ---- Private functions ---- */
 
-const _pluck_stats = (res, day_type, hour) => Object.assign({}, res, {
-  stdev: res.stdev[day_type][hour],
-  mean: res.mean[day_type][hour]
-});
+const _pluck_stats = (data, day_type, hour) => {
+  return Object.assign({}, data, {
+    stdev: data.stdev[day_type][hour],
+    mean: data.mean[day_type][hour]
+  });
+}
 
 const _format_data = (data) => (
   {

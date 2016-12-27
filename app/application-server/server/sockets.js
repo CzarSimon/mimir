@@ -43,6 +43,7 @@ module.exports = {
       if (user_tickers.length) {
         database.fetch_stock_data(user_tickers, conn, (err, res) => {
           if (err) {
+            console.log(events.TWITTER_DATA_FAILURE);
             socket.emit(events.TWITTER_DATA_FAILURE, { data: null, error: err.message });
           } else {
             socket.emit(events.DISPATCH_TWITTER_DATA, { data: res, error: null });

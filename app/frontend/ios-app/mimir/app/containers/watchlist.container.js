@@ -35,7 +35,7 @@ class WatchlistContainer extends Component {
     });
     setInterval(() => {
       update_stock_data(this.props.state.user.tickers);
-    }, 30000);
+    }, 300000); // set this to 30000 (i.e. 30 s. before changing to relese)
   }
 
   componentWillReceiveProps(next_props) {
@@ -49,6 +49,7 @@ class WatchlistContainer extends Component {
         fetch_twitter_data(next_user, socket);
       });
     } else if (user.loaded && !array_equals(next_user.tickers, user.tickers)) {
+      // This happens when the user has user has added or remove a ticker
       const { id, tickers } = next_user;
       console.log(tickers);
       persist_object("user", { id, tickers });

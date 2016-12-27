@@ -60,6 +60,9 @@ app.post('/tweet_volumes', (req, res) => {
 //No need for real time updateing socket does not nees to be involved
 app.post('/mean_and_stdev', (req, res) => routes.update_stock_stats(req, res, app._rdb_conn));
 
+//app.get('/get_stock_data', (req,res) => routes.get_stock_data(req, res, app._rdb_conn));
+
+
 const start_express = (connection) => {
   app._rdb_conn = connection;
   server.listen(config.express.port, () => {
