@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: font.h3,
     color: color.black,
-    fontFamily: font.type.sans.normal
+    fontFamily: font.type.sans.bold
   },
   ticker: {
     color: color.grey.dark,

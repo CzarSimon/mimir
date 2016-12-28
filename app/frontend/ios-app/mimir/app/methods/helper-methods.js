@@ -11,6 +11,14 @@ export const array_equals = (a1, a2) => {
   return true;
 }
 
+export const is_positive = (change_str) => {
+  return (_.startsWith(change_str, "-")) ? false : true
+}
+
+export const format_price_change = (change) => {
+  return (is_positive(change) ? "+" : "") + round(change).toString() + "%";
+}
+
 export const round = (number, decimals = 2) => {
   return parseFloat(number).toFixed(decimals);
 }
@@ -21,10 +29,11 @@ export const format_name = (name, forbidden = ['inc', 'corporation', 'plc']) => 
 
   for (let word of lower_words) {
     if (forbidden.includes(word)) {
-      return _.join(_.slice(words, 0, _.findIndex(word, null, 1) + 1), ' ');
+      const formated_name = _.join(_.slice(words, 0, _.findIndex(word, null, 1) + 1), ' ');
+      return _.replace(formated_name, /,$/, "");
     }
   }
-  return name;
+  return name
 }
 
 export const create_clean_title = (title) => {

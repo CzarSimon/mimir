@@ -2,10 +2,11 @@ export const color = {
   green: '#00BD76',
   red: '#EF472F',
   yellow: '#FFBD55',
-  blue: '#0033CC',
+  blue: '#357ae8',
   black: '#00120B',
   white: '#FFFFFF',
   grey: {
+    app_background: "#F8F8F8",
     background: '#ECEBEB',
     light: '#FAFAFA',
     medium: '#C5C5C5',
@@ -28,9 +29,9 @@ export const font = {
   h1: 28,
   h2: 22,
   h3: 20,
-  h4: 18,
-  h5: 17,
-  text: 16,
+  h4: 19,
+  h5: 18,
+  text: 17,
   mediumBold: '500'
 }
 

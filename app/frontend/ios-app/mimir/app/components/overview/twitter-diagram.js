@@ -40,7 +40,13 @@ export default class TwitterDiagram extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: length.small
+    marginVertical: length.small,
+    marginHorizontal: length.medium,
+    marginBottom: length.small,
+    backgroundColor: color.white,
+    borderWidth: 1,
+    borderColor: color.grey.background,
+    padding: length.small
   },
   volume_change: {
     color: color.red,

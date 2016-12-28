@@ -14,7 +14,8 @@ export default class Description extends Component {
             <Text style={styles.text}>{description}</Text>
           ) : (
             <TouchableHighlight
-              onPress={() => {console.log("Adding a description")}}>
+              onPress={() => {console.log("Adding a description")}}
+              style={styles.button}>
               <Text style={styles.button_text}>Add a description</Text>
             </TouchableHighlight>
           )
@@ -26,12 +27,19 @@ export default class Description extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    marginHorizontal: length.medium,
     marginVertical: length.small,
-    marginRight: length.medium
+    backgroundColor: color.white,
+    borderWidth: 1,
+    borderColor: color.grey.background
   },
   text: {
     fontFamily: font.type.sans.normal,
-    fontSize: font.text
+    fontSize: font.text,
+    padding: length.small
+  },
+  button: {
+    padding: length.small
   },
   button_text: {
     alignSelf: 'center',

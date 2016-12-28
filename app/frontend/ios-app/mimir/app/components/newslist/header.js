@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
   },
   header_text: {
     fontSize: font.h3,
-    fontFamily: font.type.sans.normal
+    fontFamily: font.type.sans.normal,
+    paddingLeft: length.small,
+    color: color.blue
   }
 })

@@ -35,12 +35,12 @@ const styles = StyleSheet.create({
   header_text: {
     fontSize: font.h3,
     fontFamily: font.type.sans.normal,
-    color: color.grey.dark
+    color: color.blue
   },
   button: {
     opacity: 0.5,
     borderWidth: 2,
-    borderColor: color.grey.dark,
+    borderColor: color.blue,
   },
   button_text: {
     flex: 1,
@@ -49,7 +49,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: font.text,
     fontFamily: font.type.sans.normal,
-    color: color.grey.dark,
+    color: color.blue,
     padding: length.mini
   }
 });

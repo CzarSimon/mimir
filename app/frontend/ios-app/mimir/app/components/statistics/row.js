@@ -6,12 +6,13 @@ import { color, length, font } from '../../styles/styles';
 export default class Row extends Component {
   render() {
     const { name, value } = this.props;
-    return (
+    const component = (value !== 'NaN') ? (
       <View style={styles.container}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.value}>{value}</Text>
       </View>
-    );
+    ) : <View />
+    return component;
   }
 }
 
@@ -20,10 +21,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingVertical: length.small,
-    paddingRight: length.medium,
-    borderBottomWidth: 1,
-    borderBottomColor: color.grey.background
+    padding: length.small,
+    marginHorizontal: length.medium,
+    marginBottom: length.mini,
+    borderWidth: 1,
+    backgroundColor: color.white,
+    borderColor: color.grey.background
   },
   value: {
     fontFamily: font.type.sans.bold,

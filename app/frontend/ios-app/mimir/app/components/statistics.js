@@ -43,6 +43,6 @@ const styles = StyleSheet.create({
   container: {
     alignItems: 'stretch',
     justifyContent: 'flex-start',
-    marginLeft: length.medium
+    marginBottom: length.button + length.medium
   }
 })

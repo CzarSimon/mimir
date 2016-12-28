@@ -44,12 +44,13 @@ const styles = StyleSheet.create({
     marginBottom: length.small,
     borderColor: color.grey.background,
     borderWidth: 1,
-    borderBottomWidth: 2
+    borderBottomWidth: 2,
+    backgroundColor: color.white
   },
   title: {
     fontSize: font.h4,
-    fontFamily: font.type.sans.normal,
-    color: color.blue
+    fontFamily: font.type.sans.bold,
+    color: color.black
   },
   subject_line: {
     fontSize: font.text,

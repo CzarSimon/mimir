@@ -23,7 +23,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    marginLeft: length.medium
+    justifyContent: 'flex-start'
   }
 })

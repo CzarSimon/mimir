@@ -39,7 +39,9 @@ const styles = StyleSheet.create({
     borderColor: color.grey.background,
     padding: length.small,
     marginRight: length.medium,
-    borderWidth: 1
+    borderWidth: 1,
+    backgroundColor: color.white,
+    marginBottom: length.mini
   },
   name_info: {
     flex: 3,

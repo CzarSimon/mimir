@@ -2,6 +2,7 @@
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView } from 'react-native';
+import { color, length } from '../styles/styles';
 import Header from './newslist/header';
 import NewsCard from './newslist/news-card';
 import NoNews from './newslist/no-news';
@@ -29,6 +30,7 @@ export default class Newslist extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginBottom: length.button + length.medium
   }
 })

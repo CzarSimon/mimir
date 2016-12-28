@@ -2,7 +2,6 @@ from hashlib import md5
 import json
 from ranker import calc_subject_scores as score
 import scraper
-import sys
 from sys import argv
 
 
@@ -39,4 +38,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    sys.exit(0)

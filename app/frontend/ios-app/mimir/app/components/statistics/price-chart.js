@@ -11,6 +11,7 @@ export default class PriceChart extends Component {
     const data = reverse(map(historical_data, (obj) => [obj.Date, obj.Adj_Close]))
     return (
       <View style={styles.container}>
+        <Text style={styles.chart_ledgend}>Price chart (3M)</Text>
         <Chart
           style={styles.chart}
           data={data}
@@ -35,12 +36,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'stretch',
     backgroundColor: color.white,
-    marginVertical: length.mini,
-    paddingLeft: length.mini,
-    paddingVertical: length.medium
+    marginVertical: length.small,
+    margin: length.medium,
+    borderColor: color.grey.background,
+    borderWidth: 1
+  },
+  chart_ledgend: {
+    marginTop: length.small,
+    marginLeft: length.medium,
+    fontFamily: font.type.sans.bold,
+    fontSize: font.h4
   },
   chart: {
-    marginRight: length.medium,
-    height: 1.5 * length.navbar
+    padding: length.small,
+    paddingVertical: length.medium,
+    height: 1.8 * length.navbar
   }
 })

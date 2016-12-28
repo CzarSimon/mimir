@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
 import { color, length, font } from '../../../styles/styles';
-import { round } from '../../../methods/helper-methods';
+import { round, format_price_change, is_positive } from '../../../methods/helper-methods';
 import { startsWith } from 'lodash';
 
 
@@ -9,10 +9,9 @@ export default class Price extends Component {
   format_change = () => {
     const { change } = this.props;
     if (change) {
-      const is_up = startsWith(change, '+');
       return {
-        change: ((is_up) ? "+" : "") + round(change).toString() + "%",
-        change_style: (is_up) ? styles.price_up : styles.price_down
+        change: format_price_change(change),
+        change_style: (is_positive(change)) ? styles.price_up : styles.price_down
       }
     } else {
       return {
