@@ -28,6 +28,7 @@ export default class Watchlist extends Component {
         <ListView
           dataSource = {user_ticker_list}
           renderHeader = {() => <HeaderContainer />}
+          style={styles.list}
           renderRow = {(stock_data) => {
             if (user.tickers.includes(stock_data.Symbol)) {
               return (
@@ -54,8 +55,10 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'stretch',
     justifyContent: 'center',
-    marginTop: length.navbar,
-    marginBottom: length.medium
+    marginTop: length.navbar
+  },
+  list: {
+    flex: 1
   },
   header: {
     alignSelf: 'flex-start',

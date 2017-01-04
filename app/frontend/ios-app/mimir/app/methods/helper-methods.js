@@ -46,9 +46,12 @@ export const create_clean_title = (title) => {
   return clean_title;
 }
 
-export const create_subject_string = (score_object) => {
+export const create_subject_string = (score_object, max_subjects = 3) => {
   const i_obj = _.invert(score_object);
-  return _.join(_.map(_.orderBy(_.keys(i_obj),'desc'), val => i_obj[val]), ', ');
+  const all_subjects = _.map(_.orderBy(_.keys(i_obj), 'desc'), val => i_obj[val]);
+  const subjects = (all_subjects.length > max_subjects) ? _.take(all_subjects, 3) : all_subjects
+  const subject_string = _.join(subjects, ', ')
+  return (all_subjects.length <= max_subjects) ? subject_string : subject_string + " ..."
 }
 
 export const arr_get_value_by_key = (arr = [], val, key = 'Symbol') => {
