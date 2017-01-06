@@ -6,35 +6,52 @@ import { color, font, length } from '../../styles/styles';
 import { create_subject_string, create_clean_title } from '../../methods/helper-methods';
 import Summary from './news-card/summary';
 import Info from './news-card/info';
+import ArticleButton from './news-card/article-button';
 import SafariView from 'react-native-safari-view';
 
 export default class NewsCard extends Component {
-  handle_click = () => {
-    SafariView.isAvailable()
-    .then(SafariView.show({
-      url: this.props.article_info.url,
-      tintColor: color.blue
-    }))
-    .catch(err => {console.log(err)})
+  constructor(props) {
+    super(props);
+    this.state = {
+      clicked: false
+    }
   }
+
+  handle_click = () => {
+    this.setState({
+      clicked: !this.state.clicked
+    })
+  }
+
+  summary_component = () => {
+    const { summary, twitter_references, timestamp, compound_score, url } = this.props.article_info;
+    if (this.state.clicked) {
+      return <Summary url={url} summary={summary} />
+    } else {
+      return (
+        <Info
+          twitter_references={twitter_references}
+          compound_score={compound_score}
+          timestamp={timestamp}
+        />
+      )
+    }
+  }
+
+  go_to_article = () => {
+    console.log("Clicked go to article button")
+  }
+
   render() {
-    const { title, compound_score, timestamp, twitter_references, summary } = this.props.article_info;
+    const { title, compound_score, timestamp, twitter_references, summary, url } = this.props.article_info;
     const clean_title = create_clean_title(title);
-    const component = (summary) ? <Summary clicked={true} summary={summary} /> :
-    (
-      <Info
-        twitter_references={twitter_references}
-        compound_score={compound_score}
-        timestamp={timestamp}
-      />
-    )
     return (
       <TouchableHighlight
         onPress = {() => this.handle_click()}
         underlayColor = {color.grey.background}>
         <View style={styles.card}>
           <Text style={styles.title}>{clean_title}</Text>
-          {component}
+          {this.summary_component()}
         </View>
       </TouchableHighlight>
     );
