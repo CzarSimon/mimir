@@ -12,7 +12,7 @@ def fetch_page_content(url):
 
 
 def _retrive_content(url):
-    article = Article(url)
+    article = Article(url, MAX_SUMMARY_SENT=3)
     article.download()
     return _parse_text(article)
 

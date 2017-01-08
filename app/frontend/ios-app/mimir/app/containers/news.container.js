@@ -16,9 +16,9 @@ class NewsContainer extends Component {
   }
 
   render() {
-    const { navigation, news }  = this.props.state
-        , company_news = news[navigation.active_ticker]
-        , component = (company_news) ? (<Newslist news={company_news} />) : (<Loading />);
+    const { navigation, news }  = this.props.state;
+    const company_news = news[navigation.active_ticker];
+    const component = (company_news) ? (<Newslist news={company_news} />) : (<Loading />);
     return component;
   }
 }
