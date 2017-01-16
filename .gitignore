@@ -19,6 +19,6 @@ config.js
 node_modules/
 package.json
 server.js
-server/
+backend/webscraper/server/
 db-backups/
 docker_commands.txt
