@@ -45,6 +45,20 @@ def insert_tweet(tweetId, userId, date, tweet, ticker, lang, followers):
         c.close()
         return True
 
+
+def insert_untracked(tweet_id, ticker, timestamp):
+    untracked_record = (tweet_id, ticker, timestamp)
+    c = conn.cursor()
+    try:
+        c.execute("INSERT INTO untracked_tickers (id, ticker, timestamp) VALUES (%s, %s, %s)", untracked_record)
+        conn.commit()
+    except Exception as e:
+        print(e)
+        conn.rollback()
+    finally:
+        c.close()
+
+
 def addAlias(alias, ticker):
     c = conn.cursor()
     newAlias = (alias, ticker)
