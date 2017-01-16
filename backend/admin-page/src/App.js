@@ -10,9 +10,8 @@ import createLogger from 'redux-logger';
 
 import * as reducers from './reducers';
 import TrackedStocks from './components/tracked-stocks';
-import UntrackedTickers from './components/untracked-tickers';
+import UntrackedTickersContainer from './containers/untracked-tickers';
 import UntrackedInfo from './components/untracked-info';
-//import './App.css';
 
 
 const logger = createLogger();
@@ -33,7 +32,7 @@ export default class App extends Component {
         <Router history={history}>
           <Route path="/" component={TrackedStocks} />
           <Route path="/tracked-stocks" component={TrackedStocks} />
-          <Route path="/untracked-tickers" component={UntrackedTickers} />
+          <Route path="/untracked-tickers" component={UntrackedTickersContainer} />
           <Route path="/ticker/:tickerName" component={UntrackedInfo} />
         </Router>
       </Provider>
