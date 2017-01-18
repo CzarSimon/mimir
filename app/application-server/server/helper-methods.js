@@ -1,13 +1,7 @@
 'use strict'
+const _ = require('lodash');
 
-const parseStockList = (dict) => {
-  let list = [];
-  for (let key in dict) {
-    if (!dict.hasOwnProperty(key)) continue;
-    list.push(dict[key]);
-  }
-  return list;
-}
+const parseStockList = (dict) => _.values(dict)
 
 const nowUTC = () => new Date(new Date().toUTCString().substr(0,25));
 
