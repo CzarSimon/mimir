@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchUntrackedTickers } from '../actions/tickers-actions';
-
+import _ from 'lodash';
 import UntrackedTickers from '../components/untracked-tickers';
 
 class UntrackedTickersContainer extends Component {
@@ -12,8 +12,9 @@ class UntrackedTickersContainer extends Component {
 
   render() {
     const { data, loaded } = this.props.state.tickers;
+    console.log('data', data);
     return (
-      <UntrackedTickers tickers={data} loaded={loaded}/>
+      <UntrackedTickers tickers={_.values(data)} loaded={loaded}/>
     )
   }
 }

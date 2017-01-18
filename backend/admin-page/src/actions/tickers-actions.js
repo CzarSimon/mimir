@@ -14,3 +14,11 @@ export const fetchUntrackedTickers = () => {
     .catch(err => console.log("Error in fetch tickers: ", err))
   }
 }
+
+export const reciveTcikerDescription =
+  createAction(types.RECIVE_TICKER_DESCRIPTION, (ticker, description) => {
+    return {
+      ticker,
+      description
+    }
+  })

@@ -9,7 +9,8 @@ const styles = {
     float: 'left',
     backgroundColor: color.blue,
     color: color.white,
-    marginRight: length.large
+    marginRight: length.large,
+    position: 'fixed'
   },
   list: {
     marginTop: length.large,

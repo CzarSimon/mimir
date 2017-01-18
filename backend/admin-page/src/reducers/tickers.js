@@ -1,8 +1,9 @@
 import * as types from '../actions/action-types';
 import { filter } from 'lodash';
+import { objectArrayToObject } from '../methods/helper-methods';
 
 const initalState = {
-  data: [],
+  data: {},
   loaded: false
 }
 
@@ -11,9 +12,23 @@ const tickers = (state = initalState, action = {}) => {
     case types.RECIVE_UNTRACKED_TICKERS:
       return {
         ...state,
-        data: action.payload.tickers,
+        data: {
+          ...state.data,
+          ...objectArrayToObject(action.payload.tickers, 'Name')
+        },
         loaded: true
       };
+    case types.RECIVE_TICKER_DESCRIPTION:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [action.payload.ticker]: {
+            ...state.data[action.payload.ticker],
+            description: action.payload.description
+          }
+        }
+      }
     case types.START_TRACKING_TICKER:
       return {
         ...state,
