@@ -18,14 +18,17 @@ const tickers = (state = initalState, action = {}) => {
         },
         loaded: true
       };
-    case types.RECIVE_TICKER_DESCRIPTION:
+    case types.RECIVE_TICKER_INFO:
+      const { ticker, description, companyName, imageUrl } = action.payload;
       return {
         ...state,
         data: {
           ...state.data,
-          [action.payload.ticker]: {
-            ...state.data[action.payload.ticker],
-            description: action.payload.description
+          [ticker]: {
+            ...state.data[ticker],
+            description,
+            companyName,
+            imageUrl
           }
         }
       }

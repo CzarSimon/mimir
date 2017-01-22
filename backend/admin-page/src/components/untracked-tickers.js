@@ -6,7 +6,6 @@ import TickerList from './untracked-tickers/ticker-list';
 export default class UntrackedTickers extends Component {
   render() {
     const { tickers, loaded } = this.props;
-    console.log('tickers', tickers);
     const list = (loaded) ? <TickerList tickers={tickers}/> : <p>Loading...</p>
     return (
       <div className='fullpage'>

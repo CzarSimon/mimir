@@ -12,7 +12,6 @@ class UntrackedTickersContainer extends Component {
 
   render() {
     const { data, loaded } = this.props.state.tickers;
-    console.log('data', data);
     return (
       <UntrackedTickers tickers={_.values(data)} loaded={loaded}/>
     )

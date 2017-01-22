@@ -1,11 +1,16 @@
 import React, { Component } from 'react';
 import MainMenu from './main-menu';
 import InfoName from './util/info-name';
-import { length } from '../styles/styles';
+import { length, color } from '../styles/styles';
 
 const styles = {
+  content: {
+    paddingTop: length.large
+  },
   card: {
-    paddingTop: length.medium
+    padding: length.large,
+    backgroundColor: color.white,
+    marginRight: '4vw'
   },
   text: {
     paddingBottom: length.mini
@@ -14,16 +19,18 @@ const styles = {
 
 export default class UntrackedInfo extends Component {
   render() {
-    const description = "This is the description of the company that has this ticker"
+    const { companyName, tickerName, description } = this.props;
     return (
       <div className='fullpage'>
         <MainMenu />
-        <div className='content untracked-info' style={styles.card}>
-          <InfoName name={"Stock name"} />
-          <p style={styles.text}>{this.props.params.tickerName}</p>
-          <h3 style={styles.text}>Description</h3>
-          <p style={styles.text}>{description}</p>
-          <button>Track ticker</button>
+        <div className='content' style={styles.content}>
+          <div className='card' style={styles.card}>
+            <InfoName name={companyName} />
+            <p style={styles.text}>{tickerName}</p>
+            <h3 style={styles.text}>Description</h3>
+            <p style={styles.text}>{description}</p>
+            <button>Track ticker</button>
+          </div>
         </div>
       </div>
     )

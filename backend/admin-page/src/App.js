@@ -5,13 +5,11 @@ import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
-// have to install redux-thunk and react-redux!!!
-
 
 import * as reducers from './reducers';
 import TrackedStocks from './components/tracked-stocks';
 import UntrackedTickersContainer from './containers/untracked-tickers';
-import UntrackedInfo from './components/untracked-info';
+import UntrackedInfoContainer from './containers/untracked-info';
 
 
 const logger = createLogger();
@@ -26,14 +24,13 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 export default class App extends Component {
   render() {
-
     return (
       <Provider store={store}>
         <Router history={history}>
           <Route path="/" component={TrackedStocks} />
           <Route path="/tracked-stocks" component={TrackedStocks} />
           <Route path="/untracked-tickers" component={UntrackedTickersContainer} />
-          <Route path="/ticker/:tickerName" component={UntrackedInfo} />
+          <Route path="/ticker/:tickerName" component={UntrackedInfoContainer} />
         </Router>
       </Provider>
     );
