@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import MainMenu from './main-menu';
 import InfoName from './util/info-name';
+import TrackButtonContainer from '../containers/untracked-info/track-button';
 import { length, color } from '../styles/styles';
 
 const styles = {
@@ -14,6 +15,9 @@ const styles = {
   },
   text: {
     paddingBottom: length.mini
+  },
+  buttonGroup: {
+    marginTop: length.medium
   }
 }
 
@@ -29,7 +33,9 @@ export default class UntrackedInfo extends Component {
             <p style={styles.text}>{tickerName}</p>
             <h3 style={styles.text}>Description</h3>
             <p style={styles.text}>{description}</p>
-            <button>Track ticker</button>
+            <div style={styles.buttonGroup}>
+              <TrackButtonContainer {...this.props}/>
+            </div>
           </div>
         </div>
       </div>

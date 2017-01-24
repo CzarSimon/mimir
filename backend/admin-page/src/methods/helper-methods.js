@@ -2,6 +2,18 @@ import _ from 'lodash'
 import { companyTerms } from '../config'
 
 
+export const createHeaders = () => {
+  return new Headers()
+}
+
+
+export const createHttpObject = (method, payload) => {
+  const body = JSON.stringify(payload)
+  const headers = createHeaders()
+  return { method, headers, body }
+}
+
+
 export const portraitMode = () => {
   const { innerHeight, innerWidth } = window
   return innerHeight > innerWidth

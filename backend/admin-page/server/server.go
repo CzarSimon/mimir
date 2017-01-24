@@ -21,7 +21,8 @@ func main() {
 
   /* ---- Routes ---- */
   http.HandleFunc("/untracked-tickers", env.sendTickers);
-
+  http.HandleFunc("/track-ticker", env.trackTicker)
+  
   /* ---- Starting Server ---- */
   fmt.Println("Starting server on port " + config.server.port);
   err := http.ListenAndServe(":" + config.server.port, nil)

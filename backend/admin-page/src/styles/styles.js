@@ -1,6 +1,11 @@
 export const font = {
   type: {
     sans: 'Lato'
+  },
+  size: {
+    small: '15px',
+    medium: '18px',
+    large: '25px'
   }
 }
 

@@ -1,5 +1,4 @@
 import * as types from '../actions/action-types';
-import { filter } from 'lodash';
 import { objectArrayToObject } from '../methods/helper-methods';
 
 const initalState = {
@@ -33,12 +32,7 @@ const tickers = (state = initalState, action = {}) => {
         }
       }
     case types.START_TRACKING_TICKER:
-      return {
-        ...state,
-        data: filter(state.data, ticker => (
-          ticker.tickerName !== action.payload.ticker
-        ))
-      };
+      return state;
     default:
       return state;
   }

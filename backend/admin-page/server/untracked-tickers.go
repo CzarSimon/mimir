@@ -5,27 +5,23 @@ import (
   "encoding/json"
   "net/http"
   "log"
+  "io"
+  "fmt"
 )
+
 
 type ticker struct {
   Name        string
   Observances int64
 }
 
-func mockTickers() []ticker {
-  pg := ticker{"PG", 435};
-  nvda := ticker{"NVDA", 332}
-  gm := ticker{"GM", 78}
-  crm := ticker{"CRM", 547}
-  ibm := ticker{"IBM", 107}
-  return []ticker{pg, nvda, gm, crm, ibm}
-}
 
 func checkErr(err error) {
   if (err != nil) {
     log.Fatal(err)
   }
 }
+
 
 func getUntrackedTickers(pg *sql.DB) []ticker {
   rows, err := pg.Query("SELECT ticker, COUNT(*) FROM untracked_tickers GROUP BY ticker ORDER BY COUNT(*) DESC")
@@ -42,16 +38,35 @@ func getUntrackedTickers(pg *sql.DB) []ticker {
   return tickers
 }
 
+
 func (env *Env) sendTickers(w http.ResponseWriter, r *http.Request) {
   tickers := getUntrackedTickers(env.pg);
-
   js, err := json.Marshal(tickers);
   if (err != nil) {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   }
-
-  w.Header().Set("Content-Type", "application/xml")
+  w.Header().Set("Content-Type", "application/json")
   w.Header().Set("Access-Control-Allow-Origin", "*")
   w.Write(js)
+}
+
+
+type tickerInfo struct {
+  Ticker, Name, Description, ImageUrl string
+}
+
+
+func (env *Env) trackTicker(w http.ResponseWriter, req *http.Request) {
+  decoder := json.NewDecoder(req.Body)
+  var newTicker tickerInfo
+  if err := decoder.Decode(&newTicker); err != io.EOF {
+    checkErr(err)
+  }
+  defer req.Body.Close()
+  log.Println(newTicker.Ticker, newTicker.Name)
+
+  w.Header().Set("Content-Type", "text/plain")
+  w.Header().Set("Access-Control-Allow-Origin", "*")
+  w.Write([]byte(fmt.Sprintf("%s successfully added", newTicker.Name)))
 }

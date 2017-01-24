@@ -5,7 +5,8 @@ const getStock = require('get-stock');
 import {
   parseCompanyDescription,
   parseCompanyName,
-  parseImageUrl
+  parseImageUrl,
+  createHttpObject
 } from '../methods/helper-methods';
 import { kgKey } from '../config';
 
@@ -16,7 +17,7 @@ export const reciveUntrackedTickers =
 
 export const fetchUntrackedTickers = () => {
   return dispatch => {
-    return fetch("http://localhost:8000/untracked-tickers")
+    return fetch('http://localhost:8000/untracked-tickers')
     .then(res => res.json())
     .then(tickers => dispatch(reciveUntrackedTickers(tickers)))
     .catch(err => console.log("Error in fetch tickers: ", err))
@@ -48,9 +49,21 @@ export const fetchCompanyInfo = (ticker) => {
   return dispatch => {
     return getStock([ticker]).then(res => res.results.Name)
     .then(name => parseCompanyName(name))
-    .then(name => {
-      dispatch(fetchTickerDescription(ticker, name))
-    })
+    .then(name => {dispatch(fetchTickerDescription(ticker, name))})
     .catch(err => console.log("Error in fetch company info:", err))
+  }
+}
+
+
+export const tickerTrackResponse = () =>
+  createAction(types.START_TRACKING_TICKER, () => ({}))
+
+
+export const startTrackingTicker = (ticker, name, description, token) => {
+  const httpObject = createHttpObject("POST", {ticker, name, description, token})
+  console.log(httpObject.body);
+  return dispatch => {
+    return fetch('http://localhost:8000/track-ticker', httpObject)
+    .then(res => {dispatch(tickerTrackResponse())})
   }
 }
