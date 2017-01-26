@@ -16,21 +16,6 @@ type ticker struct {
   Observances int64
 }
 
-func getUntrackedTickers(pg *sql.DB) []ticker {
-  rows, err := pg.Query("SELECT ticker, COUNT(*) FROM untracked_tickers GROUP BY ticker ORDER BY COUNT(*) DESC")
-  checkErr(err)
-  defer rows.Close()
-  tickers := make([]ticker, 0)
-  var tickerName string
-  var observances int64
-  for rows.Next() {
-    err = rows.Scan(&tickerName, &observances)
-    checkErr(err)
-    tickers = append(tickers, ticker{tickerName, observances})
-  }
-  return tickers
-}
-
 func (env *Env) sendTickers(res http.ResponseWriter, r *http.Request) {
   tickers := getUntrackedTickers(env.pg);
   js, err := json.Marshal(tickers);
@@ -58,6 +43,21 @@ func (env *Env) trackTicker(res http.ResponseWriter, req *http.Request) {
     log.Println("No ticker added error:", err.Error())
     jsonStringRes(res, err.Error())
   }
+}
+
+func getUntrackedTickers(pg *sql.DB) []ticker {
+  rows, err := pg.Query("SELECT ticker, COUNT(*) FROM untracked_tickers GROUP BY ticker ORDER BY COUNT(*) DESC")
+  checkErr(err)
+  defer rows.Close()
+  tickers := make([]ticker, 0)
+  var tickerName string
+  var observances int64
+  for rows.Next() {
+    err = rows.Scan(&tickerName, &observances)
+    checkErr(err)
+    tickers = append(tickers, ticker{tickerName, observances})
+  }
+  return tickers
 }
 
 func insertNewTicker(ticker tickerInfo, session *r.Session) error {
