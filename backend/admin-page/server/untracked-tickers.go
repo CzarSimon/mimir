@@ -53,7 +53,7 @@ func (env *Env) sendTickers(w http.ResponseWriter, r *http.Request) {
 
 
 type tickerInfo struct {
-  Ticker, Name, Description, ImageUrl string
+  Ticker, Name, Description, Token string
 }
 
 
@@ -64,7 +64,7 @@ func (env *Env) trackTicker(w http.ResponseWriter, req *http.Request) {
     checkErr(err)
   }
   defer req.Body.Close()
-  log.Println(newTicker.Ticker, newTicker.Name)
+  log.Println("Storing ticker", newTicker.Ticker, "in rdb database")
 
   w.Header().Set("Content-Type", "text/plain")
   w.Header().Set("Access-Control-Allow-Origin", "*")

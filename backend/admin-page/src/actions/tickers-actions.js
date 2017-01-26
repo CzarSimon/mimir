@@ -60,6 +60,7 @@ export const tickerTrackResponse = () =>
 
 
 export const startTrackingTicker = (ticker, name, description, token) => {
+  token = "asfklaj"
   const httpObject = createHttpObject("POST", {ticker, name, description, token})
   console.log(httpObject.body);
   return dispatch => {
