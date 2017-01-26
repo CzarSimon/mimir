@@ -24,6 +24,8 @@ class UntrackedInfoContainer extends Component {
         <UntrackedInfo
           companyName={data.companyName}
           tickerName={data.Name}
+          imageUrl={data.imageUrl}
+          website={data.website}
           description={(data.description) ? data.description : ""}
           />
       )

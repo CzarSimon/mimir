@@ -10,7 +10,7 @@ import (
 type Env struct{
   pg    *sql.DB
   rdb   *r.Session
-  token string
+  auth  authConfig
 }
 
 func main() {
@@ -20,12 +20,13 @@ func main() {
   env := &Env{
     pg: connectPostgres(config.pg),
     rdb: connectRethink(config.rdb),
-    token: generateToken(),
+    auth: config.auth,
   }
   defer env.pg.Close()
   defer env.rdb.Close()
 
   /* ---- Routes ---- */
+  http.HandleFunc("/login", env.login)
   http.HandleFunc("/untracked-tickers", env.sendTickers)
   http.HandleFunc("/track-ticker", env.trackTicker)
 

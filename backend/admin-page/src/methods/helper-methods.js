@@ -2,14 +2,15 @@ import _ from 'lodash'
 import { companyTerms } from '../config'
 
 
-export const createHeaders = () => {
-  return new Headers()
+export const createHeaders = token => {
+  const headers = new Headers()
+  headers.append("Authorization", "Token " + token)
 }
 
 
-export const createHttpObject = (method, payload) => {
+export const createHttpObject = (method, token, payload) => {
   const body = JSON.stringify(payload)
-  const headers = createHeaders()
+  const headers = createHeaders(token)
   return { method, headers, body }
 }
 
@@ -56,6 +57,16 @@ export const parseImageUrl = (err, res) => {
   const { error, result } = handleKGResponse(err, res)
   if (!error) {
     return (result.image) ? result.image.contentUrl : ""
+  } else {
+    return ""
+  }
+}
+
+
+export const parseWebsite = (err, res) => {
+  const { error, result } = handleKGResponse(err, res)
+  if (!error) {
+    return (result) ? result.url : ""
   } else {
     return ""
   }

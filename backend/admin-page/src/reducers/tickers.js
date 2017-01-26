@@ -18,7 +18,7 @@ const tickers = (state = initalState, action = {}) => {
         loaded: true
       };
     case types.RECIVE_TICKER_INFO:
-      const { ticker, description, companyName, imageUrl } = action.payload;
+      const { ticker, description, companyName, imageUrl, website } = action.payload;
       return {
         ...state,
         data: {
@@ -27,7 +27,8 @@ const tickers = (state = initalState, action = {}) => {
             ...state.data[ticker],
             description,
             companyName,
-            imageUrl
+            imageUrl,
+            website
           }
         }
       }
