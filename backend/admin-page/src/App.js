@@ -10,6 +10,7 @@ import * as reducers from './reducers';
 import TrackedStocks from './components/tracked-stocks';
 import UntrackedTickersContainer from './containers/untracked-tickers';
 import UntrackedInfoContainer from './containers/untracked-info';
+import LoginContainer from './containers/login';
 
 
 const logger = createLogger();
@@ -23,14 +24,22 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 
 export default class App extends Component {
+  requireAuth = () => {
+    const { user } = store.getState()
+    if (!user.token) {
+      browserHistory.push("/login")
+    }
+  }
+
   render() {
     return (
       <Provider store={store}>
         <Router history={history}>
-          <Route path="/" component={TrackedStocks} />
-          <Route path="/tracked-stocks" component={TrackedStocks} />
-          <Route path="/untracked-tickers" component={UntrackedTickersContainer} />
-          <Route path="/ticker/:tickerName" component={UntrackedInfoContainer} />
+          <Route path="/" onEnter={this.requireAuth} component={TrackedStocks} />
+          <Route path="/login" component={LoginContainer} />
+          <Route path="/tracked-stocks" onEnter={this.requireAuth} component={TrackedStocks} />
+          <Route path="/untracked-tickers" onEnter={this.requireAuth} component={UntrackedTickersContainer} />
+          <Route path="/ticker/:tickerName" onEnter={this.requireAuth} component={UntrackedInfoContainer} />
         </Router>
       </Provider>
     );

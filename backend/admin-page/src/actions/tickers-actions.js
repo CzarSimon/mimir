@@ -65,8 +65,7 @@ export const tickerTrackResponse = () =>
 
 export const startTrackingTicker =
 (ticker, name, description, imageUrl, website, token) => {
-  token = "random"
-  const body = {ticker, name, description, imageUrl, website}
+  const body = {ticker, name, description, imageUrl, website, token}
   const httpObject = createHttpObject("POST", token, body)
   return dispatch => {
     return fetch('http://localhost:8000/track-ticker', httpObject)

@@ -8,9 +8,10 @@ const initalState = {
 const user = (state = initalState, action = {}) => {
   switch (action.type) {
     case types.RECIVE_USER_CREDENTIALS:
+      console.log(action.payload)
       return {
         ...state,
-        ...action.payload.user
+        ...action.payload
       };
     case types.LOG_OUT:
       return initalState;

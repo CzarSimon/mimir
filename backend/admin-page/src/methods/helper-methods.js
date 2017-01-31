@@ -3,8 +3,7 @@ import { companyTerms } from '../config'
 
 
 export const createHeaders = token => {
-  const headers = new Headers()
-  headers.append("Authorization", "Token " + token)
+  return new Headers()
 }
 
 
