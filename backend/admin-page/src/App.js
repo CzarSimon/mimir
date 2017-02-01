@@ -10,7 +10,7 @@ import * as reducers from './reducers';
 import TrackedStocks from './components/tracked-stocks';
 import UntrackedTickersContainer from './containers/untracked-tickers';
 import UntrackedInfoContainer from './containers/untracked-info';
-import LoginContainer from './containers/login';
+import LoginContainer from './login/containers/login';
 
 
 const logger = createLogger();

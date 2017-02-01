@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { loginUser } from '../actions/user-actions';
-import Login from '../login/components/login';
+import { loginUser } from '../../actions/user-actions';
+import Login from '../components/login';
 
 class LoginContainer extends Component {
   loginSubmit = (username, password) => {
