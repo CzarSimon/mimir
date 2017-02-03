@@ -9,16 +9,17 @@ import {
   parseWebsite,
   createHttpObject
 } from '../methods/helper-methods';
-import { kgKey } from '../config';
+import { kgKey, baseUrl } from '../config';
 
 export const reciveUntrackedTickers =
   createAction(types.RECIVE_UNTRACKED_TICKERS, tickers => (
     { tickers }
   ))
 
-export const fetchUntrackedTickers = () => {
+export const fetchUntrackedTickers = token => {
+  const httpObject = createHttpObject('GET', token)
   return dispatch => {
-    return fetch('http://localhost:8000/untracked-tickers')
+    return fetch(`${baseUrl}/untracked-tickers`, httpObject)
     .then(res => res.json())
     .then(tickers => dispatch(reciveUntrackedTickers(tickers)))
     .catch(err => console.log("Error in fetch tickers: ", err))
@@ -68,7 +69,7 @@ export const startTrackingTicker =
   const body = {ticker, name, description, imageUrl, website, token}
   const httpObject = createHttpObject("POST", token, body)
   return dispatch => {
-    return fetch('http://localhost:8000/track-ticker', httpObject)
+    return fetch(`${baseUrl}/track-ticker`, httpObject)
     .then(res => res.json())
     .then(json => {
       console.log(json);

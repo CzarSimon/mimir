@@ -60,6 +60,7 @@ export default class Login extends Component {
             onChange={this.usernameChange}
             style={styles.input}
             className='card'
+            autoFocus
           />
           <input
             type="password"

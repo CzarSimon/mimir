@@ -1,6 +1,7 @@
 package main
 
 import (
+  "flag"
   "log"
   "net/http"
   "database/sql"
@@ -8,19 +9,24 @@ import (
 )
 
 type Env struct{
-  pg    *sql.DB
-  rdb   *r.Session
-  auth  authConfig
+  pg      *sql.DB
+  rdb     *r.Session
+  auth    authConfig
+  devMode bool
 }
 
 func main() {
-  config := getConfig()
+  var devMode bool
+  flag.BoolVar(&devMode, "dev", false, "sets development mode")
+  flag.Parse()
+  config := getConfig(devMode)
 
   /* ---- DB setup ---- */
   env := &Env{
     pg: connectPostgres(config.pg),
     rdb: connectRethink(config.rdb),
     auth: config.auth,
+    devMode: config.server.devMode,
   }
   defer env.pg.Close()
   defer env.rdb.Close()
@@ -33,6 +39,7 @@ func main() {
 
   /* ---- Starting Server ---- */
   log.Println("Starting server on port " + config.server.port)
+  log.Println("Serving files from " + config.server.staticFolder)
   err := http.ListenAndServe(":" + config.server.port, nil)
   checkErr(err)
 }

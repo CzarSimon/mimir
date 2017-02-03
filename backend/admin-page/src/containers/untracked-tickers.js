@@ -7,7 +7,8 @@ import UntrackedTickers from '../components/untracked-tickers';
 
 class UntrackedTickersContainer extends Component {
   componentDidMount() {
-    this.props.actions.fetchUntrackedTickers();
+    const { actions, state } = this.props;
+    actions.fetchUntrackedTickers(state.token);
   }
 
   render() {
@@ -21,7 +22,8 @@ class UntrackedTickersContainer extends Component {
 export default connect(
   state => ({
     state: {
-      tickers: state.tickers
+      tickers: state.tickers,
+      token: state.user.token
     }
   }),
   dispatch => ({

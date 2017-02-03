@@ -2,6 +2,7 @@ import * as types from './action-types';
 import { createAction } from 'redux-actions';
 import { browserHistory } from 'react-router';
 import { createHttpObject } from '../methods/helper-methods';
+import { baseUrl } from '../config';
 
 
 export const reciveUserCredentials =
@@ -13,7 +14,7 @@ export const reciveUserCredentials =
 export const loginUser = (user, pwd) => {
   const httpObject = createHttpObject('POST', '', {user, pwd})
   return dispatch => {
-    fetch('http://localhost:8000/login', httpObject)
+    fetch(`${baseUrl}/login`, httpObject)
     .then(res => res.json())
     .then(res => {
       if (res.Token) {

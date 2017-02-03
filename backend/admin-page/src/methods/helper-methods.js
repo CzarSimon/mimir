@@ -3,11 +3,13 @@ import { companyTerms } from '../config'
 
 
 export const createHeaders = token => {
-  return new Headers()
+  return new Headers({
+    "Authorizaton": token
+  })
 }
 
 
-export const createHttpObject = (method, token, payload) => {
+export const createHttpObject = (method, token='', payload=undefined) => {
   const body = JSON.stringify(payload)
   const headers = createHeaders(token)
   return { method, headers, body }

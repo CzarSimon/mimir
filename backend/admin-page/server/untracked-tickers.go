@@ -16,7 +16,10 @@ type ticker struct {
   Observances int64
 }
 
-func (env *Env) sendTickers(res http.ResponseWriter, r *http.Request) {
+func (env *Env) sendTickers(res http.ResponseWriter, req *http.Request) {
+  if env.authenticate(res, req) != nil {
+    return
+  }
   tickers := getUntrackedTickers(env.pg);
   js, err := json.Marshal(tickers);
   if (err != nil) {
@@ -31,6 +34,9 @@ type tickerInfo struct {
 }
 
 func (env *Env) trackTicker(res http.ResponseWriter, req *http.Request) {
+  if env.authenticate(res, req) != nil {
+    return
+  }
   decoder := json.NewDecoder(req.Body)
   var newTicker tickerInfo
   if err := decoder.Decode(&newTicker); err != io.EOF {
