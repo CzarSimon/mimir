@@ -12,7 +12,6 @@ import UntrackedTickersContainer from './containers/untracked-tickers';
 import UntrackedInfoContainer from './containers/untracked-info';
 import LoginContainer from './login/containers/login';
 
-
 const logger = createLogger();
 const createStoreWithMiddleware = applyMiddleware(logger, thunk)(createStore);
 const reducer = combineReducers({

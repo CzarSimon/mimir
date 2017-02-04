@@ -21,7 +21,7 @@ func main() {
   flag.Parse()
   config := getConfig(devMode)
 
-  /* ---- DB setup ---- */
+  /* ---- Environment setup ---- */
   env := &Env{
     pg: connectPostgres(config.pg),
     rdb: connectRethink(config.rdb),
@@ -39,7 +39,6 @@ func main() {
 
   /* ---- Starting Server ---- */
   log.Println("Starting server on port " + config.server.port)
-  log.Println("Serving files from " + config.server.staticFolder)
   err := http.ListenAndServe(":" + config.server.port, nil)
   checkErr(err)
 }

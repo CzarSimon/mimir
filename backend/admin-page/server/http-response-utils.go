@@ -7,7 +7,6 @@ import (
 )
 
 func plainTextRes(res http.ResponseWriter, msg string) {
-  fmt.Println("!!!!! %s", msg)
   res.Header().Set("Content-Type", "text/plain")
   res.Header().Set("Access-Control-Allow-Origin", "*")
   res.Write([]byte(fmt.Sprintf("%x", msg)))

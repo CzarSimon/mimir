@@ -10,6 +10,11 @@ const styles = {
 
 export default class PageTitle extends Component {
   render() {
-    return (<h1 style={styles.text}>{this.props.title}</h1>)
+    const { customStyle, title} = this.props;
+    const styling = {
+      ...styles.text,
+      ...customStyle
+    }
+    return (<h1 style={styling}>{title}</h1>)
   }
 }

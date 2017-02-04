@@ -70,12 +70,15 @@ func insertNewTicker(ticker tickerInfo, session *r.Session) error {
   if tickerStored(ticker.Ticker, session) {
     return errors.New(fmt.Sprintf("Ticker %s already added", ticker.Ticker))
   }
+  stats := emptyStats()
   res, err := r.Table("stocks").Insert(map[string]interface{}{
     "ticker": ticker.Ticker,
     "name": ticker.Name,
     "description": ticker.Description,
     "website": ticker.Website,
     "imageUrl": ticker.ImageUrl,
+    "mean": stats,
+    "stdev": stats,
   }).RunWrite(session)
   if res.Inserted > 0 {
     log.Println("Storing ticker", ticker.Ticker, "in rdb database")
@@ -90,4 +93,12 @@ func tickerStored(ticker string, session *r.Session) bool {
   defer res.Close()
   checkErrNice(err)
   return !res.IsNil()
+}
+
+func emptyStats() map[string]map[int]float64 {
+  stats := make(map[int]float64)
+  allStats := make(map[string]map[int]float64)
+  for i := 0; i < 24; i++ { stats[i] = 0.0 }
+  allStats["busdays"], allStats["weekend_days"] = stats, stats
+  return allStats
 }

@@ -1,11 +1,9 @@
 import _ from 'lodash'
-import { companyTerms } from '../config'
+import { companyTerms, devMode } from '../config'
 
 
 export const createHeaders = token => {
-  return new Headers({
-    "Authorizaton": token
-  })
+  return (!devMode) ? new Headers({"Authorizaton": token}) : new Headers()
 }
 
 
@@ -18,7 +16,7 @@ export const createHttpObject = (method, token='', payload=undefined) => {
 
 export const portraitMode = () => {
   const { innerHeight, innerWidth } = window
-  return innerHeight > innerWidth
+  return innerHeight >= innerWidth
 }
 
 

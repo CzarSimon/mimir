@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import PageTitle from '../../components/util/page-title';
 import { length, color } from '../../styles/styles';
+import { portraitMode } from '../../methods/helper-methods';
 
 const formComponent = {
   width: '100%',
@@ -11,7 +13,7 @@ const formComponent = {
 
 const styles = {
   form: {
-    width: '25vw',
+    width: (!portraitMode()) ? '25vw' : '50vw',
     margin: '25vh auto'
   },
   input: {
@@ -22,6 +24,10 @@ const styles = {
     ...formComponent,
     backgroundColor: color.blue,
     color: color.white,
+  },
+  title: {
+    color: color.blue,
+    textAlign: 'center'
   }
 }
 
@@ -53,6 +59,7 @@ export default class Login extends Component {
     return (
       <div>
         <form onSubmit={this.handleSubmit} style={styles.form}>
+          <PageTitle customStyle={styles.title} title={"mimir admin page"} />
           <input
             type="text"
             value={username}
