@@ -40,8 +40,16 @@ def getAliases():
     aliases = db.queryDatabase('SELECT alias, ticker FROM tickerAliases', True)
     aliDict = {}
     for alias in aliases:
-        aliDict[str(alias[0])] = str(alias[1])
+        aliDict[_add_dollar_tag(str(alias[0]))] = _add_dollar_tag(str(alias[1]))
     return aliDict
+
+
+def _add_dollar_tag(ticker):
+    return "${}".format(ticker)
+
+
+def _remove_dollar_tag(ticker):
+    return ticker.replace("$", "")
 
 
 def record_untracked(tweet_id, ticker, timestamp):
@@ -94,7 +102,7 @@ def store_tweet(data, tickers, aliases):
 
 
 def check_and_store(tweet_id, userId, date, tweet, lang, followers, symbols, tickers, aliases):
-    upper_symbols = map(lambda symbol: "$" + symbol["text"].upper(), symbols)
+    upper_symbols = map(lambda symbol: symbol["text"].upper(), symbols)
     unique_symbols = list(set(upper_symbols))
     for symbol in unique_symbols:
         sym = checkTicker(symbol, tickers, aliases)
@@ -111,12 +119,14 @@ def threadedInsert(tweetId, userId, date, tweet, lang, followers, symbols, ticke
     return True
 
 
-def checkTicker(candidate, tickers, aliases):
+def checkTicker(ticker, tickers, aliases):
+    candidate = _add_dollar_tag(ticker)
     if candidate in tickers:
-        print "In filter: " + candidate
-        return {"success": True, "ticker": candidate}
+        print "In filter: " + ticker
+        return {"success": True, "ticker": ticker}
     elif candidate in aliases:
-        print "In aliases: " + candidate + " treated as " + aliases[candidate]
-        return {"success": True, "ticker": aliases[candidate]}
+        tickerAlias = _remove_dollar_tag(aliases[candidate])
+        print "In aliases: " + ticker + " treated as " + tickerAlias
+        return {"success": True, "ticker": tickerAlias}
     else:
-        return {"success": False, "ticker": candidate}
+        return {"success": False, "ticker": ticker}

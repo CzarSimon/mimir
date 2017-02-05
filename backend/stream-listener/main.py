@@ -39,6 +39,8 @@ def _get_listener():
     ticker_list, stock_querys = stocks.get_stocks_info()
     tickers = set(ticker_list)
     aliases = stocks.getAliases()
+    print(tickers)
+    print(aliases)
     return MyListener(tickers, aliases, stock_querys), ticker_list
 
 def _utcnow():
