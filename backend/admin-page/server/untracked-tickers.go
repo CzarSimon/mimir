@@ -7,6 +7,7 @@ import (
   "fmt"
   "io"
   "log"
+  "time"
   "net/http"
   r "gopkg.in/gorethink/gorethink.v2"
 )
@@ -44,6 +45,7 @@ func (env *Env) trackTicker(res http.ResponseWriter, req *http.Request) {
   }
   defer req.Body.Close()
   if err := insertNewTicker(newTicker, env.rdb); err == nil {
+    insertTickerInPostgres(newTicker, env.pg)
     jsonStringRes(res, fmt.Sprintf("%s successfully added", newTicker.Name))
   } else {
     log.Println("No ticker added error:", err.Error())
@@ -84,6 +86,13 @@ func insertNewTicker(ticker tickerInfo, session *r.Session) error {
     log.Println("Storing ticker", ticker.Ticker, "in rdb database")
   }
   return err
+}
+
+func insertTickerInPostgres(ticker tickerInfo, db *sql.DB) {
+  date := time.Now().UTC().AddDate(0, 0, 1)
+  sqlString := "INSERT INTO stocks(ticker, name, storedat) VALUES ($1,$2,$3)"
+  err := db.QueryRow(sqlString, ticker.Ticker, ticker.Name, date).Scan()
+  checkErrNice(err)
 }
 
 func tickerStored(ticker string, session *r.Session) bool {

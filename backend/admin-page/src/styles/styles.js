@@ -3,9 +3,9 @@ export const font = {
     sans: 'Lato'
   },
   size: {
-    small: '15px',
-    medium: '18px',
-    large: '25px'
+    small: '1.0em',
+    medium: '1.2em',
+    large: '1.5em'
   }
 }
 
@@ -23,6 +23,7 @@ export const color = {
 }
 
 export const length = {
+  tiny: '1px',
   mini: '10px',
   small: '15px',
   medium: '20px',

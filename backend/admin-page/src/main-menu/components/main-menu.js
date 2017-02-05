@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import MenuItem from './main-menu/menu-item';
-import { color, length } from '../styles/styles';
+import MenuItem from './menu-item';
+import { color, length } from '../../styles/styles';
 
 const styles = {
   menu: {
@@ -28,7 +28,7 @@ export default class MainMenu extends Component {
           <MenuItem idName={"home"} path={"/"} name={"admin page"} />
           <MenuItem idName={"tracked-stocks"} path={"/tracked-stocks"} name={"tracked stocks"} />
           <MenuItem idName={"untracked-tickers"} path={"/untracked-tickers"} name={"untracked tickers"} />
-          <li><a id="mimir" href="http://mimirapp.co/">mimir</a></li>
+          <MenuItem idName={"mimirapp"} path={"http://mimirapp.co/"} name={"mimir"} type={"external"}/>
         </ul>
       </div>
     )

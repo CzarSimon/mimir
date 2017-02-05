@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MainMenu from './main-menu';
+import MainMenu from '../main-menu/components/main-menu';
 import PageTitle from './util/page-title';
 import TickerList from './untracked-tickers/ticker-list';
 

@@ -72,7 +72,7 @@ export const startTrackingTicker =
     return fetch(`${baseUrl}/track-ticker`, httpObject)
     .then(res => res.json())
     .then(json => {
-      console.log(json);
+      alert(json.Response)
       dispatch(tickerTrackResponse())
     })
   }

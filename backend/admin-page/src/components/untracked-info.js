@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MainMenu from './main-menu';
+import MainMenu from '../main-menu/components/main-menu';
 import InfoName from './util/info-name';
 import TrackButtonContainer from '../containers/untracked-info/track-button';
 import { length, color } from '../styles/styles';
