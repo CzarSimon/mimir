@@ -14,11 +14,17 @@ const styles = {
 }
 
 export default class TrackButton extends Component {
+  handleClick = event => {
+    const target = event.target
+    setTimeout(() => target.blur(), 100)
+    this.props.handleClick()
+  }
+
   render() {
     return (
       <button
         style={styles.button}
-        onClick={this.props.handleClick}>
+        onClick={this.handleClick}>
         Track Ticker
       </button>
     )

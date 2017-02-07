@@ -7,7 +7,7 @@ import thunk from 'redux-thunk';
 import createLogger from 'redux-logger';
 
 import * as reducers from './reducers';
-import TrackedStocks from './components/tracked-stocks';
+import TrackedStocksContainer from './tracked-stocks/containers/main';
 import UntrackedTickersContainer from './containers/untracked-tickers';
 import UntrackedInfoContainer from './containers/untracked-info';
 import LoginContainer from './login/containers/login';
@@ -34,9 +34,9 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <Router history={history}>
-          <Route path="/" onEnter={this.requireAuth} component={TrackedStocks} />
+          <Route path="/" onEnter={this.requireAuth} component={TrackedStocksContainer} />
           <Route path="/login" component={LoginContainer} />
-          <Route path="/tracked-stocks" onEnter={this.requireAuth} component={TrackedStocks} />
+          <Route path="/tracked-stocks" onEnter={this.requireAuth} component={TrackedStocksContainer} />
           <Route path="/untracked-tickers" onEnter={this.requireAuth} component={UntrackedTickersContainer} />
           <Route path="/ticker/:tickerName" onEnter={this.requireAuth} component={UntrackedInfoContainer} />
         </Router>

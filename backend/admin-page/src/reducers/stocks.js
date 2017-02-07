@@ -10,7 +10,10 @@ const stocks = (state = initalState, action = {}) => {
     case types.RECIVE_TRACKED_STOCKS:
       return {
         ...state,
-        data: action.payload.stocks,
+        data: {
+          ...state.data,
+          ...action.payload.stocks
+        },
         loaded: true
       };
     case types.SAVE_STOCK_INFO:

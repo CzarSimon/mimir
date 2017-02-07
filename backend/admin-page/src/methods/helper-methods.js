@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { companyTerms, devMode } from '../config'
+import { companyTerms, devMode, baseUrl } from '../config'
 
 
 export const createHeaders = token => {
@@ -12,6 +12,9 @@ export const createHttpObject = (method, token='', payload=undefined) => {
   const headers = createHeaders(token)
   return { method, headers, body }
 }
+
+
+export const createPath = path => (baseUrl + path)
 
 
 export const portraitMode = () => {

@@ -34,6 +34,7 @@ func main() {
   /* ---- Routes ---- */
   http.Handle("/", http.FileServer(http.Dir(config.server.staticFolder)))
   http.HandleFunc("/login", env.login)
+  http.HandleFunc("/tracked-stocks", env.sendStockInfo)
   http.HandleFunc("/untracked-tickers", env.sendTickers)
   http.HandleFunc("/track-ticker", env.trackTicker)
 

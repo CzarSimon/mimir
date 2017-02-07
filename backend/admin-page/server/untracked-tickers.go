@@ -54,7 +54,7 @@ func (env *Env) trackTicker(res http.ResponseWriter, req *http.Request) {
 }
 
 func getUntrackedTickers(pg *sql.DB) []ticker {
-  rows, err := pg.Query("SELECT ticker, COUNT(*) FROM untracked_tickers GROUP BY ticker ORDER BY COUNT(*) DESC")
+  rows, err := pg.Query("SELECT ticker, COUNT(*) FROM untracked_tickers GROUP BY ticker ORDER BY COUNT(*) DESC LIMIT 100")
   checkErr(err)
   defer rows.Close()
   tickers := make([]ticker, 0)
