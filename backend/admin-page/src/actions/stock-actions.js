@@ -14,7 +14,6 @@ export const reciveTrackedStocks =
 export const fetchTrackedStocks = token => {
   const httpObject = createHttpObject('GET', token)
   return dispatch => {
-    console.log(createPath('/tracked-stocks'));
     return fetch(createPath('/tracked-stocks'), httpObject)
     .then(res => res.json())
     .then(res => {
@@ -23,3 +22,5 @@ export const fetchTrackedStocks = token => {
     })
   }
 }
+
+export const updateFilter = createAction(types.UPDATE_FILTER, filterTerm => ({filterTerm}))

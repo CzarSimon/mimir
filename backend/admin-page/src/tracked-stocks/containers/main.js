@@ -11,6 +11,7 @@ class TrackedStocksContainer extends Component {
   }
 
   render() {
+    console.log(this.props.state.stocks);
     return (<TrackedStocks {...this.props.state.stocks}/>)
   }
 }

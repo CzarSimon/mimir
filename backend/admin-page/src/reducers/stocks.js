@@ -1,8 +1,9 @@
 import * as types from '../actions/action-types';
 
 const initalState = {
-  data: [],
-  loaded: false
+  data: {},
+  loaded: false,
+  filter: undefined
 }
 
 const stocks = (state = initalState, action = {}) => {
@@ -18,6 +19,11 @@ const stocks = (state = initalState, action = {}) => {
       };
     case types.SAVE_STOCK_INFO:
       return state;
+    case types.UPDATE_FILTER:
+      return {
+        ...state,
+        filter: action.payload.filterTerm
+      }
     default:
       return state;
   }

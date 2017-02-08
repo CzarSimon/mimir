@@ -29,6 +29,14 @@ export const objectArrayToObject = (objectArray, key) => {
 }
 
 
+export const filterStocks = (stocks, term) => {
+  const stockArr = _.values(stocks)
+  return (!term)
+  ? stockArr
+  : _.filter(stockArr, stock => _.toLower(stock.Name).includes(_.toLower(term)))
+}
+
+
 export const sortByKey = (arr, key) => _.sortBy(arr, key)
 
 
