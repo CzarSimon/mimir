@@ -27,13 +27,10 @@ def getStockTickers():
     return tickers
 
 
-def getStockTweets(returnList=False):
-    if not returnList:
-        stockTweets = db.queryDatabase('SELECT ticker, tweet FROM stockTweets ORDER BY ticker', True)
-        print "There are " + str(len(stockTweets)) + " stored tweets in the database"
-    else:
-        stockTweets = db.queryDatabase('SELECT ticker, createdAt FROM stockTweets ORDER BY ticker', True)
-        return stockTweets
+def print_tweet_count():
+    tweet_count = db.queryDatabase('SELECT count(*) FROM stockTweets', False)[0]
+    pretty_count = "{:,}".format(tweet_count).replace(",", " ")
+    print "Tweets stored: {}".format(pretty_count)
 
 
 def getAliases():
@@ -58,10 +55,15 @@ def record_untracked(tweet_id, ticker, timestamp):
     db.insert_untracked(tweet_id, clean_ticker, timestamp)
 
 
+def _get_url(url):
+    long_url = url["expanded_url"]
+    return long_url if (long_url is not None) else url["url"]
+
+
 def send_url_to_ranker(data, stock_querys):
     tweet = json.loads(data)
     entities = tweet["entities"]
-    urls = map(lambda url: url["expanded_url"], entities["urls"])
+    urls = map(lambda url: _get_url(url), entities["urls"])
     filtered_urls = filter(lambda url: (url is not None) and (urlparse(url).netloc not in forbidden_domains), urls)
     if (len(filtered_urls) > 0):
         rank_object = _create_rank_object(stock_querys, filtered_urls, entities["symbols"], tweet["user"], tweet["lang"])

@@ -65,8 +65,6 @@ def main():
             errorStr = "Twitter miner ended unexpectedly at: " + _utcnow()
             print errorStr
             logging.debug(errorStr)
-        else:
-            stocks.getStockTweets()
     return planned_exit
 
 if __name__ == "__main__":
@@ -74,3 +72,4 @@ if __name__ == "__main__":
     while not planned_exit:
         planned_exit = main()
     print "Terminated by user command"
+    stocks.print_tweet_count()
