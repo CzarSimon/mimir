@@ -13,12 +13,12 @@ from config import reciving_server
 def retrive_and_calc(tickers):
     result = {}
     for ticker in tickers:
-        db_result = db.get_tweets_for_ticker(ticker)
-        if db_result["success"]:
-            timestamps = _format_timestamps(db_result["data"])
+        db_res = db.get_tweets_for_ticker(ticker)
+        if db_res["success"] and (len(db_res["data"]) > 0):
+            timestamps = _format_timestamps(db_res["data"])
             result[ticker.replace("$", "")] = _filter_and_calc(timestamps, ticker)
         else:
-            print(db_result["data"])
+            print(db_res["data"])
     _send_result(result)
 
 

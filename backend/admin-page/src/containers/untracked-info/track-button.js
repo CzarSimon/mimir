@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { startTrackingTicker } from '../../actions/tickers-actions';
-import TrackButton from '../../components/untracked-info/track-button';
+import Button from '../../components/util/button';
+import { color } from '../../styles/styles';
 
 class TrackButtonContainer extends Component {
   startTrackingTicker = () => {
@@ -13,7 +14,13 @@ class TrackButtonContainer extends Component {
   }
 
   render() {
-    return <TrackButton handleClick={() => this.startTrackingTicker()}/>
+    return (
+      <Button
+        handleClick={() => this.startTrackingTicker()}
+        customStyles = {{ backgroundColor: color.green }}
+        text={'Track ticker'}
+      />
+    )
   }
 }
 
