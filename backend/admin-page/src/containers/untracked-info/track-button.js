@@ -17,7 +17,7 @@ class TrackButtonContainer extends Component {
     return (
       <Button
         handleClick={() => this.startTrackingTicker()}
-        customStyles = {{ backgroundColor: color.green }}
+        customStyles={{ backgroundColor: color.green }}
         text={'Track ticker'}
       />
     )

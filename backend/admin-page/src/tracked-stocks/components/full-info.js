@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Description from '../../components/util/description';
+import ButtonControls from './button-controls';
 import { length } from '../../styles/styles';
 
 const styles = {
@@ -14,6 +15,7 @@ export default class FullInfo extends Component {
     return (
       <div style={styles.fullInfo}>
         <Description text={desc}/>
+        <ButtonControls />
       </div>
     )
   }

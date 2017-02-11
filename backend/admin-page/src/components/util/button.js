@@ -14,21 +14,23 @@ const styles = {
 }
 
 export default class Button extends Component {
-  handleClick = event => {
-    setTimeout(() => event.target.blur(), 150)
-    this.props.handleClick()
+  handleMouseUp = event => {
+    const target = event.target
+    setTimeout(() => target.blur(), 100)
   }
 
   render() {
-    const { text, customStyles } = this.props;
+    const { text, customStyles, handleClick } = this.props;
     const styling = {
       ...styles.button,
       ...customStyles
     }
     return (
-      <button style={styling} onClick={this.handleClick}>
-        {this.props.text}
-      </button>
-    )
+      <button
+        style={styling}
+        onClick={handleClick}
+        onMouseUp={this.handleMouseUp}>
+        {text}
+      </button>)
   }
 }
