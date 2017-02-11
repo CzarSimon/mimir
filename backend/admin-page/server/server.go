@@ -15,19 +15,29 @@ type Env struct{
   devMode bool
 }
 
-func main() {
+func parseFlags() bool {
   var devMode bool
   flag.BoolVar(&devMode, "dev", false, "sets development mode")
   flag.Parse()
+  return devMode
+}
+
+func setupEnvironment(conf config) *Env {
+  env := &Env{
+    pg: connectPostgres(conf.pg),
+    rdb: connectRethink(conf.rdb),
+    auth: conf.auth,
+    devMode: conf.server.devMode,
+  }
+  return env
+}
+
+func main() {
+  devMode := parseFlags()
   config := getConfig(devMode)
 
   /* ---- Environment setup ---- */
-  env := &Env{
-    pg: connectPostgres(config.pg),
-    rdb: connectRethink(config.rdb),
-    auth: config.auth,
-    devMode: config.server.devMode,
-  }
+  env := setupEnvironment(config)
   defer env.pg.Close()
   defer env.rdb.Close()
 
@@ -35,11 +45,11 @@ func main() {
   http.Handle("/", http.FileServer(http.Dir(config.server.staticFolder)))
   http.HandleFunc("/login", env.login)
   http.HandleFunc("/tracked-stocks", env.sendStockInfo)
+  http.HandleFunc("/untrack-stock", env.untrackStock)
   http.HandleFunc("/untracked-tickers", env.sendTickers)
   http.HandleFunc("/track-ticker", env.trackTicker)
 
   /* ---- Starting Server ---- */
   log.Println("Starting server on port " + config.server.port)
-  err := http.ListenAndServe(":" + config.server.port, nil)
-  checkErr(err)
+  checkErr(http.ListenAndServe(":" + config.server.port, nil))
 }
