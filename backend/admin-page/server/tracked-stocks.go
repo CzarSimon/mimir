@@ -3,6 +3,7 @@ package main
 import (
   "database/sql"
   "encoding/json"
+  "io"
   "net/http"
   r "gopkg.in/gorethink/gorethink.v2"
 )
@@ -40,11 +41,12 @@ func (env *Env) untrackStock(res http.ResponseWriter, req *http.Request) {
   if env.authenticate(res, req) != nil {
     return
   }
-  //parse Body
-  var ticker string
-  ticker = "O"
-  //
-  responseMessage, err := deleteStock(ticker, env)
+  decoder := json.NewDecoder(req.Body)
+  var stock Stock
+  if err := decoder.Decode(&stock); err != io.EOF {
+    checkErrNice(err)
+  }
+  responseMessage, err := deleteStock(stock.Ticker, env)
   checkErrNice(err)
   jsonStringRes(res, responseMessage)
 }
@@ -61,12 +63,15 @@ func deleteStock(ticker string, env *Env) (string, error) {
 }
 
 func deleteFromPg(ticker string, db *sql.DB) error {
-  sqlString := "UPDATE stocks SET is_tracked=FALSE WHERE ticker=$1"
-  err := db.QueryRow(sqlString, ticker).Scan()
+  stmt, err := db.Prepare("UPDATE stocks SET is_tracked=FALSE WHERE ticker=$1")
+  if err != nil {
+    return err
+  }
+  _, err = stmt.Exec(ticker)
   return err
 }
 
 func deleteFromRdb(ticker string, session *r.Session) error {
-  _, err := r.Table("stocks").Delete().GetAllByIndex("ticker", ticker).RunWrite(session)
+  _, err := r.Table("stocks").GetAllByIndex("ticker", ticker).Delete().RunWrite(session)
   return err
 }

@@ -26,16 +26,26 @@ export default class ButtonControls extends Component {
       editMode: false
     }
   }
+
   editClick = () => {
     this.setState({editMode: !this.state.editMode})
   }
+
+  untrackClick = () => {
+    this.props.untrackStock()
+  }
+
   render() {
     const editActionButton = (!this.state.editMode)
     ? <Button text={'Edit'} customStyles={styles.edit} handleClick={this.editClick}/>
     : <Button text={'Save'} customStyles={styles.save} handleClick={this.editClick}/>
     return (
       <div>
-        <Button text={'Untrack stock'} customStyles={styles.untrack} />
+        <Button
+          text={'Untrack stock'}
+          customStyles={styles.untrack}
+          handleClick={this.untrackClick}
+        />
         {editActionButton}
       </div>
     )

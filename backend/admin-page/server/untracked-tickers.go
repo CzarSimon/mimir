@@ -9,6 +9,7 @@ import (
   "log"
   "time"
   "net/http"
+  "github.com/lib/pq"
   r "gopkg.in/gorethink/gorethink.v2"
 )
 
@@ -90,9 +91,19 @@ func insertNewTicker(ticker tickerInfo, session *r.Session) error {
 
 func insertTickerInPostgres(ticker tickerInfo, db *sql.DB) {
   date := time.Now().UTC().AddDate(0, 0, 1)
-  sqlString := "INSERT INTO stocks(ticker, name, storedat) VALUES ($1,$2,$3)"
-  err := db.QueryRow(sqlString, ticker.Ticker, ticker.Name, date).Scan()
-  checkErrNice(err)
+  stmt, err := db.Prepare("INSERT INTO stocks(ticker, name, storedat) VALUES ($1,$2,$3)")
+  if err != nil {
+    checkErrNice(err)
+    return
+  }
+  _, err = stmt.Exec(ticker.Ticker, ticker.Name, date)
+  if err != nil {
+    if pqErr := err.(*pq.Error); pqErr.Code == "23505" {
+      stmt, err = db.Prepare("UPDATE stocks SET is_tracked=TRUE, storedat=$1 WHERE ticker=$2")
+      _, err = stmt.Exec(date, ticker.Ticker)
+      checkErrNice(err)
+    }
+  }
 }
 
 func tickerStored(ticker string, session *r.Session) bool {

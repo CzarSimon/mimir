@@ -1,4 +1,5 @@
 import * as types from '../actions/action-types';
+import _ from 'lodash';
 
 const initalState = {
   data: {},
@@ -24,6 +25,11 @@ const stocks = (state = initalState, action = {}) => {
         ...state,
         filter: action.payload.filterTerm
       }
+    case types.REMOVE_UNTACKED_STOCK:
+        return {
+          ...state,
+          data: _.omit(state.data, [action.payload.ticker])
+        }
     default:
       return state;
   }

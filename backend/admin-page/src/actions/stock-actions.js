@@ -7,20 +7,40 @@ import {
 } from '../methods/helper-methods';
 
 
-export const reciveTrackedStocks =
-  createAction(types.RECIVE_TRACKED_STOCKS, stocks => ({stocks}))
+export const reciveTrackedStocks = createAction(
+  types.RECIVE_TRACKED_STOCKS, stocks => ({stocks})
+)
 
 
 export const fetchTrackedStocks = token => {
   const httpObject = createHttpObject('GET', token)
   return dispatch => {
     return fetch(createPath('/tracked-stocks'), httpObject)
-    .then(res => res.json())
-    .then(res => {
+    .then(res => res.json()).then(res => {
       const stockData = objectArrayToObject(res, 'Ticker')
       dispatch(reciveTrackedStocks(stockData))
     })
   }
 }
 
-export const updateFilter = createAction(types.UPDATE_FILTER, filterTerm => ({filterTerm}))
+
+export const updateFilter = createAction(
+  types.UPDATE_FILTER, filterTerm => ({ filterTerm })
+)
+
+
+export const removeUntrackedStock = createAction(
+  types.REMOVE_UNTACKED_STOCK, ticker => ({ ticker })
+)
+
+
+export const untrackStock = (ticker, token) => {
+  const httpObject = createHttpObject('POST', token, { ticker })
+  return dispatch => {
+    return fetch(createPath('/untrack-stock'), httpObject)
+    .then(res => res.json()).then(res => {
+      dispatch(removeUntrackedStock(ticker))
+    })
+    .catch(err => console.log(err))
+  }
+}

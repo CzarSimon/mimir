@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Description from '../../components/util/description';
-import ButtonControls from './button-controls';
+import ButtonControlsContainer from '../containers/button-controls';
 import { length } from '../../styles/styles';
 
 const styles = {
@@ -11,11 +11,11 @@ const styles = {
 
 export default class FullInfo extends Component {
   render() {
-    const { Description: desc } = this.props
+    const { Ticker, Description: desc } = this.props
     return (
       <div style={styles.fullInfo}>
-        <Description text={desc}/>
-        <ButtonControls />
+        <Description text={desc} />
+        <ButtonControlsContainer Ticker={Ticker} />
       </div>
     )
   }
