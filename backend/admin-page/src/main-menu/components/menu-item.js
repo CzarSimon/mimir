@@ -1,34 +1,26 @@
 import React, { Component } from 'react';
-import { browserHistory } from 'react-router';
 import { length, font } from '../../styles/styles';
 
 const styles = {
   listItem: {
-    marginTop: length.medium,
+    paddingTop: length.medium,
     paddingBottom: length.medium,
-    fontSize: font.size.medium,
-    borderBottom: 'solid',
-    borderColor: 'rgba(0,0,0,0.1)',
-    borderWidth: length.tiny
+    fontSize: font.size.medium
   }
 }
 
-
 export default class MenuItem extends Component {
-  handleClick = () => {
-    const { type, path } = this.props;
-    if (type !== 'external') {
-      browserHistory.push(this.props.path)
-    } else {
-      window.location.replace(path)
-    }
-  }
-
   render() {
-    const { idName, name } = this.props;
+    const { idName, name, handleClick, selected } = this.props;
+    const styling = (!selected)
+    ? styles.listItem
+    : {
+      ...styles.listItem,
+      backgroundColor: 'rgba(0,0,0,0.1)'
+    }
     return (
-      <li style={styles.listItem}>
-        <a id={idName} onClick={this.handleClick}>{name}</a>
+      <li style={styling}>
+        <a id={idName} onClick={handleClick}>{name}</a>
       </li>
     )
   }

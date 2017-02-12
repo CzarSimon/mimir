@@ -15,3 +15,6 @@ export const RECIVE_TRACKED_STOCKS = "RECIVE_TRACKED_STOCKS";
 export const REMOVE_UNTACKED_STOCK = "REMOVE_UNTACKED_STOCK";
 export const SAVE_STOCK_INFO = "SAVE_STOCK_INFO";
 export const UPDATE_FILTER = "UPDATE_FILTER";
+
+/* ---- Menu actions ---- */
+export const SELECT_MENU_ITEM = "SELECT_MENU_ITEM";
