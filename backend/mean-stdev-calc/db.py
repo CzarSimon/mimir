@@ -9,15 +9,15 @@ except Exception as e:
     sys.exit(1)
 
 def get_unique_tickers():
-    query = "select ticker from stocks"
+    query = "SELECT ticker FROM stocks WHERE is_tracked=TRUE"
     return _execute_query(query, "Intital retrival of unique stock tickers failed")
 
 def get_tweets_for_ticker(ticker):
-    query = "select createdAt from stocktweets where ticker='{}'".format(ticker);
+    query = "SELECT createdAt FROM stocktweets WHERE ticker='{}'".format(ticker);
     return _execute_query(query, "Retrival of tweets for {} failed".format(ticker))
 
 def get_first_day_stored(ticker):
-    query = "select storedAt from stocks where ticker='{}'".format(ticker)
+    query = "SELECT storedAt FROM stocks WHERE ticker='{}'".format(ticker)
     return _execute_query(query, "Retrival of inital store date for {} failed".format(ticker))
 
 def close_connection():

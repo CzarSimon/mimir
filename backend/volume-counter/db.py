@@ -9,11 +9,11 @@ except Exception as e:
     sys.exit(1)
 
 def get_hourly_volume(datetime):
-    query = "select ticker, count(*) from stocktweets where createdAt > '{}' group by ticker".format(datetime)
+    query = "SELECT ticker, COUNT(*) FROM stocktweets WHERE createdAt>'{}' GROUP BY ticker".format(datetime)
     return _execute_query(query, "Hourly volume count failed in db retrival")
 
 def get_unique_tickers():
-    query = "select ticker from stocks"
+    query = "SELECT ticker FROM stocks WHERE is_tracked=TRUE"
     return _execute_query(query, "Intital retrival of unique stock tickers failed")
 
 def close_connection():

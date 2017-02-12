@@ -19,14 +19,6 @@ def get_stocks_info():
         return [], {}
 
 
-def getStockTickers():
-    dbTickers = db.queryDatabase('SELECT ticker FROM stocks ORDER BY name', True)
-    tickers = []
-    for ticker in dbTickers:
-        tickers += [ticker[0]]
-    return tickers
-
-
 def print_tweet_count():
     tweet_count = db.queryDatabase('SELECT count(*) FROM stockTweets', False)[0]
     pretty_count = "{:,}".format(tweet_count).replace(",", " ")

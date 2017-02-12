@@ -57,36 +57,3 @@ def insert_untracked(tweet_id, ticker, timestamp):
         conn.rollback()
     finally:
         c.close()
-
-
-def addAlias(alias, ticker):
-    c = conn.cursor()
-    newAlias = (alias, ticker)
-    success = True
-    try:
-        c.execute('INSERT INTO tickerAliases VALUES (%s, %s)', newAlias)
-        conn.commit()
-    except Exception as e:
-        print e
-        success = False
-    finally:
-        c.close()
-        return success
-
-def logActiveDate():
-    print "Logging date"
-    c = conn.cursor()
-    success = True
-    curr_date = datetime.utcnow()
-    format_date = date(curr_date.year, curr_date.month, curr_date.day)
-    try:
-        c.execute('INSERT INTO activeDates VALUES (%s)', (format_date,))
-        conn.commit()
-    except Exception as e:
-        print e
-        conn.rollback()
-        success = False
-        print "no success"
-    finally:
-        c.close()
-        return success
