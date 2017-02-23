@@ -1,15 +1,8 @@
 import * as types from './action-types';
 import { createAction } from 'redux-actions';
-import KGSearch from 'google-kgsearch';
-const getStock = require('get-stock');
-import {
-  parseCompanyDescription,
-  parseCompanyName,
-  parseImageUrl,
-  parseWebsite,
-  createHttpObject
-} from '../methods/helper-methods';
-import { kgKey, baseUrl } from '../config';
+import { getNameYahoo, getCompanyInfo } from '../methods/stock-info';
+import { createHttpObject} from '../methods/helper-methods';
+import { baseUrl } from '../config';
 
 export const reciveUntrackedTickers =
   createAction(types.RECIVE_UNTRACKED_TICKERS, tickers => (
@@ -38,24 +31,15 @@ export const reciveTickerInfo =
       }
   })
 
-export const fetchTickerInfo = (ticker, name) => {
-  return dispatch => {
-    KGSearch(kgKey).search({query: name, limit: 1}, (err, res) => {
-      const description = parseCompanyDescription(err, res)
-      const imageUrl = parseImageUrl(err, res)
-      const website = parseWebsite(err, res)
-      dispatch(reciveTickerInfo(ticker, description, name, imageUrl, website))
-    })
-  }
-}
+
+export const fetchTickerInfo = (ticker, name) => dispatch => getCompanyInfo(name, ticker, dispatch)
 
 
 export const fetchCompanyInfo = (ticker) => {
   return dispatch => {
-    return getStock([ticker]).then(res => res.results.Name)
-    .then(name => parseCompanyName(name))
-    .then(name => {dispatch(fetchTickerInfo(ticker, name))})
-    .catch(err => console.log("Error in fetch company info:", err))
+    return getNameYahoo(ticker)
+    .then(name => { dispatch(fetchTickerInfo(ticker, name)) })
+    .catch(err => console.log("Full name fecth failure", err))
   }
 }
 

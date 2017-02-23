@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { companyTerms, devMode, baseUrl } from '../config'
+import { devMode, baseUrl } from '../config'
 
 
 export const createHeaders = token => {
@@ -80,18 +80,4 @@ export const parseWebsite = (err, res) => {
   } else {
     return ""
   }
-}
-
-
-const formatWord = word => _.toLower(word)
-
-
-export const parseCompanyName = name => {
-  const words = _.split(name, ' ');
-  for (let i = 0; i < words.length; i++) {
-    if (companyTerms.includes(formatWord(words[i]))) {
-      return _.join(_.slice(words, 0, i + 1), ' ')
-    }
-  }
-  return name
 }
