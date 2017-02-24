@@ -9,7 +9,7 @@ import (
 )
 
 type Stock struct {
-  Name, Ticker, Description, ImageUrl string
+  Name, Ticker, Description, ImageUrl, Website string
 }
 
 func (env *Env) sendStockInfo(res http.ResponseWriter, req *http.Request) {
