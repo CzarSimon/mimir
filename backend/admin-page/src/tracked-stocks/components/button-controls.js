@@ -20,15 +20,8 @@ const styles = {
 }
 
 export default class ButtonControls extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      editMode: false
-    }
-  }
-
   editClick = () => {
-    this.setState({editMode: !this.state.editMode})
+    this.props.toggleEdit()
   }
 
   untrackClick = () => {
@@ -36,9 +29,9 @@ export default class ButtonControls extends Component {
   }
 
   render() {
-    const editActionButton = (!this.state.editMode)
+    const editActionButton = (!this.props.editMode)
     ? <Button text={'Edit'} customStyles={styles.edit} handleClick={this.editClick}/>
-    : <Button text={'Save'} customStyles={styles.save} handleClick={this.editClick}/>
+    : <Button text={'Cancel'} customStyles={styles.save} handleClick={this.editClick}/>
     return (
       <div>
         <Button

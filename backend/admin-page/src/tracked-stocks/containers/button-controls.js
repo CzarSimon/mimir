@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { untrackStock } from '../../actions/stock-actions';
+import { untrackStock, toggleEditMode } from '../../actions/stock-actions';
 import ButtonControls from '../components/button-controls';
 
 class ButtonControlsContainer extends Component {
@@ -10,8 +10,19 @@ class ButtonControlsContainer extends Component {
     actions.untrackStock(Ticker, state.token)
   }
 
+  toggleEdit = () => {
+    const { actions, Ticker } = this.props
+    actions.toggleEditMode(Ticker)
+  }
+
   render() {
-    return <ButtonControls untrackStock={this.untrackStock}/>
+    return (
+      <ButtonControls
+        untrackStock={this.untrackStock}
+        toggleEdit={this.toggleEdit}
+        editMode={this.props.editMode}
+      />
+    )
   }
 }
 
@@ -23,7 +34,8 @@ export default connect(
   }),
   dispatch => ({
     actions: bindActionCreators({
-      untrackStock
+      untrackStock,
+      toggleEditMode
     }, dispatch)
   })
 )(ButtonControlsContainer);

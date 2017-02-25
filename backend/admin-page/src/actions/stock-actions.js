@@ -44,3 +44,27 @@ export const untrackStock = (ticker, token) => {
     .catch(err => console.log(err))
   }
 }
+
+
+export const toggleEditMode = createAction(
+  types.TOGGLE_EDIT_MODE, ticker => ({ ticker })
+)
+
+
+export const saveStockInfo = createAction(
+  types.SAVE_STOCK_INFO, (ticker, description) => ({ ticker, description })
+)
+
+
+export const updateStockInfo = (ticker, description, token) => {
+  console.log(token, {ticker, description});
+  const httpObject = createHttpObject('POST', token, { ticker, description })
+  return dispatch => {
+    return (
+      fetch(createPath('/update-ticker'), httpObject)
+      .then(res => res.json()).then(res => {
+        dispatch(saveStockInfo(ticker, description))
+      })
+    )
+  }
+}

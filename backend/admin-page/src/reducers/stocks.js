@@ -19,7 +19,16 @@ const stocks = (state = initalState, action = {}) => {
         loaded: true
       };
     case types.SAVE_STOCK_INFO:
-      return state;
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [action.payload.ticker]: {
+            ...state.data[action.payload.ticker],
+            Description: action.payload.description
+          }
+        }
+      }
     case types.UPDATE_FILTER:
       return {
         ...state,
@@ -30,6 +39,17 @@ const stocks = (state = initalState, action = {}) => {
           ...state,
           data: _.omit(state.data, [action.payload.ticker])
         }
+    case types.TOGGLE_EDIT_MODE:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          [action.payload.ticker]: {
+            ...state.data[action.payload.ticker],
+            editMode: (state.data[action.payload.ticker].editMode) ? !state.data[action.payload.ticker].editMode : true
+          }
+        }
+      }
     default:
       return state;
   }
