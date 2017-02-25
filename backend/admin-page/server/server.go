@@ -48,6 +48,7 @@ func main() {
   http.HandleFunc("/untrack-stock", env.untrackStock)
   http.HandleFunc("/untracked-tickers", env.sendTickers)
   http.HandleFunc("/track-ticker", env.trackTicker)
+  http.HandleFunc("/update-stock-info", env.updateStockInfo)
 
   /* ---- Starting Server ---- */
   log.Println("Starting server on port " + config.server.port)

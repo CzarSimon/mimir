@@ -61,7 +61,7 @@ export const updateStockInfo = (ticker, description, token) => {
   const httpObject = createHttpObject('POST', token, { ticker, description })
   return dispatch => {
     return (
-      fetch(createPath('/update-ticker'), httpObject)
+      fetch(createPath('/update-stock-info'), httpObject)
       .then(res => res.json()).then(res => {
         dispatch(saveStockInfo(ticker, description))
       })

@@ -75,3 +75,28 @@ func deleteFromRdb(ticker string, session *r.Session) error {
   _, err := r.Table("stocks").GetAllByIndex("ticker", ticker).Delete().RunWrite(session)
   return err
 }
+
+type StockInfo struct {
+  Ticker, Description string
+}
+
+func (env *Env) updateStockInfo(res http.ResponseWriter, req *http.Request) {
+  if env.authenticate(res, req) != nil {
+    return
+  }
+  decoder := json.NewDecoder(req.Body)
+  var stockInfo StockInfo
+  if err := decoder.Decode(&stockInfo); err != io.EOF {
+    checkErrNice(err)
+  }
+  err := storeStockUpdate(stockInfo, env.rdb)
+  checkErrNice(err)
+  jsonStringRes(res, "Stock info updated")
+}
+
+func storeStockUpdate(stockInfo StockInfo, session *r.Session) error {
+  _, err := r.Table("stocks").GetAllByIndex("ticker", stockInfo.Ticker).Update(map[string]interface{}{
+    "description": stockInfo.Description,
+  }).RunWrite(session)
+  return err
+}
