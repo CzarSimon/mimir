@@ -1,8 +1,6 @@
-backend/database/credentials.py
 backend/stream-listener/config.py
 backend/**/*.pyc
 backend/stream-listener/miner.log
-backend/database/setup.py
 backend/urgencyModule/credentials.py
 .idea/
 app/application-server/node_modules
@@ -12,13 +10,10 @@ app/application-server/Dockerfile
 app/application-server/npm-debug.log
 app/rethinkdb_data
 .gitignore
-Dockerfile
-article_ranker/test_news_corpus.py
-article_ranker/test_stopwords.py
-config.js
-node_modules/
-package.json
-server.js
-backend/webscraper/server/
+
+backend/webscraper/article_ranker/news_corpus.py
+backend/webscraper/article_ranker/stopwords.py
+
+backend/news-clustering/news-clustering
 db-backups/
 docker_commands.txt
