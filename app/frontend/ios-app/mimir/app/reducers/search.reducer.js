@@ -5,6 +5,7 @@ const initial_state = {
   active: false,
   query: null,
   placeholder: "Search tickers...",
+  keyboardUp: false,
   results: []
 }
 

@@ -6,6 +6,7 @@ const initial_state = {
   id: null,
   name: null,
   tickers: [],
+  searchHistory: ['twitter', 'GOOG', 'Nvid'],
   twitter_data: twitter_data(),
   modifiable: false,
   loaded: false
