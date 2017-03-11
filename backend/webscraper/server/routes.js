@@ -59,17 +59,20 @@ const _rank_new_article = (article_info, conn) => {
   script_runner.rank_article(article_info, ref_score, conn);
 }
 
-const _update_ref_score = (stored_article, new_article_info, conn) => {
-  const { subject_score, id, reference_score, twitter_references } = stored_article;
+const _update_ref_score = (storedArticle, new_article_info, conn) => {
+  const { subject_score, id, reference_score, twitter_references } = storedArticle;
   const { author, subjects } = new_article_info;
   if (!twitter_references.includes(author.id)) {
-    console.log("New user posted");
+    //console.log("New user posted");
     const updated_ref_score = _calc_reference_score(author.follower_count, reference_score);
-    db.update_article(id, {
-      reference_score: updated_ref_score,
-      compound_score: _calc_new_compound_score(subject_score, updated_ref_score),
-      twitter_references: _.concat(twitter_references, author.id)
-    }, conn);
+    db.update_article(id,
+      Object.assign({}, _.pick(storedArticle, ['id', 'title', 'timestamp', 'subject_score']),
+      {
+        reference_score: updated_ref_score,
+        compound_score: _calc_new_compound_score(subject_score, updated_ref_score),
+        twitter_references: _.concat(twitter_references, author.id)
+      }
+    ), conn);
   }
 }
 
