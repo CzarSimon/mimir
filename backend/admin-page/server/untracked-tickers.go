@@ -83,6 +83,7 @@ func insertNewTicker(ticker tickerInfo, session *r.Session) error {
     "mean": stats,
     "stdev": stats,
   }).RunWrite(session)
+  defer res.Close()
   if res.Inserted > 0 {
     log.Println("Storing ticker", ticker.Ticker, "in rdb database")
   }

@@ -7,12 +7,14 @@ import (
 )
 
 type Env struct {
-  db *r.Session
+  db    *r.Session
+  queue QueueMap
 }
 
 func setupEnvironment(config Config) *Env {
   return &Env{
     db: connectDB(config.db),
+    queue: newQueueMap(),
   }
 }
 
@@ -20,9 +22,7 @@ func main() {
   config := getConfig()
   env := setupEnvironment(config)
   defer env.db.Close()
-
   http.HandleFunc("/api/cluster-article", env.clusterArticle)
-
   log.Println("Started server running on port " + config.server.port)
   http.ListenAndServe(":" + config.server.port, nil)
 }
