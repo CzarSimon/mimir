@@ -3,7 +3,6 @@ package main
 import (
   "encoding/json"
   "errors"
-  "io"
   "net/http"
   r "gopkg.in/gorethink/gorethink.v2"
 )
@@ -12,7 +11,7 @@ import (
 func (env *Env) clusterArticle(res http.ResponseWriter, req *http.Request) {
   decoder := json.NewDecoder(req.Body)
   var article Article
-  if err := decoder.Decode(&article); err != io.EOF {
+  if err := decoder.Decode(&article); err != nil {
     checkErr(err)
     jsonStringRes(res, "Article parsing failed")
     return
@@ -41,7 +40,7 @@ func handleClustering(clusterHash string, article Article, session *r.Session) {
 /* --- Retrives the cluster from the database, returns nil if not found --- */
 func lookupCluster(clusterHash string, session *r.Session) (Cluster, error) {
   var cluster Cluster
-  res, err := r.Tables("article_clusters").GetAll(clusterHash).Run(session)
+  res, err := r.Table("article_clusters").GetAll(clusterHash).Run(session)
   if err != nil {
     checkErr(nil)
     return Cluster{}, errors.New("no such cluster")
@@ -60,20 +59,18 @@ func lookupCluster(clusterHash string, session *r.Session) (Cluster, error) {
 
 /* --- Updates cluster in db --- */
 func storeUpdatedCluster(cluster Cluster, session *r.Session) error {
-  res, err := r.Table("article_clusters").GetAll(cluster.ClusterHash)
-  .Update(map[string]interface{}{
+  _, err := r.Table("article_clusters").GetAll(cluster.Id).Update(map[string]interface{}{
     "members": cluster.Members,
     "leader": cluster.Leader,
     "score": cluster.Score,
   }).RunWrite(session)
-  defer res.Close()
   return err
 }
 
 /* --- Adds new cluster to db --- */
 func storeNewCluster(cluster Cluster, session *r.Session) error {
-  res, err := r.Table("article_clusters").Insert(map[string]interface{}{
-    "id": cluster.ClusterHash,
+  _, err := r.Table("article_clusters").Insert(map[string]interface{}{
+    "id": cluster.Id,
     "title": cluster.Title,
     "ticker": cluster.Ticker,
     "date": cluster.Date,
@@ -81,7 +78,6 @@ func storeNewCluster(cluster Cluster, session *r.Session) error {
     "leader": cluster.Leader,
     "score": cluster.Score,
   }).RunWrite(session)
-  defer res.Close()
   return err
 }
 

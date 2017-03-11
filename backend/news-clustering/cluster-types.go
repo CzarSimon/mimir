@@ -6,8 +6,7 @@ import (
 )
 
 type Cluster struct {
-  Title, Ticker, Date  string
-  ClusterHash string
+  Title, Ticker, Date, Id string
   Members     map[string]Member
   Leader      Member
   Score       float64
@@ -28,7 +27,7 @@ func newCluster(clusterHash string, article Article) Cluster {
     Title: article.Title,
     Ticker: article.Ticker,
     Date: article.Date,
-    ClusterHash: clusterHash,
+    Id: clusterHash,
     Members: make(map[string]Member),
   }
 }

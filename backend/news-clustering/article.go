@@ -11,4 +11,5 @@ type Article struct {
 
 func (article *Article) Format() {
   article.Title = strings.ToLower(article.Title)
+  article.Ticker = strings.ToUpper(article.Ticker)
 }
