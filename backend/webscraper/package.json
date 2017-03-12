@@ -22,7 +22,7 @@
     "express": "^4.15.2",
     "lodash": "^4.17.4",
     "moment": "^2.14.1",
-    "requests": "^0.1.7",
+    "request": "^2.81.0",
     "rethinkdb": "^2.3.3"
   },
   "devDependencies": {

@@ -22,12 +22,15 @@ const update_article = (id, article_update, conn) => {
   });
 }
 
-const fetch_top_articles = (ticker, top, date, conn, callback) => {
-  r.table('articles').getAll(date, {index: 'timestamp'})
-  .filter(article => article("compound_score").hasFields(ticker))
-  .filter(article => article("compound_score")(ticker).gt(article("reference_score")))
-  .orderBy(r.desc(article => article("compound_score")(ticker)))
-  .limit(top)
+/* --- Returns the leader articles of the highest ranked clusters at a given date --- */  
+const fetchTopArticles = (ticker, top, date, conn, callback) => {
+  r.table('articles').getAll(r.args(
+    r.table('article_clusters').getAll(date, {index: 'date'})
+    .filter({ticker: ticker})
+    .filter(r.row('leader')('Score')('SubjectScore').gt(0))
+    .orderBy(r.desc('score'))
+    .limit(top)('leader')('UrlHash')
+  ))
   .pluck('compound_score', 'url', 'timestamp', 'title', 'twitter_references', 'summary')
   .run(conn, (err, res) => {
     if (!err) {
@@ -58,5 +61,5 @@ module.exports = {
   check_for_article: check_for_article,
   insert_articles: insert_articles,
   update_article: update_article,
-  fetch_top_articles: fetch_top_articles
+  fetchTopArticles: fetchTopArticles
 };

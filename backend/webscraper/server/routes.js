@@ -8,7 +8,7 @@ const db = require('./database')
 
 const get_news_articles = (request, result, conn) => {
   const { ticker, top } = request.params;
-  db.fetch_top_articles(ticker, parseInt(top), moment.utc().format('YYYY-MM-DD'), conn, (err, res) => {
+  db.fetchTopArticles(ticker, parseInt(top), moment.utc().format('YYYY-MM-DD'), conn, (err, res) => {
     result.send(res);
   });
 }
