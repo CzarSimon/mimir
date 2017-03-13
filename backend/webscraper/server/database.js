@@ -22,7 +22,7 @@ const update_article = (id, article_update, conn) => {
   });
 }
 
-/* --- Returns the leader articles of the highest ranked clusters at a given date --- */  
+/* --- Returns the leader articles of the highest ranked clusters at a given date --- */
 const fetchTopArticles = (ticker, top, date, conn, callback) => {
   r.table('articles').getAll(r.args(
     r.table('article_clusters').getAll(date, {index: 'date'})
