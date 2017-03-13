@@ -1,21 +1,24 @@
 'use strict';
 
-import React, { Component } from 'react';
-import { Navigator, Text, StyleSheet } from 'react-native';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { Provider } from 'react-redux';
-import thunk from 'redux-thunk';
-import createLogger from 'redux-logger';
+import React, { Component } from 'react'
+import { Navigator, Text, StyleSheet } from 'react-native'
+import { createStore, applyMiddleware, combineReducers } from 'redux'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
+import createLogger from 'redux-logger'
 
-import * as reducers from '../reducers';
-import BackButton from './navigation/back-button';
-import SearchButtonContainer from './navigation/search-button';
-import TitleContainer from './navigation/title';
-import render_scene from '../routing/render-scene';
-import { MAIN_ROUTE } from '../routing/routes';
+import * as reducers from '../reducers'
+import BackButton from './navigation/back-button'
+import SearchButtonContainer from './navigation/search-button'
+import TitleContainer from './navigation/title'
+import render_scene from '../routing/render-scene'
+import { MAIN_ROUTE } from '../routing/routes'
+import { DEV_MODE } from '../credentials/config'
 
 const logger = createLogger();
-const createStoreWithMiddleware = applyMiddleware(thunk, logger)(createStore);
+const createStoreWithMiddleware = (!DEV_MODE)
+  ? applyMiddleware(thunk)(createStore)
+  : applyMiddleware(thunk, logger)(createStore)
 const reducer = combineReducers(reducers);
 const store = createStoreWithMiddleware(reducer);
 
