@@ -2,8 +2,8 @@
 
 import React, { Component } from 'react'
 import { View, Text } from 'react-native'
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 import SearchHistory from '../components/search-history'
 import SearchResults from '../components/search-results'
 

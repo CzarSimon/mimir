@@ -9,7 +9,7 @@ import Newslist from '../components/newslist';
 import Loading from '../components/loading';
 
 class NewsContainer extends Component {
-  componentWillMount() {
+  componentDidMount() {
     const { company, actions, state } = this.props;
     const { active_ticker } = state.navigation;
     actions.fetch_news_items(active_ticker, socket);
@@ -17,8 +17,8 @@ class NewsContainer extends Component {
 
   render() {
     const { navigation, news }  = this.props.state;
-    const company_news = news[navigation.active_ticker];
-    const component = (company_news) ? (<Newslist news={company_news} />) : (<Loading />);
+    const companyNews = news[navigation.active_ticker];
+    const component = (companyNews) ? (<Newslist news={companyNews} />) : (<Loading />);
     return component;
   }
 }

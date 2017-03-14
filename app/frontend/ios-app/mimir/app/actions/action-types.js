@@ -23,20 +23,6 @@ export const UPDATE_STOCK_DATA = "UPDATE_STOCK_DATA"; //Add failure scenario
 export const RECIVE_HISTORICAL_DATA = "RECIVE_HISTORICAL_DATA";
 export const FETCH_HISTORICAL_DATA = "FETCH_HISTORICAL_DATA"; //Add failure scenario
 
-//Navigation actions
-export const SET_ACTIVE_TICKER = "SET_ACTIVE_TICKER";
-export const SELECT_TAB = "SELECT_TAB";
-
-//Company description actions
-export const FETCH_COMPANY_DESC = "FETCH_COMPANY_DESC";
-export const RECIVE_COMPANY_DESC = "RECIVE_COMPANY_DESC";
-export const RECIVE_DESC_FAILURE = "RECIVE_DESC_FAILURE";
-
-//Search actions
-export const TOGGLE_SEARCH_ACTIVE = "TOGGLE_SEARCH_ACTIVE";
-export const FETCH_SEARCH_RESULTS = "FETCH_SEARCH_RESULTS";
-export const RECIVE_SEARCH_RESULTS = "RECIVE_SEARCH_RESULTS";
-
 //News actions
 export const FETCH_NEWS_ITEMS = "FETCH_NEWS_ITEMS";
 export const RECIVE_NEWS_ITEMS = "RECIVE_NEWS_ITEMS";
