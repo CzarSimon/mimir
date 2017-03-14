@@ -25,13 +25,13 @@ class NewsContainer extends Component {
 
 
 export default connect(
-  (state) => ({
+  state => ({
     state: {
       news: state.news,
       navigation: state.navigation
     }
   }),
-  (dispatch) => ({
+  dispatch => ({
     actions: bindActionCreators({
       fetch_news_items
     }, dispatch)
