@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView } from 'react-native'
-import SearchResult from './search-result';
+import SearchResult from './search-result'
 import { length, font, color } from '../../styles/styles';
 
 export default class SearchResults extends Component {
