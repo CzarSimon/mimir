@@ -8,15 +8,15 @@ import { connect } from 'react-redux';
 import Watchlist from '../components/watchlist';
 import Loading from '../components/loading';
 
-import * as user_actions from '../actions/user.actions';
-import * as stock_actions from '../actions/stock.actions';
-import * as twitter_data_actions from '../actions/twitter_data.actions';
-import { set_active_ticker } from '../actions/navigation.actions';
-import { logon_user } from '../actions/logon.actions';
+import * as userActions from '../ducks/user';
+import * as stockActions from '../ducks/stock';
+import * as twitterDataActions from '../ducks/twitter-data';
+import { setActiveTicker } from '../ducks/navigation';
+import { logonUser } from '../ducks/logon';
 
 import socket from '../methods/server/socket';
 
-import { persist_object } from './../methods/async-storage';
+import { persistObject } from './../methods/async-storage';
 import { array_equals } from '../methods/helper-methods';
 import { company_page_route } from '../routing/routes';
 import { SERVER_URL } from '../credentials/server-info';
@@ -28,60 +28,58 @@ class WatchlistContainer extends Component {
   }
 
   componentWillMount() {
-    const { logon_user, recive_twitter_data, update_stock_data } = this.props.actions;
-    logon_user(this.socket);
-    this.socket.on("DISPATCH_TWITTER_DATA", (payload) => {
-      if (payload.data) { recive_twitter_data(payload.data); }
+    const { logonUser, reciveTwitterData, updateStockData } = this.props.actions
+    logonUser(this.socket);
+    this.socket.on("DISPATCH_TWITTER_DATA", payload => {
+      if (payload.data) { reciveTwitterData(payload.data); }
     });
     setInterval(() => {
-      update_stock_data(this.props.state.user.tickers);
+      updateStockData(this.props.state.user.tickers);
     }, 300000); // set this to 30000 (i.e. 30 s. before changing to relese)
   }
 
-  componentWillReceiveProps(next_props) {
-    const { fetch_twitter_data, fetch_stock_data } = this.props.actions;
-    const { user: next_user, stocks: next_stocks } = next_props.state;
-    const { user } = this.props.state;
-    const { socket } = this;
+  componentWillReceiveProps(nextProps) {
+    const { fetchTwitterData, fetchStockData } = this.props.actions
+    const { user: nextUser, stocks: nextStocks } = nextProps.state
+    const { user } = this.props.state
+    const { socket } = this
 
-    if (!user.loaded && next_user.tickers.length) {
+    if (!user.loaded && nextUser.tickers.length) {
       socket.on("NEW_TWITTER_DATA", () => {
-        fetch_twitter_data(next_user, socket);
+        fetchTwitterData(next_user, socket)
       });
-    } else if (user.loaded && !array_equals(next_user.tickers, user.tickers)) {
+    } else if (user.loaded && !array_equals(nextUser.tickers, user.tickers)) {
       // This happens when the user has user has added or remove a ticker
-      const { id, tickers } = next_user;
-      console.log(tickers);
-      persist_object("user", { id, tickers });
-      socket.removeListener("NEW_TWITTER_DATA");
+      const { id, tickers } = nextUser
+      persistObject("user", { id, tickers })
+      socket.removeListener("NEW_TWITTER_DATA")
       socket.on("NEW_TWITTER_DATA", () => {
-        fetch_twitter_data(next_user, socket);
+        fetchTwitterData(nextUser, socket)
       });
-      fetch_twitter_data(next_user, socket);
-      fetch_stock_data(tickers);
+      fetchTwitterData(nextUser, socket)
+      fetchStockData(tickers)
     }
   }
 
-  navigate_to_company(ticker) {
-    const { navigator, actions } = this.props;
-    actions.set_active_ticker(ticker);
+  navigateToCompany = ticker => {
+    const { navigator, actions } = this.props
+    actions.setActiveTicker(ticker);
     navigator.push(company_page_route(ticker));
   }
 
-  remove_ticker(ticker) {
+  removeTicker = ticker => {
     this.props.actions.remove_ticker(ticker);
   }
 
   render() {
-    const { user, stocks } = this.props.state;
-
+    const { user, stocks } = this.props.state
     if (user.loaded && stocks.loaded) {
       return (
         <Watchlist
           user={user}
           stocks={stocks}
-          remove_ticker={this.remove_ticker.bind(this)}
-          navigate={this.navigate_to_company.bind(this)}
+          removeTicker={this.removeTicker}
+          navigate={this.navigateToCompany}
         />
       );
     } else {
@@ -100,11 +98,11 @@ export default connect(
   }),
   (dispatch) => ({
     actions: bindActionCreators({
-      ...user_actions,
-      ...stock_actions,
-      ...twitter_data_actions,
-      set_active_ticker,
-      logon_user
+      ...userActions,
+      ...stockActions,
+      ...twitterDataActions,
+      setActiveTicker,
+      logonUser
     }, dispatch)
   })
 )(WatchlistContainer);

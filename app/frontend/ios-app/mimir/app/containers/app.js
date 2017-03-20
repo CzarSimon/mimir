@@ -7,11 +7,11 @@ import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 
-import * as reducers from '../reducers'
+import * as reducers from '../ducks'
 import BackButton from './navigation/back-button'
 import SearchButtonContainer from './navigation/search-button'
 import TitleContainer from './navigation/title'
-import render_scene from '../routing/render-scene'
+import renderScene from '../routing/render-scene'
 import { MAIN_ROUTE } from '../routing/routes'
 import { DEV_MODE } from '../credentials/config'
 
@@ -29,7 +29,7 @@ export default class App extends Component {
         <Navigator
           initialRoute = {MAIN_ROUTE}
           style = {styles.container}
-          renderScene = {render_scene}
+          renderScene = {renderScene}
           navigationBar = {
             <Navigator.NavigationBar
               routeMapper={{

@@ -5,7 +5,7 @@ import * as names from './route-names';
 import WatchlistContainer from '../containers/watchlist.container';
 import TabMenuContainer from '../containers/tab-menu.container';
 
-const render_scene = (route, navigator) => {
+const renderScene = (route, navigator) => {
   switch (route.name) {
     case names.MAIN:
       return (<WatchlistContainer navigator={navigator} />);
