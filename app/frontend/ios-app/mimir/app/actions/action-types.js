@@ -14,8 +14,3 @@ export const UPDATE_STOCK_DATA = "UPDATE_STOCK_DATA"; //Add failure scenario
 
 export const RECIVE_HISTORICAL_DATA = "RECIVE_HISTORICAL_DATA";
 export const FETCH_HISTORICAL_DATA = "FETCH_HISTORICAL_DATA"; //Add failure scenario
-
-//News actions
-export const FETCH_NEWS_ITEMS = "FETCH_NEWS_ITEMS";
-export const RECIVE_NEWS_ITEMS = "RECIVE_NEWS_ITEMS";
-export const RECIVE_NEWS_FAILURE = "RECIVE_NEWS_FAILURE;"
