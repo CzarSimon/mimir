@@ -23,7 +23,7 @@ class TitleContainer extends Component {
     return (
       (!search.active)
       ? ( <Title title={this.props.title} /> )
-      : ( <SearchBar run_query={this.runQuery}/> )
+      : ( <SearchBar runQuery={this.runQuery}/> )
     )
   }
 }
