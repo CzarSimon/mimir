@@ -1,5 +1,4 @@
 'use strict';
-
 import React, { Component } from 'react';
 import { Platform } from 'react-native';
 import { bindActionCreators } from 'redux';

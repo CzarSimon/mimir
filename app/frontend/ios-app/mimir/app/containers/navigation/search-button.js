@@ -1,24 +1,20 @@
-'use strict';
-
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
-import { toggle_search_active } from '../../actions/search.actions';
-import SearchButton from '../../components/navigation/search-button';
+'use strict'
+import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { toggleSearchActive } from '../../actions/search.actions'
+import SearchButton from '../../components/navigation/search-button'
 
 class SearchButtonContainer extends Component {
-  toggle_search() {
-    this.props.actions.toggle_search_active();
+  toggleSearch = () => {
+    this.props.actions.toggleSearchActive()
   }
 
   render() {
+    const { props, toggleSearch } = this
     return (
-      <SearchButton
-        active = {this.props.state.search.active}
-        action = {this.toggle_search.bind(this)}
-      />
-    );
+      <SearchButton active={props.state.search.active} action={toggleSearch} />
+    )
   }
 }
 export default connect(
@@ -29,7 +25,7 @@ export default connect(
   }),
   (dispatch) => ({
     actions: bindActionCreators({
-      toggle_search_active
+      toggleSearchActive
     }, dispatch)
   })
-)(SearchButtonContainer);
+)(SearchButtonContainer)

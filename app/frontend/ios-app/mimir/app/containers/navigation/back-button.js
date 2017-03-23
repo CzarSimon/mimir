@@ -1,17 +1,18 @@
-'use strict';
-import React, { Component } from 'react';
+'use strict'
+import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
-import { length, color } from '../../styles/styles';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { length, color } from '../../styles/styles'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 export default class BackButton extends Component {
-  handleClick = (navigator) => {
-    navigator.pop();
+  handleClick = navigator => {
+    navigator.pop()
   }
+  
   render() {
-    const { index, nav } = this.props;
+    const { index, nav } = this.props
     if (index === 0) {
-      return (<View style={styles.container}/>);
+      return (<View style={styles.container}/>)
     } else {
       return (
         <TouchableHighlight
@@ -23,7 +24,7 @@ export default class BackButton extends Component {
               </View>
           </View>
       </TouchableHighlight>
-      );
+      )
     }
   }
 }
@@ -38,6 +39,6 @@ const styles = StyleSheet.create({
   },
   button: {
     flex: 1,
-    paddingVertical: length.mini + 2 
+    paddingVertical: length.mini + 2
   }
 })

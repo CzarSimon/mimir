@@ -1,18 +1,17 @@
 'use strict';
-
-import React, { Component } from 'react';
-import { View } from 'react-native';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { add_ticker } from '../actions/user.actions';
-import { toggle_search_active } from '../actions/search.actions';
-import SearchResult from '../components/search-result';
+import React, { Component } from 'react'
+import { View } from 'react-native'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { addTicker } from '../ducks/user'
+import { toggleSearchActive } from '../ducks/search'
+import SearchResult from '../components/search-result'
 
 class SearchResultContainer extends Component {
-  add_new_ticker(new_ticker) {
-    const { add_ticker, toggle_search_active } = this.props.actions;
-    add_ticker(new_ticker);
-    toggle_search_active();
+  addNewTicker(newTicker) {
+    const { addTicker, toggleSearchActive } = this.props.actions;
+    addTicker(newTicker);
+    toggleSearchActive();
   }
 
   render() {
@@ -21,7 +20,7 @@ class SearchResultContainer extends Component {
       return (
         <SearchResult
           results = {results}
-          add_ticker = {this.add_new_ticker.bind(this)}
+          addTicker = {this.addNewTicker.bind(this)}
         />
       )
     } else {
@@ -39,8 +38,8 @@ export default connect(
   }),
   (dispatch) => ({
     actions: bindActionCreators({
-      add_ticker,
-      toggle_search_active
+      addTicker,
+      toggleSearchActive
     }, dispatch)
   })
 )(SearchResultContainer)

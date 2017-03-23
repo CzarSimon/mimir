@@ -1,19 +1,18 @@
-'use strict';
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
-import { add_ticker } from '../actions/user.actions';
-import { fetch_company_desc } from '../actions/descriptions.actions';
-import Overview from '../components/overview';
-import { arr_get_value_by_key, format_name } from '../methods/helper-methods';
+'use strict'
+import React, { Component } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { addTicker } from '../ducks/user'
+import { fetchCompanyDesc } from '../ducks/descriptions'
+import Overview from '../components/overview'
+import { formatName } from '../methods/helper-methods'
 
 class OverviewContainer extends Component {
   componentWillMount() {
     const { company, actions, state } = this.props;
     const { Name, Symbol } = company;
     if (!state.descriptions[company.Symbol]) {
-      actions.fetch_company_desc(format_name(Name), Symbol);
+      actions.fetchCompanyDesc(formatName(Name), Symbol);
     }
   }
   render() {
@@ -38,8 +37,8 @@ export default connect(
   }),
   (dispatch) => ({
     actions: bindActionCreators({
-      fetch_company_desc,
-      add_ticker
+      fetchCompanyDesc,
+      addTicker
     }, dispatch)
   })
 )(OverviewContainer);
