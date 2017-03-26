@@ -13,7 +13,7 @@ const initialState = {
 }
 
 /* --- Reducer --- */
-export default twitterData = (state = initialState, action = {}) => {
+const twitterData = (state = initialState, action = {}) => {
   switch (action.type) {
     case RECIVE_TWITTER_DATA:
       return {
@@ -24,8 +24,9 @@ export default twitterData = (state = initialState, action = {}) => {
       return state;
   }
 }
+export default twitterData
 
 /* --- Actions --- */
 export const fetchTwitterData = (user, socket) => (() => socket.emit(FETCH_TWITTER_DATA, { user }))
 
-export const reciveTwitterData = createAction(RECIVE_TWITTER_DATA, data => {({ data }))
+export const reciveTwitterData = createAction(RECIVE_TWITTER_DATA, data => ({ data }))

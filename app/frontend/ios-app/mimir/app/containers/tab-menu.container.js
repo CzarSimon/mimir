@@ -12,7 +12,7 @@ import { arr_get_value_by_key } from '../methods/helper-methods';
 
 class TabMenuContainer extends Component {
   handleTabClick = clickedTab => {
-    this.props.actions.select_tab(clicked_tab);
+    this.props.actions.selectTab(clickedTab);
   }
 
   render() {

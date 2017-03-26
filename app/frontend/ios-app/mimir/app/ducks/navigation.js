@@ -12,7 +12,7 @@ const initialState = {
 };
 
 /* --- Reducer --- */
-export default navigation = (state = initialState, action = {}) => {
+const navigation = (state = initialState, action = {}) => {
   switch (action.type) {
     case SET_ACTIVE_TICKER:
       return {
@@ -28,6 +28,7 @@ export default navigation = (state = initialState, action = {}) => {
       return state;
   }
 }
+export default navigation
 
 /* --- Actions --- */
 export const setActiveTicker = createAction(SET_ACTIVE_TICKER, ticker => ({ ticker }))

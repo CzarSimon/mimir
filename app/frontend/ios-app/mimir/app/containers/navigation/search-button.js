@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { toggleSearchActive } from '../../actions/search.actions'
+import { toggleSearchActive } from '../../ducks/search'
 import SearchButton from '../../components/navigation/search-button'
 
 class SearchButtonContainer extends Component {

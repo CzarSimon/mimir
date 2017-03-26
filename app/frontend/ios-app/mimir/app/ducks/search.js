@@ -18,7 +18,7 @@ const initialState = {
 }
 
 /* --- Reducer --- */
-export default search = (state = initialState, action = {}) => {
+const search = (state = initialState, action = {}) => {
   switch (action.type) {
     case TOGGLE_SEARCH_ACTIVE:
       return {
@@ -44,6 +44,7 @@ export default search = (state = initialState, action = {}) => {
       return state;
   }
 }
+export default search
 
 /* --- Actions --- */
 export const toggleSearchActive = createAction(TOGGLE_SEARCH_ACTIVE)

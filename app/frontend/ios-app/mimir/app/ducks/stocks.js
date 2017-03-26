@@ -18,7 +18,7 @@ const initialState = {
   loaded: false
 };
 
-export default stocks = (state = initialState, action = {}) => {
+const stocks = (state = initialState, action = {}) => {
   switch (action.type) {
     case RECIVE_STOCK_DATA:
       return {
@@ -57,6 +57,7 @@ export default stocks = (state = initialState, action = {}) => {
       return state;
   }
 }
+export default stocks
 
 /* --- Actions --- */
 export const fetchStockData = tickers => (

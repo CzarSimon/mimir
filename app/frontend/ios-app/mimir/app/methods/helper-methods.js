@@ -1,8 +1,7 @@
 'use strict';
+import _ from 'lodash'
 
-const _ = require('lodash');
-
-export const array_equals = (a1, a2) => {
+export const arrayEquals = (a1, a2) => {
   let i = a1.length;
   if (i !== a2.length) return false;
   while (i--) {

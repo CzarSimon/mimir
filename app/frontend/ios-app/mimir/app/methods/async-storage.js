@@ -1,15 +1,13 @@
-import { AsyncStorage } from 'react-native';
+import { AsyncStorage } from 'react-native'
 
 export const persist = (key, val) => {
   AsyncStorage.setItem(key, val.toString())
   .catch(err => console.log(err))
-  .done(); //remove
 }
 
-export const persist_object = (key, obj) => {
+export const persistObject = (key, obj) => {
   AsyncStorage.setItem(key, JSON.stringify(obj))
   .catch(err => console.log(err))
-  .done(); //remove
 }
 
 export const retrive = (key, show = false) => {
@@ -26,7 +24,7 @@ export const retrive = (key, show = false) => {
   );
 }
 
-export const retrive_object = (key, show = false) => {
+export const retriveObject = (key, show = false) => {
   return (
     AsyncStorage.getItem(key)
     .then(res => {

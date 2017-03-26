@@ -1,8 +1,9 @@
 'use strict'
 import { createAction } from 'redux-actions'
-import twitterData from './twitter-data';
-import { without, concat } from 'lodash';
-import { retriveObject} from '../methods/async-storage';
+import twitterData from './twitter-data'
+import { RECIVE_TWITTER_DATA } from './twitter-data'
+import { without, concat } from 'lodash'
+import { retriveObject} from '../methods/async-storage'
 
 /* --- Types --- */
 export const RECIVE_USER = 'RECIVE_USER'
@@ -21,25 +22,25 @@ const initialState = {
   twitterData: twitterData(),
   modifiable: false,
   loaded: false
-};
+}
 
 // modifiable is chaned to true on recive user --> modifiable is stored in async-storage
 
 /* --- Reducer --- */
-export default user = (state = initialState, action = {}) => {
+const user = (state = initialState, action = {}) => {
   switch (action.type) {
     case RECIVE_USER:
       return {
         ...state,
         ...action.payload.user,
         loaded: true
-      };
+      }
     case CREATE_NEW_USER:
       return {
         ...state,
         ...action.payload.user,
         loaded: true
-      };
+      }
     case ADD_TICKER:
       const { ticker } = action.payload
       return {
@@ -49,17 +50,17 @@ export default user = (state = initialState, action = {}) => {
           ? concat(state.tickers, ticker)
           : state.tickers
         )
-      };
+      }
     case REMOVE_TICKER:
       return {
         ...state,
         tickers: without(state.tickers, action.payload.ticker)
-      };
+      }
     case RECIVE_TWITTER_DATA:
       return {
         ...state,
         twitter_data: twitterData(state, action)
-      };
+      }
     case TOGGLE_MODIFIABLE:
       return {
         ...state,
@@ -71,9 +72,10 @@ export default user = (state = initialState, action = {}) => {
         searchHistory: []
       }
     default:
-      return state;
+      return state
   }
 }
+export default user
 
 /* --- Actions --- */
 export const fetchUser = () => {
