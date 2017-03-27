@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native'
 import { color, font, length } from '../../../styles/styles';
-import { format_name } from '../../../methods/helper-methods';
+import { formatName } from '../../../methods/helper-methods';
 
 export default class Name extends Component {
   render() {
     const { name, ticker } = this.props;
     return (
       <View style = {styles.name_info}>
-        <Text style={styles.name}>{ format_name(name) }</Text>
+        <Text style={styles.name}>{ formatName(name) }</Text>
         <Text style={styles.ticker}>{ ticker }</Text>
       </View>
     );

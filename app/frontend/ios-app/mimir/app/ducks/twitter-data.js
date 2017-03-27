@@ -8,7 +8,7 @@ export const RECIVE_TWITTER_DATA = 'RECIVE_TWITTER_DATA'
 export const FETCH_TWITTER_DATA = 'FETCH_TWITTER_DATA' //Add failure scenario
 
 const initialState = {
-  data: [],
+  data: {},
   loaded: false
 }
 

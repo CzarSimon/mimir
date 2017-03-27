@@ -6,9 +6,10 @@ const simpleData = "Name, Symbol, ChangeinPercent, PercentChange, LastTradePrice
 const detailedData = simpleData + ", Open, EBITDA, PERatio, MarketCapitalization, EarningsShare, YearHigh, YearLow, AverageDailyVolume, PreviousClose, ChangeFromYearHigh, ChangeFromYearLow"
 
 export const retriveStockData = tickers => {
-  const data_fields = (tickers.length > 1) ? simpleData : detailedData;
+  console.log("yhoo api", tickers)
+  const dataFields = (tickers.length > 1) ? simpleData : detailedData;
   const api = "https://query.yahooapis.com/v1/public/yql?q="
-  const data = encodeURIComponent("select " + data_fields + " from yahoo.finance.quotes where symbol in ('" + join(tickers, "','") + "')");
+  const data = encodeURIComponent("select " + dataFields + " from yahoo.finance.quotes where symbol in ('" + join(tickers, "','") + "')");
   const format = "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"
 
   if (tickers.length > 1) {
@@ -16,6 +17,10 @@ export const retriveStockData = tickers => {
       fetch(api + data + format)
       .then(res => res.json())
       .then(json => zipObject(tickers, json.query.results.quote))
+      .then(res => {
+        console.log("yhoo api",res)
+        return res
+      })
     );
   } else {
     return (

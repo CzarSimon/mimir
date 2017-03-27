@@ -59,7 +59,7 @@ const user = (state = initialState, action = {}) => {
     case RECIVE_TWITTER_DATA:
       return {
         ...state,
-        twitter_data: twitterData(state, action)
+        twitterData: twitterData(state, action)
       }
     case TOGGLE_MODIFIABLE:
       return {

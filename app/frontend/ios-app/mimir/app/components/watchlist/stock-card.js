@@ -5,7 +5,7 @@ import UrgencyIndicator from './stock-card/urgency-indicator';
 import Name from './stock-card/name';
 import Price from './stock-card/price';
 import Remove from './stock-card/remove';
-import { round, format_name } from '../../methods/helper-methods';
+import { round, formatName } from '../../methods/helper-methods';
 import { color, font, length } from '../../styles/styles';
 
 export default class StockCard extends Component {

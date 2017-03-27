@@ -1,8 +1,7 @@
 'use strict'
 import { mapValues } from 'lodash'
 import { createAction } from 'redux-actions'
-import { retriveStockData, retriveHistoricalData } from './../methods/yahoo-api';
-import { getTwitterData } from '../methods/server/twitter-miner';
+import { retriveStockData, retriveHistoricalData } from './../methods/yahoo-api'
 
 /* --- Types --- */
 export const RECIVE_STOCK_DATA = 'RECIVE_STOCK_DATA'

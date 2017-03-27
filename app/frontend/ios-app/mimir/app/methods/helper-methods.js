@@ -22,7 +22,7 @@ export const round = (number, decimals = 2) => {
   return parseFloat(number).toFixed(decimals);
 }
 
-export const format_name = (name, forbidden = ['inc', 'corporation', 'plc']) => {
+export const formatName = (name, forbidden = ['inc', 'corporation', 'plc']) => {
   const words = _.split(name, ' ');
   const lower_words = _.map(words, (word) => _.lowerCase(word));
 

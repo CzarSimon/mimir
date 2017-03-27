@@ -10,15 +10,15 @@ import StockCard from './watchlist/stock-card';
 import SearchResultContainer from '../containers/search-result.container';
 
 export default class Watchlist extends Component {
-  create_user_stock_list = (stock_data, ticker_order = []) => {
-    return values(stock_data);
+  createUserStockList = (stockData, tickerOrder = []) => {
+    return values(stockData);
   }
 
   render() {
-    const { user, stocks, navigate, remove_ticker } = this.props,
-          twitter_data = (user.twitter_data.loaded) ? user.twitter_data.data : {},
+    const { user, stocks, navigate, removeTicker } = this.props,
+          twitterData = (user.twitterData.loaded) ? user.twitterData.data : {},
           ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-          user_ticker_list = ds.cloneWithRows(stocks.data);
+          userTicketList = ds.cloneWithRows(stocks.data);
 
     return (
       <View style = {styles.container}>
@@ -26,7 +26,7 @@ export default class Watchlist extends Component {
           <SearchResultContainer />
         </View>
         <ListView
-          dataSource = {user_ticker_list}
+          dataSource = {userTicketList}
           renderHeader = {() => <HeaderContainer />}
           style={styles.list}
           renderRow = {(stock_data) => {
@@ -34,10 +34,10 @@ export default class Watchlist extends Component {
               return (
                 <StockCard
                   {...stock_data}
-                  twitter_data={twitter_data[stock_data.Symbol]}
+                  twitterData={twitterData[stock_data.Symbol]}
                   navigate={navigate}
                   modifiable={user.modifiable}
-                  remove_ticker={remove_ticker}
+                  removeTicker={removeTicker}
                   />
               );
             } else {

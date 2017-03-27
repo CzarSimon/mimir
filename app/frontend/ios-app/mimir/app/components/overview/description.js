@@ -1,7 +1,7 @@
 'use strict';
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
-import { round, format_name } from '../../methods/helper-methods';
+import { round, formatName } from '../../methods/helper-methods';
 import { length, font, color } from '../../styles/styles';
 
 export default class Description extends Component {

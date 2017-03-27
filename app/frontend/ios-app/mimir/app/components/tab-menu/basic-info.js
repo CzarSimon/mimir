@@ -4,7 +4,7 @@ import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
 import UrgencyIndicator from '../watchlist/stock-card/urgency-indicator';
 import SearchResultContainer from '../../containers/search-result.container';
 import Separator from '../helpers/separator';
-import { round, format_name, is_positive, format_price_change } from '../../methods/helper-methods';
+import { round, formatName, is_positive, format_price_change } from '../../methods/helper-methods';
 import { color, font, length } from '../../styles/styles';
 
 export default class BasicInfo extends Component {
@@ -18,7 +18,7 @@ export default class BasicInfo extends Component {
         <View style={styles.card}>
           <UrgencyIndicator {...this.props.twitter_data} />
           <View>
-            <Text style={styles.name}>{format_name(Name)}</Text>
+            <Text style={styles.name}>{formatName(Name)}</Text>
             <View style={styles.price}>
               <Text style={styles.price_text}>{round(LastTradePriceOnly)} {Currency}  </Text>
               <Text style={change_style}>{change}</Text>

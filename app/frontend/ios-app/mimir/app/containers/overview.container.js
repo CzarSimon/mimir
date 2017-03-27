@@ -16,11 +16,11 @@ class OverviewContainer extends Component {
     }
   }
   render() {
-    const { company, twitter_data, state }  = this.props;
+    const { company, twitterData, state }  = this.props;
     const description = state.descriptions[company.Symbol]
     return (
       <Overview
-        twitter_data = {twitter_data}
+        twitterData = {twitterData}
         description = {description}
         company = {company}
       />

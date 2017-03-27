@@ -8,18 +8,18 @@ export default class TwitterDiagram extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      show_vol_change: false
+      showVolChange: false
     }
   }
 
-  componentWillReceiveProps(next_props) {
-    if (next_props.data.volume !== this.props.data.volume) {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data.volume !== this.props.data.volume) {
       this.setState({
-        show_vol_change: true
+        showVolChange: true
       });
       setTimeout(() => {
         this.setState({
-          show_vol_change: false
+          showVolChange: false
         });
       }, 500);
     }
@@ -28,10 +28,10 @@ export default class TwitterDiagram extends Component {
   render() {
     const { volume, mean, stdev, minute } = this.props.data;
     const damping = parseFloat(minute) / 60.0;
-    const volume_style = (this.state.show_vol_change) ? styles.volume_change : styles.text
+    const volumeStyle = (this.state.showVolChange) ? styles.volumeChange : styles.text
     return (
       <View style={styles.container}>
-        <Text style={volume_style}>Tweets in the last hour: {volume}</Text>
+        <Text style={volumeStyle}>Tweets in the last hour: {volume}</Text>
         <Text style={styles.text}>Mean: {round(damping * mean, 0)} | Standard Deviation: {round(damping * stdev, 0)}</Text>
       </View>
     );
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     borderColor: color.grey.background,
     padding: length.small
   },
-  volume_change: {
+  volumeChange: {
     color: color.red,
     fontFamily: font.type.sans.bold,
     fontSize: font.text
