@@ -13,16 +13,16 @@ export default class SearchBar extends Component {
     };
   }
 
-  handle_submit = (query = this.state.text) => {
-    this.props.run_query(query);
+  handleSubmit = (query = this.state.text) => {
+    this.props.runQuery(query);
   }
 
-  handle_new_text = (new_text) => {
-    if (new_text.length > 0) {
-      this.props.run_query(new_text)
+  handleNewText = (newText) => {
+    if (newText.length > 0) {
+      this.props.runQuery(newText)
     }
     this.setState({
-      text: new_text
+      text: newText
     })
   }
 
@@ -32,7 +32,7 @@ export default class SearchBar extends Component {
       <View style={styles.container}>
         <TextInput
           style={styles.search_box}
-          onChangeText={(text) => this.handle_new_text(text)}
+          onChangeText={(text) => this.handleNewText(text)}
           selectionColor={color.blue}
           clearButtonMode='always'
           returnKeyType='search'
@@ -40,7 +40,7 @@ export default class SearchBar extends Component {
           autoFocus={true}
           autoCapitalize='none'
           placeholder={placeholder}
-          onSubmitEditing={() => this.handle_submit()}
+          onSubmitEditing={() => this.handleSubmit()}
           onFocus={() => this.setState({text: ""})}
         />
       </View>

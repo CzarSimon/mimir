@@ -6,21 +6,20 @@ import { color, length, font } from '../../styles/styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class ResultCard extends Component {
-  handle_click(ticker) {
-    console.log('Adding ticker:', ticker);
-    this.props.add_ticker(ticker);
+  handleClick = ticker => {
+    this.props.addTicker(ticker)
   }
 
   render() {
     const { name, ticker } = this.props;
     return (
       <View style = {styles.container}>
-        <View style = {styles.name_info}>
+        <View style = {styles.nameInfo}>
           <Text style={styles.text}>{name}</Text>
           <Text style={styles.text}>{ticker}</Text>
         </View>
         <TouchableHighlight
-          onPress = { () => this.handle_click(ticker)}>
+          onPress = { () => this.handleClick(ticker)}>
             <View style={styles.button}>
               <Icon name='ios-add-circle-outline' size={length.icons.medium} color={color.green} />
             </View>
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
     backgroundColor: color.white,
     marginBottom: length.mini
   },
-  name_info: {
+  nameInfo: {
     flex: 3,
     alignSelf: 'stretch'
   },

@@ -6,7 +6,6 @@ const simpleData = "Name, Symbol, ChangeinPercent, PercentChange, LastTradePrice
 const detailedData = simpleData + ", Open, EBITDA, PERatio, MarketCapitalization, EarningsShare, YearHigh, YearLow, AverageDailyVolume, PreviousClose, ChangeFromYearHigh, ChangeFromYearLow"
 
 export const retriveStockData = tickers => {
-  console.log("yhoo api", tickers)
   const dataFields = (tickers.length > 1) ? simpleData : detailedData;
   const api = "https://query.yahooapis.com/v1/public/yql?q="
   const data = encodeURIComponent("select " + dataFields + " from yahoo.finance.quotes where symbol in ('" + join(tickers, "','") + "')");
@@ -17,10 +16,7 @@ export const retriveStockData = tickers => {
       fetch(api + data + format)
       .then(res => res.json())
       .then(json => zipObject(tickers, json.query.results.quote))
-      .then(res => {
-        console.log("yhoo api",res)
-        return res
-      })
+      .then(res => res)
     );
   } else {
     return (

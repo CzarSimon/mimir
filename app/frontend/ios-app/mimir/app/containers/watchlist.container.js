@@ -18,6 +18,7 @@ import socket from '../methods/server/socket'
 import { persistObject } from './../methods/async-storage'
 import { arrayEquals } from '../methods/helper-methods'
 import { company_page_route } from '../routing/routes'
+import { DEV_MODE } from '../credentials/config'
 import { SERVER_URL } from '../credentials/server-info'
 
 class WatchlistContainer extends Component {
@@ -34,7 +35,7 @@ class WatchlistContainer extends Component {
     })
     setInterval(() => {
       updateStockData(this.props.state.user.tickers)
-    }, 300000) // set this to 30000 (i.e. 30 s. before changing to relese)
+    }, (!DEV_MODE) ? 30000 : 300000) // set this to 30000 (i.e. 30 s. before changing to relese)
   }
 
   componentWillReceiveProps(nextProps) {

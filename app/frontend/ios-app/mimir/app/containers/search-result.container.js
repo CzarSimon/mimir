@@ -9,9 +9,9 @@ import SearchResult from '../components/search-result'
 
 class SearchResultContainer extends Component {
   addNewTicker(newTicker) {
-    const { addTicker, toggleSearchActive } = this.props.actions;
-    addTicker(newTicker);
-    toggleSearchActive();
+    const { addTicker, toggleSearchActive } = this.props.actions
+    addTicker(newTicker)
+    toggleSearchActive()
   }
 
   render() {

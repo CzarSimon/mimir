@@ -7,9 +7,9 @@ import { length, font, color } from '../styles/styles';
 
 export default class SearchResult extends Component {
   render() {
-    const { results, add_ticker } = this.props,
-          ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
-          result_list = ds.cloneWithRows(results);
+    const { results, addTicker } = this.props
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+    const result_list = ds.cloneWithRows(results)
     return (
       <View style = {styles.container}>
         <ListView
@@ -19,7 +19,7 @@ export default class SearchResult extends Component {
             <ResultCard
               name = {result.name}
               ticker = {result.ticker}
-              add_ticker = {add_ticker}
+              addTicker = {addTicker}
             />
           )}
         />

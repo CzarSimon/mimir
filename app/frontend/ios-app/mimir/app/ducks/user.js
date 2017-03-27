@@ -89,7 +89,7 @@ export const reciveUser = createAction(RECIVE_USER, user => ({ user }))
 
 export const createNewUser = createAction(CREATE_NEW_USER, user => ({ user }))
 
-export const add_ticker = createAction(ADD_TICKER, ticker => ({ ticker }))
+export const addTicker = createAction(ADD_TICKER, ticker => ({ ticker }))
 
 export const removeRicker = createAction(REMOVE_TICKER, ticker => ({ ticker }))
 
