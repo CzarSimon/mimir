@@ -1,44 +1,35 @@
 'use strict'
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
-import { length, color } from '../../styles/styles'
-import Icon from 'react-native-vector-icons/Ionicons'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import { toggleSearchActive } from '../../ducks/search'
+import { last } from 'lodash'
+import { SEARCH_PAGE } from '../../routing/main'
+import BackButton from '../../components/navigation/back-button'
 
-export default class BackButton extends Component {
-  handleClick = navigator => {
+class BackButtonContainer extends Component {
+  handleClick = () => {
+    const { navigator, actions } = this.props
+    const lastRoute = last(navigator.getCurrentRoutes())
+    if (lastRoute.name === SEARCH_PAGE) {
+      actions.toggleSearchActive()
+    }
     navigator.pop()
   }
-  
+
   render() {
-    const { index, nav } = this.props
-    if (index === 0) {
-      return (<View style={styles.container}/>)
-    } else {
-      return (
-        <TouchableHighlight
-          onPress={() => this.handleClick(nav)}
-          underlayColor={color.grey.background}>
-          <View style={styles.container}>
-              <View style={styles.button}>
-                <Icon name='ios-arrow-back-outline' size={length.icons.medium} color={color.blue} />
-              </View>
-          </View>
-      </TouchableHighlight>
-      )
-    }
+    const { index } = this.props
+    return <BackButton index={index} handleClick={this.handleClick} />
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    alignSelf: 'stretch',
-    justifyContent: 'center',
-    width: length.button
-  },
-  button: {
-    flex: 1,
-    paddingVertical: length.mini + 2
-  }
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators({
+    toggleSearchActive
+  }, dispatch)
 })
+
+export default connect(
+  state => ({}),
+  dispatch => mapDispatchToProps(dispatch)
+)(BackButtonContainer)

@@ -26,13 +26,13 @@ class StatisticsContainer extends Component {
 }
 
 export default connect(
-  (state) => ({
+  state => ({
     state: {
       stocks: state.stocks,
       navigation: state.navigation
     }
   }),
-  (dispatch) => ({
+  dispatch => ({
     actions: bindActionCreators({
       fetchStockData,
       fetchHistoricalData

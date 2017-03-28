@@ -8,11 +8,10 @@ import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
 
 import * as reducers from '../ducks'
-import BackButton from './navigation/back-button'
+import BackButtonContainer from './navigation/back-button'
 import SearchButtonContainer from './navigation/search-button'
 import TitleContainer from './navigation/title'
-import renderScene from '../routing/render-scene'
-import { MAIN_ROUTE } from '../routing/routes'
+import renderScene, { MAIN_ROUTE } from '../routing/main'
 import { DEV_MODE } from '../credentials/config'
 
 const logger = createLogger();
@@ -33,8 +32,8 @@ export default class App extends Component {
           navigationBar = {
             <Navigator.NavigationBar
               routeMapper={{
-                LeftButton: (route, navigator, index, navState) => (<BackButton index={index} nav={navigator}/>),
-                RightButton: () => (<SearchButtonContainer />),
+                LeftButton: (route, navigator, index) => (<BackButtonContainer index={index} navigator={navigator}/>),
+                RightButton: (route, navigator, index) => (<SearchButtonContainer index={index} navigator={navigator}/>),
                 Title: (route) => (<TitleContainer title={route.title} />)
               }}
               style={{borderBottomWidth: 1, borderColor: 'lightgrey'}}

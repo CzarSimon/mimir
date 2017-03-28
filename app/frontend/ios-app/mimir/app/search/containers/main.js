@@ -8,11 +8,11 @@ import SearchResults from '../components/search-results'
 class SearchContainer extends Component {
   render() {
     const { search, searchHistory } = this.props.state
-    return {
+    return (
       (!search.query)
       ? <SearchHistory history={searchHistory}/>
       : <SearchResults results={search.results}/>
-    }
+    )
   }
 }
 

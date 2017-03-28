@@ -17,7 +17,7 @@ import socket from '../methods/server/socket'
 
 import { persistObject } from './../methods/async-storage'
 import { arrayEquals } from '../methods/helper-methods'
-import { companyPageRoute } from '../routing/routes'
+import { companyPageRoute } from '../routing/main'
 import { DEV_MODE } from '../credentials/config'
 import { SERVER_URL } from '../credentials/server-info'
 
