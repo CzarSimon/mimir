@@ -17,7 +17,7 @@ import socket from '../methods/server/socket'
 
 import { persistObject } from './../methods/async-storage'
 import { arrayEquals } from '../methods/helper-methods'
-import { company_page_route } from '../routing/routes'
+import { companyPageRoute } from '../routing/routes'
 import { DEV_MODE } from '../credentials/config'
 import { SERVER_URL } from '../credentials/server-info'
 
@@ -64,11 +64,11 @@ class WatchlistContainer extends Component {
   navigateToCompany = ticker => {
     const { navigator, actions } = this.props
     actions.setActiveTicker(ticker)
-    navigator.push(company_page_route(ticker))
+    navigator.push(companyPageRoute(ticker))
   }
 
   removeTicker = ticker => {
-    this.props.actions.remove_ticker(ticker)
+    this.props.actions.removeTicker(ticker)
   }
 
   render() {

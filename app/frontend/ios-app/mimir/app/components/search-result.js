@@ -1,9 +1,8 @@
-'use strict';
-
-import React, { Component } from 'react';
+'use strict'
+import React, { Component } from 'react'
 import { View, Text, StyleSheet, ListView } from 'react-native'
-import ResultCard from './search-result/result-card';
-import { length, font, color } from '../styles/styles';
+import ResultCard from './search-result/result-card'
+import { length, font, color } from '../styles/styles'
 
 export default class SearchResult extends Component {
   render() {
@@ -24,7 +23,7 @@ export default class SearchResult extends Component {
           )}
         />
       </View>
-    );
+    )
   }
 }
 

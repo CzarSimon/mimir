@@ -91,7 +91,7 @@ export const createNewUser = createAction(CREATE_NEW_USER, user => ({ user }))
 
 export const addTicker = createAction(ADD_TICKER, ticker => ({ ticker }))
 
-export const removeRicker = createAction(REMOVE_TICKER, ticker => ({ ticker }))
+export const removeTicker = createAction(REMOVE_TICKER, ticker => ({ ticker }))
 
 export const toggleModifiable = createAction(TOGGLE_MODIFIABLE)
 

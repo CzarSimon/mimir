@@ -1,17 +1,17 @@
-'use strict';
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { color, length, font } from '../../styles/styles';
-import Chart from 'react-native-chart';
-import { map, reverse } from 'lodash';
+'use strict'
+import React, { Component } from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import { color, length, font } from '../../styles/styles'
+import Chart from 'react-native-chart'
+import { map, reverse } from 'lodash'
 
 export default class PriceChart extends Component {
   render() {
-    const { historical_data } = this.props;
-    const data = reverse(map(historical_data, (obj) => [obj.Date, obj.Adj_Close]))
+    const { historicalData } = this.props
+    const data = reverse(map(historicalData, (obj) => [obj.Date, obj.Adj_Close]))
     return (
       <View style={styles.container}>
-        <Text style={styles.chart_ledgend}>Price chart (3M)</Text>
+        <Text style={styles.chartLedgend}>Price chart (3M)</Text>
         <Chart
           style={styles.chart}
           data={data}
@@ -25,7 +25,7 @@ export default class PriceChart extends Component {
           axisLabelColor={color.black}
         />
       </View>
-    );
+    )
   }
 }
 
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     borderColor: color.grey.background,
     borderWidth: 1
   },
-  chart_ledgend: {
+  chartLedgend: {
     marginTop: length.small,
     marginLeft: length.medium,
     fontFamily: font.type.sans.bold,

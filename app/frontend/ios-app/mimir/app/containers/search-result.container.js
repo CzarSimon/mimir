@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 import React, { Component } from 'react'
 import { View } from 'react-native'
 import { bindActionCreators } from 'redux'
@@ -15,7 +15,7 @@ class SearchResultContainer extends Component {
   }
 
   render() {
-    const { active, results } = this.props.state.search;
+    const { active, results } = this.props.state.search
     if (active && results.length) {
       return (
         <SearchResult
@@ -24,7 +24,7 @@ class SearchResultContainer extends Component {
         />
       )
     } else {
-      return (<View />);
+      return <View />
     }
   }
 }

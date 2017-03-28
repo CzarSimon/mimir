@@ -6,15 +6,15 @@ import { length, color, font } from '../../styles/styles';
 
 export default class Header extends Component {
   render() {
-    const { modifiable, handle_click } = this.props,
-          button_text = (!this.props.modifiable) ? "Change" : "Done";
+    const { modifiable, handleClick } = this.props,
+          buttonText = (!this.props.modifiable) ? "Change" : "Done";
     return (
       <View style = {styles.container}>
-        <Text style={styles.header_text}>Watchlist</Text>
+        <Text style={styles.headerText}>Watchlist</Text>
         <TouchableHighlight
-          onPress = {() => handle_click()}>
+          onPress = {() => handleClick()}>
           <View style={styles.button}>
-            <Text style={styles.button_text}>{button_text}</Text>
+            <Text style={styles.buttonText}>{buttonText}</Text>
           </View>
         </TouchableHighlight>
       </View>
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: length.small,
     marginVertical: length.small,
   },
-  header_text: {
+  headerText: {
     fontSize: font.h3,
     fontFamily: font.type.sans.normal,
     color: color.blue
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: color.blue,
   },
-  button_text: {
+  buttonText: {
     flex: 1,
     alignSelf: 'center',
     justifyContent: 'center',

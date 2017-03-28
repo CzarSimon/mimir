@@ -9,7 +9,6 @@ import { length } from '../styles/styles'
 export default class Overview extends Component {
   render() {
     const { description, twitterData } = this.props
-    console.log(twitterData)
     return (
       <View style={styles.container}>
         <Description description={description} />
