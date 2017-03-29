@@ -13,6 +13,7 @@ export default class SearchHistory extends Component {
       <View>
         <ListView
           dataSource={historyList}
+          enableEmptySections={true}
           renderHeader={() => <HistoryHeader />}
           renderRow={itemText => <HistoryItemContainer text={itemText} />}
         />

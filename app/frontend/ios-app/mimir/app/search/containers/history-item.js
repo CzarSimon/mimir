@@ -2,13 +2,13 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { updateQuery } from '../../ducks/search'
+import { updateAndRunQuery } from '../../ducks/search'
 import HistoryItem from '../components/history-item'
 
 class HistoryItemContainer extends Component {
   handleClick = () => {
     const { text, actions } = this.props
-    actions.updateQuery(text)
+    actions.updateAndRunQuery(text)
   }
 
   render() {
@@ -18,7 +18,7 @@ class HistoryItemContainer extends Component {
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
-    updateQuery
+    updateAndRunQuery
   }, dispatch)
 })
 

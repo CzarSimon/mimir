@@ -1,32 +1,35 @@
-'use strict';
+'use strict'
 
-import React, { Component } from 'react';
+import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
-import { color, length, font } from '../../styles/styles';
-import Icon from 'react-native-vector-icons/Ionicons';
+import { color, length, font } from '../../styles/styles'
+import Icon from 'react-native-vector-icons/Ionicons'
 
 export default class SearchResult extends Component {
-  handleClick = (ticker) => {
-    console.log('Adding ticker:', ticker);
-    this.props.addTicker(ticker);
+  addTicker = ticker => {
+    this.props.addTicker(ticker)
+  }
+
+  goToStock = ticker => {
+    console.log("Will go to stock")
   }
 
   render() {
-    const { name, ticker } = this.props;
+    const { name, ticker } = this.props
     return (
-      <View style = {styles.container}>
-        <View style = {styles.name_info}>
+      <View style={styles.container}>
+        <View style={styles.nameInfo}>
           <Text style={styles.text}>{name}</Text>
           <Text style={styles.text}>{ticker}</Text>
         </View>
         <TouchableHighlight
-          onPress = {() => this.handleClick(ticker)}>
+          onPress={() => this.addTicker(ticker)}>
             <View style={styles.button}>
               <Icon name='ios-add-circle-outline' size={length.icons.medium} color={color.green} />
             </View>
         </TouchableHighlight>
       </View>
-    );
+    )
   }
 }
 
@@ -41,9 +44,9 @@ const styles = StyleSheet.create({
     marginRight: length.medium,
     borderWidth: 1,
     backgroundColor: color.white,
-    marginBottom: length.mini
+    marginBottom: length.small
   },
-  name_info: {
+  nameInfo: {
     flex: 3,
     alignSelf: 'stretch'
   },

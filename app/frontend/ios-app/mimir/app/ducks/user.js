@@ -2,8 +2,8 @@
 import { createAction } from 'redux-actions'
 import twitterData from './twitter-data'
 import { RECIVE_TWITTER_DATA } from './twitter-data'
-import { without, concat } from 'lodash'
-import { retriveObject} from '../methods/async-storage'
+import { without, concat, uniq } from 'lodash'
+import { retriveObject } from '../methods/async-storage'
 
 /* --- Types --- */
 export const RECIVE_USER = 'RECIVE_USER'
@@ -13,12 +13,13 @@ export const ADD_TICKER = 'ADD_TICKER'
 export const REMOVE_TICKER = 'REMOVE_TICKER'
 export const TOGGLE_MODIFIABLE = 'TOGGLE_MODIFIABLE'
 export const CLEAR_SEARCH_HISTORY = 'CLEAR_SEARCH_HISTORY'
+export const ADD_TO_SEARCH_HISTORY = 'ADD_TO_SEARCH_HISTORY'
 
 const initialState = {
   id: null,
   name: null,
   tickers: [],
-  searchHistory: ['twitter', 'GOOG', 'Nvid'],
+  searchHistory: ['twitter', 'GOOG', 'Nvd'],
   twitterData: twitterData(),
   modifiable: false,
   loaded: false
@@ -71,6 +72,11 @@ const user = (state = initialState, action = {}) => {
         ...state,
         searchHistory: []
       }
+    case ADD_TO_SEARCH_HISTORY:
+      return {
+        ...state,
+        searchHistory: uniq(concat(action.payload.query, state.searchHistory))
+      }
     default:
       return state
   }
@@ -81,7 +87,7 @@ export default user
 export const fetchUser = () => {
   return dispatch => (
     retriveObject("user")
-    .then(user => dispatch(recive_user(user)))
+    .then(user => dispatch(reciveUser(user)))
   )
 }
 
@@ -96,3 +102,7 @@ export const removeTicker = createAction(REMOVE_TICKER, ticker => ({ ticker }))
 export const toggleModifiable = createAction(TOGGLE_MODIFIABLE)
 
 export const clearSearchHistory = createAction(CLEAR_SEARCH_HISTORY)
+
+export const addToSearchHistory = createAction(
+  ADD_TO_SEARCH_HISTORY, query => ({ query })
+)

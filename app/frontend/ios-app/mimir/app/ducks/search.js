@@ -12,7 +12,6 @@ export const UPDATE_QUERY = 'UPDATE_QUERY'
 const initialState = {
   active: false,
   query: null,
-  placeholder: 'Search tickers...',
   keyboardUp: false,
   results: []
 }
@@ -55,11 +54,17 @@ export const reciveSearchResults = createAction(
   RECIVE_SEARCH_RESULTS, results => ({ results })
 )
 
-export const fetchSearchResults = query => (() =>
+export const fetchSearchResults = query => {
   socket.emit(FETCH_SEARCH_RESULTS, { query })
-)
-
-export const updateQuery = query => {
-  fetchSearchResults(query)
-  return createAction(UPDATE_QUERY, query => ({ query }))
 }
+
+export const updateQuery = createAction(UPDATE_QUERY, query => ({ query }))
+
+export const updateAndRunQuery = query => (
+  dispatch => {
+    if (query.length > 0) {
+      fetchSearchResults(query)
+    }
+    return dispatch(updateQuery(query))
+  }
+)

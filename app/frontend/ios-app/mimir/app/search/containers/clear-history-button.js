@@ -2,12 +2,12 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { clearHistory } from '../../ducks/user'
+import { clearSearchHistory } from '../../ducks/user'
 import ClearHistoryButton from '../components/clear-history-button'
 
 class ClearHistoryContainer extends Component {
   clearHistory = () => {
-    this.props.actions.clearHistory()
+    this.props.actions.clearSearchHistory()
   }
 
   render() {
@@ -17,7 +17,7 @@ class ClearHistoryContainer extends Component {
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
-    clearHistory
+    clearSearchHistory
   }, dispatch)
 })
 
