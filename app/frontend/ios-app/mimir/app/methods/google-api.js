@@ -1,7 +1,7 @@
 'use strict'
 import { knowledge_graph } from '../credentials/google';
 
-export const query_knowledge_graph = (name) => {
+export const kgSearch = name => {
   const api = "https://kgsearch.googleapis.com/v1/entities:search";
   const queryURL = api + '?query=' + name + '&key=' + knowledge_graph.key + '&limit=1&indent=True';
   return (

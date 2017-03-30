@@ -1,40 +1,41 @@
-'use strict';
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { round } from '../../methods/helper-methods';
-import { color, length, font } from '../../styles/styles';
+'use strict'
+import React, { Component } from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import { round } from '../../methods/helper-methods'
+import { color, length, font } from '../../styles/styles'
+import { card } from '../../styles/common'
 
 export default class TwitterDiagram extends Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      show_vol_change: false
+      showVolChange: false
     }
   }
 
-  componentWillReceiveProps(next_props) {
-    if (next_props.data.volume !== this.props.data.volume) {
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.data.volume !== this.props.data.volume) {
       this.setState({
-        show_vol_change: true
-      });
+        showVolChange: true
+      })
       setTimeout(() => {
         this.setState({
-          show_vol_change: false
-        });
-      }, 500);
+          showVolChange: false
+        })
+      }, 500)
     }
   }
 
   render() {
-    const { volume, mean, stdev, minute } = this.props.data;
-    const damping = parseFloat(minute) / 60.0;
-    const volume_style = (this.state.show_vol_change) ? styles.volume_change : styles.text
+    const { volume, mean, stdev, minute } = this.props.data
+    const damping = parseFloat(minute) / 60.0
+    const volumeStyle = (this.state.showVolChange) ? styles.volumeChange : styles.text
     return (
       <View style={styles.container}>
-        <Text style={volume_style}>Tweets in the last hour: {volume}</Text>
+        <Text style={volumeStyle}>Tweets in the last hour: {volume}</Text>
         <Text style={styles.text}>Mean: {round(damping * mean, 0)} | Standard Deviation: {round(damping * stdev, 0)}</Text>
       </View>
-    );
+    )
   }
 }
 
@@ -43,12 +44,10 @@ const styles = StyleSheet.create({
     marginVertical: length.small,
     marginHorizontal: length.medium,
     marginBottom: length.small,
-    backgroundColor: color.white,
-    borderWidth: 1,
-    borderColor: color.grey.background,
-    padding: length.small
+    padding: length.small,
+    ...card
   },
-  volume_change: {
+  volumeChange: {
     color: color.red,
     fontFamily: font.type.sans.bold,
     fontSize: font.text

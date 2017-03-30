@@ -9,20 +9,20 @@ import StatisticsContainer from '../containers/statistics.container';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class TabMenu extends Component {
-  handle_tab_click = (clicked_tab) => {
-    const { selected_tab, handle_click } = this.props;
-    if (clicked_tab !== selected_tab) {
-      handle_click(clicked_tab);
+  handleTabClick = (clickedTab) => {
+    const { selectedTab, handleClick } = this.props;
+    if (clickedTab !== selectedTab) {
+      handleClick(clickedTab);
     }
   }
   render() {
-    const { company, twitter_data, selected_tab, handle_click, select_article } = this.props;
+    const { company, twitterData, selectedTab, handleClick, selectArticle } = this.props;
     const tabs = {
-      overview: <OverviewContainer company={company} twitter_data={twitter_data}/>,
+      overview: <OverviewContainer company={company} twitterData={twitterData}/>,
       news: <NewsContainer company={company} />,
       statistics: <StatisticsContainer company={company}/>
   };
-    const icon_names = {
+    const iconNames = {
       overview: 'ios-information-circle-outline',
       news: 'ios-paper-outline',
       statistics: 'ios-stats-outline'
@@ -36,10 +36,10 @@ export default class TabMenu extends Component {
             <Icon.TabBarItemIOS
               key={name}
               title={capitalize(name)}
-              iconName={icon_names[name]}
+              iconName={iconNames[name]}
               iconSize={length.icons.medium}
-              selected={selected_tab === name}
-              onPress={() => this.handle_tab_click(name)}>
+              selected={selectedTab === name}
+              onPress={() => this.handleTabClick(name)}>
               {component}
             </Icon.TabBarItemIOS>
           ))

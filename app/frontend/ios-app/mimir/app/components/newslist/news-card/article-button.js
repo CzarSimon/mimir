@@ -1,12 +1,13 @@
-'use strict';
+'use strict'
 
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
-import SafariView from 'react-native-safari-view';
-import { color, length, font } from '../../../styles/styles';
+import React, { Component } from 'react'
+import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
+import SafariView from 'react-native-safari-view'
+import { color, length, font } from '../../../styles/styles'
+import { card } from '../../../styles/common'
 
 export default class ArticleButton extends Component {
-  go_to_article = () => {
+  goToArticle = () => {
     SafariView.isAvailable()
     .then(SafariView.show({
       url: this.props.url,
@@ -17,7 +18,7 @@ export default class ArticleButton extends Component {
   render() {
     return (
       <TouchableHighlight
-        onPress = {() => this.go_to_article()}>
+        onPress = {() => this.goToArticle()}>
         <View style={styles.button}>
           <Text style={styles.text}>Go to article</Text>
         </View>
@@ -28,6 +29,7 @@ export default class ArticleButton extends Component {
 
 const styles = StyleSheet.create({
   button: {
+    ...card,
     flex: 1,
     alignSelf: 'stretch',
     backgroundColor: color.blue,

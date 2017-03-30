@@ -1,12 +1,13 @@
-'use strict';
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
-import { round, format_name } from '../../methods/helper-methods';
-import { length, font, color } from '../../styles/styles';
+'use strict'
+import React, { Component } from 'react'
+import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
+import { round, formatName } from '../../methods/helper-methods'
+import { length, font, color } from '../../styles/styles'
+import { card } from '../../styles/common'
 
 export default class Description extends Component {
   render() {
-    const { description } = this.props;
+    const { description } = this.props
     return (
       <View style={styles.container}>
         {
@@ -16,12 +17,12 @@ export default class Description extends Component {
             <TouchableHighlight
               onPress={() => {console.log("Adding a description")}}
               style={styles.button}>
-              <Text style={styles.button_text}>Add a description</Text>
+              <Text style={styles.buttonText}>Add a description</Text>
             </TouchableHighlight>
           )
         }
       </View>
-    );
+    )
   }
 }
 
@@ -29,9 +30,7 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: length.medium,
     marginVertical: length.small,
-    backgroundColor: color.white,
-    borderWidth: 1,
-    borderColor: color.grey.background
+    ...card
   },
   text: {
     fontFamily: font.type.sans.normal,
@@ -41,7 +40,7 @@ const styles = StyleSheet.create({
   button: {
     padding: length.small
   },
-  button_text: {
+  buttonText: {
     alignSelf: 'center',
     fontFamily: font.type.sans.bold,
     fontSize: font.text,

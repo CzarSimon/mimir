@@ -7,12 +7,12 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class Remove extends Component {
   render() {
-    const { visable, remove_ticker, ticker } = this.props;
+    const { visable, removeTicker, ticker } = this.props;
     if (visable) {
       return (
         <View style={styles.container}>
           <TouchableHighlight
-            onPress = {() => { remove_ticker(ticker) }}
+            onPress = {() => removeTicker(ticker)}
             underlayColor={color.green}>
             <View style={styles.button}>
               <Icon name='ios-remove-circle-outline' size={length.icons.medium} color={color.red} />

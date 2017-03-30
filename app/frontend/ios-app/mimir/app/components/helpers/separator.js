@@ -4,15 +4,17 @@ import { color, length } from '../../styles/styles';
 
 export default class Separator extends Component {
   render() {
+    const styles = createStyles(this.props.customStyles)
     return <View style={styles.separator}/>
   }
 }
 
-const styles = StyleSheet.create({
+const createStyles = customStyles => StyleSheet.create({
   separator: {
     alignSelf: 'stretch',
     backgroundColor: color.blue,
     height: 1,
-    justifyContent: 'center'
+    justifyContent: 'center',
+    ...customStyles
   }
 })

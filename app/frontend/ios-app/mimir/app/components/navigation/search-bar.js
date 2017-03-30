@@ -1,50 +1,40 @@
-'use strict';
+'use strict'
 
-import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
-import { trim } from 'lodash';
-import { length, color, font } from '../../styles/styles';
+import React, { Component } from 'react'
+import { View, Text, TextInput, StyleSheet } from 'react-native'
+import { trim } from 'lodash'
+import { length, color, font } from '../../styles/styles'
 
 export default class SearchBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: null
-    };
+  handleSubmit = query => {
+    const { addQuery, runQuery } = this.props
+    addQuery(query)
+    runQuery(query)
   }
 
-  handle_submit = (query = this.state.text) => {
-    this.props.run_query(query);
-  }
-
-  handle_new_text = (new_text) => {
-    if (new_text.length > 0) {
-      this.props.run_query(new_text)
-    }
-    this.setState({
-      text: new_text
-    })
+  runQuery = query => {
+    this.props.runQuery(query)
   }
 
   render() {
-    const placeholder = "Search tickers"
+    const { query } = this.props
     return (
       <View style={styles.container}>
         <TextInput
-          style={styles.search_box}
-          onChangeText={(text) => this.handle_new_text(text)}
+          style={styles.searchBox}
+          onChangeText={(text) => this.runQuery(text)}
           selectionColor={color.blue}
           clearButtonMode='always'
           returnKeyType='search'
           autoCorrect={false}
           autoFocus={true}
           autoCapitalize='none'
-          placeholder={placeholder}
-          onSubmitEditing={() => this.handle_submit()}
-          onFocus={() => this.setState({text: ""})}
+          value={query}
+          placeholder={"Search tickers"}
+          onSubmitEditing={() => this.handleSubmit(query)}
         />
       </View>
-      );
+    )
   }
 }
 
@@ -52,9 +42,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignSelf: 'stretch',
-    marginHorizontal: length.button
+    marginLeft: length.button,
+    marginRight: length.medium
   },
-  search_box: {
+  searchBox: {
     flex: 1,
     margin: length.mini + 3,
     paddingLeft: length.medium,

@@ -6,7 +6,7 @@ export const color = {
   black: '#00120B',
   white: '#FFFFFF',
   grey: {
-    app_background: "#F8F8F8",
+    appBackground: "#F8F8F8",
     background: '#ECEBEB',
     light: '#FAFAFA',
     medium: '#C5C5C5',
