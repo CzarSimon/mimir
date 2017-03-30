@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
 import { color, length, font } from '../../styles/styles'
+import { card } from '../../styles/common'
 import Icon from 'react-native-vector-icons/Ionicons'
 
 export default class SearchResult extends Component {
@@ -36,12 +37,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'stretch',
     justifyContent: 'space-between',
-    borderColor: color.grey.background,
     padding: length.small,
     marginRight: length.medium,
-    borderWidth: 1,
-    backgroundColor: color.white,
-    marginBottom: length.small
+    marginBottom: length.small,
+    ...card
   },
   nameInfo: {
     flex: 3,

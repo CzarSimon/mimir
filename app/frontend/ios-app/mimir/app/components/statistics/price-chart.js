@@ -2,6 +2,7 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { color, length, font } from '../../styles/styles'
+import { card } from '../../styles/common'
 import Chart from 'react-native-chart'
 import { map, reverse } from 'lodash'
 
@@ -35,11 +36,9 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     justifyContent: 'center',
     alignItems: 'stretch',
-    backgroundColor: color.white,
     marginVertical: length.small,
     margin: length.medium,
-    borderColor: color.grey.background,
-    borderWidth: 1
+    ...card
   },
   chartLedgend: {
     marginTop: length.small,

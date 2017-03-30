@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
-
 import UrgencyIndicator from './stock-card/urgency-indicator'
 import Name from './stock-card/name'
 import Price from './stock-card/price'
 import Remove from './stock-card/remove'
 import { round, formatName } from '../../methods/helper-methods'
 import { color, font, length } from '../../styles/styles'
+import { card } from '../../styles/common'
 
 export default class StockCard extends Component {
   handleClick = ticker => {
@@ -39,9 +39,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: length.medium,
     marginHorizontal: length.medium,
     marginBottom: length.small,
-    borderColor: color.grey.background,
-    borderWidth: 1,
-    borderBottomWidth: 2,
-    backgroundColor: color.white
+    backgroundColor: color.white,
+    ...card
   }
 })

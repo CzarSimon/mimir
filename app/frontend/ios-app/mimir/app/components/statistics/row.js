@@ -1,18 +1,19 @@
-'use strict';
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { color, length, font } from '../../styles/styles';
+'use strict'
+import React, { Component } from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import { color, length, font } from '../../styles/styles'
+import { card } from '../../styles/common'
 
 export default class Row extends Component {
   render() {
-    const { name, value } = this.props;
+    const { name, value } = this.props
     const component = (value !== 'NaN') ? (
       <View style={styles.container}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.value}>{value}</Text>
       </View>
     ) : <View />
-    return component;
+    return component
   }
 }
 
@@ -24,9 +25,7 @@ const styles = StyleSheet.create({
     padding: length.small,
     marginHorizontal: length.medium,
     marginBottom: length.mini,
-    borderWidth: 1,
-    backgroundColor: color.white,
-    borderColor: color.grey.background
+    ...card
   },
   value: {
     fontFamily: font.type.sans.bold,

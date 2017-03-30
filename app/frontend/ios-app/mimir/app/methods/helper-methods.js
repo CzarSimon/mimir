@@ -21,29 +21,41 @@ export const format_price_change = change => (
 export const round = (number, decimals = 2) => parseFloat(number).toFixed(decimals)
 
 
-export const formatName = (name, forbidden = ['inc', 'corporation', 'plc']) => {
+export const companyEndings = ['inc', 'corporation', 'plc', 'company']
+
+export const formatName = (name, forbidden = companyEndings) => {
   const words = _.split(name, ' ')
-  const lower_words = _.map(words, (word) => _.lowerCase(word))
-  for (let word of lower_words) {
+  const lowerWords = _.map(words, (word) => _.lowerCase(word))
+  for (let word of lowerWords) {
     if (forbidden.includes(word)) {
-      const formated_name = _.join(_.slice(words, 0, _.findIndex(word, null, 1) + 1), ' ')
-      return _.replace(formated_name, /,$/, "")
+      const formatedName = _.join(_.slice(words, 0, _.findIndex(word, null, 1) + 1), ' ')
+      return _.replace(formatedName, /,$/, "")
     }
   }
   return name
 }
 
-export const create_clean_title = (title) => {
-  const forbidden = ['TickerLens']
-  const split_title = _.split(_.trim(title), ' - ')
-  const formated_title = (split_title.length < 2) ? split_title : _.join(_.initial(split_title), ' - ')
-  const no_double_whitespace = _.replace(formated_title, new RegExp("\\s+", "g"), " ")
-  const no_url = _.replace(no_double_whitespace, new RegExp("(https?|ftp):\/\/[\.[a-zA-Z0-9\/\-]+", "g"), "")
-  const clean_title =  _.reduce(forbidden, (prev, forb) => _.replace(prev, forb, ""), no_url)
-  return clean_title
+export const removeStockType = name => {
+  const stockType = "Common Stock"
+  const transform = (stockName, forbidden) => _.replace(stockName, forbidden, "")
+  const functions = [_.capitalize, _.toLower, _.toUpper]
+  const cleanName = _.reduce(functions, (name, func) => (
+    transform(name, func(stockType))
+  ), transform(name, stockType))
+  return _.trim(cleanName)
 }
 
-export const create_subject_string = (score_object, max_subjects = 3) => {
+
+export const createCleanTitle = (title) => {
+  const forbidden = ['TickerLens']
+  const splitTitle = _.split(_.trim(title), ' - ')
+  const formatedTitle = (splitTitle.length < 2) ? splitTitle : _.join(_.initial(splitTitle), ' - ')
+  const noDoubleWhitespace = _.replace(formatedTitle, new RegExp("\\s+", "g"), " ")
+  const noUrl = _.replace(noDoubleWhitespace, new RegExp("(https?|ftp):\/\/[\.[a-zA-Z0-9\/\-]+", "g"), "")
+  return _.reduce(forbidden, (prev, forb) => _.replace(prev, forb, ""), noUrl)
+}
+
+export const createSubjectString = (score_object, max_subjects = 3) => {
   const i_obj = _.invert(score_object)
   const all_subjects = _.map(_.orderBy(_.keys(i_obj), 'desc'), val => i_obj[val])
   const subjects = (all_subjects.length > max_subjects) ? _.take(all_subjects, 3) : all_subjects
