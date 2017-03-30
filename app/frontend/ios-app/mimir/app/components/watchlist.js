@@ -7,7 +7,6 @@ import { values } from 'lodash'
 
 import HeaderContainer from '../containers/watchlist/header.container'
 import StockCard from './watchlist/stock-card'
-import SearchResultContainer from '../containers/search-result.container'
 
 export default class Watchlist extends Component {
   createUserStockList = (stockData, tickerOrder = []) => {
@@ -21,9 +20,6 @@ export default class Watchlist extends Component {
     const userTicketList = ds.cloneWithRows(stocks.data)
     return (
       <View style = {styles.container}>
-        <View style={styles.search_result}>
-          <SearchResultContainer />
-        </View>
         <ListView
           dataSource = {userTicketList}
           renderHeader = {() => <HeaderContainer />}

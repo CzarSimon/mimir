@@ -2,33 +2,23 @@
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
-import { toggleSearchActive } from '../../ducks/search'
 import SearchButton from '../../components/navigation/search-button'
-import { getSearchRoute } from '../../routing/main'
+import { getSearchRoute, SEARCH_PAGE } from '../../routing/main'
 
 class SearchButtonContainer extends Component {
-  toggleSearch = () => {
+  goToSearch = () => {
     const { navigator, actions, index } = this.props
-    actions.toggleSearchActive()
     navigator.push(getSearchRoute(index))
   }
 
   render() {
-    const { props, toggleSearch } = this
+    const active = this.props.route.name === SEARCH_PAGE
     return (
-      <SearchButton active={props.state.search.active} action={this.toggleSearch} />
+      <SearchButton active={active} goToSearch={this.goToSearch} />
     )
   }
 }
 export default connect(
-  (state) => ({
-    state: {
-      search: state.search
-    }
-  }),
-  (dispatch) => ({
-    actions: bindActionCreators({
-      toggleSearchActive
-    }, dispatch)
-  })
+  state => ({}),
+  dispatch => ({})
 )(SearchButtonContainer)

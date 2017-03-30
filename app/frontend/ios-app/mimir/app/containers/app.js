@@ -32,9 +32,9 @@ export default class App extends Component {
           navigationBar = {
             <Navigator.NavigationBar
               routeMapper={{
-                LeftButton: (route, navigator, index) => (<BackButtonContainer index={index} navigator={navigator}/>),
-                RightButton: (route, navigator, index) => (<SearchButtonContainer index={index} navigator={navigator}/>),
-                Title: (route) => (<TitleContainer title={route.title} />)
+                LeftButton: (route, navigator, index) => (<BackButtonContainer navigator={navigator} index={index}/>),
+                RightButton: (route, navigator, index) => (<SearchButtonContainer route={route} navigator={navigator} index={index}/>),
+                Title: (route) => (<TitleContainer route={route} />)
               }}
               style={{borderBottomWidth: 1, borderColor: 'lightgrey'}}
             />

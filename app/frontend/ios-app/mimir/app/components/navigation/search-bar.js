@@ -32,7 +32,6 @@ export default class SearchBar extends Component {
           value={query}
           placeholder={"Search tickers"}
           onSubmitEditing={() => this.handleSubmit(query)}
-          onFocus={() => this.runQuery("")}
         />
       </View>
     )

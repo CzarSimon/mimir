@@ -10,7 +10,7 @@ export default class SearchButton extends Component {
     if (!this.props.active) {
       return (
         <View style={styles.container}>
-          <TouchableHighlight onPress={() => this.props.action()}>
+          <TouchableHighlight onPress={() => this.props.goToSearch()}>
             <View style={styles.button}>
               <Icon name='ios-search-outline' size={length.icons.medium} color={color.blue} />
             </View>

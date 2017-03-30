@@ -1,5 +1,4 @@
 'use strict'
-
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
 import { color, length, font } from '../../styles/styles'
@@ -7,15 +6,13 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 export default class SearchResult extends Component {
   addTicker = ticker => {
-    this.props.addTicker(ticker)
-  }
-
-  goToStock = ticker => {
-    console.log("Will go to stock")
+    const { addTicker, goToStock } = this.props
+    addTicker(ticker)
+    goToStock(ticker)
   }
 
   render() {
-    const { name, ticker } = this.props
+    const { name, ticker } = this.props.resultInfo
     return (
       <View style={styles.container}>
         <View style={styles.nameInfo}>
@@ -24,9 +21,9 @@ export default class SearchResult extends Component {
         </View>
         <TouchableHighlight
           onPress={() => this.addTicker(ticker)}>
-            <View style={styles.button}>
-              <Icon name='ios-add-circle-outline' size={length.icons.medium} color={color.green} />
-            </View>
+          <View style={styles.button}>
+            <Icon name='ios-add-circle-outline' size={length.icons.medium} color={color.green} />
+          </View>
         </TouchableHighlight>
       </View>
     )

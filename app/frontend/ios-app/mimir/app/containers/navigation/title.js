@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { updateAndRunQuery, reciveSearchResults } from '../../ducks/search'
 import { addToSearchHistory } from '../../ducks/user'
+import { SEARCH_PAGE } from '../../routing/main'
 import Title from '../../components/navigation/title'
 import SearchBar from '../../components/navigation/search-bar'
 import socket from '../../methods/server/socket'
@@ -25,9 +26,10 @@ class TitleContainer extends Component {
 
   render() {
     const { search } = this.props.state
+    const { title, name } = this.props.route
     return (
-      (!search.active)
-      ? <Title title={this.props.title} />
+      (name !== SEARCH_PAGE)
+      ? <Title title={title} />
       : <SearchBar runQuery={this.runQuery} query={search.query} addQuery={this.addQuery} />
     )
   }

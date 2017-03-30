@@ -5,10 +5,25 @@ import { length } from '../../styles/styles'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import { addTicker } from '../../ducks/user'
+import { toggleSearchActive } from '../../ducks/search'
+import { companyPageRoute, getRouteIndex } from '../../routing/main'
 import SearchHistory from '../components/search-history'
 import SearchResults from '../components/search-results'
 
 class SearchContainer extends Component {
+  goToStock = (ticker, added = true) => {
+    const { navigator } = this.props
+    navigator.pop()
+    /*
+    const routeIndex = getRouteIndex(navigator)
+    if (added) {
+      navigator.replace(companyPageRoute(ticker, routeIndex))
+    } else {
+      navigator.push(companyPageRoute(ticker, routeIndex + 1))
+    }
+    */
+  }
+
   render() {
     const { search, searchHistory } = this.props.state
     const { addTicker } = this.props.actions
@@ -17,7 +32,7 @@ class SearchContainer extends Component {
         {
           (!search.query)
           ? <SearchHistory history={searchHistory} />
-          : <SearchResults results={search.results} addTicker={addTicker} />
+          : <SearchResults results={search.results} goToStock={this.goToStock}/>
         }
       </View>
     )
@@ -33,7 +48,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
-    addTicker
+    addTicker,
+    toggleSearchActive
   }, dispatch)
 })
 

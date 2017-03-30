@@ -106,3 +106,7 @@ export const clearSearchHistory = createAction(CLEAR_SEARCH_HISTORY)
 export const addToSearchHistory = createAction(
   ADD_TO_SEARCH_HISTORY, query => ({ query })
 )
+
+export const updateUserWithTicker = ticker => {
+  
+}

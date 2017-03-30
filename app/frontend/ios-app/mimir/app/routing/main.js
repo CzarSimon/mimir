@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import WatchlistContainer from '../containers/watchlist.container'
 import TabMenuContainer from '../containers/tab-menu.container'
 import SearchContainer from '../search/containers/main'
+import { last } from 'lodash'
 
 /* --- Route constants --- */
 export const MAIN = 'MAIN'
@@ -43,10 +44,15 @@ export const getSearchRoute = currentIndex => (
 )
 
 
-export const companyPageRoute = title => (
+export const companyPageRoute = (title, newIndex = 1) => (
   {
     name: COMPANY_PAGE,
-    index: 1,
+    index: newIndex,
     title
   }
 )
+
+/* --- Helper methods --- */
+export const currentRoute = navigator => last(navigator.getCurrentRoutes())
+
+export const getRouteIndex = navigator => currentRoute.index

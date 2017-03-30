@@ -3,14 +3,12 @@ import { createAction } from 'redux-actions';
 import socket from '../methods/server/socket';
 
 /* --- Types --- */
-export const TOGGLE_SEARCH_ACTIVE = 'TOGGLE_SEARCH_ACTIVE'
 export const FETCH_SEARCH_RESULTS = 'FETCH_SEARCH_RESULTS'
 export const RECIVE_SEARCH_RESULTS = 'RECIVE_SEARCH_RESULTS'
 export const TOGGLE_KEYBOARD_UP = 'TOGGLE_KEYBOARD_UP'
 export const UPDATE_QUERY = 'UPDATE_QUERY'
 
 const initialState = {
-  active: false,
   query: null,
   keyboardUp: false,
   results: []
@@ -19,11 +17,6 @@ const initialState = {
 /* --- Reducer --- */
 const search = (state = initialState, action = {}) => {
   switch (action.type) {
-    case TOGGLE_SEARCH_ACTIVE:
-      return {
-        ...state,
-        active: !state.active
-      };
     case RECIVE_SEARCH_RESULTS:
       return {
         ...state,
@@ -46,8 +39,6 @@ const search = (state = initialState, action = {}) => {
 export default search
 
 /* --- Actions --- */
-export const toggleSearchActive = createAction(TOGGLE_SEARCH_ACTIVE)
-
 export const toggleKeyboardUp = createAction(TOGGLE_KEYBOARD_UP)
 
 export const reciveSearchResults = createAction(
