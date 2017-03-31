@@ -1,5 +1,3 @@
-import { SERVER_URL } from '../../credentials/server-info';
-
 export const urgency_level = (volume, mean, stdev, minute) => {
   const damping = parseFloat(minute) / 60.0;
   if (volume <= (damping * (mean + stdev)) || !volume) {

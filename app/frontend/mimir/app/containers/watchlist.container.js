@@ -19,7 +19,6 @@ import { persistObject } from './../methods/async-storage'
 import { arrayEquals } from '../methods/helper-methods'
 import { companyPageRoute } from '../routing/main'
 import { DEV_MODE } from '../credentials/config'
-import { SERVER_URL } from '../credentials/server-info'
 
 class WatchlistContainer extends Component {
   constructor(props) {

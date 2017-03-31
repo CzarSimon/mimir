@@ -1,9 +1,8 @@
 'use strict';
 
 import { Platform } from 'react-native'
-import { DEV_MODE } from '../../credentials/config'
+import { DEV_MODE, SERVER_URL } from '../../credentials/config'
 let io = require('socket.io-client/socket.io')
-import { SERVER_URL } from '../../credentials/server-info'
 
 if (!DEV_MODE) {
   window.navigator.userAgent = 'react-native'
