@@ -1,5 +1,4 @@
-'use strict';
-
+'use strict'
 import React, { Component } from 'react'
 import { Navigator, Text, StyleSheet } from 'react-native'
 import { createStore, applyMiddleware, combineReducers } from 'redux'

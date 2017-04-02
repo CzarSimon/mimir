@@ -8,11 +8,6 @@ import { SEARCH_PAGE } from '../../routing/main'
 
 export default class BackButton extends Component {
   handleClick = navigator => {
-    const lastRoute = last(navigator.getCurrentRoutes())
-    console.log(lastRoute);
-    if (lastRoute.name === SEARCH_PAGE) {
-      console.log(lastRoute);
-    }
     navigator.pop()
   }
 
@@ -22,15 +17,17 @@ export default class BackButton extends Component {
       return (<View style={styles.container}/>)
     } else {
       return (
-        <TouchableHighlight
-          onPress={() => handleClick()}
-          underlayColor={color.grey.background}>
-          <View style={styles.container}>
+        <View style={styles.container}>
+          <TouchableHighlight
+            onPress={() => handleClick()}
+            underlayColor={color.grey.background}>
+            <View style={styles.container}>
               <View style={styles.button}>
                 <Icon name='ios-arrow-back-outline' size={length.icons.medium} color={color.blue} />
               </View>
-          </View>
-      </TouchableHighlight>
+            </View>
+          </TouchableHighlight>
+        </View>
       )
     }
   }
