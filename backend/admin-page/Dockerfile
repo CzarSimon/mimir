@@ -12,6 +12,7 @@ WORKDIR /usr/src/app/server
 
 RUN go get github.com/lib/pq
 RUN go get gopkg.in/gorethink/gorethink.v2
+RUN go get golang.org/x/crypto/acme/autocert
 RUN export GOPATH=$GOPATH:$PWD
 RUN go build
 

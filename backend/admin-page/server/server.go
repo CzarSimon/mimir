@@ -1,6 +1,7 @@
 package main
 
 import (
+  "crypto/tls"
   "flag"
   "log"
   "net/http"
@@ -22,7 +23,7 @@ func parseFlags() bool {
   return devMode
 }
 
-func setupEnvironment(conf config) *Env {
+func setupEnvironment(conf Config) *Env {
   env := &Env{
     pg: connectPostgres(conf.pg),
     rdb: connectRethink(conf.rdb),
@@ -41,16 +42,19 @@ func main() {
   defer env.pg.Close()
   defer env.rdb.Close()
 
-  /* ---- Routes ---- */
-  http.Handle("/", http.FileServer(http.Dir(config.server.staticFolder)))
-  http.HandleFunc("/login", env.login)
-  http.HandleFunc("/tracked-stocks", env.sendStockInfo)
-  http.HandleFunc("/untrack-stock", env.untrackStock)
-  http.HandleFunc("/untracked-tickers", env.sendTickers)
-  http.HandleFunc("/track-ticker", env.trackTicker)
-  http.HandleFunc("/update-stock-info", env.updateStockInfo)
+  //Route handler
+  mux := setupRoutes(env, config)
+  server := &http.Server{
+    Addr: ":" + config.server.port,
+    Handler: mux,
+    TLSConfig: getTlsConfig(),
+    TLSNextProto: make(map[string]func(*http.Server, *tls.Conn, http.Handler), 0),
+  }
 
   /* ---- Starting Server ---- */
   log.Println("Starting server on port " + config.server.port)
-  checkErr(http.ListenAndServe(":" + config.server.port, nil))
+  certPath := config.cert.folder + "/server.rsa.crt"
+  keyPath := config.cert.folder + "/server.rsa.key"
+  err := server.ListenAndServeTLS(certPath, keyPath)
+  checkErr(err)
 }

@@ -11,4 +11,4 @@ export const companyReplacements = {
 export const devMode = !true;
 
 
-export const baseUrl = (!devMode) ? '' : 'http://localhost:8000';
+export const baseUrl = (!devMode) ? '/api' : 'http://localhost:8000/api';
