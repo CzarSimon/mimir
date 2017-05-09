@@ -1,20 +1,28 @@
 from datetime import datetime
-from newspaper import Article
-from sys import platform
+from newspaper import Article, ArticleException
+from sys import platform, stderr
 
 import re
 
 
 def fetch_page_content(url):
-    article = _retrive_content(url)
-    content = _format_content(article)
-    return content
+    article, success = _retrive_content(url)
+    content = _format_content(article) if success else None
+    return content, success
 
 
 def _retrive_content(url):
     article = Article(url)
-    article.download()
-    return _parse_text(article)
+    success = False
+    try:
+        article.download()
+        article.parse()
+        article.nlp()
+        success = True
+    except ArticleException as e:
+        sterr.write(e)
+    finally:
+        return article, success # _parse_text(article)
 
 
 def _parse_text(raw_article):

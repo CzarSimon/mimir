@@ -1,10 +1,36 @@
 'use strict';
 
-const db = require('./database')
-    , _ = require('lodash')
-    , moment = require('moment')
-    , script_runner = require('./script-runner')
-    , { twitter_users, reference_weight } = require('../config').rank_script;
+const db = require('./database');
+const _ = require('lodash');
+const moment = require('moment');
+const script_runner = require('./script-runner');
+const { twitter_users, reference_weight } = require('../config').rank_script;
+
+const handleRankedArticle = (request, result, conn) => {
+  const rankedArticle = request.body;
+  result.send({success: true});
+  if (_.size(rankedArticle.storedArticle) === 0) {
+    db.insert_articles(rankedArticle.newArticle, conn);
+  } else {
+    const updatedArticle = buildUpdatedArticle(rankedArticle);
+    db.update_article(rankedArticle.newArticle.id, updatedArticle, conn);
+  }
+}
+
+const buildUpdatedArticle = rankedArticle => {
+  const { newArticle, storedArticle } = rankedArticle;
+  const { reference_score } = newArticle;
+  const newSubjectScores = Object.assign({}, storedArticle.subject_score, newArticle.subject_score);
+  const compoundScore = _.mapValues(newSubjectScores, subjectScore => subjectScore + reference_score);
+  const twitterReferences = _.union(storedArticle.twitter_references, newArticle.twitter_references);
+  return Object.assign({}, newArticle,
+        {
+          subject_score: newSubjectScores,
+          compound_score: compoundScore,
+          twitter_references: twitterReferences
+        }
+      );
+}
 
 const get_news_articles = (request, result, conn) => {
   const { ticker, top } = request.params;
@@ -93,5 +119,6 @@ const _calc_reference_score = (followers, prev_score = 0.0) => {
 
 module.exports = {
   get_news_articles: get_news_articles,
-  rank_articles: rank_articles
+  rank_articles: rank_articles,
+  handleRankedArticle: handleRankedArticle,
 };

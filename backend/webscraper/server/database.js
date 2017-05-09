@@ -9,14 +9,14 @@ const r = require('rethinkdb')
 const { sendToClustering, pickClusterAttributes } = require('./clustering-client')
 
 const insert_articles = (articles, conn) => {
-  sendToClustering(pickClusterAttributes(articles))
+  //sendToClustering(pickClusterAttributes(articles))
   r.table('articles').insert(articles).run(conn, (err, res) => {
     if (err) throw err;
   });
 }
 
 const update_article = (id, article_update, conn) => {
-  sendToClustering(pickClusterAttributes(article_update))
+  //sendToClustering(pickClusterAttributes(article_update))
   r.table('articles').get(id).update(article_update).run(conn, (err, res) => {
     if (err) throw err;
   });
