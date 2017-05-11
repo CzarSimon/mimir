@@ -15,14 +15,12 @@ def _retrive_content(url):
     article = Article(url)
     success = False
     try:
-        article.download()
-        article.parse()
-        article.nlp()
+        article.build()
         success = True
     except ArticleException as e:
         sterr.write(e)
     finally:
-        return article, success # _parse_text(article)
+        return article, success
 
 
 def _parse_text(raw_article):
