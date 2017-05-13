@@ -41,7 +41,6 @@ const _handleScriptData = (script) => {
 }
 
 
-//
 const stripStoredArticle = storedArticle => ((_.size(storedArticle) === 0)
     ? storedArticle
     : {

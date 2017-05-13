@@ -4,25 +4,23 @@
  */
 
 'use strict';
-//require('./server/memory-analysis');
 
 const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('./config');
 const r = require('rethinkdb');
-const { get_news_articles, rank_articles, handleRankedArticle } = require('./server/routes');
+const { rankArticles, handleRankedArticle } = require('./server/routes');
 const app = express();
 const server = require('http').createServer(app);
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/news/:ticker/:top', (req, res) => { get_news_articles(req, res, app._rdb_conn) });
-app.post('/rankArticle', (req, res) => { rank_articles(req, res, app._rdb_conn) });
+app.post('/rankArticle', (req, res) => { rankArticles(req, res, app._rdb_conn) });
 app.post('/ranked-article', (req, res) => { handleRankedArticle(req, res, app._rdb_conn) });
 
 
-const start_express = (connection) => {
+const startExpress = (connection) => {
   app._rdb_conn = connection
   server.listen(config.express.port, () => {
     console.log("Server running on http://localhost:" + config.express.port);
@@ -34,5 +32,5 @@ r.connect(config.rethinkdb, (err, conn) => {
   if (err) {
     throw err.message
   }
-  start_express(conn);
+  startExpress(conn);
 })

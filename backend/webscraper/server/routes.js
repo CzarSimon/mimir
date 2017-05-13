@@ -32,14 +32,7 @@ const buildUpdatedArticle = rankedArticle => {
       );
 }
 
-const get_news_articles = (request, result, conn) => {
-  const { ticker, top } = request.params;
-  db.fetchTopArticles(ticker, parseInt(top), moment.utc().format('YYYY-MM-DD'), conn, (err, res) => {
-    result.send(res);
-  });
-}
-
-const rank_articles = (request, result, conn) => {
+const rankArticles = (request, result, conn) => {
   const articles_info = request.body;
   if (articles_info) {
     result.send({ success: true });
@@ -118,7 +111,6 @@ const _calc_reference_score = (followers, prev_score = 0.0) => {
 }
 
 module.exports = {
-  get_news_articles: get_news_articles,
-  rank_articles: rank_articles,
+  rankArticles: rankArticles,
   handleRankedArticle: handleRankedArticle,
 };
