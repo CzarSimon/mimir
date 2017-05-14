@@ -17,7 +17,7 @@ const news_data = (socket) => {
   socket.on(events.FETCH_NEWS_ITEMS, payload => {
     const ticker = _.upperCase(payload.ticker)
         , { address, port } = config.news_server
-        , fetch_address = `${address}:${port}/news/${ticker}/5`;
+        , fetch_address = `${address}:${port}/api/news/${ticker}/5`;
     request(fetch_address, (error, response, body) => {
       if (!error && response.statusCode === 200) {
         socket.emit(events.DISPATCH_NEWS_ITEMS, { data: body });

@@ -2,7 +2,6 @@
 
 const db = require('./database');
 const _ = require('lodash');
-const moment = require('moment');
 const script_runner = require('./script-runner');
 const { twitter_users, reference_weight } = require('../config').rank_script;
 
@@ -47,7 +46,7 @@ const rankArticles = (request, result, conn) => {
 
 //This function needs error handling in ca
 const _check_for_new_article = (article_info, conn) => {
-  db.check_for_article(article_info.url, conn, (err, res) => {
+  db.checkForArticle(article_info.url, conn, (err, res) => {
     if (res.length > 0) {
       //Article already exist
       const stored_article = res[0];
@@ -112,5 +111,5 @@ const _calc_reference_score = (followers, prev_score = 0.0) => {
 
 module.exports = {
   rankArticles: rankArticles,
-  handleRankedArticle: handleRankedArticle,
+  handleRankedArticle: handleRankedArticle
 };

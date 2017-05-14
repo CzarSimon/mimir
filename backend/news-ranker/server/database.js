@@ -22,7 +22,6 @@ const updateArticle = (id, article_update, conn) => {
   });
 }
 
-
 // Returns list of tickers if url present
 const checkForArticle = (url, conn, callback) => {
   r.table('articles').getAll(url, {index: 'url'})
@@ -40,5 +39,5 @@ const checkForArticle = (url, conn, callback) => {
 module.exports = {
   insert_articles: insertArticles,
   update_article: updateArticle,
-  fetchTopArticles: fetchTopArticles
+  checkForArticle: checkForArticle
 };
