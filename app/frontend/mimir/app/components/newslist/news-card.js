@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
 import { color, font, length } from '../../styles/styles'
 import { card } from '../../styles/common'
 import { createCleanTitle } from '../../methods/helper-methods'
-import Summary from './news-card/summary'
+import ArticleSummary from './news-card/summary'
 import Info from './news-card/info'
 import ArticleButton from './news-card/article-button'
 import SafariView from 'react-native-safari-view'
@@ -25,23 +25,23 @@ export default class NewsCard extends Component {
   }
 
   summaryComponent = () => {
-    const { summary, twitter_references, timestamp, compound_score, url } = this.props.article_info
+    const { Summary, Twitter_References, Timestamp, Compound_Score, URL } = this.props.articleInfo
     if (this.state.clicked) {
-      return <Summary url={url} summary={summary} />
+      return <ArticleSummary url={URL} summary={Summary} />
     } else {
       return (
         <Info
-          twitter_references={twitter_references}
-          compound_score={compound_score}
-          timestamp={timestamp}
+          twitter_references={Twitter_References}
+          compound_score={Compound_Score}
+          timestamp={Timestamp}
         />
       )
     }
   }
 
   render() {
-    const { title } = this.props.article_info
-    const cleanTitle = createCleanTitle(title)
+    const { Title } = this.props.articleInfo
+    const cleanTitle = createCleanTitle(Title)
     return (
       <TouchableHighlight
         onPress = {() => this.handleClick()}

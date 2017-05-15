@@ -19,6 +19,7 @@ RUN apt-get install -y libjpeg-dev zlib1g-dev libpng12-dev
 
 # Install python dependecies
 RUN pip3 install newspaper3k
+RUN pip3 install requests>=2.11.1
 RUN pip3 install numpy
 RUN pip3 install scipy
 RUN pip3 install nltk

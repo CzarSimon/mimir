@@ -1,11 +1,11 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
-import { color, font, length } from '../../../styles/styles';
-import ArticleButton from './article-button';
+import React, { Component } from 'react'
+import { View, Text, StyleSheet } from 'react-native'
+import { color, font, length } from '../../../styles/styles'
+import ArticleButton from './article-button'
 
-export default class Summary extends Component {
+export default class ArticleSummary extends Component {
   render() {
-    const { summary, url } = this.props;
+    const { summary, url } = this.props
     return (
       <View style={styles.container}>
         <Text style={styles.text}>{summary}</Text>
@@ -14,6 +14,7 @@ export default class Summary extends Component {
     )
   }
 }
+
 
 const styles = StyleSheet.create({
   container: {

@@ -17,7 +17,7 @@ export default class Newslist extends Component {
           <ListView
             dataSource = {newsList}
             renderHeader = {() => (<Header />)}
-            renderRow = {(articleInfo) => (<NewsCard article_info={articleInfo} />)}
+            renderRow = {(articleInfo) => (<NewsCard articleInfo={articleInfo} />)}
             />
         </View>
       );

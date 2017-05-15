@@ -5,21 +5,21 @@
 
 'use strict'
 
-const config = require('./config')
-    , sockets = require('./server/sockets')
-    , events = require('./server/events')
-    , routes = require('./server/routes')
-    , database = require('./server/database')
-    , { nowUTC } = require('./server/helper-methods');
+const config = require('./config');
+const sockets = require('./server/sockets');
+const events = require('./server/events');
+const routes = require('./server/routes');
+const database = require('./server/database');
+const { nowUTC } = require('./server/helper-methods');
 
-const express = require('express')
-    , path = require('path')
-    , bodyParser = require('body-parser');
+const express = require('express');
+const path = require('path');
+const bodyParser = require('body-parser');
 
-const app = express()
-    , server = require('http').createServer(app)
-    , io = require('socket.io').listen(server)
-    , r = require('rethinkdb');
+const app = express();
+const server = require('http').createServer(app);
+const io = require('socket.io').listen(server);
+const r = require('rethinkdb');
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));

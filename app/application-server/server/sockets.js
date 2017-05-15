@@ -5,22 +5,27 @@
 
 'use strict';
 
-const events = require('./events')
-    , database = require('./database')
-    , { nowUTC } = require('./helper-methods')
-    , config = require('../config')
-    , request = require('request')
-    , _ = require('lodash');
+const events = require('./events');
+const database = require('./database');
+const { nowUTC } = require('./helper-methods');
+const config = require('../config');
+const request = require('request');
+const _ = require('lodash');
 
 
 const news_data = (socket) => {
   socket.on(events.FETCH_NEWS_ITEMS, payload => {
-    const ticker = _.upperCase(payload.ticker)
-        , { address, port } = config.news_server
-        , fetch_address = `${address}:${port}/api/news/${ticker}/5`;
-    request(fetch_address, (error, response, body) => {
+    const ticker = _.upperCase(payload.ticker);
+    const { address, port } = config.news_server;
+    const fetchAddress = `${address}:${port}/api/news/${ticker}/5`;
+    console.log("Performing fetch against: " + fetchAddress);
+    request(fetchAddress, (error, response, body) => {
       if (!error && response.statusCode === 200) {
+        console.log("success");
         socket.emit(events.DISPATCH_NEWS_ITEMS, { data: body });
+      } else {
+        console.log(response.statusCode);
+        console.log(error.message);
       }
     });
   });
