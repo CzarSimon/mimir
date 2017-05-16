@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
+import Swipeout from 'react-native-swipeout'
 import UrgencyIndicator from './stock-card/urgency-indicator'
 import Name from './stock-card/name'
 import Price from './stock-card/price'
@@ -15,28 +16,42 @@ export default class StockCard extends Component {
 
   render() {
     const { Name: StockName, Symbol, PercentChange, LastTradePriceOnly, Currency, twitterData, modifiable, removeTicker } = this.props
+    const deleteButton = [
+      {
+        backgroundColor: color.red,
+        color: color.white,
+        onPress: () => removeTicker(Symbol),
+        component: <Remove />
+      }
+    ]
     return (
-      <TouchableHighlight
-        onPress = { () => this.handleClick(Symbol)}
-        underlayColor = {color.grey.background}>
-        <View style={styles.card}>
-          <UrgencyIndicator {...twitterData} />
-          <Name name={StockName} ticker={Symbol} />
-          <Price change={PercentChange} tic={Symbol} price={LastTradePriceOnly} currency={Currency} />
-          <Remove visable={modifiable} removeTicker={removeTicker} ticker={Symbol}/>
-        </View>
-      </TouchableHighlight>
+      <View style={styles.card}>
+        <Swipeout right={deleteButton} backgroundColor={color.white}>
+          <TouchableHighlight
+            onPress = { () => this.handleClick(Symbol)}
+            underlayColor = {color.grey.background}>
+                <View style={styles.cardContents}>
+                  <UrgencyIndicator {...twitterData} />
+                  <Name name={StockName} ticker={Symbol} />
+                  <Price change={PercentChange} tic={Symbol} price={LastTradePriceOnly} currency={Currency} />
+                </View>
+          </TouchableHighlight>
+        </Swipeout>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-  card: {
+  cardContents: {
     flex: 1,
     flexDirection: 'row',
     alignSelf: 'stretch',
     paddingVertical: length.small,
     paddingHorizontal: length.medium,
+  },
+  card: {
+    flex: 1,
     marginHorizontal: length.medium,
     marginBottom: length.small,
     backgroundColor: color.white,

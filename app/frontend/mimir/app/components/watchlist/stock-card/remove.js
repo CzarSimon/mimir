@@ -1,37 +1,30 @@
 'use strict';
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import { color, length, font } from '../../../styles/styles';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class Remove extends Component {
   render() {
-    const { visable, removeTicker, ticker } = this.props;
-    if (visable) {
-      return (
-        <View style={styles.container}>
-          <TouchableHighlight
-            onPress = {() => removeTicker(ticker)}
-            underlayColor={color.green}>
-            <View style={styles.button}>
-              <Icon name='ios-remove-circle-outline' size={length.icons.medium} color={color.red} />
-            </View>
-          </TouchableHighlight>
+    return (
+      <View style={styles.container}>
+        <View style={styles.button}>
+          <Icon name='ios-remove-circle-outline' size={length.icons.medium} color={color.white} />
         </View>
-      );
-    } else {
-      return (<View />);
-    }
+      </View>
+    )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    justifyContent: 'center',
+    flex: 1,
+    justifyContent: 'center'
   },
   button: {
-    paddingLeft: length.small,
-    alignItems: 'center'
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center'
   }
 });
