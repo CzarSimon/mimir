@@ -5,7 +5,7 @@ import { View, Text, StyleSheet, ListView } from 'react-native'
 import { length, font, color } from '../styles/styles'
 import { values } from 'lodash'
 
-import HeaderContainer from '../containers/watchlist/header.container'
+import Header from './watchlist/header'
 import StockCard from './watchlist/stock-card'
 
 export default class Watchlist extends Component {
@@ -22,7 +22,7 @@ export default class Watchlist extends Component {
       <View style = {styles.container}>
         <ListView
           dataSource = {userTicketList}
-          renderHeader = {() => <HeaderContainer />}
+          renderHeader = {() => <Header />}
           style={styles.list}
           renderRow = {(stockData) => {
             if (user.tickers.includes(stockData.Symbol)) {

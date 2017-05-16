@@ -11,7 +11,6 @@ export const FETCH_USER = 'FETCH_USER'
 export const CREATE_NEW_USER = 'CREATE_NEW_USER'
 export const ADD_TICKER = 'ADD_TICKER'
 export const REMOVE_TICKER = 'REMOVE_TICKER'
-export const TOGGLE_MODIFIABLE = 'TOGGLE_MODIFIABLE'
 export const CLEAR_SEARCH_HISTORY = 'CLEAR_SEARCH_HISTORY'
 export const ADD_TO_SEARCH_HISTORY = 'ADD_TO_SEARCH_HISTORY'
 
@@ -62,11 +61,6 @@ const user = (state = initialState, action = {}) => {
         ...state,
         twitterData: twitterData(state, action)
       }
-    case TOGGLE_MODIFIABLE:
-      return {
-        ...state,
-        modifiable: !state.modifiable
-      }
     case CLEAR_SEARCH_HISTORY:
       return {
         ...state,
@@ -99,8 +93,6 @@ export const addTicker = createAction(ADD_TICKER, ticker => ({ ticker }))
 
 export const removeTicker = createAction(REMOVE_TICKER, ticker => ({ ticker }))
 
-export const toggleModifiable = createAction(TOGGLE_MODIFIABLE)
-
 export const clearSearchHistory = createAction(CLEAR_SEARCH_HISTORY)
 
 export const addToSearchHistory = createAction(
@@ -108,5 +100,5 @@ export const addToSearchHistory = createAction(
 )
 
 export const updateUserWithTicker = ticker => {
-  
+
 }
