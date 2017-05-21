@@ -10,9 +10,7 @@ export const arrayEquals = (a1, a2) => {
   return true
 }
 
-export const is_positive = changeStr => (
-  (_.startsWith(changeStr, "-")) ? false : true
-)
+export const is_positive = changeStr => (_.startsWith(changeStr, "-")) ? false : true
 
 export const format_price_change = change => (
   (is_positive(change) ? "+" : "") + round(change).toString() + "%"

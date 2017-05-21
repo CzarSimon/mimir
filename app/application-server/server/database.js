@@ -5,14 +5,9 @@
 
 'use strict';
 
-const r = require('rethinkdb')
-    , _ = require('lodash')
-    , capitalize = require('lodash')['capitalize']
-    , upperCase = require('lodash')['upperCase']
-    , map = require('lodash')['map']
-    , replace = require('lodash')['replace']
-    , mapKeys = require('lodash')['mapKeys']
-    , { dayType, nowUTC } = require('./helper-methods');
+const r = require('rethinkdb');
+const _ = require('lodash');
+const { dayType, nowUTC } = require('./helper-methods');
 
 /* ---- API implementation ---- */
 
@@ -20,11 +15,10 @@ const fetch_stock_data = (tickers, conn, callback) => {
   r.table('stocks').filter(stock => {
     return r.expr(tickers).contains(stock('ticker'))
   }).without('id').run(conn, (err, res) => {
-    const dt = dayType();
     const hour = nowUTC().getHours();
     res.toArray((err, res) => {
-      const trimed_data = _.map(res, stock_data => _pluck_stats(stock_data, dt, hour))
-      callback(err, _.mapKeys(trimed_data, val => val.ticker));
+      const trimedData = _.map(res, stockData => pluckStats(stockData, dayType(), hour))
+      callback(err, _.mapKeys(trimedData, val => val.ticker));
     });
   });
 }
@@ -44,14 +38,14 @@ const search_stocks = (query, conn, callback) => {
 }
 
 const insert_stock_data = (data, conn) => {
-  const formated_data = _format_data(data);
-  r.table('stocks').filter(stock => r.expr(formated_data.keys).contains(stock('ticker')))
+  const formatedData = formatData(data);
+  r.table('stocks').filter(stock => r.expr(formatedData.keys).contains(stock('ticker')))
   .run(conn, (err, res) => {
     if (err) throw err;
     res.each((err, res) => {
       if (err) throw err;
       r.table('stocks').get(res.id).update(
-        Object.assign({}, res, formated_data.obj[res.ticker])
+        Object.assign({}, res, formatedData.obj[res.ticker])
       ).run(conn, (err, res) => {
         if (err) throw err;
       })
@@ -79,18 +73,18 @@ module.exports = {
 
 /* ---- Private functions ---- */
 
-const _pluck_stats = (data, day_type, hour) => {
+const pluckStats = (data, dayType, hour) => {
   return Object.assign({}, data, {
-    stdev: data.stdev[day_type][hour],
-    mean: data.mean[day_type][hour]
+    stdev: data.stdev[dayType][hour],
+    mean: data.mean[dayType][hour]
   });
 }
 
-const _format_data = (data) => (
+const formatData = (data) => (
   {
-    keys: _.map(data, (val, key) => _remove_dollar_tag(key)),
-    obj: _.mapKeys(data, (val, key) => _remove_dollar_tag(key))
+    keys: _.map(data, (val, key) => removeDollarTag(key)),
+    obj: _.mapKeys(data, (val, key) => removeDollarTag(key))
   }
 )
 
-const _remove_dollar_tag = (str) => _.replace(str, '$', '')
+const removeDollarTag = (str) => _.replace(str, '$', '')

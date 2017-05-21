@@ -5,11 +5,6 @@ import news_corpus
 import stopwords
 
 
-def calc_reference_score(followers, previous_score=0.0):
-    total_twitter_users = float(315000)
-    return float(followers) / total_twitter_users + previous_score
-
-
 def calc_compound_score(reference_score, subject_scores):
     compound_score = {}
     for ticker, subject_score in subject_scores.items():
