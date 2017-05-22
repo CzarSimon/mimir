@@ -1,3 +1,4 @@
+import config
 import data_handler
 import falcon
 import json
@@ -11,8 +12,12 @@ class ClassifyResource(object):
 
 
     def classify(self, tweet):
-        text = data_handler.clean_text(tweet["text"].split(" "))
-        category = trainer.classify(self.model, text)
+        words = tweet["text"].split(" ")
+        over_cashtag_threshold, text = data_handler.clean_text(words)
+        if not over_cashtag_threshold:
+            category = trainer.classify(self.model, text)
+        else:
+            category = config.categories["SPAM"]
         return _create_response(category)
 
 

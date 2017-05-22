@@ -4,9 +4,16 @@ import psycopg2
 import re
 
 
-def clean_text(words):
-    filtered_words = filter(lambda word: not is_url(word) and not is_cashtag(word), words)
+def clean_training_data(text):
+    words = text.split(' ')
+    filtered_words = filter(lambda word: not (is_url(word) or is_cashtag(word)), words)
     return " ".join(filtered_words)
+
+
+def clean_text(words):
+    words_without_urls = filter(lambda word: not is_url(word), words)
+    filtered_words, over_threshold = filter_cashtags(words_without_urls)
+    return over_threshold, " ".join(filtered_words)
 
 
 def is_cashtag(text):
@@ -18,9 +25,20 @@ def is_url(text):
     return re.match(pattern, text) is not None
 
 
+def filter_cashtags(words):
+    words_without_cashtags = filter(lambda word: not is_cashtag(word), words)
+    over_threshold = is_over_cashtag_threshold(len(words), len(words_without_cashtags))
+    return words_without_cashtags, over_threshold
+
+
+def is_over_cashtag_threshold(start_length, end_length):
+    cashtag_ratio = 1.0 - (float(end_length) / float(start_length))
+    return cashtag_ratio > config.cashtag_threshold
+
+
 def structure_training_data(raw_data):
     return dict(
-        data=map(lambda datapoint: clean_text(datapoint[0].split(" ")), raw_data),
+        data=map(lambda datapoint: clean_training_data(datapoint[0]), raw_data),
         labels=map(lambda datapoint: datapoint[1], raw_data)
     )
 

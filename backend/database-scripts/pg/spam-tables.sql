@@ -8,8 +8,7 @@ CREATE TABLE SPAM_LABELS (
   LABEL VARCHAR(20) PRIMARY KEY
 );
 
-INSERT INTO SPAM_LABELS (LABEL) VALUES ('SPAM');
-INSERT INTO SPAM_LABELS (LABEL) VALUES ('NON-SPAM');
+INSERT INTO SPAM_LABELS (LABEL) VALUES ('SPAM'), ('NON-SPAM');
 
 INSERT INTO SPAM_DATA (TWEET, LABEL) VALUES
 ('RT @ElixiumCapital: Trade with #Bitcoin', 'SPAM'),
@@ -37,7 +36,6 @@ INSERT INTO SPAM_DATA (TWEET, LABEL) VALUES
 ('received a new alert. Find out why', 'SPAM'),
 ('RT @32Trades: Watch List: Tuesday, February 28, 2017 ', 'SPAM'),
 ('@hstyliest: day trade $tsla 10min says trim some', 'SPAM'),
-('War of the Worlds Episode 5: Apple''s iPhone-inspired toilets, #Intel vs. AMD, and more. Read more:', 'SPAM'),
 ('they can''t see the answers. I can Follow me. We know.', 'SPAM'),
 ('#TradersEdge', 'SPAM'),
 ('#Trading with #Bitcoin', 'SPAM'),
@@ -71,12 +69,12 @@ INSERT INTO SPAM_DATA (TWEET, LABEL) VALUES
 ('@useintellitrade Want to cash in on the hottest #techstock? $IMTL is poised to pop.', 'SPAM'),
 ('Skim the cream of financial news', 'SPAM'),
 ('Jason Bond hot stock alerts by clicking link for a [FREE TRIAL]', 'SPAM'),
-('', 'SPAM'),
-('', 'SPAM'),
-('', 'SPAM'),
-('', 'SPAM'),
-('', 'SPAM'),
-('', 'SPAM'),
+('RT @ericsaroza: "March Madness Elite Trader" Package is here', 'SPAM'),
+('https://t.co/qKjFVTs0mP &lt;&lt; Jason Bond hot stock alerts by clicking link for a [FREE TRIAL] $fb $twtr $lnkd', 'SPAM'),
+('https://t.co/kzzDiId5eB &lt;  Read all about how Kevin makes bank with Jason Bond Picks! $NBEV $CARA $TROX $FB $TWTR', 'SPAM'),
+('RT @ericsaroza: "March Madness Elite Trader" Package is here&gt;&gt;&gt;  https://t.co/UwUkGAVdON   $SPY $WTW $FB $NFLX $ATVI $SKLN $DVAX', 'SPAM'),
+('https://t.co/yCsup2RbEP  This newsletter provides resources needed to get started with penny stocks $YMC $CM $NKE $GOOGL', 'SPAM'),
+('RT @OptionAlarm: https://t.co/fgKThJxj1A swing-trade winning since 2006', 'SPAM'),
 ('', 'SPAM'),
 ('', 'SPAM'),
 ('', 'SPAM'),
@@ -241,23 +239,23 @@ INSERT INTO SPAM_DATA (TWEET, LABEL) VALUES
 ('Facebook, Inc. Steps Up Its Live Video Tech @themotleyfool', 'NON-SPAM'),
 ('$FB is topping here.', 'NON-SPAM'),
 ('$FB Shares traded flat this week and from a relative strength standpoint, the action has been quite consistent in', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
-('', 'NON-SPAM'),
+('War of the Worlds Episode 5: Apple''s iPhone-inspired toilets, #Intel vs. AMD, and more. Read more:', 'NON-SPAM'),
+('RT @NaviAvatar1: Trumpcare pulled from Vote. Stocks bounce $AAPL $FB $BABA https://t.co/j53vLscH8q', 'NON-SPAM'),
+('$FB fell of the channel and bounced back. watching now. I don’t get a clear message. but 30m 250MA worth watching. https://t.co/KI4hz8J40N', 'NON-SPAM'),
+('$FB high open interest range is 133.00 to 142.00 for option expiration 03/31/2017. https://t.co/u0mmxS4M4m https://t.co/2bhwWhRODg', 'NON-SPAM'),
+('$FB CEO Mark Zuckerberg sold 375332 shares in trans dated March 20th. Sold at avg price of $139.87, for total of $52497686.84', 'NON-SPAM'),
+('$FB Shares traded flat this week and from a relative strength standpoint, the action has been quite consistent in … https://t.co/5cVPFfEjCQ', 'NON-SPAM'),
+('.@Nike sees record sales thru its #MobileApp, says #Digital shoppers spend 2x more than brick &amp; mortar #retail $NKE', 'NON-SPAM'),
+('Nike, Inc.: Premiums and Discounts #dividend #optionstrategy #justdoit $NKE', 'NON-SPAM'),
+('#Nike Has Dropped Clues That It Could Shock Wall Street. Read more: https://t.co/dpOFTQzBNC $NKE', 'NON-SPAM'),
+('#Nike''s biggest-ever price drop can be blamed for Dow''s fifth-straight loss. Read more: https://t.co/DY4pthRziL $NKE', 'NON-SPAM'),
+('YahooFinance: Nike CEO: ''Digital is the foundation'' of retail now readDanwrite $NKE https://t.co/6u8kt2VtPF https://t.co/leywSFc0k4 #BSAF', 'NON-SPAM'),
+('RT @MorningstarInc: 2 Reasons We''re Optimistic About Nike https://t.co/ARSAR0onMN $NKE https://t.co/MYX4aP9Rrh', 'NON-SPAM'),
+('Adidas Mark King Talks About The Companys Comeback, Turning The Corner In North America $ADDYY $NKE $UAA https://t.co/Lvp4i0ifUm @benzinga', 'NON-SPAM'),
+('In honor of the #Ducks playing tonight, the largest public company in Oregon is $NKE , headquarters in Beaverton. Good luck #oregonducks', 'NON-SPAM'),
+('Bounce up off #200DMA, smashed through #50DMA. Price is #doingWork $NKE https://t.co/G2n1lkHQ0r', 'NON-SPAM'),
+('Here''s Why #Nike''s Stock Is Falling Despite a Slam Dunk Quarter. Read more: https://t.co/6nS835Dy4Q $NKE', 'NON-SPAM'),
+('RT @tasciccac: $DJIA WKLY Best performing $MCD $AAPL $DIS $CVX $KO $MSFT $INTC $WMT $CSCO Worst $GS $JPM $UNH $NKE $BA $DD $JNJ', 'NON-SPAM'),
 ('', 'NON-SPAM'),
 ('', 'NON-SPAM'),
 ('', 'NON-SPAM'),
@@ -305,8 +303,8 @@ INSERT INTO SPAM_DATA (TWEET, LABEL) VALUES
  --PYPL   | PayPal Holdings, Inc.         | 2016-05-30 | t
  --TWTR   | Twitter, Inc.                 | 2016-05-30 | t
  --NFLX   | Netflix, Inc.                 | 2016-05-30 | t
- FB     | Facebook Inc.                 | 2016-05-30 | t
- NKE    | Nike, Inc.                    | 2016-05-30 | t
+ --FB     | Facebook Inc.                 | 2016-05-30 | t
+ --NKE    | Nike, Inc.                    | 2016-05-30 | t
  GOOG   | Alphabet Inc.                 | 2016-05-30 | t
  SNAP   | Snap Inc.                     | 2017-02-27 | t
  F      | Ford Motor Company            | 2017-02-27 | t

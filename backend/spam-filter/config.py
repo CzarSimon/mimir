@@ -24,3 +24,5 @@ categories = {
     "SPAM": 'SPAM',
     "NON-SPAM": 'NON-SPAM'
 }
+
+cashtag_threshold = 0.8
