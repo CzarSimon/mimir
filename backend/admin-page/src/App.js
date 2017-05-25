@@ -11,6 +11,7 @@ import TrackedStocksContainer from './tracked-stocks/containers/main';
 import UntrackedTickersContainer from './containers/untracked-tickers';
 import UntrackedInfoContainer from './containers/untracked-info';
 import LoginContainer from './login/containers/login';
+import SpamContainer from './spam/containers/main';
 
 const logger = createLogger();
 const createStoreWithMiddleware = applyMiddleware(logger, thunk)(createStore);
@@ -39,6 +40,7 @@ export default class App extends Component {
           <Route path="/tracked-stocks" onEnter={this.requireAuth} component={TrackedStocksContainer} />
           <Route path="/untracked-tickers" onEnter={this.requireAuth} component={UntrackedTickersContainer} />
           <Route path="/ticker/:tickerName" onEnter={this.requireAuth} component={UntrackedInfoContainer} />
+          <Route path="/label-spam" onEnter={this.requireAuth} component={SpamContainer} />
         </Router>
       </Provider>
     );

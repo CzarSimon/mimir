@@ -8,7 +8,7 @@ export const companyReplacements = {
   "corp": "Corporation"
 }
 
-export const devMode = !true;
+export const devMode = false;
 
 
 export const baseUrl = (!devMode) ? '/api' : 'http://localhost:8000/api';

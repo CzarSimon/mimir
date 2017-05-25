@@ -29,6 +29,7 @@ export default class MainMenu extends Component {
           <MenuItemContainer idName={"home"} path={"/"} name={"admin page"} />
           <MenuItemContainer idName={"tracked-stocks"} path={"/tracked-stocks"} name={"tracked stocks"} />
           <MenuItemContainer idName={"untracked-tickers"} path={"/untracked-tickers"} name={"untracked tickers"} />
+          <MenuItemContainer idName={"spam-label"} path={"/label-spam"} name={"label spam"} />
           <MenuItemContainer idName={"mimirapp"} path={"http://mimirapp.co/"} name={"mimir"} type={"external"}/>
         </ul>
       </div>
