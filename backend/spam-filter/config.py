@@ -3,7 +3,7 @@ import os
 
 
 def get_env(key, default=""):
-    return os.environ(key) if (key in os.environ) else default
+    return os.environ[key] if (key in os.environ) else default
 
 
 server = {
