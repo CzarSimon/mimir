@@ -16,4 +16,4 @@ backend/webscraper/article_ranker/stopwords.py
 backend/news-clustering/news-clustering
 backend/admin-page/server/server
 db-backups/
-docker_commands.txt
+docker-commands/
