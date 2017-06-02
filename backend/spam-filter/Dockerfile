@@ -1,13 +1,5 @@
 FROM python:2
 
-# Scikit-learn dependencies
-RUN apt-get update && apt-get install -y libatlas-dev libatlas3gf-base libblas-dev liblapack-dev libatlas-base-dev gfortran
-RUN update-alternatives --set libblas.so.3 \
-    /usr/lib/atlas-base/atlas/libblas.so.3
-RUN update-alternatives --set liblapack.so.3 \
-    /usr/lib/atlas-base/atlas/liblapack.so.3
-
-
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app

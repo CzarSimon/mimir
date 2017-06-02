@@ -39,13 +39,13 @@ const search_stocks = (query, conn, callback) => {
 
 const insert_stock_data = (data, conn) => {
   const formatedData = formatData(data);
-  r.table('stocks').filter(stock => r.expr(formatedData.keys).contains(stock('ticker')))
+  r.table('stocks').filter(stock => r.expr(_.keys(formatedData)).contains(stock('ticker')))
   .run(conn, (err, res) => {
     if (err) throw err;
     res.each((err, res) => {
       if (err) throw err;
       r.table('stocks').get(res.id).update(
-        Object.assign({}, res, formatedData.obj[res.ticker])
+        Object.assign({}, res, formatedData[res.ticker])
       ).run(conn, (err, res) => {
         if (err) throw err;
       })
@@ -80,11 +80,8 @@ const pluckStats = (data, dayType, hour) => {
   });
 }
 
-const formatData = (data) => (
-  {
-    keys: _.map(data, (val, key) => removeDollarTag(key)),
-    obj: _.mapKeys(data, (val, key) => removeDollarTag(key))
-  }
-)
+const formatData = data => _.mapValues(data, val => downCaseKeys(val))
+
+const downCaseKeys = object => _.mapKeys(object, (val, key) => _.toLower(key))
 
 const removeDollarTag = (str) => _.replace(str, '$', '')
