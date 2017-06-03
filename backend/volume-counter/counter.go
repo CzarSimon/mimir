@@ -79,7 +79,7 @@ func countHourlyVolumes(volumes HourVolumes, db *sql.DB) error {
 		if err != nil {
 			return err
 		}
-		volumes[ticker].Count = count
+		volumes[ticker].Volume = count
 	}
 	return nil
 }
@@ -141,7 +141,7 @@ func buildURL(server ServerConfig) string {
 
 //HourVolume conatains this hours count an the minute the count occured
 type HourVolume struct {
-	Count, Minute int
+	Volume, Minute int
 }
 
 //HourVolumes is a ticker -> HourVolume map
@@ -162,7 +162,7 @@ func getAllTickers(db *sql.DB) (HourVolumes, error) {
 			return tickers, err
 		}
 		tickers[ticker] = &HourVolume{
-			Count:  0,
+			Volume: 0,
 			Minute: minute,
 		}
 	}

@@ -28,7 +28,7 @@ func getTimingConfig() TimingConfig {
 	return TimingConfig{
 		Sleep:       10,
 		VolumeCount: ":30",
-		TotalCount:  "00:17",
+		TotalCount:  "07:00",
 	}
 }
 
