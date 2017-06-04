@@ -10,6 +10,7 @@ const sockets = require('./server/sockets');
 const events = require('./server/events');
 const routes = require('./server/routes');
 const database = require('./server/database');
+const postgres = require('./server/postgres');
 const { nowUTC } = require('./server/helper-methods');
 
 const express = require('express');
@@ -26,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.get('/stockList', (req, res) => {
-  database.get_all_stocks(app._rdb_conn, (error, result) => {
+  database.getAllStocks(app.rdb, (error, result) => {
     if (error) {
       console.log(error.message);
     } else {
@@ -35,36 +36,27 @@ app.get('/stockList', (req, res) => {
   });
 });
 
-app.post('/stockList', (req, res) => {
-  const dict = req.body;
-  if (dict) {
-    sockets.alert_new_twitter_data(io.sockets, dict, app._rdb_conn);
-    sockets.update_stocklist(io.sockets, app._rdb_conn);
-    res.send('success');
-  } else {
-    res.send('failure');
-  }
-});
-
 app.post('/tweet_volumes', (req, res) => {
   const dict = req.body;
   if (dict) {
-    sockets.alert_new_twitter_data(io.sockets, dict, app._rdb_conn);
-    sockets.update_stocklist(io.sockets, app._rdb_conn);
-    res.send('success');
+    sockets.alertNewTwitterData(io.sockets, dict, app.rdb);
+    sockets.updateStocklist(io.sockets, app.rdb);
+    res.sendStatus(200);
   } else {
-    res.send('failure');
+    res.sendStatus(500);
   }
 });
 
-//No need for real time updateing socket does not nees to be involved
-app.post('/mean_and_stdev', (req, res) => routes.update_stock_stats(req, res, app._rdb_conn));
+app.post('/mean_and_stdev', (req, res) =>
+  routes.updateStockStats(req, res, app.rdb));
 
-//app.get('/get_stock_data', (req,res) => routes.get_stock_data(req, res, app._rdb_conn));
+app.get('/search-sugestions', (req, res) =>
+  routes.getSearchSugestions(req, res, app.pg));
 
 
-const start_express = (connection) => {
-  app._rdb_conn = connection;
+const startExpress = connection => {
+  app.rdb = connection;
+  app.pg = postgres.setupConnection();
   server.listen(config.express.port, () => {
     console.log("Server running on port: " + config.express.port);
   });
@@ -81,5 +73,5 @@ r.connect(config.rethinkdb, (err, conn) => {
     sockets.search_stocks(socket, conn);
     sockets.news_data(socket);
   });
-  start_express(conn);
+  startExpress(conn);
 });

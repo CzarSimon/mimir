@@ -11,7 +11,7 @@ const { dayType, nowUTC } = require('./helper-methods');
 
 /* ---- API implementation ---- */
 
-const fetch_stock_data = (tickers, conn, callback) => {
+const fetchStockData = (tickers, conn, callback) => {
   r.table('stocks').filter(stock => {
     return r.expr(tickers).contains(stock('ticker'))
   }).without('id').run(conn, (err, res) => {
@@ -23,7 +23,7 @@ const fetch_stock_data = (tickers, conn, callback) => {
   });
 }
 
-const search_stocks = (query, conn, callback) => {
+const searchStocks = (query, conn, callback) => {
   r.table('stocks').filter(stock => {
     return (
       stock("name").match("^" + _.capitalize(query))
@@ -37,7 +37,7 @@ const search_stocks = (query, conn, callback) => {
   });
 }
 
-const insert_stock_data = (data, conn) => {
+const insertStockData = (data, conn) => {
   const formatedData = formatData(data);
   r.table('stocks').filter(stock => r.expr(_.keys(formatedData)).contains(stock('ticker')))
   .run(conn, (err, res) => {
@@ -53,7 +53,7 @@ const insert_stock_data = (data, conn) => {
   });
 }
 
-const get_all_stocks = (conn, callback) => {
+const getAllStocks = (conn, callback) => {
   r.table('stocks').without('id')
   .run(conn, (err, res) => {
     res.toArray((err, res) => {
@@ -65,10 +65,10 @@ const get_all_stocks = (conn, callback) => {
 /* ---- Public API ---- */
 
 module.exports = {
-  search_stocks,
-  fetch_stock_data,
-  insert_stock_data,
-  get_all_stocks
+  searchStocks,
+  fetchStockData,
+  insertStockData,
+  getAllStocks
 };
 
 /* ---- Private functions ---- */

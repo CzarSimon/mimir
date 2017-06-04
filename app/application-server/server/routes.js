@@ -1,29 +1,47 @@
 const database = require("./database");
+const postgres = require('./postgres');
 
-const update_stock_stats = (req, res, conn) => {
+const updateStockStats = (req, res, conn) => {
   const dict = req.body;
   if (dict) {
-    database.insert_stock_data(dict.data, conn);
-    res.send('success');
+    database.insertStockData(dict.data, conn);
+    res.sendStatus(200);
   } else {
-    res.send('failure');
+    res.sendStatus(500);
   }
 }
 
-const get_stock_data = (req, res, conn) => {
+const getStockData = (req, res, conn) => {
   tickers = req.body.tickers;
   if (tickers.length) {
-    database.fetch_stock_data(tickers, conn, (err, res) => {
+    database.fetchStockData(tickers, conn, (err, res) => {
       if (err) {
-        res.send({data: null, error: err.message});
+        res.status(500).send({data: null, error: err.message});
       } else {
-        res.send({data: res, error: null})
+        res.status(200).send({data: res, error: null})
       }
     })
   }
 }
 
+const getSearchSugestions = (req, res, pg) => {
+  postgres.getSearchSugestions(parseTickers(req), pg, (err, result) => {
+    if (err) {
+      console.log(err);
+      res.sendStatus(500);
+    } else {
+      const sugestions = JSON.stringify(result.rows);
+      res.status(200).send(sugestions);
+    }
+  })
+}
+
+const parseTickers = request => (
+  (request.body.tickers) ? request.body.tickers : request.query.tickers
+)
+
 module.exports = {
-  update_stock_stats,
-  get_stock_data
+  updateStockStats,
+  getStockData,
+  getSearchSugestions
 }
