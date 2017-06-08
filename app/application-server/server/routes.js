@@ -36,9 +36,17 @@ const getSearchSugestions = (req, res, pg) => {
   })
 }
 
-const parseTickers = request => (
-  (request.body.tickers) ? request.body.tickers : request.query.tickers
-)
+const parseTickers = req => {
+  const tickers = (req.body.tickers) ? req.body.tickers : req.query.tickers;
+  switch (typeof(tickers)) {
+    case 'object':
+      return tickers
+    case 'string':
+      return [tickers];
+    default:
+      return []
+  }
+}
 
 module.exports = {
   updateStockStats,

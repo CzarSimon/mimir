@@ -68,10 +68,10 @@ r.connect(config.rethinkdb, (err, conn) => {
     throw err.message;
   }
   io.on(events.CONNECTION, socket => {
-    sockets.client_info(socket);
-    sockets.stock_data(socket, conn);
-    sockets.search_stocks(socket, conn);
-    sockets.news_data(socket);
+    sockets.clientInfo(socket);
+    sockets.stockData(socket, conn);
+    sockets.searchStocks(socket, conn);
+    sockets.newsData(socket);
   });
   startExpress(conn);
 });

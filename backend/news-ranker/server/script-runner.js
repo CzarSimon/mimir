@@ -1,10 +1,10 @@
 'use strict';
 
-const spawn = require('child_process').spawn
-    , path = require('path')
-    , db = require('./database')
-    , config = require('../config')
-    , _ = require('lodash');
+const spawn = require('child_process').spawn;
+const path = require('path');
+const db = require('./database');
+const config = require('../config');
+const _ = require('lodash');
 
 const rankArticle = (articleInfo, referenceScore, conn, fullStoredArticle = {}) => {
   const storedArticle = stripStoredArticle(fullStoredArticle);

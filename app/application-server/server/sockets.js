@@ -22,7 +22,6 @@ const newsData = socket => {
       if (!error && response.statusCode === 200) {
         socket.emit(events.DISPATCH_NEWS_ITEMS, { data: body });
       } else {
-        console.log(response.statusCode);
         console.log(error.message);
       }
     });

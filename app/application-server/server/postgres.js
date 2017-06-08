@@ -6,15 +6,23 @@ const { map } = require('lodash');
 
 const setupConnection = () => {
   const pool = new pg.Pool(config.postgres);
-  //client.connect();
-  return client;
+  return pool;
 }
 
-const getSearchSugestions = (tickers, client, callback) => {
-  const sql = "SELECT ticker, name FROM stocks WHERE is_tracked=TRUE AND ticker NOT IN ("
-              + constructParams(tickers) + ") ORDER BY total_count DESC LIMIT 5";
-  client.query(sql, tickers, (err, result) => callback(err, result));
+const getSearchSugestions = (tickers, pool, callback) => {
+  const sql = getSQL(tickers);
+  if (tickers.length) {
+    pool.query(sql, tickers, (error, result) => callback(error, result));
+  } else {
+    pool.query(sql, (error, result) => callback(error, result));
+  }
 }
+
+const getSQL = tickers => (
+  (tickers.length)
+  ? "SELECT ticker, name FROM stocks WHERE is_tracked=TRUE AND ticker NOT IN (" + constructParams(tickers) + ") ORDER BY total_count DESC LIMIT 5"
+  : "SELECT ticker, name FROM stocks WHERE is_tracked=TRUE ORDER BY total_count DESC LIMIT 5"
+)
 
 const constructParams = tickers => map(tickers, (_, index) => '$' + (index + 1))
 
