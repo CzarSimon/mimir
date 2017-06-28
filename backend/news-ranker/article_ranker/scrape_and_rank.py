@@ -1,4 +1,3 @@
-from hashlib import md5
 import json
 from ranker import calc_subject_scores, calc_compound_score
 import scraper
@@ -7,30 +6,29 @@ from sys import argv, stderr
 
 
 def create_response(content, subject_score, params):
-    url = params["articleInfo"]["url"]
     newArticle = dict(
-        id=md5(url.encode('utf-8')).hexdigest(),
-        url=url,
         title=content["title"],
         summary=content["summary"],
-        text=content["text"],
+        body=content["text"],
         keywords=content["keywords"],
-        subject_score=subject_score,
-        reference_score=params["referenceScore"],
-        compound_score=calc_compound_score(params["referenceScore"], subject_score),
-        timestamp=content["timestamp"],
-        twitter_references=[params["articleInfo"]["author"]["id"]]
+        subjectScore=subject_score,
+        compoundScore=calc_compound_score(params["referenceScore"], subject_score),
+        timestamp=content["timestamp"]
     )
     return dict(
         newArticle=newArticle,
         storedArticle=params["storedArticle"]
     )
 
+    #id=params["storedArticle"]["urlHash"],
+    #url=params["url"],
+    #referenceScore=params["referenceScore"],
+    #twitterReferences=[params["articleInfo"]["author"]["id"]]
+
 
 def send_response(response):
     json_response = json.dumps(response)
     req.send_response(json_response)
-    #print(json_response)
 
 
 def main():
@@ -38,11 +36,16 @@ def main():
     params = json.loads(argv[1])
     article_info = params["articleInfo"]
 
-    # Information retrival and ranking
-    content, success = scraper.fetch_page_content(article_info["url"])
+    content, already_scraped = scraper.check_if_scraped(params["storedArticle"])
+    if not already_scraped:
+        # Information retrival and ranking
+        content, success = scraper.fetch_page_content(params["url"])
+    else:
+        success = True
+
     if success:
         # Score article content score against subjects
-        subject_score = calc_subject_scores(article_info["subjects"], content["text"])
+        subject_score = calc_subject_scores(article_info["subjects"], content["text"], params["storedArticle"]["urlHash"])
         response = create_response(content, subject_score, params)
         send_response(response)
     else:

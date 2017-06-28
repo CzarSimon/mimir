@@ -6,18 +6,26 @@ import stopwords
 
 
 def calc_compound_score(reference_score, subject_scores):
-    compound_score = {}
-    for ticker, subject_score in subject_scores.items():
-        compound_score[ticker] = subject_score + reference_score
-    return compound_score
+    compund_scores = []
+    for subject in subject_scores:
+        compund_scores += [dict(
+            urlHash = subject['urlHash'],
+            ticker = subject['ticker'],
+            score = subject['score'] + reference_score
+        )]
+    return compund_scores
 
 
-def calc_subject_scores(subjects, text):
+def calc_subject_scores(subjects, text, url_hash):
     query = _create_query_list_and_map(subjects)
     scores = _calc_scores(query["list"], text)
-    subject_scores = {}
+    subject_scores = []
     for index, ticker in query["index_map"].items():
-        subject_scores[ticker] = scores[index][0]
+        subject_scores += [dict(
+            urlHash = url_hash,
+            ticker = ticker,
+            score = scores[index][0]
+        )]
     return subject_scores
 
 

@@ -16,12 +16,12 @@ const server = require('http').createServer(app);
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.post('/rankArticle', (req, res) => { rankArticles(req, res, app._rdb_conn) });
-app.post('/ranked-article', (req, res) => { handleRankedArticle(req, res, app._rdb_conn) });
+app.post('/api/rank-article', (req, res) => { rankArticles(req, res, app.rdb) });
+app.post('/api/ranked-article', (req, res) => { handleRankedArticle(req, res, app.rdb) });
 
 
 const startExpress = (connection) => {
-  app._rdb_conn = connection
+  app.rdb = connection
   server.listen(config.express.port, () => {
     console.log("Server running on http://localhost:" + config.express.port);
   })

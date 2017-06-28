@@ -43,11 +43,28 @@ def _format_content(article):
         text=article.text,
         timestamp=_timestamp(article.publish_date),
         summary=article.summary,
-        img_url=article.top_image,
+        #img_url=article.top_image,
         keywords=article.keywords,
+    )
+
+def check_if_scraped(stored_article):
+    is_scraped = stored_article["isScraped"]
+    content = _stored_article_to_content(stored_article) if is_scraped else {}
+    return content, is_scraped
+
+
+def _stored_article_to_content(stored_article):
+    return dict(
+        title=stored_article["title"],
+        text=stored_article["body"],
+        timestamp=stored_article["dateInserted"],
+        summary=stored_article["summary"],
+        keywords=stored_article["keywords"]
     )
 
 
 def _timestamp(candidate):
-    stamp = candidate if (candidate is not None) else datetime.utcnow()
-    return stamp.strftime("%Y-%m-%d")
+    now = datetime.utcnow()
+    stamp = candidate if (candidate is not None) else now
+    time_component = now.strftime("T%H:%M:%SZ")
+    return stamp.strftime("%Y-%m-%d") + time_component

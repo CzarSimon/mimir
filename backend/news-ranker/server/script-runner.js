@@ -12,12 +12,9 @@ const rankArticle = (articleInfo, referenceScore, conn, fullStoredArticle = {}) 
   const scriptFile = path.resolve(scriptPath, name)
   const script = spawn(command, [
     scriptFile,
-    JSON.stringify({
-      articleInfo: articleInfo,
-      referenceScore: referenceScore,
-      storedArticle: storedArticle
-    })
+    JSON.stringify({ articleInfo, referenceScore, storedArticle })
   ]);
+  //console.log(JSON.stringify({ articleInfo, referenceScore, storedArticle }));
   _handleScriptData(script);
 }
 

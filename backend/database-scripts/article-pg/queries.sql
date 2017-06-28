@@ -1,0 +1,10 @@
+--Get the lead article from the highest ranked clusters
+SELECT
+  a.URL_HASH, a.URL, a.TITLE
+FROM ARTICLE_CLUSTER c
+INNER JOIN ARTICLE a ON c.LEADER = a.URL_HASH
+WHERE TICKER='$1' AND ARTICLE_DATE>'$2'
+ORDER BY c.SCORE DESC LIMIT '$3'
+
+--Get the referenced tickers in a given article
+SELECT TICKER FROM SUBJECT_SCORE WHERE URL_HASH='$1' ORDER BY SCORE DESC LIMIT 5;
