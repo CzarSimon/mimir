@@ -4,14 +4,14 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/CzarSimon/util"
 )
 
 func sendToClustering(article Article, subjectScores []TickerScore, clusterer util.ServerConfig) {
-	fmt.Println("Sending to clusterer")
+	log.Println("Sending to clusterer")
 	clusterArticles := createClusterArticles(article, subjectScores)
 	clustererURL := clusterer.ToURL("api/cluster-article")
 	for _, clusterArticle := range clusterArticles {
