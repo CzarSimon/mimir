@@ -39,12 +39,12 @@ func (env *Env) handleExistingArticle(article Article, rankObject RankObject) {
 		fmt.Println("New reference")
 		article.Update(rankObject.Author, env.rank)
 		go updateScores(article, subjectScores, env.db)
+		go sendToClustering(article, subjectScores, env.clusterer)
 	}
 	noNew, filteredRankObject := rankObject.Filter(subjectScores)
 	if !noNew {
-		fmt.Println("New refernece sending to ranking")
+		fmt.Println("New ticker")
 		go sendToRanker(article, filteredRankObject, env.rank)
-		go sendToClustering(article, subjectScores, env.clusterer)
 	}
 }
 

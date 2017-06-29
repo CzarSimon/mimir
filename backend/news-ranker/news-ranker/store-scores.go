@@ -8,7 +8,7 @@ import (
 	"github.com/lib/pq"
 )
 
-func storeRankReturn(rankReturn RankReturn, db *sql.DB) {
+func storeRankReturn(rankReturn RankReturn, db *sql.DB, clusterer util.ServerConfig) {
 	var err error
 	if !rankReturn.StoredArticle.IsScraped {
 		err = insertArticle(rankReturn, db)
@@ -17,6 +17,7 @@ func storeRankReturn(rankReturn RankReturn, db *sql.DB) {
 		util.LogErr(err)
 	} else {
 		insertScores(rankReturn.NewArticle, db)
+		go rankReturnToClustering(rankReturn, clusterer)
 	}
 }
 

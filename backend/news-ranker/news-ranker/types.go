@@ -222,6 +222,18 @@ type RankResult struct {
 	Timestamp    time.Time     `json:"timestamp"`
 }
 
+//ToArticle turns a RankResult to an article shell
+func (result RankResult) ToArticle(URLHash string, referenceScore float64) Article {
+	return Article{
+		Title:          result.Title,
+		Summary:        result.Summary,
+		Body:           result.Body,
+		URLHash:        URLHash,
+		DateInserted:   result.Timestamp,
+		ReferenceScore: referenceScore,
+	}
+}
+
 //RankReturn is the complete result sent from scrape_and_rank
 type RankReturn struct {
 	NewArticle    RankResult `json:"newArticle"`

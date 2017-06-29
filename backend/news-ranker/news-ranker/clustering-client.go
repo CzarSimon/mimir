@@ -24,6 +24,12 @@ func sendToClustering(article Article, subjectScores []TickerScore, clusterer ut
 	}
 }
 
+func rankReturnToClustering(rankReturn RankReturn, clusterer util.ServerConfig) {
+	clusterArticle := rankReturn.NewArticle.ToArticle(
+		rankReturn.StoredArticle.URLHash, rankReturn.StoredArticle.ReferenceScore)
+	sendToClustering(clusterArticle, rankReturn.NewArticle.SubjecScore, clusterer)
+}
+
 func sendArticleToClustering(clusterArticle ClusterArticle, endpoint string) error {
 	clusterArticle.Print()
 	fmt.Println(endpoint)

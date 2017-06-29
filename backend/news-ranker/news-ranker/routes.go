@@ -30,6 +30,6 @@ func (env *Env) HandleRankedArticle(res http.ResponseWriter, req *http.Request) 
 		util.CheckErr(err)
 		return
 	}
-	go storeRankReturn(ranked, env.db)
+	go storeRankReturn(ranked, env.db, env.clusterer)
 	util.SendJSONStringRes(res, "success")
 }
