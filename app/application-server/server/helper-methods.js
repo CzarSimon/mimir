@@ -1,7 +1,7 @@
 'use strict'
 const _ = require('lodash');
 
-const parseStockList = (dict) => _.values(dict)
+const parseStockList = dict => _.values(dict)
 
 const nowUTC = () => new Date(new Date().toUTCString().substr(0,25));
 

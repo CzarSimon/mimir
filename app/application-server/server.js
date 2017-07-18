@@ -10,7 +10,6 @@ const sockets = require('./server/sockets');
 const events = require('./server/events');
 const routes = require('./server/routes');
 const database = require('./server/database');
-const postgres = require('./server/postgres');
 const { nowUTC } = require('./server/helper-methods');
 
 const express = require('express');
@@ -26,7 +25,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-app.get('/stockList', (req, res) => {
+app.get('/stocks', (req, res) => {
   database.getAllStocks(app.rdb, (error, result) => {
     if (error) {
       console.log(error.message);
@@ -50,13 +49,9 @@ app.post('/tweet_volumes', (req, res) => {
 app.post('/mean_and_stdev', (req, res) =>
   routes.updateStockStats(req, res, app.rdb));
 
-app.get('/search-sugestions', (req, res) =>
-  routes.getSearchSugestions(req, res, app.pg));
-
 
 const startExpress = connection => {
   app.rdb = connection;
-  app.pg = postgres.setupConnection();
   server.listen(config.express.port, () => {
     console.log("Server running on port: " + config.express.port);
   });

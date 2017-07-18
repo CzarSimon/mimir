@@ -1,0 +1,12 @@
+{
+  "name": "search-rec",
+  "image": "czarsimon/mimir-search",
+  "keywordArgs": [
+    "-d",
+    "-p 7000:7000"
+  ],
+  "envVars": [
+    "PG_PASSWORD=$PG_PASSWORD",
+    "PG_HOST=tweet-pg"
+  ]
+}

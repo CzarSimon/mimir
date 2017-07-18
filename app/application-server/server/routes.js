@@ -1,5 +1,4 @@
 const database = require("./database");
-const postgres = require('./postgres');
 
 const updateStockStats = (req, res, conn) => {
   const dict = req.body;
@@ -24,32 +23,7 @@ const getStockData = (req, res, conn) => {
   }
 }
 
-const getSearchSugestions = (req, res, pg) => {
-  postgres.getSearchSugestions(parseTickers(req), pg, (err, result) => {
-    if (err) {
-      console.log(err);
-      res.sendStatus(500);
-    } else {
-      const sugestions = JSON.stringify(result.rows);
-      res.status(200).send(sugestions);
-    }
-  })
-}
-
-const parseTickers = req => {
-  const tickers = (req.body.tickers) ? req.body.tickers : req.query.tickers;
-  switch (typeof(tickers)) {
-    case 'object':
-      return tickers
-    case 'string':
-      return [tickers];
-    default:
-      return []
-  }
-}
-
 module.exports = {
   updateStockStats,
-  getStockData,
-  getSearchSugestions
+  getStockData
 }
