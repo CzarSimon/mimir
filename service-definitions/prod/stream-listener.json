@@ -1,0 +1,15 @@
+{
+  "name": "stream-listener",
+  "image": "czarsimon/stream-listener",
+  "keywordArgs": [
+    "-d",
+    "-t",
+    "--replicas=1"
+  ],
+  "envVars": [
+    "db_host=tweet-pg",
+    "db_pwd=$PG_PASSWORD",
+    "app_server_ip=app-server",
+    "ranker_ip=news-ranker"
+  ]
+}

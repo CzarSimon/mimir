@@ -30,7 +30,7 @@ func getServerConfig() util.ServerConfig {
 func getRankConfig() RankConfig {
 	return RankConfig{
 		Path:            "article_ranker/",
-		Script:          "scrape_and_rank.py",
+		Script:          "scrape_and_rank.pyc",
 		Command:         "python3",
 		TwitterUsers:    328000000.0,
 		ReferenceWeight: 800.0,

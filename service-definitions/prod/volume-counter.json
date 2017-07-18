@@ -1,0 +1,15 @@
+{
+  "name": "volume-counter",
+  "image": "czarsimon/volume-counter",
+  "keywordArgs": [
+    "-d",
+    "-t",
+    "--replicas=1"
+  ],
+  "envVars": [
+    "DB_HOST=tweet-pg",
+    "PG_PASSWORD=$PG_PASSWORD",
+    "server_ip=app-server",
+    "server_port=3000"
+  ]
+}

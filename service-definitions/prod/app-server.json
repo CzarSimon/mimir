@@ -1,0 +1,14 @@
+{
+  "name": "app-server",
+  "image": "czarsimon/mimir-app-server",
+  "keywordArgs": [
+    "-d",
+    "--replicas=3",
+    "-p 80:3000"
+  ],
+  "envVars": [
+    "PG_HOST=tweet-pg",
+    "PG_PASSWORD=$PG_PASSWORD",
+    "db_host=app-rdb"
+  ]
+}

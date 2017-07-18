@@ -1,0 +1,14 @@
+{
+  "name": "admin-page",
+  "image": "czarsimon/mimir-admin-page",
+  "keywordArgs": [
+    "-d",
+    "--replicas=1",
+    "-p 8000:8000"
+  ],
+  "envVars": [
+    "pg_host=tweet-pg",
+    "pg_pwd=$PG_PASSWORD",
+    "rdb_host=app-rdb"
+  ]
+}

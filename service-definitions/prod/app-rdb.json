@@ -1,0 +1,10 @@
+{
+  "name": "app-rdb",
+  "image": "rethinkdb",
+  "keywordArgs": [
+    "-d",
+    "--mount type=volume,source=app-rdb-data,destination=/data",
+    "--constraint 'node.hostname == mimir-u1'"
+  ],
+  "envVars": []
+}

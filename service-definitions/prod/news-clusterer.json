@@ -1,0 +1,10 @@
+{
+  "name": "news-clusterer",
+  "image": "czarsimon/news-clusterer",
+  "keywordArgs": [
+    "--replicas=1"
+  ],
+  "envVars": [
+    "db_host=news-pg"
+  ]
+}

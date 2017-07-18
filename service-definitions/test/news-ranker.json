@@ -1,0 +1,12 @@
+{
+  "name": "news-ranker",
+  "image": "czarsimon/news-ranker",
+  "keywordArgs": [
+    "--replicas=1"
+  ],
+  "envVars": [
+    "db_host=news-pg",
+    "cluster_host=news-clusterer",
+    "cluster_port=6000"
+  ]
+}

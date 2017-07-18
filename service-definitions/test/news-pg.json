@@ -1,0 +1,14 @@
+{
+  "name": "news-pg",
+  "image": "postgres",
+  "keywordArgs": [
+    "-d",
+    "-t",
+    "--mount type=volume,source=news-pg-data,destination=/var/lib/postgresql/data"
+  ],
+  "envVars": [
+    "POSTGRES_PASSWORD=$PG_PASSWORD",
+    "POSTGRES_USER=simon",
+    "POSTGRES_DB=mimirprod"
+  ]
+}

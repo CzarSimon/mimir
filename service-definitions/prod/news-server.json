@@ -1,0 +1,12 @@
+{
+  "name": "news-server",
+  "image": "czarsimon/news-server",
+  "keywordArgs": [
+    "-d",
+    "--replicas=3",
+    "-p 5050:5050"
+  ],
+  "envVars": [
+    "db_host=news-pg"
+  ]
+}

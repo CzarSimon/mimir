@@ -1,0 +1,13 @@
+{
+  "name": "stats-calc",
+  "image": "czarsimon/mean-stdev-calc",
+  "keywordArgs": [
+    "-d",
+    "-t",
+    "--replicas=1"
+  ],
+  "envVars": [
+    "db_host=tweet-pg",
+    "db_pwd=$PG_PASSWORD"
+  ]
+}

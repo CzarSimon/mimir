@@ -1,0 +1,14 @@
+{
+  "name": "spam-filter",
+  "image": "czarsimon/spam-filter",
+  "keywordArgs": [
+    "-d",
+    "-t",
+    "--replicas=1",
+    "-p 1000:1000"
+  ],
+  "envVars": [
+    "PG_HOST=pg",
+    "PG_PASSWORD=$PG_PASSWORD"
+  ]
+}
