@@ -17,14 +17,15 @@ type Env struct {
 // SetupEnv Sets up the service enironment
 func SetupEnv(config Config) Env {
 	return Env{
-		db: util.ConnectPG(config.db),
+		db:     util.ConnectPG(config.db),
+		config: config,
 	}
 }
 
 // SetupServer Creates a server with a route handler
 func SetupServer(env *Env) *http.Server {
 	return &http.Server{
-		Addr:    env.config.server.Port,
+		Addr:    ":" + env.config.server.Port,
 		Handler: SetupRoutes(env),
 	}
 }
@@ -37,5 +38,6 @@ func main() {
 	server := SetupServer(&env)
 
 	log.Println("Starting server at port: " + config.server.Port)
-	server.ListenAndServe()
+	err := server.ListenAndServe()
+	util.CheckErr(err)
 }
