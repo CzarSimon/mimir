@@ -3,10 +3,11 @@
   "image": "czarsimon/news-ranker",
   "keywordArgs": [
     "--replicas=1",
-    "--constraint 'node.hostname == mimir-u1'"
+    "--constraint 'node.hostname == mimir-u2'"
   ],
   "envVars": [
-    "db_host=news-pg",
+    "PG_HOST=news-pg",
+    "PG_PASSWORD=$PG_PASSWORD",
     "cluster_host=news-clusterer",
     "cluster_port=6000"
   ]

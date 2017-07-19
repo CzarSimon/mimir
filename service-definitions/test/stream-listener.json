@@ -7,8 +7,8 @@
     "--replicas=1"
   ],
   "envVars": [
-    "db_host=tweet-pg",
-    "db_pwd=$PG_PASSWORD",
+    "PG_HOST=tweet-pg",
+    "PG_PASSWORD=$PG_PASSWORD",
     "app_server_ip=app-server",
     "ranker_ip=news-ranker"
   ]

@@ -1,10 +1,18 @@
+# standard library
 import sys
-import psycopg2
 from datetime import datetime
 from datetime import date
+
+# external library
+import psycopg2
+
+# user specific inport
 from config import database
 
+
 conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(database["HOST"], database["NAME"], database["USER"], database["PASSWORD"])
+
+
 try:
     print conn_string
     conn = psycopg2.connect(conn_string)
@@ -12,8 +20,10 @@ except Exception as e:
     print "Db connedction failed: " + str(e)
     sys.exit(1)
 
+
 def closeDatabase():
     conn.close()
+
 
 def queryDatabase(query, multiple):
     return_item = True
@@ -30,6 +40,7 @@ def queryDatabase(query, multiple):
     finally:
         c.close()
         return return_item
+
 
 def insert_tweet(tweetId, userId, date, tweet, ticker, lang, followers):
     stockTweet = (tweetId, userId, date, tweet, ticker, lang, followers)

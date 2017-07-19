@@ -4,7 +4,7 @@
   "keywordArgs": [
     "-d",
     "--replicas=1",
-    "-p 80:3000"
+    "-p 3000:3000"
   ],
   "envVars": [
     "PG_HOST=tweet-pg",

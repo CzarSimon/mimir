@@ -1,39 +1,60 @@
+# standard library
+import sys
+import logging
+import traceback
+import time
+from datetime import datetime
+
+# external library
 from tweepy import OAuthHandler
 from tweepy import Stream
 from tweepy.streaming import StreamListener
-import sys, logging, traceback, time
-from datetime import datetime
+
+# user specific inport
 import stocks
+import tweet
 from config import twitter_credentials, timing
+
 
 logging.basicConfig(filename="miner.log", level=logging.ERROR)
 
+
 class MyListener(StreamListener):
     def __init__(self, tickers, aliases, stock_querys):
-        self.tickers = tickers
-        self.aliases = aliases
-        self.stock_querys = stock_querys
+        self.error_count = 0
+        self.tracking_data = dict(
+            tickers=tickers,
+            aliases=aliases,
+            stock_querys=stock_querys
+        )
 
     def on_data(self, data):
+        self.error_count = 0
         print '----- New tweet -----'
         logging.info("New tweet added at: " + _utcnow())
-        stocks.store_tweet(data, self.tickers, self.aliases)
-        stocks.send_url_to_ranker(data, self.stock_querys)
+        tweet.thread_tweet_actions(data, self.tracking_data)
         return True
 
     def on_error(self, status_code):
+        self.error_count += 1
         print "Tweepy error code: {}".format(status_code)
-        _check_for_rate_limit(status_code)
+        handle_twitter_error(status_code, self.error_count)
 
-def _check_for_rate_limit(status_code):
-    if status_code == 420:
+
+def handle_twitter_error(status_code, error_count):
+    pause_seconds = timing["TWITTER_ERROR_PAUSE"] * error_count
+    RATE_LIMIT_CODE = 420
+    if status_code == RATE_LIMIT_CODE:
         print "Rate limit response. Pausing for {} seconds".format(timing["RATE_LIMIT_PAUSE"])
-        time.sleep(timing["RATE_LIMIT_PAUSE"])
+        pause_seconds *= 2
+    time.sleep(pause_seconds)
+
 
 def _get_twtr_auth(credentials):
     auth = OAuthHandler(credentials["consumer_key"], credentials["consumer_secret"])
     auth.set_access_token(credentials["access_token"], credentials["access_secret"])
     return auth
+
 
 def _get_listener():
     ticker_list, stock_querys = stocks.get_stocks_info()
@@ -43,8 +64,10 @@ def _get_listener():
     print(aliases)
     return MyListener(tickers, aliases, stock_querys), ticker_list
 
+
 def _utcnow():
     return str(datetime.utcnow())
+
 
 def main():
     print "Runnig"
@@ -67,9 +90,12 @@ def main():
             logging.debug(errorStr)
     return planned_exit
 
+
 if __name__ == "__main__":
     planned_exit = False
     while not planned_exit:
         planned_exit = main()
+        if not planned_exit:
+            time.sleep(timing["TWITTER_ERROR_PAUSE"])
     print "Terminated by user command"
     stocks.print_tweet_count()
