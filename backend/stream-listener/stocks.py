@@ -10,6 +10,7 @@ from config import APP_SERVER
 import db
 
 
+# get_stocks_info Legacy solution for what is acomplished by get_names_and_tickers
 def get_stocks_info():
     url = comm.to_url(APP_SERVER, "STOCKLIST")
     stock_querys = {}
@@ -21,34 +22,68 @@ def get_stocks_info():
     return ticker_list, stock_querys
 
 
+# get_names_and_tickers Retrives tickers and names of stocks to track
+def get_names_and_tickers():
+    query = 'SELECT TICKER, NAME FROM STOCKS WHERE IS_TRACKED=TRUE'
+    results = db.query_db(query)
+    tickers = parse_tickers(results)
+    stock_info = parse_stock_info(results)
+    return tickers, stock_info
+
+
+# parse_tickers Parses ticker name from database result
+def parse_tickers(stocks):
+    return map(lambda stock: _add_dollar_tag(str(stock[0])), stocks)
+
+
+# parse_stock_info Parses stocks ticker and name into a dictionary with ticker
+#                  as key and a dictonary of ticker and name as value
+def parse_stock_info(stocks):
+    stock_info = {}
+    for stock in stocks:
+        ticker = str(stock[0])
+        name = str(stock[1])
+        stock_info[ticker] = dict(
+            ticker=ticker,
+            name=name
+        )
+    return stock_info
+
+
+# print_tweet_count Prints the number of tweets that are stored
 def print_tweet_count():
-    tweet_count = db.queryDatabase('SELECT count(*) FROM stockTweets', False)[0]
+    tweet_count = db.query_db('SELECT count(*) FROM stockTweets', False)[0]
     pretty_count = "{:,}".format(tweet_count).replace(",", " ")
     print "Tweets stored: {}".format(pretty_count)
 
 
-def getAliases():
-    aliases = db.queryDatabase('SELECT alias, ticker FROM tickerAliases', True)
+# get_aliases Gets all the ticker aliases from stored in the database
+def get_aliases():
+    aliases = db.query_db('SELECT alias, ticker FROM tickerAliases', True)
     aliDict = {}
     for alias in aliases:
         aliDict[_add_dollar_tag(str(alias[0]))] = _add_dollar_tag(str(alias[1]))
     return aliDict
 
 
+# _add_dollar_tag Prepends a ticker with a dollar tag
 def _add_dollar_tag(ticker):
     return "${}".format(ticker)
 
 
+# _remove_dollar_tag Strips a leading dollar tag from a ticker
 def _remove_dollar_tag(ticker):
     return ticker.replace("$", "")
 
 
+# record_untracked Parses untracked ticker and recordes its occurance
 def record_untracked(tweet_id, ticker, timestamp):
-    clean_ticker = ticker.replace("$", "")
+    clean_ticker = _remove_dollar_tag(ticker)
     print "Recording occurance of ticker: {}".format(clean_ticker)
     db.insert_untracked(tweet_id, clean_ticker, timestamp)
 
 
+# store_tweet Parses and inserts a tweet in the database
 def store_tweet(tweet, tickers, aliases):
     tweet_text = tweet['text']
     print tweet_text
@@ -62,25 +97,20 @@ def _parse_tweet_time(timestamp):
     time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(timestamp,'%a %b %d %H:%M:%S +0000 %Y'))
 
 
+# check_and_store Checks if ticker is tracked and either stores as tweet or records untraced occurance
 def check_and_store(tweet_id, userId, date, tweet, lang, followers, symbols, tickers, aliases):
     upper_symbols = map(lambda symbol: symbol["text"].upper(), symbols)
     unique_symbols = list(set(upper_symbols)) # pretty sure the casting back to list is unnececary
     for symbol in unique_symbols:
-        sym = checkTicker(symbol, tickers, aliases)
+        sym = check_ticker(symbol, tickers, aliases)
         if sym['success']:
             db.insert_tweet(tweet_id, userId, date, tweet, sym["ticker"], lang, followers)
         else:
             record_untracked(tweet_id, sym["ticker"], date)
 
 
-def threadedInsert(tweetId, userId, date, tweet, lang, followers, symbols, tickers, aliases):
-    d = threading.Thread(name="Tweet insert thread", target=storeTickerTweets, args=(tweetId, userId, date, tweet, lang, followers, symbols, tickers, aliases,))
-    d.setDaemon(True)
-    d.start()
-    return True
-
-
-def checkTicker(ticker, tickers, aliases):
+# check_ticker Checks if ticker is tracked, either as a plain ticker or as an alias
+def check_ticker(ticker, tickers, aliases):
     candidate = _add_dollar_tag(ticker)
     if candidate in tickers:
         print "In filter: " + ticker

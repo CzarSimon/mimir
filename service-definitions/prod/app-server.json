@@ -3,8 +3,8 @@
   "image": "czarsimon/mimir-app-server",
   "keywordArgs": [
     "-d",
-    "--replicas=3",
-    "-p 80:3000"
+    "--replicas=1",
+    "-p 3000:3000"
   ],
   "envVars": [
     "PG_HOST=tweet-pg",

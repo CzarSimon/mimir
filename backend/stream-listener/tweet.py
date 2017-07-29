@@ -33,14 +33,27 @@ def handle_tweet(raw_tweet, tracking_data):
 
 # is_spam Sends tweet test to classifier, returns true is it is classified as spam else not
 def is_spam(tweet_text):
-    #url = comm.to_url(SPAM_FILTER, "CLASSIFY")
-    #response = comm.post_with_response(url, to_classifer_schema(tweet_text), "spam_classify")
-    #return response["result"] == "SPAM"
-    return False
+    if SPAM_FILTER["handle_spam"]:
+        return check_for_spam(tweet_text)
+    else:
+        return False
 
 
-# to_classifer_schema Constructs a request body compliant with what is expected from the spam-filter 
+# check_for_spam Querys the spam classifier if the tweet is spam or not
+#                retruns true if so, and false if not or connection not successful
+def check_for_spam(tweet_text):
+    url = comm.to_url(SPAM_FILTER, "CLASSIFY")
+    response = comm.post_with_response(url, to_classifer_schema(tweet_text), "spam_classify")
+    if response["success"]:
+        result = response["data"]["result"]
+        print result
+        return result == "SPAM"
+    else:
+        return False
+
+
+# to_classifer_schema Constructs a request body compliant with what is expected from the spam-filter
 def to_classifer_schema(tweet_text):
-    return {
-        "text": tweet_text
-    }
+    return json.dumps(dict(
+        text=tweet_text
+    ))

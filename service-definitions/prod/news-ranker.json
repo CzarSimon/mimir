@@ -2,8 +2,8 @@
   "name": "news-ranker",
   "image": "czarsimon/news-ranker",
   "keywordArgs": [
-    "--replicas=1",
-    "--constraint 'node.hostname == mimir-u2'"
+    "-d",
+    "--replicas=1"
   ],
   "envVars": [
     "PG_HOST=news-pg",

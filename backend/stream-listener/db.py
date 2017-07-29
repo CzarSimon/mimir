@@ -21,11 +21,13 @@ except Exception as e:
     sys.exit(1)
 
 
-def closeDatabase():
+# close_database Closes a database connection
+def close_database():
     conn.close()
 
 
-def queryDatabase(query, multiple):
+# query_db Executes a query against a database and returns the result(s)
+def query_db(query, multiple = True):
     return_item = True
     try:
         c = conn.cursor()
@@ -35,13 +37,14 @@ def queryDatabase(query, multiple):
         else:
             return_item = c.fetchone()
     except Exception as e:
-        print 'queryDatabase in databaseManger failed. ', e
+        print 'query_db in databaseManger failed. ', e
         return_item = False
     finally:
         c.close()
         return return_item
 
 
+# insert_tweet Inserts a tweet in the database
 def insert_tweet(tweetId, userId, date, tweet, ticker, lang, followers):
     stockTweet = (tweetId, userId, date, tweet, ticker, lang, followers)
     c = conn.cursor()
@@ -57,6 +60,7 @@ def insert_tweet(tweetId, userId, date, tweet, ticker, lang, followers):
         return True
 
 
+# insert_untracked Records the occurence of an untracked tweet
 def insert_untracked(tweet_id, ticker, timestamp):
     untracked_record = (tweet_id, ticker, timestamp)
     c = conn.cursor()

@@ -28,10 +28,8 @@ def post(endpoint, data, identifier):
 # post_with_response Makes a post request to the specified endpoint and returns the result
 def post_with_response(endpoint, data, identifier):
     response = {"success": True}
-    print endpoint, data
     try:
         res = requests.post(url=endpoint, data=data, headers=_get_json_headers(), timeout=timing["TIMEOUT"])
-        print res
         response["data"] = json.loads(res.content)
     except requests.ConnectionError as e:
         response["success"] = False

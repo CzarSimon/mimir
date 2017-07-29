@@ -19,7 +19,8 @@ from config import twitter_credentials, timing
 logging.basicConfig(filename="miner.log", level=logging.ERROR)
 
 
-class MyListener(StreamListener):
+# MyListener Listner class for twitter stream of ticker tweets
+class MimirListener(StreamListener):
     def __init__(self, tickers, aliases, stock_querys):
         self.error_count = 0
         self.tracking_data = dict(
@@ -28,6 +29,7 @@ class MyListener(StreamListener):
             stock_querys=stock_querys
         )
 
+    # on_data Method invoced on new tweet
     def on_data(self, data):
         self.error_count = 0
         print '----- New tweet -----'
@@ -35,36 +37,41 @@ class MyListener(StreamListener):
         tweet.thread_tweet_actions(data, self.tracking_data)
         return True
 
+    # on_error Method invoced to handle errors
     def on_error(self, status_code):
         self.error_count += 1
         print "Tweepy error code: {}".format(status_code)
         handle_twitter_error(status_code, self.error_count)
 
 
+# handle_twitter_error Handles errors comming form the stream listener
 def handle_twitter_error(status_code, error_count):
     pause_seconds = timing["TWITTER_ERROR_PAUSE"] * error_count
     RATE_LIMIT_CODE = 420
     if status_code == RATE_LIMIT_CODE:
-        print "Rate limit response. Pausing for {} seconds".format(timing["RATE_LIMIT_PAUSE"])
+        print "Rate limit response. Pausing for {} seconds".format(timing["TWITTER_ERROR_PAUSE"])
         pause_seconds *= 2
     time.sleep(pause_seconds)
 
 
+# _get_twtr_auth Returns the twitter credentials initialized in a Oauth handler
 def _get_twtr_auth(credentials):
     auth = OAuthHandler(credentials["consumer_key"], credentials["consumer_secret"])
     auth.set_access_token(credentials["access_token"], credentials["access_secret"])
     return auth
 
 
+# _get_listener Retrives stocks to listen for and initializes a stream listener
 def _get_listener():
-    ticker_list, stock_querys = stocks.get_stocks_info()
+    ticker_list, stock_querys = stocks.get_names_and_tickers()
     tickers = set(ticker_list)
-    aliases = stocks.getAliases()
+    aliases = stocks.get_aliases()
     print(tickers)
     print(aliases)
-    return MyListener(tickers, aliases, stock_querys), ticker_list
+    return MimirListener(tickers, aliases, stock_querys), ticker_list
 
 
+# _utcnow Returns the current timestamp in utc timezone
 def _utcnow():
     return str(datetime.utcnow())
 
