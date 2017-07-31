@@ -1,48 +1,41 @@
 package main
 
-import (
-  "fmt"
-  "os"
-)
+import "github.com/CzarSimon/util"
 
+// Config Holds service configurations
 type Config struct {
-  server ServerConfig
-  db DBConfig
+	server util.ServerConfig
+	db     DBConfig
+	pg     util.PGConfig
 }
 
 func getConfig() Config {
-  return Config{
-    server: getServerConfig(),
-    db: getDBConfig(),
-  }
+	return Config{
+		server: getServerConfig(),
+		db:     getDBConfig(),
+		pg:     util.GetPGConfig("localhost", "pwd", "simon", "mimirprod"),
+	}
 }
 
-type ServerConfig struct {
-  port string
+func getServerConfig() util.ServerConfig {
+	return util.ServerConfig{
+		Port: "6000",
+	}
 }
 
-func getServerConfig() ServerConfig {
-  return ServerConfig{"6000"}
+func getPGConfig() util.PGConfig {
+	return util.PGConfig{}
 }
 
+// DBConfig Holds connection info about a rethinkdb instance
 type DBConfig struct {
-  host, port, db string
+	host, port, db string
 }
 
 func getDBConfig() DBConfig {
-  return DBConfig{
-    host: getEnvVar("db_host", "localhost"),
-    port: "28015",
-    db: "mimir_news_db",
-  }
-}
-
-func getEnvVar(varKey, nilValue string) string {
-  envVar := os.Getenv(varKey)
-  fmt.Println(envVar)
-  if envVar != "" {
-    return envVar
-  } else {
-    return nilValue
-  }
+	return DBConfig{
+		host: util.GetEnvVar("db_host", "localhost"),
+		port: "28015",
+		db:   "mimir_news_db",
+	}
 }

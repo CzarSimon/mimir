@@ -4,7 +4,7 @@
   "keywordArgs": [
     "-d",
     "-t",
-    "--constraint 'node.hostname == mimir-u1'",
+    "--constraint 'node.hostname == mimir-2'",
     "--mount type=volume,source=tweet-pg-data,destination=/var/lib/postgresql/data"
   ],
   "envVars": [

@@ -5,7 +5,7 @@
     "-d",
     "-t",
     "--mount type=volume,source=news-pg-data,destination=/var/lib/postgresql/data",
-    "--constraint 'node.hostname == mimir-u2'"
+    "--constraint 'node.hostname == mimir-3'"
   ],
   "envVars": [
     "POSTGRES_PASSWORD=$PG_PASSWORD",
