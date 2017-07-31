@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-//Cluster is the object representing the score and members of a cluster
+// Cluster is the object representing the score and members of a cluster
 type Cluster struct {
 	Title, Ticker, Date, Id string
 	Members                 map[string]Member
@@ -13,16 +13,16 @@ type Cluster struct {
 	Score                   float64
 }
 
-//Member represent an article in a cluester and it score
+// Member represent an article in a cluester and it score
 type Member struct {
 	UrlHash string
 	Score   Score
 }
 
-//Score holds the subject and reference score of a cluster member
+// Score holds the subject and reference score of a cluster member
 type Score struct {
-	SubjectScore   float64
-	ReferenceScore float64
+	SubjectScore   float64 `json:"subjectScore"`
+	ReferenceScore float64 `json:"referenceScore"`
 }
 
 func newCluster(clusterHash string, article Article) Cluster {
