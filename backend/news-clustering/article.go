@@ -1,17 +1,31 @@
 package main
 
 import (
-	"time"
+	"crypto/sha256"
+	"fmt"
 	"strings"
+	"time"
 )
 
 // Article holds the cluster representation of an article
 type Article struct {
-	Title	string    `json:"title"`
-	Ticker	string	  `json:"ticker"`	
-	Date	time.Time `json:"date"`
-	UrlHash string    `json:"urlHash"`
-	Score	Score     `json:"score"`
+	Title   string    `json:"title"`
+	Ticker  string    `json:"ticker"`
+	Date    time.Time `json:"date"`
+	URLHash string    `json:"urlHash"`
+	Score   Score     `json:"score"`
+}
+
+// Score holds the subject and reference score of a cluster member
+type Score struct {
+	SubjectScore   float64 `json:"subjectScore"`
+	ReferenceScore float64 `json:"referenceScore"`
+}
+
+// calcClusterHash Calculates the cluster hash based on title, ticker and date
+func calcClusterHash(title, ticker, date string) string {
+	byteHash := sha256.Sum256([]byte(title + ticker + date))
+	return fmt.Sprintf("%x", byteHash)
 }
 
 // Format Formats the content of an article according to excpectations
@@ -30,9 +44,9 @@ func (article *Article) ToClusterMember() ClusterMember {
 	article.Format()
 	dateStr := formatArticleDate(article.Date)
 	return ClusterMember{
-		ClusterHash: 	calcClusterHash(article.Title, article.Ticker, dateStr),
-		UrlHash: 	article.UrlHash,
+		ClusterHash:    calcClusterHash(article.Title, article.Ticker, dateStr),
+		URLHash:        article.URLHash,
 		ReferenceScore: article.Score.ReferenceScore,
-		SubjectScore: 	article.Score.SubjectScore,
+		SubjectScore:   article.Score.SubjectScore,
 	}
 }

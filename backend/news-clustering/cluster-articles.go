@@ -1,15 +1,14 @@
 package main
 
 import (
-	"errors"
+	"database/sql"
 	"net/http"
 
 	"github.com/CzarSimon/util"
-	r "gopkg.in/gorethink/gorethink.v2"
 )
 
-// clusterArticle Handles a cluster request. Pararses before passing on to cluster handler
-func (env *Env) clusterArticle(res http.ResponseWriter, req *http.Request) {
+// ParseArticleAndCluster Handles a cluster request. Pararses before passing on to cluster handler
+func (env *Env) ParseArticleAndCluster(res http.ResponseWriter, req *http.Request) {
 	var article Article
 	err := util.DecodeJSON(req.Body, &article)
 	if err != nil {
@@ -17,90 +16,44 @@ func (env *Env) clusterArticle(res http.ResponseWriter, req *http.Request) {
 		util.SendErrRes(res, err)
 		return
 	}
-	article.Format()
-	clusterHash := calcClusterHash(article.Title, article.Ticker, article.Date)
-	jsonStringRes(res, "Article sent for clustering")
-	env.lockCluster(clusterHash, article)
+	util.SendJSONStringRes(res, "Article sent for clustering")
+	env.HandleClustering(article)
 }
 
-/* --- Handles the update or creation of a cluster --- */
-func handleClustering(clusterHash string, article Article, session *r.Session) {
-	cluster, err := lookupCluster(clusterHash, session)
-	if err == nil {
-		cluster = updateCluster(cluster, article)
-		err = storeUpdatedCluster(cluster, session)
-		checkErr(err)
-	} else {
-		cluster = newCluster(clusterHash, article)
-		cluster = updateCluster(cluster, article)
-		err = storeNewCluster(cluster, session)
-		checkErr(err)
-	}
-}
-
-/* --- Retrives the cluster from the database, returns nil if not found --- */
-func lookupCluster(clusterHash string, session *r.Session) (Cluster, error) {
-	var cluster Cluster
-	res, err := r.Table("article_clusters").GetAll(clusterHash).Run(session)
+// ClusterArticle Clusters an article and stores cluster and member
+func ClusterArticle(tx *sql.Tx, article Article, member ClusterMember) error {
+	cluster, err := GetCluster(tx, article, member)
 	if err != nil {
-		checkErr(nil)
-		return Cluster{}, errors.New("no such cluster")
+		return err
 	}
-	defer res.Close()
-	if res.IsNil() {
-		return Cluster{}, errors.New("no such cluster")
-	}
-	err = res.One(&cluster)
+	cluster.ElectLeaderAndScore()
+	err = StoreClusterAndMember(tx, cluster, member)
 	if err != nil {
-		checkErr(nil)
-		return Cluster{}, errors.New("no such cluster")
+		return nil
 	}
-	return cluster, nil
+	return nil
 }
 
-/* --- Updates cluster in db --- */
-func storeUpdatedCluster(cluster Cluster, session *r.Session) error {
-	_, err := r.Table("article_clusters").GetAll(cluster.Id).Update(map[string]interface{}{
-		"members": cluster.Members,
-		"leader":  cluster.Leader,
-		"score":   cluster.Score,
-	}).RunWrite(session)
-	return err
-}
+// HandleClustering Locks the cluster while an update is carried out
+func (env *Env) HandleClustering(article Article) {
+	member := article.ToClusterMember()
+	env.AddAndLockCluster(member.ClusterHash)
 
-/* --- Adds new cluster to db --- */
-func storeNewCluster(cluster Cluster, session *r.Session) error {
-	_, err := r.Table("article_clusters").Insert(map[string]interface{}{
-		"id":      cluster.Id,
-		"title":   cluster.Title,
-		"ticker":  cluster.Ticker,
-		"date":    cluster.Date,
-		"members": cluster.Members,
-		"leader":  cluster.Leader,
-		"score":   cluster.Score,
-	}).RunWrite(session)
-	return err
-}
-
-/* --- Updates and existing cluster with a new article --- */
-func updateCluster(cluster Cluster, article Article) Cluster {
-	newMember := Member{
-		UrlHash: article.UrlHash,
-		Score:   article.Score,
+	tx, err := env.db.Begin()
+	if err != nil {
+		util.CheckErrAndRollback(err, tx)
+		env.RemoveAndUnlockCluster(member.ClusterHash)
+		return
 	}
-	cluster.addMember(newMember)
-	cluster.electLeader()
-	cluster.calculateScore()
-	return cluster
-}
-
-/* --- Locks the cluster while an update is carried out --- */
-func (env *Env) lockCluster(clusterHash string, article Article) {
-	env.queue.addCluster(clusterHash)
-	env.queue.lockCluster(clusterHash)
-
-	handleClustering(clusterHash, article, env.db)
-
-	env.queue.unlockCluster(clusterHash)
-	env.queue.removeCluster(clusterHash)
+	err = ClusterArticle(tx, article, member)
+	if err != nil {
+		util.CheckErrAndRollback(err, tx)
+		env.RemoveAndUnlockCluster(member.ClusterHash)
+		return
+	}
+	err = tx.Commit()
+	if err != nil {
+		util.CheckErrAndRollback(err, tx)
+	}
+	env.RemoveAndUnlockCluster(member.ClusterHash)
 }
