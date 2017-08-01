@@ -11,5 +11,8 @@ RUN go get github.com/julienschmidt/httprouter
 RUN export GOPATH=$GOPATH:$PWD
 RUN go build
 
+FROM alpine:latest
+WORKDIR /root/
+COPY --from=0 /usr/src/news-server/news-server .
 EXPOSE 5050
 CMD ["./news-server"]
