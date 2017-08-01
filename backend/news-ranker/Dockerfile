@@ -1,10 +1,17 @@
-FROM golang:1.8
+FROM golang:1.8 as go_builder
+RUN mkdir -p /usr/src/news-ranker
+WORKDIR /usr/src/news-ranker
 
-# Install python and pip
-RUN \
-  apt-get update && \
-  apt-get install -y python3 python3-dev python3-pip python3-setuptools && \
-  rm -rf /var/lib/apt/lists/*
+# Bundle app source
+COPY . /usr/src/news-ranker
+
+RUN go get github.com/lib/pq
+RUN go get github.com/CzarSimon/util
+RUN export GOPATH=$GOPATH:$PWD
+RUN go build
+
+# python runtime
+FROM python:3.6-stretch
 
 # Scikit-learn dependencies
 RUN apt-get update && apt-get install -y libatlas-dev libatlas3gf-base libblas-dev liblapack-dev libatlas-base-dev gfortran
@@ -31,23 +38,15 @@ RUN curl https://raw.githubusercontent.com/codelucas/newspaper/master/download_c
 
 # Create app directory
 RUN mkdir -p /usr/src/news-ranker
-RUN rm -rf rethinkdb_data
 WORKDIR /usr/src/news-ranker
-
-# Bundle app source
-COPY . /usr/src/news-ranker
+COPY --from=go_builder /usr/src/news-ranker/news-ranker .
+COPY --from=go_builder /usr/src/news-ranker/article_ranker/ .
 
 # Build python files
 RUN python3 -m compileall -b ./article_ranker
 RUN ls ./article_ranker
 RUN rm ./article_ranker/*.py
 RUN ls ./article_ranker
-
-RUN go get github.com/lib/pq
-RUN go get github.com/CzarSimon/util
-RUN export GOPATH=$GOPATH:$PWD
-RUN go build
-RUN rm -rf ../../local/go/
 
 EXPOSE 5000
 CMD [ "./news-ranker" ]
