@@ -7,6 +7,7 @@ COPY . /usr/src/news-server
 WORKDIR /usr/src/news-server
 
 RUN go get github.com/lib/pq
+RUN go get github.com/CzarSimon/util
 RUN go get github.com/julienschmidt/httprouter
 RUN export GOPATH=$GOPATH:$PWD
 RUN go build
