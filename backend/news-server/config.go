@@ -1,50 +1,38 @@
 package main
 
-import (
-	"fmt"
-	"os"
-)
+import "github.com/CzarSimon/util"
+
+// DefaultPeriod Is the default time period for retrieving news
+const DefaultPeriod string = "TODAY"
 
 //Config contains internal config variables for the server
 type Config struct {
-	server ServerConfig
-	db     DBConfig
+	server util.ServerConfig
+	db     util.PGConfig
 }
 
 func getConfig() Config {
 	return Config{
 		server: getServerConfig(),
-		db:     getDBConfig(),
+		db:     util.GetPGConfig("localhost", "pwd", "simon", "mimirprod"),
 	}
 }
 
-//ServerConfig contains info about the current server
-type ServerConfig struct {
-	port string
-}
-
-func getServerConfig() ServerConfig {
-	return ServerConfig{"5050"}
-}
-
-//DBConfig contains info to connect to a rethinkdb instance
-type DBConfig struct {
-	host, port, db string
-}
-
-func getDBConfig() DBConfig {
-	return DBConfig{
-		host: getEnvVar("db_host", "localhost"),
-		port: "28015",
-		db:   "mimir_news_db",
+func getServerConfig() util.ServerConfig {
+	return util.ServerConfig{
+		Port: "5050",
 	}
 }
 
-func getEnvVar(varKey, nilValue string) string {
-	envVar := os.Getenv(varKey)
-	fmt.Println(envVar)
-	if envVar != "" {
-		return envVar
-	}
-	return nilValue
+// periodMonthMap Maps a Time period to the months to subtract
+type periodMonthMap map[string]int
+
+// newPeriodMonthMap Generates a new periodMonthMap
+func newPeriodMonthMap() periodMonthMap {
+	pmm := make(periodMonthMap)
+	pmm[DefaultPeriod] = 0
+	pmm["0M"] = 0
+	pmm["1M"] = -1
+	pmm["3M"] = -3
+	return pmm
 }

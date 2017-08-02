@@ -1,95 +1,128 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"net/http"
 	"strconv"
+	"strings"
+	"time"
 
+	"github.com/CzarSimon/util"
 	"github.com/julienschmidt/httprouter"
-	r "gopkg.in/gorethink/gorethink.v2"
 )
 
-type articleParams struct {
-	ticker, date string
-	limit        int
+// ArticleParams Holds values for determining what articles to query for
+type ArticleParams struct {
+	Ticker     string
+	TimePeriod string
+	FromDate   time.Time
+	Limit      int
 }
 
 //Article holds values for an article
 type Article struct {
-	Title, Summary, URL, Timestamp string
-	Compound_Score                 map[string]float64
-	Keywords                       []string
-	Twitter_References             []int64
+	Title             string   `json:"title"`
+	Summary           string   `json:"summary"`
+	URL               string   `json:"url"`
+	Timestamp         string   `json:"timestamp"`
+	Keywords          []string `json:"keywords"`
+	TwitterReferences []int64  `json:"twitterReferences"`
 }
 
-func (env *Env) getNews(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
-	limit, err := strconv.Atoi(ps.ByName("top"))
+// GetNews Retrives a ranked list of news based on parsed article params
+func (env *Env) GetNews(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	params, err := parseArticleParams(ps, env.periodMonthMap)
 	if err != nil {
-		checkErr(err)
-		limit = 5
-	}
-	params := articleParams{
-		ticker: ps.ByName("ticker"),
-		limit:  limit,
-		date:   getDate(),
-	}
-	articles := getTopArticles(params, env.db)
-	js, err := json.Marshal(articles)
-	if err != nil {
-		errorResponse(res)
+		util.SendErrRes(res, err)
 		return
 	}
-	jsonRes(res, js)
+	articles, err := getTopArticles(params, env.db)
+	if err != nil {
+		util.SendErrRes(res, err)
+		return
+	}
+	jsonBody, err := json.Marshal(articles)
+	if err != nil {
+		util.SendErrRes(res, err)
+		return
+	}
+	util.SendJSONRes(res, jsonBody)
 }
 
-func getTopArticles(params articleParams, session *r.Session) []Article {
+func getTopArticles(params ArticleParams, db *sql.DB) ([]Article, error) {
 	articles := make([]Article, 0)
-	rows, err := r.Table("articles").GetAll(r.Args(r.Table("article_clusters").GetAllByIndex("date", params.date).Filter(map[string]interface{}{
-		"ticker": params.ticker,
-	}).Filter(func(cluster r.Term) r.Term {
-		return cluster.Field("leader").Field("Score").Field("SubjectScore").Gt(0)
-	}).OrderBy(r.Desc("score")).Limit(params.limit).Field("leader").Field("UrlHash"))).Pluck("title", "url", "keywords", "twitter_references", "compound_score", "timestamp", "summary").Run(session)
-	checkErr(err)
+	query := `SELECT a.TITLE, a.URL
+						FROM ARTICLE_CLUSTER c
+						INNER JOIN ARTICLE a ON c.LEADER = a.URL_HASH
+						WHERE c.TICKER=$1 AND c.ARTICLE_DATE>=$2
+						ORDER BY c.SCORE DESC LIMIT $3;`
+	rows, err := db.Query(query, params.Ticker, params.FromDate, params.Limit)
 	defer rows.Close()
+	if err != nil {
+		return articles, err
+	}
 	var article Article
-	for rows.Next(&article) {
+	for rows.Next() {
+		err = rows.Scan(&article.Title, &article.URL)
+		if err != nil {
+			return articles, err
+		}
 		articles = append(articles, article)
 	}
-	return articles
+	return articles, nil
+}
+
+// parseArticleParams Parses ArticleParams from a request
+func parseArticleParams(ps httprouter.Params, periodMonthMap periodMonthMap) (ArticleParams, error) {
+	ticker := strings.ToUpper(ps.ByName("ticker"))
+	if ticker == "" {
+		return ArticleParams{}, errors.New("missing ticker in request")
+	}
+	return ArticleParams{
+		Ticker:     ticker,
+		FromDate:   parseFromDate(ps, periodMonthMap),
+		Limit:      parseLimit(ps),
+		TimePeriod: parseTimePeriod(ps, periodMonthMap),
+	}, nil
+}
+
+// parseLimit Parses the limit parameter from a request
+func parseLimit(ps httprouter.Params) int {
+	limit, err := strconv.Atoi(ps.ByName("top"))
+	if err != nil {
+		util.LogErr(err)
+		return 5
+	}
+	return limit
+}
+
+// parseTimePeriod Parses the TimePeriod from a request
+func parseTimePeriod(ps httprouter.Params, periodMonthMap periodMonthMap) string {
+	period := strings.ToUpper(ps.ByName("period"))
+	if _, present := periodMonthMap[period]; !present {
+		return DefaultPeriod
+	}
+	return period
+}
+
+// parseFromDate Parses the starting date from a request
+func parseFromDate(ps httprouter.Params, periodMonthMap periodMonthMap) time.Time {
+	now := time.Now().UTC()
+	period := parseTimePeriod(ps, periodMonthMap)
+	months, found := periodMonthMap[period]
+	if !found {
+		return now
+	}
+	return now.AddDate(0, months, 0)
 }
 
 func printArticles(articles []Article) {
 	for index, article := range articles {
 		fmt.Println("---", index, "---")
 		fmt.Println("Title:", article.Title)
-		for ticker, score := range article.Compound_Score {
-			fmt.Println(ticker, ":", score)
-		}
 		fmt.Println(article.Timestamp)
-	}
-}
-
-type ArticleCluster struct {
-	Title, ID string
-	Score     float64
-}
-
-func getClusters(params articleParams, session *r.Session) {
-	clusters := make([]ArticleCluster, 0)
-	rows, err := r.Table("article_clusters").GetAllByIndex("date", params.date).Filter(map[string]interface{}{
-		"ticker": params.ticker,
-	}).Filter(func(cluster r.Term) r.Term {
-		return cluster.Field("leader").Field("Score").Field("SubjectScore").Gt(0)
-	}).OrderBy(r.Desc("score")).Limit(params.limit).Run(session)
-	checkErr(err)
-	defer rows.Close()
-
-	var cluster ArticleCluster
-	for rows.Next(&cluster) {
-		clusters = append(clusters, cluster)
-	}
-	for _, clust := range clusters {
-		fmt.Println(clust)
 	}
 }
