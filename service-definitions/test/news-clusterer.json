@@ -2,9 +2,11 @@
   "name": "news-clusterer",
   "image": "czarsimon/news-clusterer",
   "keywordArgs": [
-    "--replicas=1"
+    "--replicas=1",
+    "-p 6000:6000"
   ],
   "envVars": [
-    "db_host=news-pg"
+    "DB_HOST=news-pg",
+    "DB_PASSWORD=$PG_PASSWORD"
   ]
 }

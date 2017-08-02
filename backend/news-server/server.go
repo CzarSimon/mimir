@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/CzarSimon/util"
+	_ "github.com/lib/pq"
 )
 
 //Env is the environment variables struct

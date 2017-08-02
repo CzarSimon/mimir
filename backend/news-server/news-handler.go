@@ -52,9 +52,11 @@ func (env *Env) GetNews(res http.ResponseWriter, req *http.Request, ps httproute
 	util.SendJSONRes(res, jsonBody)
 }
 
+// getTopArticles Gets the leading articles of the highest ranked article cluster
+// for a given ticker and time preiod
 func getTopArticles(params ArticleParams, db *sql.DB) ([]Article, error) {
 	articles := make([]Article, 0)
-	query := `SELECT a.TITLE, a.URL
+	query := `SELECT a.TITLE, a.URL, a.SUMMARY, a.DATE_INSERTED, a.KEYWORDS, a.TWITTER_REFERENCES
 						FROM ARTICLE_CLUSTER c
 						INNER JOIN ARTICLE a ON c.LEADER = a.URL_HASH
 						WHERE c.TICKER=$1 AND c.ARTICLE_DATE>=$2
@@ -66,7 +68,8 @@ func getTopArticles(params ArticleParams, db *sql.DB) ([]Article, error) {
 	}
 	var article Article
 	for rows.Next() {
-		err = rows.Scan(&article.Title, &article.URL)
+		err = rows.Scan(
+			&article.Title, &article.URL, &article.Summary, &article.Timestamp, &article.Keywords, &article.TwitterReferences)
 		if err != nil {
 			return articles, err
 		}

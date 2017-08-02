@@ -1,27 +1,30 @@
-import json
-import requests
-from datetime import datetime
 from hashlib import sha256
+import req
+import date
+
+
+schema = {
+    "urlHash": "string",
+    "title": "string",
+    "ticker": "string",
+    "date": "string",
+    "score": {
+        "subjectScore": "float",
+        "referenceScore": "float"
+    }
+}
 
 
 def new_article(title, ticker, url, score):
-    date = datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%SZ")
     article = dict(
         urlHash=sha256(url).hexdigest(),
         title=title,
         ticker=ticker,
-        date=date,
+        date=date.utc_str(),
         score=new_score(score)
     )
     print article["title"], article["urlHash"]
     return article
-
-
-def post_article(article):
-    url = "http://localhost:6000/api/cluster-article"
-    headers = {'content-type': 'application/json'}
-    res = requests.post(url=url, data=json.dumps(article), headers=headers)
-    print res
 
 
 def new_score(score):
@@ -47,8 +50,10 @@ def test_articles():
 
 def main():
     articles = test_articles()
+    url = "http://localhost:6000/api/cluster-article"
     for article in articles:
-        post_article(article)
+        res = req.post_data(article, url)
+        print res
 
 
 if __name__ == '__main__':

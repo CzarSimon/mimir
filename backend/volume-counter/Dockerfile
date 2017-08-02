@@ -11,4 +11,7 @@ RUN go get github.com/jasonlvhit/gocron
 RUN export GOPATH=$GOPATH:$PWD
 RUN go build
 
+FROM alpine:latest
+WORKDIR /root/
+COPY --from=0 /usr/src/counter/counter .
 CMD ["./counter"]

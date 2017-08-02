@@ -11,5 +11,8 @@ RUN go get github.com/CzarSimon/util
 RUN export GOPATH=$GOPATH:$PWD
 RUN go build
 
+FROM alpine:latest
+WORKDIR /root/
+COPY --from=0 /usr/src/search-recomender/search-recomender .
 EXPOSE 7000
 CMD ["./search-recomender"]
