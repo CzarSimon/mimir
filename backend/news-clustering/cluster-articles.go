@@ -38,7 +38,6 @@ func ClusterArticle(tx *sql.Tx, article Article, member ClusterMember) error {
 func (env *Env) HandleClustering(article Article) {
 	member := article.ToClusterMember()
 	env.AddAndLockCluster(member.ClusterHash)
-
 	tx, err := env.db.Begin()
 	if err != nil {
 		util.CheckErrAndRollback(err, tx)

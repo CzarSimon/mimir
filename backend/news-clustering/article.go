@@ -16,6 +16,13 @@ type Article struct {
 	Score   Score     `json:"score"`
 }
 
+type tempArticle struct {
+	Title   string `json:"title"`
+	Ticker  string `json:"ticker"`
+	URLHash string `json:"urlHash"`
+	Score   Score  `json:"score"`
+}
+
 // Score holds the subject and reference score of a cluster member
 type Score struct {
 	SubjectScore   float64 `json:"subjectScore"`

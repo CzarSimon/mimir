@@ -19,7 +19,7 @@ func CalcCompoundScore(member ClusterMember) float64 {
 
 // GetMembers Retrives a list of members other than the supplied member
 func GetMembers(tx *sql.Tx, member ClusterMember) ([]ClusterMember, error) {
-	members := make([]ClusterMember, 0)
+	members := []ClusterMember{member}
 	query := `SELECT CLUSTER_HASH, URL_HASH, REFERENCE_SCORE, SUBJECT_SCORE
 						FROM CLUSTER_MEMBER WHERE CLUSTER_HASH=$1 AND URL_HASH!=$2`
 	rows, err := tx.Query(query, member.ClusterHash, member.URLHash)

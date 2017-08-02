@@ -54,7 +54,7 @@ func GetCluster(tx *sql.Tx, article Article, member ClusterMember) (Cluster, err
 
 // InsertNewCluster Inserts Cluster hash and other metatdata for a new cluster
 func InsertNewCluster(tx *sql.Tx, cluster Cluster) error {
-	query := "INSERT INTO ARTICLE_CLUSTERS(CLUSTER_HASH, TITLE, TICKER, DATE) VALUES($1,$2,$3,$4)"
+	query := "INSERT INTO ARTICLE_CLUSTER(CLUSTER_HASH, TITLE, TICKER, ARTICLE_DATE) VALUES ($1,$2,$3,$4)"
 	stmt, err := tx.Prepare(query)
 	defer stmt.Close()
 	if err != nil {
