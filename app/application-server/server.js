@@ -49,9 +49,9 @@ app.post('/tweet_volumes', (req, res) => {
 app.post('/mean_and_stdev', (req, res) =>
   routes.updateStockStats(req, res, app.rdb));
 
-
 const startExpress = connection => {
   app.rdb = connection;
+  app.use('/', routes.setupRoutes(app.rdb));
   server.listen(config.express.port, () => {
     console.log("Server running on port: " + config.express.port);
   });
