@@ -22,16 +22,6 @@ type ArticleParams struct {
 	Limit      int
 }
 
-//Article holds values for an article
-type Article struct {
-	Title             string   `json:"title"`
-	Summary           string   `json:"summary"`
-	URL               string   `json:"url"`
-	Timestamp         string   `json:"timestamp"`
-	Keywords          []string `json:"keywords"`
-	TwitterReferences []int64  `json:"twitterReferences"`
-}
-
 // GetNews Retrives a ranked list of news based on parsed article params
 func (env *Env) GetNews(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
 	params, err := parseArticleParams(ps, env.periodMonthMap)

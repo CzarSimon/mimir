@@ -50,7 +50,7 @@ def main():
     url = "http://localhost:5000/api/rank-article"
     rank_objects = test_rank_objects()
     for rank_object in rank_objects:
-        time.sleep(1)
+        time.sleep(0.01)
         res = req.post_data(rank_object, url)
         print res
 
