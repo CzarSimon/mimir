@@ -4,6 +4,7 @@ const database = require('./database');
 const { nowUTCString, isEmpty } = require('./helper-methods');
 
 const USER_TABLE = "users";
+const STOCK_TABLE = "stocks";
 
 /**
 * newUser() Creates, stores and sends back a new user
@@ -133,21 +134,61 @@ const addTicker = (req, res, conn) => {
     res.status(400).send('No user id or ticker supplied');
     return;
   }
-  getTickers(userId, conn, (err, tickers) => {
-    if (!_.includes(tickers, ticker)) {
-      prependFieldInDB(userId, ticker, 'tickers', conn, err => {
-        if (!err) {
-          res.sendStatus(200);
+  checkForTicker(ticker, conn, (err, validTicker) => {
+    if (err) {
+      res.status(500).send('unable to add ticker');
+      return;
+    }
+    if (validTicker) {
+      getTickers(userId, conn, (err, tickers) => {
+        if (!_.includes(tickers, ticker)) {
+          prependFieldInDB(userId, ticker, 'tickers', conn, err => {
+            if (!err) {
+              res.sendStatus(200);
+            } else {
+              console.log(err);
+              res.status(500).send('unable to add ticker');
+            }
+          });
         } else {
-          console.log(err);
-          res.status(500).send('unable to add ticker')
+          res.sendStatus(200);
         }
       });
     } else {
-      res.sendStatus(200);
+      res.status(400).send('invalid ticker');
     }
   });
 }
+
+/**
+* getTickers() Gets all current tickers of the user with the supplied user id
+* Takes user id, database connection and a callback as parameters
+*/
+const getTickers = (userId, conn, callback) => {
+  r.table(USER_TABLE).get(userId)('tickers').run(conn, (err, res) => {
+    callback(err, res);
+  })
+}
+
+/**
+* checkForTicker() Checks if a supplied ticker is present in the stock table
+* Takes ticker, database connection and a callback as parameters
+*/
+const checkForTicker = (ticker, conn, callback) => {
+  r.table(STOCK_TABLE).filter({ticker})('ticker').run(conn, (err, res) => {
+    if (err) {
+      callback(err, false)
+    }
+    res.toArray((err, tickers) => {
+      if (err) {
+        callback(err, false)
+      } else {
+        callback(err, _.includes(tickers, ticker))
+      }
+    })
+  })
+}
+
 
 /**
 * deleteTicker() Deleates a ticker that the supplied user has chosen to no longer track
@@ -169,7 +210,6 @@ const deleteTicker = (req, res, conn) => {
   });
 }
 
-
 /**
 * removeTickerFromDB() Removes a ticker from a user in the database
 * Takes user id, ticker, a database connection and a callback as parameters
@@ -180,16 +220,6 @@ const removeTickerFromDB = (userId, ticker, conn, callback) =>  {
   })
   .run(conn, (err, res) => {
     callback(err);
-  })
-}
-
-/**
-* getTickers() Gets all current tickers of the user with the supplied user id
-* Takes user id, database connection and a callback as parameters
-*/
-const getTickers = (userId, conn, callback) => {
-  r.table(USER_TABLE).get(userId)('tickers').run(conn, (err, res) => {
-    callback(err, res);
   })
 }
 
