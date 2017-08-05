@@ -1,0 +1,27 @@
+{
+  "title": "twitterData",
+  "type": "object",
+  "properties": {
+    "ticker": {
+      "type": "string"
+    },
+    "volume": {
+      "type": "number"
+    },
+    "minute": {
+      "type": "number"
+    },
+    "mean": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    },
+    "stdev": {
+      "type": "array",
+      "items": {
+        "type": "number"
+      }
+    }
+  }
+}

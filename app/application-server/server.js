@@ -35,20 +35,6 @@ app.get('/stocks', (req, res) => {
   });
 });
 
-app.post('/tweet_volumes', (req, res) => {
-  const dict = req.body;
-  if (dict) {
-    sockets.alertNewTwitterData(io.sockets, dict, app.rdb);
-    sockets.updateStocklist(io.sockets, app.rdb);
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(500);
-  }
-});
-
-app.post('/mean_and_stdev', (req, res) =>
-  routes.updateStockStats(req, res, app.rdb));
-
 const startExpress = connection => {
   app.rdb = connection;
   app.use('/', routes.setupRoutes(app.rdb));

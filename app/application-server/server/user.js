@@ -1,10 +1,7 @@
 const r = require("rethinkdb");
 const _ = require('lodash');
-const database = require('./database');
+const { USER_TABLE, STOCK_TABLE } = require('./database');
 const { nowUTCString, isEmpty } = require('./helper-methods');
-
-const USER_TABLE = "users";
-const STOCK_TABLE = "stocks";
 
 /**
 * newUser() Creates, stores and sends back a new user

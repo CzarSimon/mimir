@@ -1,5 +1,5 @@
 /**
- * @file Handles socket interactions after connection.
+ * @file Handles socket interactions after connection. LEGACY CODE
  * @author Simon Lindgren, <simon.g.lindgren@gmail.com>
  */
 
@@ -16,8 +16,8 @@ const _ = require('lodash');
 const newsData = socket => {
   socket.on(events.FETCH_NEWS_ITEMS, payload => {
     const ticker = _.upperCase(payload.ticker);
-    const { address, port } = config.news_server;
-    const fetchAddress = `${address}:${port}/api/news/${ticker}/5`;
+    const { address, port } = config.newsServer;
+    const fetchAddress = `http://${address}:${port}/api/news/${ticker}/5/TODAY`;
     request(fetchAddress, (error, response, body) => {
       if (!error && response.statusCode === 200) {
         socket.emit(events.DISPATCH_NEWS_ITEMS, { data: body });
@@ -51,23 +51,6 @@ const stockData = (socket, conn) => {
   });
 }
 
-const searchStocks = (socket, conn) => {
-  socket.on(events.FETCH_SEARCH_RESULTS, payload => {
-    database.searchStocks(payload.query, conn, (err, res) => {
-      if (err) {
-        socket.emit(events.DISPATCH_SEARCH_FAILURE, { results: null, error: err.message });
-      } else {
-        socket.emit(events.DISPATCH_SEARCH_RESULTS, { results: res, error: null });
-      }
-    })
-  });
-}
-
-const alertNewTwitterData = (sockets, data, conn) => {
-  database.insertStockData(data, conn);
-  sockets.emit(events.NEW_TWITTER_DATA);
-}
-
 const updateStocklist = (sockets, conn) => {
   database.getAllStocks(conn, (err, res) => {
     if (err) {
@@ -82,7 +65,5 @@ module.exports = {
   newsData,
   clientInfo,
   stockData,
-  searchStocks,
-  alertNewTwitterData,
   updateStocklist
 }

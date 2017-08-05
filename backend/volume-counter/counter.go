@@ -136,12 +136,13 @@ func sendResult(volumes HourVolumes, server ServerConfig) error {
 }
 
 func buildURL(server ServerConfig) string {
-	return fmt.Sprintf("http://%s:%s/tweet_volumes", server.IP, server.Port)
+	return fmt.Sprintf("http://%s:%s/api/app/twitter-data/volumes", server.IP, server.Port)
 }
 
 //HourVolume conatains this hours count an the minute the count occured
 type HourVolume struct {
-	Volume, Minute int
+	Volume int `json:"volume"`
+	Minute int `json:"minute"`
 }
 
 //HourVolumes is a ticker -> HourVolume map

@@ -18,10 +18,12 @@ const setupRoutes = conn => {
 * Takes a database connection as argument
 */
 const twitterDataRoutes = conn => {
-  routes.post('/api/app/twitter-data/mean-and-stdev',
-    (req, res) => updateStockStats(req, res, conn));
   routes.get('/api/app/twitter-data',
     (req, res) => twitterData.getTwitterData(req, res, conn));
+  routes.post('/api/app/twitter-data/volumes',
+    (req, res) => twitterData.updateStockStats(req, res, conn));
+  routes.post('/api/app/twitter-data/mean-and-stdev',
+    (req, res) => twitterData.updateStockStats(req, res, conn));
 }
 
 /**
@@ -44,20 +46,6 @@ const userRoutes = conn => {
 }
 
 /**
-* updateStockStats() Updates the mean and standard deviation values all stocks supplied
-* Takes request and response objects and database connection as arguments
-*/
-const updateStockStats = (req, res, conn) => {
-  const dict = req.body;
-  if (dict) {
-    database.insertStockData(dict.data, conn);
-    res.sendStatus(200);
-  } else {
-    res.sendStatus(500);
-  }
-}
-
-/**
 * getStockData() Fetches stock data for all supplied tickers
 * Takes request and response objects and database connection as arguments
 */
@@ -76,6 +64,5 @@ const getStockData = (req, res, conn) => {
 
 module.exports = {
   setupRoutes,
-  updateStockStats,
   getStockData
 }
