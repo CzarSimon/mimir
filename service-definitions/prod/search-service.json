@@ -1,8 +1,9 @@
 {
-  "name": "search-rec",
+  "name": "search-service",
   "image": "czarsimon/mimir-search",
   "keywordArgs": [
     "-d",
+    "--replicas=2",
     "-p 7000:7000"
   ],
   "envVars": [

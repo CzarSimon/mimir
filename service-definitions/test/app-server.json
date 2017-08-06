@@ -7,8 +7,6 @@
     "-p 3000:3000"
   ],
   "envVars": [
-    "PG_HOST=tweet-pg",
-    "PG_PASSWORD=$PG_PASSWORD",
     "db_host=app-rdb"
   ]
 }

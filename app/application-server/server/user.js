@@ -71,7 +71,7 @@ const getUser = (req, res, conn) => {
 * Takes user id, database connection and a callback as parameters
 */
 const getUserFromDB = (userId, conn, callback) => {
-  r.table(USER_TABLE).get(userId).run(conn, (err, res) => {
+  r.table(USER_TABLE).get(userId).pluck('sessions').run(conn, (err, res) => {
     const user = (!err) ? res : {}
     const error = (res == null) ? `unable to find user ${userId}` : err
     callback(error, user);

@@ -3,10 +3,11 @@
   "image": "czarsimon/news-server",
   "keywordArgs": [
     "-d",
-    "--replicas=3",
+    "--replicas=2",
     "-p 5050:5050"
   ],
   "envVars": [
-    "db_host=news-pg"
+    "DB_HOST=news-pg",
+    "DB_PASSWORD=$PG_PASSWORD"
   ]
 }

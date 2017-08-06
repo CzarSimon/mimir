@@ -10,23 +10,18 @@ import (
 	"github.com/lib/pq"
 )
 
-//SugestionRequest holds the tickers to exclude in a search recomendation
+// SugestionRequest holds the tickers to exclude in a search recomendation
 type SugestionRequest struct {
 	Tickers []string `json:"tickers"`
 }
 
-//SugestionResponse holds the recomended list of stocks to search for
-type SugestionResponse struct {
-	Stocks []Stock `json:"stocks"`
-}
-
-//Stock holds stock informaton
+// Stock holds stock informaton
 type Stock struct {
 	Name   string `json:"name"`
 	Ticker string `json:"ticker"`
 }
 
-//GetSearchSugestions retrives search sugestions of a user excluding a given set of tickers
+// GetSearchSugestions retrives search sugestions of a user excluding a given set of tickers
 func (env *Env) GetSearchSugestions(res http.ResponseWriter, req *http.Request) {
 	tickers := getTickers(req)
 	sugestions, err := getSugestions(tickers, env.db)
@@ -34,10 +29,7 @@ func (env *Env) GetSearchSugestions(res http.ResponseWriter, req *http.Request) 
 		util.SendErrRes(res, err)
 		return
 	}
-	response := SugestionResponse{
-		Stocks: sugestions,
-	}
-	js, err := json.Marshal(response)
+	js, err := json.Marshal(sugestions)
 	if err != nil {
 		util.SendErrRes(res, err)
 		return
@@ -66,6 +58,7 @@ func (tickers Tickers) ToUpper() Tickers {
 	return upperTickers
 }
 
+// getTickers Parses the tickers to exclude from the sugestion
 func getTickers(req *http.Request) Tickers {
 	tickers, err := parseTickersFromBody(req)
 	if err == nil {
@@ -75,10 +68,11 @@ func getTickers(req *http.Request) Tickers {
 	return tickers.ToUpper()
 }
 
+// parseTickersFromBody Attempts to parse the request body for tickers
 func parseTickersFromBody(req *http.Request) (Tickers, error) {
 	var tickers Tickers
 	var query SugestionRequest
-	err := json.NewDecoder(req.Body).Decode(&query)
+	err := util.DecodeJSON(req.Body, &query)
 	if err != nil {
 		return tickers, err
 	}
@@ -86,6 +80,7 @@ func parseTickersFromBody(req *http.Request) (Tickers, error) {
 	return tickers, nil
 }
 
+// getSugestions Query the database for search sugestions
 func getSugestions(tickers Tickers, db *sql.DB) ([]Stock, error) {
 	stocks := make([]Stock, 0)
 	rows, err := queryForSugestions(tickers, db)
@@ -104,6 +99,7 @@ func getSugestions(tickers Tickers, db *sql.DB) ([]Stock, error) {
 	return stocks, nil
 }
 
+// queryForSugestions Construct and execute a query for search sugestions
 func queryForSugestions(tickers Tickers, db *sql.DB) (*sql.Rows, error) {
 	if len(tickers) > 0 {
 		query := "SELECT ticker, name FROM stocks WHERE is_tracked=TRUE AND NOT ticker = ANY($1) ORDER BY total_count DESC LIMIT 5"

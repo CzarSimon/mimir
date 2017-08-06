@@ -1,5 +1,5 @@
 {
-  "name": "search-rec",
+  "name": "search-service",
   "image": "czarsimon/mimir-search",
   "keywordArgs": [
     "-d",
