@@ -1,107 +1,96 @@
 'use strict'
-import React, { Component } from 'react'
-import { Platform } from 'react-native'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-import Watchlist from '../components/watchlist'
-import Loading from '../components/loading'
+import Watchlist from '../components/watchlist';
+import Loading from '../components/loading';
 
-import * as userActions from '../ducks/user'
-import * as stockActions from '../ducks/stocks'
-import * as twitterDataActions from '../ducks/twitter-data'
-import { setActiveTicker } from '../ducks/navigation'
-import { logonUser } from '../ducks/logon'
+import * as userActions from '../ducks/user';
+import * as stockActions from '../ducks/stocks';
+import * as twitterDataActions from '../ducks/twitter-data';
+import { setActiveTicker } from '../ducks/navigation';
+import { logonUser } from '../ducks/logon';
 
-import socket from '../methods/server/socket'
-
-import { persistObject } from './../methods/async-storage'
-import { arrayEquals } from '../methods/helper-methods'
-import { companyPageRoute } from '../routing/main'
-import { DEV_MODE } from '../credentials/config'
+import { remove, USER_ID_KEY } from './../methods/async-storage';
+import { arrayEquals } from '../methods/helper-methods';
+import { companyPageRoute } from '../routing/main';
+import { DEV_MODE } from '../credentials/config';
 
 class WatchlistContainer extends Component {
-  constructor(props) {
-    super(props)
-    this.socket = socket
-  }
-
   componentWillMount() {
-    const { logonUser, reciveTwitterData, updateStockData } = this.props.actions
-    logonUser(this.socket)
-    this.socket.on("DISPATCH_TWITTER_DATA", payload => {
-      if (payload.data) { reciveTwitterData(payload.data) }
-    })
+    const { logonUser, updateStockData } = this.props.actions;
+    //remove(USER_ID_KEY);
+    logonUser();
     setInterval(() => {
-      updateStockData(this.props.state.user.tickers)
-    }, (!DEV_MODE) ? 30000 : 300000) // set this to 30000 (i.e. 30 s. before changing to relese)
+      updateStockData(this.props.state.user.tickers);
+    }, (!DEV_MODE) ? 30000 : 300000); // set this to 30000 (i.e. 30 s. before changing to relese)*/
   }
 
   componentWillReceiveProps(nextProps) {
-    const { fetchTwitterData, fetchStockData } = this.props.actions
-    const { user: nextUser, stocks: nextStocks } = nextProps.state
-    const { user } = this.props.state
-    const { socket } = this
-
-    if (!user.loaded && nextUser.tickers.length) {
-      socket.on("NEW_TWITTER_DATA", () => {
-        fetchTwitterData(nextUser, socket)
-      })
-    } else if (user.loaded && !arrayEquals(nextUser.tickers, user.tickers)) {
+    const { fetchTwitterData, fetchStockData } = this.props.actions;
+    const { tickers: newTickers } = nextProps.state.user;
+    const { user } = this.props.state;
+    if (user.loaded && !arrayEquals(newTickers, user.tickers)) {
       // This happens when the user has user has added or remove a ticker
-      const { id, tickers } = nextUser
-      persistObject("user", { id, tickers })
-      socket.removeListener("NEW_TWITTER_DATA")
-      socket.on("NEW_TWITTER_DATA", () => {
-        fetchTwitterData(nextUser, socket)
-      })
-      fetchTwitterData(nextUser, socket)
-      fetchStockData(tickers)
+      fetchTwitterData(newTickers);
+      fetchStockData(newTickers);
     }
   }
 
   navigateToCompany = ticker => {
-    const { navigator, actions } = this.props
-    actions.setActiveTicker(ticker)
-    navigator.push(companyPageRoute(ticker))
+    const { navigator, actions } = this.props;
+    actions.setActiveTicker(ticker);
+    navigator.push(companyPageRoute(ticker));
   }
 
   removeTicker = ticker => {
-    this.props.actions.removeTicker(ticker)
+    this.props.actions.removeTicker(ticker);
+  }
+
+  userAndDataLoaded = () => {
+    const { user, stocks, twitterData } = this.props.state;
+    return (user.loaded && stocks.loaded && twitterData.loaded);
   }
 
   render() {
-    const { user, stocks } = this.props.state
-    if (user.loaded && stocks.loaded) {
+    const { user, stocks, twitterData } = this.props.state;
+    if (this.userAndDataLoaded()) {
       return (
         <Watchlist
           user={user}
           stocks={stocks}
+          twitterData={twitterData}
           removeTicker={this.removeTicker}
           navigate={this.navigateToCompany}
         />
-      )
+      );
     } else {
-      return (<Loading />)
+      return (<Loading />);
     }
   }
 }
 
+const mapStateToProps = state => ({
+  state: {
+    user: state.user,
+    stocks: state.stocks,
+    twitterData: state.twitterData,
+    navigation: state.navigation
+  }
+})
+
+const mapDispatchToActions = dispatch => ({
+  actions: bindActionCreators({
+    ...userActions,
+    ...stockActions,
+    ...twitterDataActions,
+    setActiveTicker,
+    logonUser
+  }, dispatch)
+})
+
 export default connect(
-  (state) => ({
-    state: {
-      user: state.user,
-      stocks: state.stocks,
-      navigation: state.navigation
-    }
-  }),
-  (dispatch) => ({
-    actions: bindActionCreators({
-      ...userActions,
-      ...stockActions,
-      ...twitterDataActions,
-      setActiveTicker,
-      logonUser
-    }, dispatch)
-  })
-)(WatchlistContainer)
+  state => mapStateToProps(state),
+  dispatch => mapDispatchToActions(dispatch)
+)(WatchlistContainer);

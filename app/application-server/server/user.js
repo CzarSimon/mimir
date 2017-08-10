@@ -26,7 +26,7 @@ const storeNewUser = (user, conn, callback) => {
   r.table(USER_TABLE).insert(user).run(conn, (err, res) => {
     // Add id to user if there was no error, set to empty object if the was one
     userWithId = (err) ? {} : Object.assign({}, user, {id: parseGeneratedKey(res)})
-    callback(err, userWithId);
+    callback(err, _.omit(userWithId, 'sessions'));
   })
 }
 
@@ -40,7 +40,7 @@ const createNewUser = (email = "") => ({
 })
 
 // _initalTickers() Returns an inital set of ticker for a new user
-const _initalTickers = () => (['AAPL', 'FB', 'TSLA', 'TSLA', 'AMZN'])
+const _initalTickers = () => (['AAPL', 'FB', 'TSLA', 'TWTR', 'AMZN'])
 
 // parseGeneratedKey() Returns the first gnereated key for a new user creation
 const parseGeneratedKey = dbRes => _.head(dbRes.generated_keys)
@@ -71,7 +71,7 @@ const getUser = (req, res, conn) => {
 * Takes user id, database connection and a callback as parameters
 */
 const getUserFromDB = (userId, conn, callback) => {
-  r.table(USER_TABLE).get(userId).pluck('sessions').run(conn, (err, res) => {
+  r.table(USER_TABLE).get(userId).without('sessions').run(conn, (err, res) => {
     const user = (!err) ? res : {}
     const error = (res == null) ? `unable to find user ${userId}` : err
     callback(error, user);

@@ -1,23 +1,22 @@
 'use strict'
 
-import React, { Component } from 'react'
-import { View, Text, StyleSheet, ListView } from 'react-native'
-import { length, font, color } from '../styles/styles'
-import { values } from 'lodash'
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, ListView } from 'react-native';
+import { length, font, color } from '../styles/styles';
+import { values } from 'lodash';
 
-import Header from './watchlist/header'
-import StockCard from './watchlist/stock-card'
+import Header from './watchlist/header';
+import StockCard from './watchlist/stock-card';
 
 export default class Watchlist extends Component {
   createUserStockList = (stockData, tickerOrder = []) => {
-    return values(stockData)
+    return values(stockData);
   }
 
   render() {
-    const { user, stocks, navigate, removeTicker } = this.props
-    const twitterData = (user.twitterData.loaded) ? user.twitterData.data : {}
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-    const userTicketList = ds.cloneWithRows(stocks.data)
+    const { user, stocks, twitterData, navigate, removeTicker } = this.props;
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    const userTicketList = ds.cloneWithRows(stocks.data);
     return (
       <View style = {styles.container}>
         <ListView
@@ -29,7 +28,7 @@ export default class Watchlist extends Component {
               return (
                 <StockCard
                   {...stockData}
-                  twitterData={twitterData[stockData.Symbol]}
+                  twitterData={twitterData.data[stockData.Symbol]}
                   navigate={navigate}
                   modifiable={user.modifiable}
                   removeTicker={removeTicker}
@@ -41,7 +40,7 @@ export default class Watchlist extends Component {
           }}
         />
       </View>
-    )
+    );
   }
 }
 

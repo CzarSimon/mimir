@@ -1,5 +1,7 @@
 import { AsyncStorage } from 'react-native'
 
+export const USER_ID_KEY = 'mimir/user/id';
+
 export const persist = (key, val) => {
   AsyncStorage.setItem(key, val.toString())
   .catch(err => console.log(err))
@@ -14,12 +16,10 @@ export const retrive = (key, show = false) => {
   return (
     AsyncStorage.getItem(key)
     .then(res => {
-      if (res !== null) {
-        if (show) {
-          console.log(res);
-        }
-        return res;
+      if (show) {
+        console.log(res);
       }
+      return res;
     })
   );
 }

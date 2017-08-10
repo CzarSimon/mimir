@@ -4,12 +4,12 @@ import { createAction } from 'redux-actions'
 import { retriveStockData, retriveHistoricalData } from './../methods/yahoo-api'
 
 /* --- Types --- */
-export const RECIVE_STOCK_DATA = 'RECIVE_STOCK_DATA'
-export const FETCH_STOCK_DATA = 'FETCH_STOCK_DATA' //Add failure scenario
-export const RECIVE_UPDATED_STOCK_DATA = 'RECIVE_UPDATED_STOCK_DATA'
-export const UPDATE_STOCK_DATA = 'UPDATE_STOCK_DATA' //Add failure scenario
-export const RECIVE_HISTORICAL_DATA = 'RECIVE_HISTORICAL_DATA'
-export const FETCH_HISTORICAL_DATA = 'FETCH_HISTORICAL_DATA' //Add failure scenario
+export const RECIVE_STOCK_DATA = 'mimir/stockData/RECIVE';
+export const FETCH_STOCK_DATA = 'mimir/stockData/FETCH'; //Add failure scenario
+export const RECIVE_UPDATED_STOCK_DATA = 'mimir/stockData/RECIVE_UPDATE';
+export const UPDATE_STOCK_DATA = 'mimir/stockData/UPDATE'; //Add failure scenario
+export const RECIVE_HISTORICAL_DATA = 'mimir/stockData/historical/RECIVE';
+export const FETCH_HISTORICAL_DATA = 'mimir/stockData/historical/FETCH'; //Add failure scenario
 
 /* --- Reducer --- */
 const initialState = {

@@ -1,5 +1,6 @@
 'use strict'
-import _ from 'lodash'
+import _ from 'lodash';
+import { SERVER_URL } from '../credentials/config';
 
 export const arrayEquals = (a1, a2) => {
   let i = a1.length
@@ -9,6 +10,9 @@ export const arrayEquals = (a1, a2) => {
   }
   return true
 }
+
+// toURL() Concatenates the backed host and port with a route
+export const toURL = route => (SERVER_URL + route);
 
 export const is_positive = changeStr => (_.startsWith(changeStr, "-")) ? false : true
 

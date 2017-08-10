@@ -1,26 +1,25 @@
 'use strict'
-import { createAction } from 'redux-actions'
-import twitterData from './twitter-data'
-import { RECIVE_TWITTER_DATA } from './twitter-data'
-import { without, concat, uniq } from 'lodash'
-import { retriveObject } from '../methods/async-storage'
+import { createAction } from 'redux-actions';
+import twitterData from './twitter-data';
+import { RECIVE_TWITTER_DATA } from './twitter-data';
+import { without, concat, uniq } from 'lodash';
+import { retrive, persist, USER_ID_KEY } from '../methods/async-storage';
+import { toURL } from '../methods/helper-methods';
 
 /* --- Types --- */
-export const RECIVE_USER = 'RECIVE_USER'
-export const FETCH_USER = 'FETCH_USER'
-export const CREATE_NEW_USER = 'CREATE_NEW_USER'
-export const ADD_TICKER = 'ADD_TICKER'
-export const REMOVE_TICKER = 'REMOVE_TICKER'
-export const CLEAR_SEARCH_HISTORY = 'CLEAR_SEARCH_HISTORY'
-export const ADD_TO_SEARCH_HISTORY = 'ADD_TO_SEARCH_HISTORY'
+export const RECIVE_USER = 'mimir/user/RECIVE';
+export const FETCH_USER = 'mimir/user/FETCH';
+export const ADD_TICKER = 'mimir/ticker/ADD';
+export const DELETE_TICKER = 'mimir/ticker/DELETE';
+export const CLEAR_SEARCH_HISTORY = 'mimir/searchHistory/CLEAR';
+export const APPEND_SEARCH_HISTORY = 'mimir/searchHistory/APPEND';
 
 const initialState = {
   id: null,
-  name: null,
+  email: null,
+  joinDate: null,
   tickers: [],
-  searchHistory: ['twitter', 'GOOG', 'Nvd'],
-  twitterData: twitterData(),
-  modifiable: false,
+  searchHistory: [],
   loaded: false
 }
 
@@ -34,15 +33,9 @@ const user = (state = initialState, action = {}) => {
         ...state,
         ...action.payload.user,
         loaded: true
-      }
-    case CREATE_NEW_USER:
-      return {
-        ...state,
-        ...action.payload.user,
-        loaded: true
-      }
+      };
     case ADD_TICKER:
-      const { ticker } = action.payload
+      const { ticker } = action.payload;
       return {
         ...state,
         tickers: (
@@ -50,55 +43,76 @@ const user = (state = initialState, action = {}) => {
           ? concat(state.tickers, ticker)
           : state.tickers
         )
-      }
-    case REMOVE_TICKER:
+      };
+    case DELETE_TICKER:
       return {
         ...state,
         tickers: without(state.tickers, action.payload.ticker)
-      }
-    case RECIVE_TWITTER_DATA:
-      return {
-        ...state,
-        twitterData: twitterData(state, action)
-      }
+      };
     case CLEAR_SEARCH_HISTORY:
       return {
         ...state,
         searchHistory: []
-      }
-    case ADD_TO_SEARCH_HISTORY:
+      };
+    case APPEND_SEARCH_HISTORY:
       return {
         ...state,
         searchHistory: uniq(concat(action.payload.query, state.searchHistory))
-      }
+      };
     default:
-      return state
+      return state;
   }
 }
+
 export default user
 
 /* --- Actions --- */
-export const fetchUser = () => {
+export const getUser = () => {
   return dispatch => (
-    retriveObject("user")
-    .then(user => dispatch(reciveUser(user)))
+    retrive(USER_ID_KEY)
+    .then(userId => {
+      if (userId) {
+        return dispatch(fetchUser(userId));
+      } else {
+        return dispatch(fetchNewUser());
+      }
+    })
   )
 }
 
-export const reciveUser = createAction(RECIVE_USER, user => ({ user }))
+const fetchUser = userId => {
+  return dispatch => (
+    fetch(toURL('api/app/user?id=' + userId))
+    .then(res => res.json())
+    .then(user => dispatch(reciveUser(user)))
+    .catch(err => {
+      console.log(err);
+    })
+  );
+}
 
-export const createNewUser = createAction(CREATE_NEW_USER, user => ({ user }))
+const fetchNewUser = () => {
+  return dispatch => (
+    fetch(toURL('api/app/user'), { method: 'POST' })
+    .then(res => res.json())
+    .then(user => {
+      persist(USER_ID_KEY, user.id)
+      return dispatch(reciveUser(user))
+    })
+    .catch(err => {
+      console.log(err);
+    })
+  );
+}
 
-export const addTicker = createAction(ADD_TICKER, ticker => ({ ticker }))
+export const reciveUser = createAction(RECIVE_USER, user => ({ user }));
 
-export const removeTicker = createAction(REMOVE_TICKER, ticker => ({ ticker }))
+export const addTicker = createAction(ADD_TICKER, ticker => ({ ticker }));
 
-export const clearSearchHistory = createAction(CLEAR_SEARCH_HISTORY)
+export const removeTicker = createAction(DELETE_TICKER, ticker => ({ ticker }));
+
+export const clearSearchHistory = createAction(CLEAR_SEARCH_HISTORY);
 
 export const addToSearchHistory = createAction(
-  ADD_TO_SEARCH_HISTORY, query => ({ query })
-)
-
-export const updateUserWithTicker = ticker => {
-
-}
+  APPEND_SEARCH_HISTORY, query => ({ query })
+);

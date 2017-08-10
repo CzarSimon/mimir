@@ -25,9 +25,9 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <Navigator
-          initialRoute = {MAIN_ROUTE}
-          style = {styles.container}
-          renderScene = {renderScene}
+          initialRoute = { MAIN_ROUTE }
+          style = { styles.container }
+          renderScene = { renderScene }
           navigationBar = {
             <Navigator.NavigationBar
               routeMapper={{

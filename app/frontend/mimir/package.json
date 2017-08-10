@@ -1,16 +1,15 @@
 {
   "name": "mimir",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
+    "postinstall": "rndebugger-open",
     "test": "jest"
   },
   "dependencies": {
-    "crypto-js": "^3.1.9-1",
     "lodash": "^4.13.1",
     "moment": "^2.14.1",
-    "randomstring": "^1.1.5",
     "react": "15.4.2",
     "react-native": "0.42.3",
     "react-native-chart": "^1.0.7-beta",
@@ -30,6 +29,7 @@
     "babel-jest": "19.0.0",
     "babel-preset-react-native": "1.9.1",
     "jest": "19.0.2",
+    "react-native-debugger-open": "^0.3.12",
     "react-test-renderer": "15.4.2"
   },
   "jest": {

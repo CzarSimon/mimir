@@ -1,11 +1,11 @@
 'use strict'
 import { createAction } from 'redux-actions';
-import { getTwitterData } from '../methods/server/twitter-miner';
-import { mapKeys, replace } from 'lodash';
+import { toURL } from '../methods/helper-methods';
+import _ from 'lodash';
 
 /* --- Types --- */
-export const RECIVE_TWITTER_DATA = 'RECIVE_TWITTER_DATA'
-export const FETCH_TWITTER_DATA = 'FETCH_TWITTER_DATA' //Add failure scenario
+export const RECIVE_TWITTER_DATA = 'mimir/twitterData/RECIVE';
+export const FETCH_TWITTER_DATA = 'mimir/twitterData/FETCH'; //Add failure scenario
 
 const initialState = {
   data: {},
@@ -17,7 +17,7 @@ const twitterData = (state = initialState, action = {}) => {
   switch (action.type) {
     case RECIVE_TWITTER_DATA:
       return {
-        data: mapKeys(action.payload.data, (val, key) => replace(key, '$', '')),
+        data: _.keyBy(action.payload.data, 'ticker'),
         loaded: true
       }
     default:
@@ -27,6 +27,20 @@ const twitterData = (state = initialState, action = {}) => {
 export default twitterData
 
 /* --- Actions --- */
-export const fetchTwitterData = (user, socket) => (() => socket.emit(FETCH_TWITTER_DATA, { user }))
+export const fetchTwitterData = tickers => {
+  const endpoint = toURL('api/app/twitter-data' + createTickerQuery(tickers));
+  return dispatch => (
+    fetch(endpoint)
+    .then(res => res.json())
+    .then(twitterData => dispatch(reciveTwitterData(twitterData)))
+    .catch(err => {
+      console.log(err);
+    })
+  );
+}
 
 export const reciveTwitterData = createAction(RECIVE_TWITTER_DATA, data => ({ data }))
+
+const createTickerQuery = tickers => (
+  '?' + _.join(_.map(tickers, ticker => 'ticker=' + ticker), '&')
+);
