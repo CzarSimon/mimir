@@ -1,5 +1,6 @@
 'use strict'
 import _ from 'lodash';
+import moment from 'moment';
 import { SERVER_URL } from '../credentials/config';
 
 export const arrayEquals = (a1, a2) => {
@@ -10,9 +11,6 @@ export const arrayEquals = (a1, a2) => {
   }
   return true
 }
-
-// toURL() Concatenates the backed host and port with a route
-export const toURL = route => (SERVER_URL + route);
 
 export const is_positive = changeStr => (_.startsWith(changeStr, "-")) ? false : true
 
@@ -72,3 +70,5 @@ export const arr_get_value_by_key = (arr = [], val, key = 'Symbol') => (
 export const formatThousands = num_str => (
   _.replace(num_str, /\B(?=(\d{3})+(?!\d))/g, " ")
 )
+
+export const formatDate = timestamp => moment(timestamp).format('YYYY-MM-DD')

@@ -1,10 +1,16 @@
 'use strict'
 import { createAction } from 'redux-actions';
-import twitterData from './twitter-data';
+import { fetchTwitterData } from './twitter-data';
+import { fetchStockData, deleteStockData } from './stocks';
 import { RECIVE_TWITTER_DATA } from './twitter-data';
 import { without, concat, uniq } from 'lodash';
 import { retrive, persist, USER_ID_KEY } from '../methods/async-storage';
-import { toURL } from '../methods/helper-methods';
+import {
+  getRequest,
+  postRequest,
+  postRequestJSON,
+  deleteRequest
+} from '../methods/api-methods';
 
 /* --- Types --- */
 export const RECIVE_USER = 'mimir/user/RECIVE';
@@ -82,8 +88,7 @@ export const getUser = () => {
 
 const fetchUser = userId => {
   return dispatch => (
-    fetch(toURL('api/app/user?id=' + userId))
-    .then(res => res.json())
+    getRequest(`api/app/user?id=${userId}`)
     .then(user => dispatch(reciveUser(user)))
     .catch(err => {
       console.log(err);
@@ -93,8 +98,7 @@ const fetchUser = userId => {
 
 const fetchNewUser = () => {
   return dispatch => (
-    fetch(toURL('api/app/user'), { method: 'POST' })
-    .then(res => res.json())
+    postRequestJSON('api/app/user')
     .then(user => {
       persist(USER_ID_KEY, user.id)
       return dispatch(reciveUser(user))
@@ -109,9 +113,43 @@ export const reciveUser = createAction(RECIVE_USER, user => ({ user }));
 
 export const addTicker = createAction(ADD_TICKER, ticker => ({ ticker }));
 
+export const addNewTicker = (userId, ticker) => {
+  return dispatch => (
+    postRequest('api/app/user/ticker', { id: userId, ticker })
+    .then(() => Promise.all([
+      dispatch(addTicker(ticker)),
+      dispatch(fetchTwitterData([ ticker ])),
+      dispatch(fetchStockData([ ticker ]))
+    ]))
+  )
+}
+
 export const removeTicker = createAction(DELETE_TICKER, ticker => ({ ticker }));
 
+export const deleteTicker = (userId, ticker) => {
+  return dispatch => (
+    deleteRequest('api/app/user/ticker', { id: userId, ticker })
+    .then(() => Promise.all([
+      dispatch(removeTicker(ticker)),
+      dispatch(deleteStockData(ticker))
+    ]))
+    .catch(err => {
+      console.log(err);
+    })
+  )
+}
+
 export const clearSearchHistory = createAction(CLEAR_SEARCH_HISTORY);
+
+export const appendToSearchHistory = (userId, query) => {
+  return dispatch => (
+    postRequest('api/app/user/search', { id: userId, query })
+    .then(() => dispatch(addToSearchHistory(query)))
+    .catch(err => {
+      console.log(err);
+    })
+  );
+}
 
 export const addToSearchHistory = createAction(
   APPEND_SEARCH_HISTORY, query => ({ query })

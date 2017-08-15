@@ -1,17 +1,16 @@
 import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { color, font, length } from '../../../styles/styles'
-import { createSubjectString } from '../../../methods/helper-methods'
+import { createSubjectString, formatDate } from '../../../methods/helper-methods'
 
 export default class Info extends Component {
   render() {
-    const { compound_score, twitter_references, timestamp } = this.props;
+    const { twitterReferences, timestamp } = this.props;
     return (
       <View style={styles.container}>
-        <Text style={styles.subjectLine}>Subjects: {createSubjectString(compound_score)}</Text>
         <View style={styles.lastRow}>
-          <Text style={styles.text}>Tweet References: {twitter_references.length}</Text>
-          <Text style={styles.text}>{timestamp}</Text>
+          <Text style={styles.text}>Tweet References: {twitterReferences.length}</Text>
+          <Text style={styles.text}>{formatDate(timestamp)}</Text>
         </View>
       </View>
     )

@@ -21,7 +21,7 @@ export default class TabMenu extends Component {
       overview: <OverviewContainer company={company} twitterData={twitterData}/>,
       news: <NewsContainer company={company} />,
       statistics: <StatisticsContainer company={company}/>
-  };
+    };
     const iconNames = {
       overview: 'ios-information-circle-outline',
       news: 'ios-paper-outline',

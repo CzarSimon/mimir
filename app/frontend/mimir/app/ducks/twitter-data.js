@@ -1,6 +1,6 @@
 'use strict'
 import { createAction } from 'redux-actions';
-import { toURL } from '../methods/helper-methods';
+import { getRequest } from '../methods/api-methods';
 import _ from 'lodash';
 
 /* --- Types --- */
@@ -28,10 +28,9 @@ export default twitterData
 
 /* --- Actions --- */
 export const fetchTwitterData = tickers => {
-  const endpoint = toURL('api/app/twitter-data' + createTickerQuery(tickers));
+  const route = 'api/app/twitter-data' + createTickerQuery(tickers);
   return dispatch => (
-    fetch(endpoint)
-    .then(res => res.json())
+    getRequest(route)
     .then(twitterData => dispatch(reciveTwitterData(twitterData)))
     .catch(err => {
       console.log(err);

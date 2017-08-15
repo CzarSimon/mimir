@@ -18,24 +18,13 @@ import { companyPageRoute } from '../routing/main';
 import { DEV_MODE } from '../credentials/config';
 
 class WatchlistContainer extends Component {
-  componentWillMount() {
+  componentDidMount() {
     const { logonUser, updateStockData } = this.props.actions;
     //remove(USER_ID_KEY);
     logonUser();
     setInterval(() => {
       updateStockData(this.props.state.user.tickers);
     }, (!DEV_MODE) ? 30000 : 300000); // set this to 30000 (i.e. 30 s. before changing to relese)*/
-  }
-
-  componentWillReceiveProps(nextProps) {
-    const { fetchTwitterData, fetchStockData } = this.props.actions;
-    const { tickers: newTickers } = nextProps.state.user;
-    const { user } = this.props.state;
-    if (user.loaded && !arrayEquals(newTickers, user.tickers)) {
-      // This happens when the user has user has added or remove a ticker
-      fetchTwitterData(newTickers);
-      fetchStockData(newTickers);
-    }
   }
 
   navigateToCompany = ticker => {
@@ -45,7 +34,8 @@ class WatchlistContainer extends Component {
   }
 
   removeTicker = ticker => {
-    this.props.actions.removeTicker(ticker);
+    const { id: userId } = this.props.state.user;
+    this.props.actions.deleteTicker(userId, ticker);
   }
 
   userAndDataLoaded = () => {

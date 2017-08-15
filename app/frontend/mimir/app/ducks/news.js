@@ -1,11 +1,11 @@
 'use strict'
 import { createAction } from 'redux-actions';
+import { getRequest } from '../methods/api-methods';
 
 /* --- Types --- */
-export const FETCH_NEWS_ITEMS = 'FETCH_NEWS_ITEMS'
-export const RECIVE_NEWS_FAILURE = 'RECIVE_NEWS_FAILURE'
-export const RECIVE_NEWS_ITEMS = 'RECIVE_NEWS_ITEMS'
-export const DISPATCH_NEWS_ITEMS = 'DISPATCH_NEWS_ITEMS'
+export const FETCH_NEWS_ITEMS = 'mimir/news/FETCH';
+export const RECIVE_NEWS_FAILURE = 'mimir/news/RECIVE_FAIL';
+export const RECIVE_NEWS_ITEMS = 'mimir/news/RECIVE';
 
 /* --- Reducer --- */
 const news = (state = {}, action = {}) => {
@@ -19,18 +19,17 @@ const news = (state = {}, action = {}) => {
       return state;
   }
 }
-export default news
+export default news;
 
 /* --- Actions --- */
-export const fetchNewsItems = (ticker, socket) => (
-  dispatch => {
-    socket.removeListener(DISPATCH_NEWS_ITEMS);
-    socket.emit(FETCH_NEWS_ITEMS, { ticker });
-    return socket.on(DISPATCH_NEWS_ITEMS, payload => {
-      const newsItems = { [ticker]: JSON.parse(payload.data) };
-      dispatch(reciveNewsItems(newsItems));
-    });
-  }
-)
+export const fetchNewsItems = (ticker, period) => (
+  dispatch => (
+    getRequest(`api/news/${ticker}/5/${period}`)
+    .then(news => dispatch(reciveNewsItems({ [ticker]: news })))
+    .catch(err => {
+      console.log(err);
+    })
+  )
+);
 
-export const reciveNewsItems = createAction(RECIVE_NEWS_ITEMS, data => ({ data }))
+export const reciveNewsItems = createAction(RECIVE_NEWS_ITEMS, data => ({ data }));

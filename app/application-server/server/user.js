@@ -139,7 +139,7 @@ const addTicker = (req, res, conn) => {
     if (validTicker) {
       getTickers(userId, conn, (err, tickers) => {
         if (!_.includes(tickers, ticker)) {
-          prependFieldInDB(userId, ticker, 'tickers', conn, err => {
+          appendFieldInDB(userId, ticker, 'tickers', conn, err => {
             if (!err) {
               res.sendStatus(200);
             } else {
@@ -234,6 +234,25 @@ const prependFieldInDB = (userId, value, field, conn, callback) => {
   r.table(USER_TABLE)
    .get(userId)
    .update({ [field]: r.row(field).prepend(value) })
+   .run(conn, (err, res) => {
+     callback(err)
+  })
+}
+
+/**
+* prependFieldInDB() Appends an field with a supplied value
+* for a given user in the database
+* Takes the following parameters:
+* userId: used to identify which user to update
+* value: the value to prepend
+* field: the field in which to append the value
+* conn: a datbase connection
+* callback: a callback function
+*/
+const appendFieldInDB = (userId, value, field, conn, callback) => {
+  r.table(USER_TABLE)
+   .get(userId)
+   .update({ [field]: r.row(field).append(value) })
    .run(conn, (err, res) => {
      callback(err)
   })

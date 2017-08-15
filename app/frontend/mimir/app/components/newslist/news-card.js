@@ -25,23 +25,22 @@ export default class NewsCard extends Component {
   }
 
   summaryComponent = () => {
-    const { Summary, Twitter_References, Timestamp, Compound_Score, URL } = this.props.articleInfo
+    const { summary, twitterReferences, timestamp, url } = this.props.articleInfo
     if (this.state.clicked) {
-      return <ArticleSummary url={URL} summary={Summary} />
+      return <ArticleSummary url={url} summary={summary} />
     } else {
       return (
         <Info
-          twitter_references={Twitter_References}
-          compound_score={Compound_Score}
-          timestamp={Timestamp}
+          twitterReferences={twitterReferences}
+          timestamp={timestamp}
         />
       )
     }
   }
 
   render() {
-    const { Title } = this.props.articleInfo
-    const cleanTitle = createCleanTitle(Title)
+    const { title } = this.props.articleInfo
+    const cleanTitle = createCleanTitle(title)
     return (
       <TouchableHighlight
         onPress = {() => this.handleClick()}

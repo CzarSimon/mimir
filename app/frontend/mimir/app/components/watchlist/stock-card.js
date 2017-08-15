@@ -15,7 +15,16 @@ export default class StockCard extends Component {
   }
 
   render() {
-    const { Name: StockName, Symbol, PercentChange, LastTradePriceOnly, Currency, twitterData, modifiable, removeTicker } = this.props
+    const {
+      Name: StockName,
+      Symbol,
+      PercentChange,
+      LastTradePriceOnly,
+      Currency,
+      twitterData,
+      modifiable,
+      removeTicker
+    } = this.props;
     const deleteButton = [
       {
         backgroundColor: color.red,
@@ -23,7 +32,7 @@ export default class StockCard extends Component {
         onPress: () => removeTicker(Symbol),
         component: <Remove />
       }
-    ]
+    ];
     return (
       <View style={styles.card}>
         <Swipeout right={deleteButton} backgroundColor={color.white}>
@@ -38,7 +47,7 @@ export default class StockCard extends Component {
           </TouchableHighlight>
         </Swipeout>
       </View>
-    )
+    );
   }
 }
 
@@ -57,4 +66,4 @@ const styles = StyleSheet.create({
     backgroundColor: color.white,
     ...card
   }
-})
+});

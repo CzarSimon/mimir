@@ -1,7 +1,7 @@
 'use strict'
 
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ListView } from 'react-native';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import { length, font, color } from '../styles/styles';
 import { values } from 'lodash';
 
@@ -9,35 +9,28 @@ import Header from './watchlist/header';
 import StockCard from './watchlist/stock-card';
 
 export default class Watchlist extends Component {
-  createUserStockList = (stockData, tickerOrder = []) => {
-    return values(stockData);
+  _renderItem = ({ item }) => {
+    const { user, twitterData, navigate, removeTicker } = this.props;
+    return (
+      <StockCard
+        {...item}
+        twitterData={twitterData.data[item.Symbol]}
+        navigate={navigate}
+        modifiable={user.modifiable}
+        removeTicker={removeTicker}
+      />
+    );
   }
 
   render() {
-    const { user, stocks, twitterData, navigate, removeTicker } = this.props;
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    const userTicketList = ds.cloneWithRows(stocks.data);
     return (
       <View style = {styles.container}>
-        <ListView
-          dataSource = {userTicketList}
-          renderHeader = {() => <Header />}
+        <FlatList
+          data={values(this.props.stocks.data)}
+          ListHeaderComponent={() => <Header />}
+          keyExtractor={item => item.Symbol}
+          renderItem={this._renderItem}
           style={styles.list}
-          renderRow = {(stockData) => {
-            if (user.tickers.includes(stockData.Symbol)) {
-              return (
-                <StockCard
-                  {...stockData}
-                  twitterData={twitterData.data[stockData.Symbol]}
-                  navigate={navigate}
-                  modifiable={user.modifiable}
-                  removeTicker={removeTicker}
-                  />
-              )
-            } else {
-              return (<View />)
-            }
-          }}
         />
       </View>
     );

@@ -1,12 +1,13 @@
 'use strict'
 import { createAction } from 'redux-actions';
-import socket from '../methods/server/socket';
+import { toURL } from '../methods/helper-methods';
+import { getRequest } from '../methods/api-methods';
 
 /* --- Types --- */
-export const FETCH_SEARCH_RESULTS = 'FETCH_SEARCH_RESULTS'
-export const RECIVE_SEARCH_RESULTS = 'RECIVE_SEARCH_RESULTS'
-export const TOGGLE_KEYBOARD_UP = 'TOGGLE_KEYBOARD_UP'
-export const UPDATE_QUERY = 'UPDATE_QUERY'
+export const FETCH_SEARCH_RESULTS = 'mimir/searchResults/FETCH';
+export const RECIVE_SEARCH_RESULTS = 'mimir/searchResults/RECIVE';
+export const TOGGLE_KEYBOARD_UP = 'mimir/keyboard/TOGGLE';
+export const UPDATE_QUERY = 'mimir/query/UPDATE';
 
 const initialState = {
   query: null,
@@ -39,23 +40,29 @@ const search = (state = initialState, action = {}) => {
 export default search
 
 /* --- Actions --- */
-export const toggleKeyboardUp = createAction(TOGGLE_KEYBOARD_UP)
+export const toggleKeyboardUp = createAction(TOGGLE_KEYBOARD_UP);
 
 export const reciveSearchResults = createAction(
   RECIVE_SEARCH_RESULTS, results => ({ results })
 )
 
 export const fetchSearchResults = query => {
-  socket.emit(FETCH_SEARCH_RESULTS, { query })
+  return dispatch => (
+    getRequest(`api/search?query=${query}`)
+    .then(res => dispatch(reciveSearchResults(res)))
+    .catch(err => {
+      console.log(err);
+    })
+  );
 }
 
 export const updateQuery = createAction(UPDATE_QUERY, query => ({ query }))
 
 export const updateAndRunQuery = query => (
-  dispatch => {
-    if (query.length > 0) {
-      fetchSearchResults(query)
-    }
-    return dispatch(updateQuery(query))
-  }
-)
+  dispatch => (query.length > 0) ? (
+    Promise.all([
+      dispatch(fetchSearchResults(query)),
+      dispatch(updateQuery(query))
+    ])
+  ) : dispatch(updateQuery(query))
+);

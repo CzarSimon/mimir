@@ -1,5 +1,5 @@
 'use strict'
-import { mapValues } from 'lodash'
+import { mapValues, omit } from 'lodash'
 import { createAction } from 'redux-actions'
 import { retriveStockData, retriveHistoricalData } from './../methods/yahoo-api'
 
@@ -10,6 +10,7 @@ export const RECIVE_UPDATED_STOCK_DATA = 'mimir/stockData/RECIVE_UPDATE';
 export const UPDATE_STOCK_DATA = 'mimir/stockData/UPDATE'; //Add failure scenario
 export const RECIVE_HISTORICAL_DATA = 'mimir/stockData/historical/RECIVE';
 export const FETCH_HISTORICAL_DATA = 'mimir/stockData/historical/FETCH'; //Add failure scenario
+export const DELETE_STOCK_DATA = 'mimir/stockData/DELETE';
 
 /* --- Reducer --- */
 const initialState = {
@@ -52,6 +53,11 @@ const stocks = (state = initialState, action = {}) => {
         },
         loaded: true
       }
+    case DELETE_STOCK_DATA:
+      return {
+        ...state,
+        data: omit(state.data, action.payload.ticker)
+      }
     default:
       return state;
   }
@@ -93,4 +99,8 @@ export const fetchHistoricalData = ticker => (
 
 export const reciveHistoricalData = createAction(
   RECIVE_HISTORICAL_DATA, (data, ticker) => ({ data, ticker })
+)
+
+export const deleteStockData = createAction(
+  DELETE_STOCK_DATA, ticker => ({ ticker })
 )

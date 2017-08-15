@@ -1,7 +1,8 @@
 'use strict'
-import React, { Component } from 'react'
-import { Navigator, Text, StyleSheet } from 'react-native'
-import { createStore, applyMiddleware, combineReducers } from 'redux'
+import React, { Component } from 'react';
+import { Text, StyleSheet } from 'react-native';
+import { Navigator } from 'react-native-deprecated-custom-components';
+import { createStore, applyMiddleware, combineReducers } from 'redux';
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
 import createLogger from 'redux-logger'
