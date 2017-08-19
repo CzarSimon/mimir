@@ -2,6 +2,7 @@ const routes = require('express').Router();
 const database = require('./database');
 const twitterData = require('./twitter-data');
 const user = require('./user');
+const stock = require('./stock');
 
 /**
 * setupRoutes() Sets up routes
@@ -10,6 +11,7 @@ const user = require('./user');
 const setupRoutes = conn => {
   twitterDataRoutes(conn);
   userRoutes(conn);
+  stockRoutes(conn);
   return routes;
 }
 
@@ -39,10 +41,21 @@ const userRoutes = conn => {
     (req, res) => user.recordSession(req, res, conn));
   routes.post('/api/app/user/search',
     (req, res) => user.saveSearch(req, res, conn));
+  routes.delete('/api/app/user/search',
+    (req, res) => user.clearSearchHistory(req, res, conn));
   routes.post('/api/app/user/ticker',
     (req, res) => user.addTicker(req, res, conn));
   routes.delete('/api/app/user/ticker',
     (req, res) => user.deleteTicker(req, res, conn));
+}
+
+/**
+* stockRoutes() sets up routes for dealing with stock data
+* Takes a database connection as argument
+*/
+const stockRoutes = conn => {
+  routes.get('/api/app/stock/description',
+    (req, res) => stock.getDescription(req, res, conn));
 }
 
 /**

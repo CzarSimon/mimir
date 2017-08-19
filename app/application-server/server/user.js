@@ -221,6 +221,39 @@ const removeTickerFromDB = (userId, ticker, conn, callback) =>  {
 }
 
 /**
+* clearSearchHistory() Clears a users search history
+* Takes request and response objects and database connection as paramters
+*/
+const clearSearchHistory = (req, res, conn) => {
+  const userId = req.query.id;
+  if (isEmpty(userId)) {
+    res.status(400).send("No user id supplied");
+    return;
+  }
+  removeSearchHistoryFromDB(userId, conn, err => {
+    if (!err) {
+      res.sendStatus(200);
+    } else {
+      console.log(err);
+      res.status(500).send('unable to clear search history')
+    }
+  });
+}
+
+/**
+* removeSearchHistoryFromDB() Removes a users search histpry from the database
+* Takes user id, a database connection and a callback function as parameters
+*/
+const removeSearchHistoryFromDB = (userId, conn, callback) => {
+  r.table(USER_TABLE).get(userId).update({
+    "searchHistory": []
+  })
+  .run(conn, (err, res) => {
+    callback(err);
+  })
+}
+
+/**
 * prependFieldInDB() Prepends an field with a supplied value
 * for a given user in the database
 * Takes the following parameters:
@@ -266,5 +299,6 @@ module.exports = {
   recordSession,
   saveSearch,
   addTicker,
-  deleteTicker
+  deleteTicker,
+  clearSearchHistory
 }
