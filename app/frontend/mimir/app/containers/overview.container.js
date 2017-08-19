@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { addTicker } from '../ducks/user';
 import { fetchStockData } from '../ducks/stocks'
-import { fetchCompanyDesc } from '../ducks/descriptions';
+import { fetchDescription } from '../ducks/descriptions';
 import Overview from '../components/overview';
 import { formatName } from '../methods/helper-methods';
 
@@ -14,7 +14,7 @@ class OverviewContainer extends Component {
     const { company, actions, state } = this.props;
     const { Name, Symbol } = company;
     if (!state.descriptions[company.Symbol]) {
-      actions.fetchCompanyDesc(formatName(Name), Symbol);
+      actions.fetchDescription(formatName(Name), Symbol);
     }
     actions.fetchStockData([ Symbol ]);
   }
@@ -41,7 +41,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToActions = dispatch => ({
   actions: bindActionCreators({
-    fetchCompanyDesc,
+    fetchDescription,
     fetchStockData,
     addTicker
   }, dispatch)

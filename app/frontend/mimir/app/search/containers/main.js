@@ -19,16 +19,14 @@ class SearchContainer extends Component {
   }
 
   goToStock = (ticker, added = true) => {
-    const { navigator } = this.props
-    navigator.pop()
-    /*
-    const routeIndex = getRouteIndex(navigator)
+    const { navigator } = this.props;
+    //navigator.pop()
+    const routeIndex = getRouteIndex(navigator);
     if (added) {
-      navigator.replace(companyPageRoute(ticker, routeIndex))
+      navigator.replace(companyPageRoute(ticker, routeIndex));
     } else {
-      navigator.push(companyPageRoute(ticker, routeIndex + 1))
+      navigator.push(companyPageRoute(ticker, routeIndex + 1));
     }
-    */
   }
 
   render() {

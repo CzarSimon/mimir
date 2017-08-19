@@ -5,8 +5,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import TabMenu from '../components/tab-menu';
 import BasicInfo from '../components/tab-menu/basic-info';
+import Loading from '../components/loading';
 import { selectTab } from '../ducks/navigation';
-import { arr_get_value_by_key } from '../methods/helper-methods';
 
 class TabMenuContainer extends Component {
   handleTabClick = clickedTab => {
@@ -18,18 +18,22 @@ class TabMenuContainer extends Component {
     const { selectedTab, activeTicker } = navigation;
     const company = stocks.data[activeTicker];
     const twitterData = this.props.state.twitterData.data[activeTicker];
+    if (company && twitterData) {
+      return (
+        <View style={styles.container}>
+          <BasicInfo company={company} twitterData={twitterData} />
+          <TabMenu
+            company = {company}
+            twitterData={twitterData}
+            selectedTab={selectedTab}
+            handleClick={this.handleTabClick}
+          />
+        </View>
+      );
+    } else {
+      return (<Loading />);
+    }
 
-    return (
-      <View style={styles.container}>
-        <BasicInfo company={company} twitterData={twitterData} />
-        <TabMenu
-          company = {company}
-          twitterData = {twitterData}
-          selectedTab = {selectedTab}
-          handleClick = {this.handleTabClick}
-        />
-      </View>
-    )
   }
 }
 

@@ -7,22 +7,16 @@ import { card } from '../../styles/common'
 
 export default class Description extends Component {
   render() {
-    const { description } = this.props
-    return (
-      <View style={styles.container}>
-        {
-          (description) ? (
-            <Text style={styles.text}>{description}</Text>
-          ) : (
-            <TouchableHighlight
-              onPress={() => {console.log("Adding a description")}}
-              style={styles.button}>
-              <Text style={styles.buttonText}>Add a description</Text>
-            </TouchableHighlight>
-          )
-        }
-      </View>
-    )
+    const { description } = this.props;
+    if (description) {
+      return (
+        <View style={styles.container}>
+          <Text style={styles.text}>{description}</Text>
+        </View>
+      );
+    } else {
+      return (<View />);
+    }
   }
 }
 

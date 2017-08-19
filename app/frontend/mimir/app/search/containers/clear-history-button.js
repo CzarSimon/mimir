@@ -1,13 +1,15 @@
 'use strict'
-import React, { Component } from 'react'
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
-import { clearSearchHistory } from '../../ducks/user'
-import ClearHistoryButton from '../components/clear-history-button'
+
+import React, { Component } from 'react';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { deleteSearchHistory } from '../../ducks/user';
+import ClearHistoryButton from '../components/clear-history-button';
 
 class ClearHistoryContainer extends Component {
   clearHistory = () => {
-    this.props.actions.clearSearchHistory()
+    const { actions, state } = this.props;
+    actions.deleteSearchHistory(state.userId);
   }
 
   render() {
@@ -15,13 +17,19 @@ class ClearHistoryContainer extends Component {
   }
 }
 
+const mapStateToProps = state => ({
+  state: {
+    userId: state.user.id
+  }
+});
+
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
-    clearSearchHistory
+    deleteSearchHistory
   }, dispatch)
-})
+});
 
 export default connect(
-  state => ({}),
+  state => mapStateToProps(state),
   dispatch => mapDispatchToProps(dispatch)
-)(ClearHistoryContainer)
+)(ClearHistoryContainer);

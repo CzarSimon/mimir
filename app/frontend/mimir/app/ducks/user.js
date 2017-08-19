@@ -141,6 +141,16 @@ export const deleteTicker = (userId, ticker) => {
 
 export const clearSearchHistory = createAction(CLEAR_SEARCH_HISTORY);
 
+export const deleteSearchHistory = userId => (
+  dispatch => (
+    deleteRequest(`api/app/user/search?id=${userId}`)
+    .then(() => dispatch(clearSearchHistory()))
+    .catch(err => {
+      console.log(err);
+    })
+  )
+)
+
 export const appendToSearchHistory = (userId, query) => {
   return dispatch => (
     postRequest('api/app/user/search', { id: userId, query })

@@ -1,10 +1,11 @@
 'use strict'
 import { createAction } from 'redux-actions';
 import { kgSearch } from '../methods/google-api';
+import { getRequest } from '../methods/api-methods';
 
 /* --- Types --- */
-export const RECIVE_COMPANY_DESC = 'RECIVE_COMPANY_DESC'
-export const RECIVE_DESC_FAILURE = 'RECIVE_DESC_FAILURE'
+export const RECIVE_COMPANY_DESC = 'mimir/description/RECIVE';
+export const RECIVE_DESC_FAILURE = 'mimir/description/RECIVE_FAILURE';
 
 /* --- Reducer --- */
 const descriptions = (state = {}, action = {}) => {
@@ -32,7 +33,20 @@ export const fetchCompanyDesc = (companyName, ticker) => (
   dispatch => (
     kgSearch(companyName)
     .then(desc => dispatch(reciveCompanyDesc(desc, ticker)))
-    .catch(err => dispatch(reciveDescFailure(err, ticker)))
+    .catch(err => {
+      console.log(err);
+    })
+  )
+)
+
+export const fetchDescription = (companyName, ticker) => (
+  dispatch => (
+    getRequest(`api/app/stock/description?ticker=${ticker}`)
+    .then(res => dispatch(reciveCompanyDesc(res.description, ticker)))
+    .catch(err => {
+      console.log(err);
+      return dispatch(fetchCompanyDesc(companyName, ticker));
+    })
   )
 )
 

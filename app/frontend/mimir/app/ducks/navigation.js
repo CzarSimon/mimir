@@ -2,8 +2,8 @@
 import { createAction } from 'redux-actions';
 
 /* --- Types --- */
-export const SET_ACTIVE_TICKER = 'SET_ACTIVE_TICKER'
-export const SELECT_TAB = 'SELECT_TAB'
+export const SET_ACTIVE_TICKER = 'SET_ACTIVE_TICKER';
+export const SELECT_TAB = 'SELECT_TAB';
 
 const initialState = {
   activeTicker: null,
