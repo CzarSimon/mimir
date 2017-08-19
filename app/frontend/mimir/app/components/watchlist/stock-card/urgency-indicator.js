@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import { View, StyleSheet } from 'react-native'
 import { color, length } from '../../../styles/styles';
-import { urgency_level } from '../../../methods/server/twitter-miner';
+import { classifyUrgency } from '../../../methods/server/twitter-miner';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class UrgencyIndicator extends Component {
+  shouldComponentUpdate(nextProps) {
+    return nextProps.volume !== this.props.volume;
+  }
+
   render() {
-    const { volume, mean, stdev, minute } = this.props;
-    switch (urgency_level(volume, mean, stdev, minute)) {
+    switch (classifyUrgency(this.props)) {
       case 'high':
         return (
           <View style={styles.alert}>

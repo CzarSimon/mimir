@@ -1,5 +1,6 @@
 'use strict';
 import { SERVER_URL } from '../credentials/config';
+import { join, map } from 'lodash';
 
 // toURL() Combines the base backend url with a specific route and returns the result
 export const toURL = route => (SERVER_URL + route);
@@ -60,3 +61,9 @@ export const checkReponse = response => {
     throw error;
   }
 };
+
+// createTickerQuery() Creates url query of tickers
+export const createTickerQuery = tickers => (
+  (tickers.length > 0) ?
+  ('?' + join(map(tickers, ticker => 'ticker=' + ticker), '&')) : ''
+);

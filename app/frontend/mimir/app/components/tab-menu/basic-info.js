@@ -9,17 +9,17 @@ import { color, font, length } from '../../styles/styles'
 export default class BasicInfo extends Component {
   render() {
     const { Name, PercentChange, LastTradePriceOnly, Currency } = this.props.company
-    const change_style = (is_positive(PercentChange)) ? styles.price_up : styles.price_down
+    const changeStyle = (is_positive(PercentChange)) ? styles.priceUp : styles.priceDown;
     const change = format_price_change(PercentChange)
     return (
       <View style={styles.container}>
         <View style={styles.card}>
-          <UrgencyIndicator {...this.props.twitter_data} />
+          <UrgencyIndicator {...this.props.twitterData} />
           <View>
             <Text style={styles.name}>{formatName(Name)}</Text>
             <View style={styles.price}>
-              <Text style={styles.price_text}>{round(LastTradePriceOnly)} {Currency}  </Text>
-              <Text style={change_style}>{change}</Text>
+              <Text style={styles.priceText}>{round(LastTradePriceOnly)} {Currency}  </Text>
+              <Text style={changeStyle}>{change}</Text>
             </View>
           </View>
         </View>
@@ -48,16 +48,16 @@ const styles = StyleSheet.create({
   price: {
     flexDirection: 'row'
   },
-  price_text: {
+  priceText: {
     fontFamily: font.type.sans.normal,
     fontSize: font.text
   },
-  price_up: {
+  priceUp: {
     fontFamily: font.type.sans.normal,
     fontSize: font.text,
     color: color.green
   },
-  price_down: {
+  priceDown: {
     fontFamily: font.type.sans.normal,
     fontSize: font.text,
     color: color.red

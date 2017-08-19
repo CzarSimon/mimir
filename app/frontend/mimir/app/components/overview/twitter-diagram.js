@@ -27,13 +27,15 @@ export default class TwitterDiagram extends Component {
   }
 
   render() {
-    const { volume, mean, stdev, minute } = this.props.data
-    const damping = parseFloat(minute) / 60.0
+    const { volume, mean, stdev, minute, hour } = this.props.data
+    const damping = parseFloat(minute) / 60.0;
+    const formatedMean = round(damping * mean[hour], 0);
+    const formatedStdev = round(damping * stdev[hour], 0);
     const volumeStyle = (this.state.showVolChange) ? styles.volumeChange : styles.text
     return (
       <View style={styles.container}>
         <Text style={volumeStyle}>Tweets in the last hour: {volume}</Text>
-        <Text style={styles.text}>Mean: {round(damping * mean, 0)} | Standard Deviation: {round(damping * stdev, 0)}</Text>
+        <Text style={styles.text}>Mean: {formatedMean} | Standard Deviation: {formatedStdev}</Text>
       </View>
     )
   }

@@ -20,6 +20,10 @@ export const format_price_change = change => (
 
 export const round = (number, decimals = 2) => parseFloat(number).toFixed(decimals)
 
+// isEmpty() Checks if candidate is undefined or null, returns true if so
+export const isEmpty = candidate => (
+  (candidate === undefined) || (candidate === null)
+);
 
 export const companyEndings = ['inc', 'corporation', 'plc', 'company']
 

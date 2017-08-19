@@ -1,16 +1,23 @@
 'use strict'
-import React, { Component } from 'react'
-import { View, Text, StyleSheet } from 'react-native'
-import { length } from '../../styles/styles'
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import { addTicker } from '../../ducks/user'
-import { toggleSearchActive } from '../../ducks/search'
-import { companyPageRoute, getRouteIndex } from '../../routing/main'
-import SearchHistory from '../components/search-history'
-import SearchResults from '../components/search-results'
+
+import React, { Component } from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+import { length } from '../../styles/styles';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { addTicker } from '../../ducks/user';
+import { updateAndRunQuery, fetchSearchSugestions } from '../../ducks/search';
+import { companyPageRoute, getRouteIndex } from '../../routing/main';
+import SearchHistory from '../components/search-history';
+import SearchSugestions from '../components/search-sugestions';
+import SearchResults from '../components/search-results';
 
 class SearchContainer extends Component {
+  componentDidMount() {
+    const { actions, state } = this.props;
+    actions.fetchSearchSugestions(state.tickers);
+  }
+
   goToStock = (ticker, added = true) => {
     const { navigator } = this.props
     navigator.pop()
@@ -26,12 +33,14 @@ class SearchContainer extends Component {
 
   render() {
     const { search, searchHistory } = this.props.state
-    const { addTicker } = this.props.actions
+    const { addTicker, updateAndRunQuery } = this.props.actions
     return (
       <View style={styles.container}>
         {
           (!search.query)
-          ? <SearchHistory history={searchHistory} />
+          ? (!search.keyboardDown)
+            ? <SearchHistory history={searchHistory} />
+            : <SearchSugestions sugestions={search.sugestions} updateAndRunQuery={updateAndRunQuery} />
           : <SearchResults results={search.results} goToStock={this.goToStock}/>
         }
       </View>
@@ -41,6 +50,7 @@ class SearchContainer extends Component {
 
 const mapStateToProps = state => ({
   state: {
+    tickers: state.user.tickers,
     search: state.search,
     searchHistory: state.user.searchHistory
   }
@@ -49,7 +59,8 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators({
     addTicker,
-    toggleSearchActive
+    updateAndRunQuery,
+    fetchSearchSugestions
   }, dispatch)
 })
 

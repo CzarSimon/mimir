@@ -1,30 +1,36 @@
 'use strict'
-import { join, zipObject } from 'lodash';
+import { join, zipObject, keyBy } from 'lodash';
+import { checkReponse } from './api-methods';
 const moment = require('moment');
 
 const simpleData = "Name, Symbol, ChangeinPercent, PercentChange, LastTradePriceOnly, Currency, Volume, Ask, Bid";
 const detailedData = simpleData + ", Open, EBITDA, PERatio, MarketCapitalization, EarningsShare, YearHigh, YearLow, AverageDailyVolume, PreviousClose, ChangeFromYearHigh, ChangeFromYearLow"
 
 export const retriveStockData = tickers => {
-  const dataFields = (tickers.length > 1) ? simpleData : detailedData;
-  const api = "https://query.yahooapis.com/v1/public/yql?q="
-  const data = encodeURIComponent("select " + dataFields + " from yahoo.finance.quotes where symbol in ('" + join(tickers, "','") + "')");
-  const format = "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"
+  const apiURI = statsApiRoute(tickers);
+  return (
+    fetch(apiURI)
+    .then(checkReponse)
+    .then(res => res.json())
+    .then(json => json.query.results.quote)
+    .then(quote => formatResonse(tickers, quote))
+  );
+}
 
+const statsApiRoute = tickers => {
+  const dataFields = (tickers.length > 1) ? simpleData : detailedData;
+  const api = "https://query.yahooapis.com/v1/public/yql?q=";
+  const data = encodeURIComponent("select " + dataFields + " from yahoo.finance.quotes where symbol in ('" + join(tickers, "','") + "')");
+  const format = "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
+  return api + data + format;
+}
+
+const formatResonse = (tickers, quote) => {
   if (tickers.length > 1) {
-    return (
-      fetch(api + data + format)
-      .then(res => res.json())
-      .then(json => zipObject(tickers, json.query.results.quote))
-      .then(res => res)
-    );
-  } else {
-    return (
-      fetch(api + data + format)
-      .then(res => res.json())
-      .then(json => zipObject(tickers, [json.query.results.quote]))
-    );
+    return zipObject(tickers, quote)
   }
+  const ticker = tickers[0];
+  return { [ticker]: quote };
 }
 
 export const retriveHistoricalData = (ticker, period = "THREE_MONTHS") => {
@@ -33,10 +39,16 @@ export const retriveHistoricalData = (ticker, period = "THREE_MONTHS") => {
   const api = "https://query.yahooapis.com/v1/public/yql?q="
   const data = encodeURIComponent("select Adj_Close, Date from yahoo.finance.historicaldata where symbol = '" + ticker + "' and " + timePeriod);
   const format = "&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys"
+  console.log(ticker);
+  console.log(timePeriod);
+  console.log("select Adj_Close, Date from yahoo.finance.historicaldata where symbol = '" + ticker + "' and " + timePeriod);
   return (
     fetch(api + data + format)
     .then(res => res.json())
-    .then(json => json.query.results.quote)
+    .then(json => {
+      console.log(json);
+      return json.query.results.quote
+    })
   );
 }
 

@@ -1,23 +1,21 @@
 'use strict'
 import React, { Component } from 'react'
-import { View, Text, ListView } from 'react-native'
+import { View, Text, FlatList } from 'react-native'
 import HistoryHeader from './history-header'
 import HistoryItemContainer from '../containers/history-item'
 
 export default class SearchHistory extends Component {
   render() {
-    const { history } = this.props
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
-    const historyList = ds.cloneWithRows(history)
+    const { history } = this.props;
     return (
       <View>
-        <ListView
-          dataSource={historyList}
-          enableEmptySections={true}
-          renderHeader={() => <HistoryHeader />}
-          renderRow={itemText => <HistoryItemContainer text={itemText} />}
+        <FlatList
+          data={history}
+          keyExtractor={(item, index) => index}
+          ListHeaderComponent={() => <HistoryHeader />}
+          renderItem={({ item }) => <HistoryItemContainer text={item} />}
         />
       </View>
-    )
+    );
   }
 }

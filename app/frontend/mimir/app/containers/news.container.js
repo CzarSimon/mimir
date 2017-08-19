@@ -3,7 +3,6 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import socket from '../methods/server/socket';
 import { fetchNewsItems } from '../ducks/news';
 import Newslist from '../components/newslist';
 import Loading from '../components/loading';

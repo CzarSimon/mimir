@@ -1,6 +1,6 @@
 'use strict'
 import { createAction } from 'redux-actions';
-import { getRequest } from '../methods/api-methods';
+import { getRequest, createTickerQuery } from '../methods/api-methods';
 import _ from 'lodash';
 
 /* --- Types --- */
@@ -17,7 +17,10 @@ const twitterData = (state = initialState, action = {}) => {
   switch (action.type) {
     case RECIVE_TWITTER_DATA:
       return {
-        data: _.keyBy(action.payload.data, 'ticker'),
+        data: {
+          ...state.data,
+          ..._.keyBy(action.payload.data, 'ticker'),
+        },
         loaded: true
       }
     default:
@@ -39,7 +42,3 @@ export const fetchTwitterData = tickers => {
 }
 
 export const reciveTwitterData = createAction(RECIVE_TWITTER_DATA, data => ({ data }))
-
-const createTickerQuery = tickers => (
-  '?' + _.join(_.map(tickers, ticker => 'ticker=' + ticker), '&')
-);

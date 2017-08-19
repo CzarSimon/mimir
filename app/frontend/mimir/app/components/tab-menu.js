@@ -16,16 +16,14 @@ export default class TabMenu extends Component {
     }
   }
   render() {
-    const { company, twitterData, selectedTab, handleClick, selectArticle } = this.props;
+    const { company, twitterData, selectedTab, handleClick } = this.props;
     const tabs = {
-      overview: <OverviewContainer company={company} twitterData={twitterData}/>,
       news: <NewsContainer company={company} />,
-      statistics: <StatisticsContainer company={company}/>
+      overview: <OverviewContainer company={company} twitterData={twitterData}/>
     };
     const iconNames = {
-      overview: 'ios-information-circle-outline',
       news: 'ios-paper-outline',
-      statistics: 'ios-stats-outline'
+      overview: 'ios-information-circle-outline'
     };
     return (
       <TabBarIOS

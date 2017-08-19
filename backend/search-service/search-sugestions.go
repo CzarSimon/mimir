@@ -64,7 +64,7 @@ func getTickers(req *http.Request) Tickers {
 	if err == nil {
 		return tickers
 	}
-	tickers = req.URL.Query()["tickers"]
+	tickers = req.URL.Query()["ticker"]
 	return tickers.ToUpper()
 }
 

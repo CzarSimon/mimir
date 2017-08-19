@@ -1,9 +1,8 @@
 'use strict'
 
-import React, { Component } from 'react'
-import { View, Text, TextInput, StyleSheet } from 'react-native'
-import { trim } from 'lodash'
-import { length, color, font } from '../../styles/styles'
+import React, { Component } from 'react';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { length, color, font } from '../../styles/styles';
 
 export default class SearchBar extends Component {
   handleSubmit = query => {
@@ -17,9 +16,10 @@ export default class SearchBar extends Component {
   }
 
   render() {
-    const { query } = this.props
+    const { query, keyboardDown, activateSearchKeyboard } = this.props
+    const containerStyle = (!keyboardDown) ? styles.containerActive : styles.containerInactive;
     return (
-      <View style={styles.container}>
+      <View style={containerStyle}>
         <TextInput
           style={styles.searchBox}
           onChangeText={(text) => this.runQuery(text)}
@@ -27,10 +27,11 @@ export default class SearchBar extends Component {
           clearButtonMode='always'
           returnKeyType='search'
           autoCorrect={false}
-          autoFocus={true}
+          autoFocus={!keyboardDown}
           autoCapitalize='none'
           value={query}
           placeholder={"Search tickers"}
+          onFocus={() => activateSearchKeyboard()}
           onSubmitEditing={() => this.handleSubmit(query)}
         />
       </View>
@@ -39,7 +40,13 @@ export default class SearchBar extends Component {
 }
 
 const styles = StyleSheet.create({
-  container: {
+  containerActive: {
+    flex: 1,
+    alignSelf: 'stretch',
+    marginLeft: length.button,
+    marginRight: length.navbar
+  },
+  containerInactive: {
     flex: 1,
     alignSelf: 'stretch',
     marginLeft: length.button,
@@ -49,7 +56,7 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: length.mini + 3,
     paddingLeft: length.medium,
-    borderRadius: 3,
+    borderRadius: 4,
     backgroundColor: color.grey.background,
     color: color.blue,
     fontFamily: font.type.sans.normal,
