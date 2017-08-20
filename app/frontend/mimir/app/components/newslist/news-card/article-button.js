@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react'
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
-import SafariView from 'react-native-safari-view'
+import SafariView from 'react-native-safari-view';
 import { color, length, font } from '../../../styles/styles'
 import { card } from '../../../styles/common'
 

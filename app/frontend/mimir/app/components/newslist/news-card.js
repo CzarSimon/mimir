@@ -1,53 +1,43 @@
 'use strict'
 
-import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
-import { color, font, length } from '../../styles/styles'
-import { card } from '../../styles/common'
-import { createCleanTitle } from '../../methods/helper-methods'
-import ArticleSummary from './news-card/summary'
-import Info from './news-card/info'
-import ArticleButton from './news-card/article-button'
-import SafariView from 'react-native-safari-view'
+import React, { Component } from 'react';
+import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
+import { color, font, length } from '../../styles/styles';
+import { card } from '../../styles/common';
+import { createCleanTitle } from '../../methods/helper-methods';
+import ArticleSummary from './news-card/summary';
+import Info from './news-card/info';
+import ArticleButton from './news-card/article-button';
+import SafariView from 'react-native-safari-view';
 
 export default class NewsCard extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      clicked: false
-    }
-  }
-
   handleClick = () => {
-    this.setState({
-      clicked: !this.state.clicked
-    })
+    const { url } = this.props.articleInfo;
+    SafariView.isAvailable()
+    .then(SafariView.show({
+      url,
+      tintColor: color.blue
+    }));
   }
 
   summaryComponent = () => {
-    const { summary, twitterReferences, timestamp, url } = this.props.articleInfo
-    if (this.state.clicked) {
-      return <ArticleSummary url={url} summary={summary} />
-    } else {
-      return (
-        <Info
-          twitterReferences={twitterReferences}
-          timestamp={timestamp}
-        />
-      )
-    }
+    const { summary, url } = this.props.articleInfo;
+    return (<ArticleSummary url={url} summary={summary} />);
   }
 
   render() {
-    const { title } = this.props.articleInfo
-    const cleanTitle = createCleanTitle(title)
+    const { title, twitterReferences, timestamp } = this.props.articleInfo;
+    const cleanTitle = createCleanTitle(title);
     return (
       <TouchableHighlight
-        onPress = {() => this.handleClick()}
-        underlayColor = {color.grey.background}>
+        onPress={this.handleClick}
+        underlayColor={color.grey.background}>
         <View style={styles.card}>
           <Text style={styles.title}>{cleanTitle}</Text>
-          {this.summaryComponent()}
+          <Info
+            twitterReferences={twitterReferences}
+            timestamp={timestamp}
+          />
         </View>
       </TouchableHighlight>
     )
