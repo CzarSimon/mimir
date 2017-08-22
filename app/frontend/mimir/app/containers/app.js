@@ -3,16 +3,17 @@ import React, { Component } from 'react';
 import { Text, StyleSheet } from 'react-native';
 import { Navigator } from 'react-native-deprecated-custom-components';
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
-import createLogger from 'redux-logger'
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+import createLogger from 'redux-logger';
 
-import * as reducers from '../ducks'
-import BackButtonContainer from './navigation/back-button'
-import SearchButtonContainer from './navigation/search-button'
-import TitleContainer from './navigation/title'
-import renderScene, { MAIN_ROUTE } from '../routing/main'
-import { DEV_MODE } from '../credentials/config'
+import * as reducers from '../ducks';
+import BackButtonContainer from './navigation/back-button';
+import SearchButtonContainer from './navigation/search-button';
+import TitleContainer from './navigation/title';
+import renderScene, { MAIN_ROUTE } from '../routing/main';
+import { DEV_MODE } from '../credentials/config';
+import SplashScreen from 'react-native-splash-screen';
 
 const logger = createLogger();
 const createStoreWithMiddleware = (!DEV_MODE)
@@ -22,6 +23,10 @@ const reducer = combineReducers(reducers);
 const store = createStoreWithMiddleware(reducer);
 
 export default class App extends Component {
+  componentDidMount() {
+    SplashScreen.hide();
+  }
+
   render() {
     return (
       <Provider store={store}>
