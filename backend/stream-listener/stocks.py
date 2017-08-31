@@ -6,20 +6,8 @@ import requests
 
 # user specific import
 import communication as comm
-from config import APP_SERVER
 import db
-
-
-# get_stocks_info Legacy solution for what is acomplished by get_names_and_tickers
-def get_stocks_info():
-    url = comm.to_url(APP_SERVER, "STOCKLIST")
-    stock_querys = {}
-    res = requests.get(url)
-    stock_list = json.loads(res.content)["list"]
-    ticker_list = map(lambda stock: "$" + str(stock["ticker"]), stock_list)
-    for stock in stock_list:
-        stock_querys[str(stock["ticker"])] = {"ticker": str(stock["ticker"]), "name": str(stock["name"])}
-    return ticker_list, stock_querys
+import util
 
 
 # get_names_and_tickers Retrives tickers and names of stocks to track
@@ -62,7 +50,7 @@ def get_aliases():
     aliases = db.query_db('SELECT alias, ticker FROM tickerAliases', True)
     aliDict = {}
     for alias in aliases:
-        aliDict[_add_dollar_tag(str(alias[0]))] = _add_dollar_tag(str(alias[1]))
+        aliDict[str(alias[0])] = str(alias[1])
     return aliDict
 
 
@@ -90,6 +78,16 @@ def store_tweet(tweet, tickers, aliases):
     created_at = _parse_tweet_time(tweet['created_at']) # Converting tweet time format to date format
     symbols = tweet['entities']['symbols']
     check_and_store(tweet['id_str'], tweet["user"]["id_str"], created_at, tweet_text, tweet['lang'], tweet['user']['followers_count'], symbols, tickers, aliases)
+
+
+# store_tweet_and_tickers Saves tweets and untracked tickers in the database
+def store_tweet_and_tickers(tweets, untracked_tickers):
+    for tweet in tweets:
+        db.insert_tweet(tweet)
+    tweet_id = tweets[0]['tweet_id']
+    now = util.utcnow()
+    for ticker in untracked_tickers:
+        record_untracked(tweet_id, ticker, now)
 
 
 # _parse_tweet_time Returns formated created at time from tweet

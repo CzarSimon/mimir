@@ -1,4 +1,5 @@
 backend/stream-listener/config.py
+backend/stream-listener/example_tweet.py
 backend/**/*.pyc
 
 backend/stream-listener/miner.log

@@ -45,11 +45,13 @@ def query_db(query, multiple = True):
 
 
 # insert_tweet Inserts a tweet in the database
-def insert_tweet(tweetId, userId, date, tweet, ticker, lang, followers):
-    stockTweet = (tweetId, userId, date, tweet, ticker, lang, followers)
+def insert_tweet(tweet):
+    stock_tweet = tweet_to_tuple(tweet)
+    print stock_tweet
+    query = 'INSERT INTO stockTweets (tweetId, userId, createdAt, tweet, ticker, lang, followers) VALUES (%s, %s, %s, %s, %s, %s, %s)'
     c = conn.cursor()
     try:
-        c.execute('INSERT INTO stockTweets (tweetId, userId, createdAt, tweet, ticker, lang, followers) VALUES (%s, %s, %s, %s, %s, %s, %s)', stockTweet)
+        c.execute(query, stock_tweet)
         conn.commit()
     except Exception as e:
         print "-#-#-#-#-#-#-#-the problem occured here"
@@ -58,6 +60,18 @@ def insert_tweet(tweetId, userId, date, tweet, ticker, lang, followers):
     finally:
         c.close()
         return True
+
+
+def tweet_to_tuple(tweet):
+    return (
+        tweet["tweet_id"],
+        tweet["user_id"],
+        tweet["date"],
+        tweet["text"],
+        tweet["ticker"],
+        tweet["lang"],
+        tweet["user_followers"]
+    )
 
 
 # insert_untracked Records the occurence of an untracked tweet
