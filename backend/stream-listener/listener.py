@@ -19,7 +19,6 @@ class MimirListener(StreamListener):
             aliases=aliases,
             stock_querys=stock_querys
         )
-        print(self.tracking_data)
 
     # on_data Method invoced on new tweet
     def on_data(self, data):

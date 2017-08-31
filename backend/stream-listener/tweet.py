@@ -23,19 +23,20 @@ def thread_tweet_actions(raw_tweet, tracking_data):
 def handle_tweet(raw_tweet, tracking_data):
     tweet = parse_tweet(raw_tweet)
     if not is_spam(tweet['text']):
+        print tweet['text']
         tracked_tickers, untracked_tickers = filter_tickers(tweet["tickers"], tracking_data)
         tweets = map_tickers_to_tweet(tweet, tracked_tickers)
         _debug_print(tracked_tickers, untracked_tickers, tweets)
-        # store_tweet_and_tickers(tweets, untracked_tickers)
-        # comm.send_to_ranker(tracked_tickers, tweet, tracking_data["stock_querys"])
+        store_tweet_and_tickers(tweets, untracked_tickers)
+        comm.send_to_ranker(tracked_tickers, tweet, tracking_data["stock_querys"])
     return
 
 
 def _debug_print(tt, ut, tweets):
     print tt
     print ut
-    for tweet in tweets:
-        print tweet
+    # for tweet in tweets:
+    #    print tweet
 
 
 # is_spam Sends tweet test to classifier, returns true is it is classified as spam else not

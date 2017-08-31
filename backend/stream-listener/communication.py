@@ -71,7 +71,7 @@ def _create_rank_object(stock_querys, urls, tickers, tweet):
     return {
         "urls": urls,
         "subjects": filter_subjects(tickers, stock_querys),
-        "author": {"id": tweet["user_id"], "follower_count": tweet["user_followers"]},
+        "author": {"id": int(tweet["user_id"]), "followerCount": tweet["user_followers"]},
         "language": tweet["lang"]
     }
 

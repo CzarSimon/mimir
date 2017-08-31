@@ -47,7 +47,7 @@ def query_db(query, multiple = True):
 # insert_tweet Inserts a tweet in the database
 def insert_tweet(tweet):
     stock_tweet = tweet_to_tuple(tweet)
-    print stock_tweet
+    # print stock_tweet
     query = 'INSERT INTO stockTweets (tweetId, userId, createdAt, tweet, ticker, lang, followers) VALUES (%s, %s, %s, %s, %s, %s, %s)'
     c = conn.cursor()
     try:

@@ -82,12 +82,13 @@ def store_tweet(tweet, tickers, aliases):
 
 # store_tweet_and_tickers Saves tweets and untracked tickers in the database
 def store_tweet_and_tickers(tweets, untracked_tickers):
-    for tweet in tweets:
-        db.insert_tweet(tweet)
-    tweet_id = tweets[0]['tweet_id']
-    now = util.utcnow()
-    for ticker in untracked_tickers:
-        record_untracked(tweet_id, ticker, now)
+    if len(tweets) > 0:
+        for tweet in tweets:
+            db.insert_tweet(tweet)
+        tweet_id = tweets[0]['tweet_id']
+        now = util.utcnow()
+        for ticker in untracked_tickers:
+            record_untracked(tweet_id, ticker, now)
 
 
 # _parse_tweet_time Returns formated created at time from tweet
