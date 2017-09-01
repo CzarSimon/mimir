@@ -79,17 +79,21 @@ const parseTickers = query => {
 * Takes request and response objects and database connection as arguments
 */
 const updateStockStats = (req, res, conn) => {
-  const stockStats = req.body.data;
+  const stockStats = req.body;
+  console.log(stockStats);
   if (!isEmpty(stockStats)) {
     insertStockData(formatData(stockStats), conn, err => {
       if (!err) {
+        console.log("no error");
         res.sendStatus(200);
       } else {
+        console.log("an error");
+        console.log(err);
         res.sendStatus(500);
       }
     });
   } else {
-    res.send(400).send('no data supplied');
+    res.status(400).send('no data supplied');
   }
 }
 
@@ -112,9 +116,14 @@ const insertStockData = (stockData, conn, callback) => {
       r.table(STOCK_TABLE).get(res.id).update(
         Object.assign({}, res, stockData[res.ticker])
       ).run(conn, (err, res) => {
-        callback(err);
+        if (err) {
+          callback(err);
+          return;
+        }
       })
     })
+    callback(null);
+    return
   });
 }
 

@@ -1,17 +1,19 @@
 package main
 
-import "os"
+import "github.com/CzarSimon/util"
 
 //Config holds configurations and environment variables
 type Config struct {
-	DB     DBConfig
+	DB     util.PGConfig
 	Timing TimingConfig
-	Server ServerConfig
+	Server util.ServerConfig
 }
 
 func getConfig() Config {
+	pgHost := util.GetEnvVar("PG_HOST", "localhost")
+	pgPwd := util.GetEnvVar("PG_PASSWORD", "pwd")
 	return Config{
-		DB:     getDBConfig(),
+		DB:     util.GetPGConfig(pgHost, pgPwd, "simon", "mimirprod"),
 		Timing: getTimingConfig(),
 		Server: getServerConfig(),
 	}
@@ -32,37 +34,10 @@ func getTimingConfig() TimingConfig {
 	}
 }
 
-//DBConfig holds connections details to the database
-type DBConfig struct {
-	Host, Port, Password, User, DB string
-}
-
-func getDBConfig() DBConfig {
-	return DBConfig{
-		Host:     getEnvVar("DB_HOST", "localhost"),
-		Port:     getEnvVar("DB_PORT", "5432"),
-		Password: getEnvVar("PG_PASSWORD", ""),
-		User:     getEnvVar("DB_USER", "simon"),
-		DB:       getEnvVar("DB_NAME", "mimirprod"),
+func getServerConfig() util.ServerConfig {
+	return util.ServerConfig{
+		Protocol: "http",
+		Host:     util.GetEnvVar("server_ip", "localhost"),
+		Port:     util.GetEnvVar("server_port", "3000"),
 	}
-}
-
-//ServerConfig holds values for the reciving server
-type ServerConfig struct {
-	IP, Port string
-}
-
-func getServerConfig() ServerConfig {
-	return ServerConfig{
-		IP:   getEnvVar("server_ip", "localhost"),
-		Port: getEnvVar("server_port", "3000"),
-	}
-}
-
-func getEnvVar(varKey, nilValue string) string {
-	envVar := os.Getenv(varKey)
-	if envVar != "" {
-		return envVar
-	}
-	return nilValue
 }

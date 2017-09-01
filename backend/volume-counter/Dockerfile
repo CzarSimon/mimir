@@ -8,6 +8,7 @@ WORKDIR /usr/src/counter
 
 RUN go get github.com/lib/pq
 RUN go get github.com/jasonlvhit/gocron
+RUN go get github.com/CzarSimon/util
 RUN export GOPATH=$GOPATH:$PWD
 RUN go build
 
