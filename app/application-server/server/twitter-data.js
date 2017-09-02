@@ -3,6 +3,8 @@ const _ = require('lodash');
 const { STOCK_TABLE } = require('./database');
 const { nowUTC, dayType, isEmpty } = require('./helper-methods');
 
+const HOURS_IN_DAY = 24;
+
 /**
 * getTwitterData() Gets volume, mean and stdev data for the supplied tickers
 * Takes request and response objects and database connection as paramters
@@ -79,15 +81,13 @@ const parseTickers = query => {
 * Takes request and response objects and database connection as arguments
 */
 const updateStockStats = (req, res, conn) => {
-  const stockStats = req.body;
-  console.log(stockStats);
-  if (!isEmpty(stockStats)) {
-    insertStockData(formatData(stockStats), conn, err => {
+  console.log(req.body);
+  const { volumes, hour } = req.body;
+  if (!isEmpty(volumes) && !isEmpty(hour)) {
+    insertStockData(hour, formatData(volumes), conn, err => {
       if (!err) {
-        console.log("no error");
         res.sendStatus(200);
       } else {
-        console.log("an error");
         console.log(err);
         res.sendStatus(500);
       }
@@ -101,31 +101,63 @@ const updateStockStats = (req, res, conn) => {
 * insertStockData() Inserts new twitter statistics about a list of stocks
 * Takes a stock data object, a database connection and a callback as parameters
 */
-const insertStockData = (stockData, conn, callback) => {
+const insertStockData = (hour, stockData, conn, callback) => {
   r.table(STOCK_TABLE).filter(stock => r.expr(_.keys(stockData)).contains(stock('ticker')))
   .run(conn, (err, res) => {
     if (err) {
       callback(err);
       return;
     }
-    res.each((err, res) => {
+    res.each((err, stock) => {
       if (err) {
         callback(err);
         return;
       }
-      r.table(STOCK_TABLE).get(res.id).update(
-        Object.assign({}, res, stockData[res.ticker])
-      ).run(conn, (err, res) => {
-        if (err) {
-          callback(err);
-          return;
-        }
-      })
+      updateStockVolume(stock, hour, stockData[stock.ticker], conn)
     })
     callback(null);
-    return
+    return;
   });
 }
+
+/**
+* updateStockVolume() Inserts new twitter statistics about a list of stocks
+* Takes a stock database object, an hour, a volume, a database connection as parameters.
+* Updates the stock database object volume for the supplied hour.
+*/
+const updateStockVolume = (stock, hour, data, conn) => {
+  if (hour < HOURS_IN_DAY && hour >= 0) {
+    r.table(STOCK_TABLE)
+    .get(stock.id)
+    .update({
+      volume: updateVolume(stock.volume, hour, data.volume),
+      minute: data.minute
+    })
+    .run(conn, err => {
+      if (err) {
+        console.log(err);
+      }
+    })
+  }
+}
+
+// updateVolume() Adds a new volume for the supplied hour to the array of volumes
+const updateVolume = (volume, hour, newVolume) => {
+  if (!validVolume(volume)) {
+    volume = newVolumes();
+  }
+  volume[hour] = newVolume;
+  return volume;
+}
+
+// validVolume() Chacks the supplied volume is of a correct format
+const validVolume = volume => {
+  const OBJECT_TYPE = 'object';
+  return (!isEmpty(volume) && typeof(volume) === OBJECT_TYPE && volume.length === HOURS_IN_DAY);
+}
+
+// newVolumes() Creates an 24 item long volume array with 0 voluems for all entries
+const newVolumes = () => _.fill(Array(HOURS_IN_DAY), 1);
 
 // formatData() Downcases the keys of all nested objects
 const formatData = data => _.mapValues(data, val => downCaseKeys(val))

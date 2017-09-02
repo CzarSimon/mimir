@@ -27,7 +27,7 @@ func VolumeCount(config Config) {
 		util.LogErr(err)
 		return
 	}
-	err = sendResult(tickers, config.Server)
+	err = sendResult(NewVolumeResult(tickers), config.Server)
 	util.CheckErr(err)
 }
 
@@ -57,9 +57,23 @@ func countHourlyVolumes(volumes HourVolumes, db *sql.DB) error {
 	return nil
 }
 
+// VolumeResult Struct containgn counted voluemes and the hour in which the calcualtion happened.
+type VolumeResult struct {
+	Hour    int         `json:"hour"`
+	Volumes HourVolumes `json:"volumes"`
+}
+
+// NewVolumeResult Creates new VolumeResult struct based on a given volume calcualtion
+func NewVolumeResult(volumes HourVolumes) VolumeResult {
+	return VolumeResult{
+		Hour:    getHourNumber(),
+		Volumes: volumes,
+	}
+}
+
 // sendResult Sends resulting volumes to revciving server
-func sendResult(volumes HourVolumes, server util.ServerConfig) error {
-	jsonStr, err := json.Marshal(volumes)
+func sendResult(volumeResult VolumeResult, server util.ServerConfig) error {
+	jsonStr, err := json.Marshal(volumeResult)
 	if err != nil {
 		return err
 	}
@@ -83,7 +97,6 @@ func sendResult(volumes HourVolumes, server util.ServerConfig) error {
 
 // buildURL Returns the url to post volume stats to
 func buildURL(server util.ServerConfig) string {
-	fmt.Println(server.ToURL("api/app/twitter-data/volumes"))
 	return server.ToURL("api/app/twitter-data/volumes")
 }
 
@@ -120,10 +133,15 @@ func getAllTickers(db *sql.DB) (HourVolumes, error) {
 	return tickers, nil
 }
 
-// getHour Returns the current hour
+// getHour Returns the current time rounded down to the nearest hour
 func getHour() string {
 	now := time.Now().UTC().Truncate(time.Hour)
 	return now.Format(time.RFC3339)
+}
+
+// getHourNumber Returns the current hour of the day
+func getHourNumber() int {
+	return time.Now().UTC().Hour()
 }
 
 // getMinute Returns the current minute of the hour
