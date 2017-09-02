@@ -1,5 +1,5 @@
 # mimir 
-![mimir-tiny-icon](https://cloud.githubusercontent.com/assets/9406331/15993573/7a8097b0-30ea-11e6-9375-70469828c217.png)
+![icon-98 2x](https://user-images.githubusercontent.com/9406331/29996117-e4da3cba-8ff8-11e7-8998-7294d52b2233.png)
 
 Stock news app that ranks the urgency the stocks in a of a users portfolio
 based the Twitter activity around the stocks. Under development :)
