@@ -1,0 +1,14 @@
+{
+  "name": "price-service",
+  "image": "czarsimon/mimir-price-service",
+  "keywordArgs": [
+    "-d",
+    "--replicas=1"
+  ],
+  "envVars": [
+    "PG_PASSWORD=$PG_PASSWORD",
+    "PG_HOST=price-db",
+    "TICKER_DB_HOST=app-rdb",
+    "TICKER_DB_NAME=mimir_app_server"
+  ]
+}
