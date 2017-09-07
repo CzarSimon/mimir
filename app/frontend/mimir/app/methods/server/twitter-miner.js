@@ -1,4 +1,5 @@
 import { isEmpty } from '../helper-methods';
+import _ from 'lodash';
 
 const BELOW_MEAN_SCORE = 0.0;
 const BELOW_1_SIGMA_SCORE = 2.0;
