@@ -4,11 +4,10 @@
   "keywordArgs": [
     "-d",
     "-t",
-    "--replicas=1",
-    "-p 1000:1000"
+    "--replicas=2"
   ],
   "envVars": [
-    "PG_HOST=pg",
+    "PG_HOST=tweet-db",
     "PG_PASSWORD=$PG_PASSWORD"
   ]
 }

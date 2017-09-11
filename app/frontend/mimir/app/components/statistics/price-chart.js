@@ -3,7 +3,6 @@ import React, { Component } from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 import { color, length, font } from '../../styles/styles'
 import { card } from '../../styles/common'
-import Chart from 'react-native-chart'
 import { map, reverse } from 'lodash'
 
 export default class PriceChart extends Component {
@@ -13,18 +12,6 @@ export default class PriceChart extends Component {
     return (
       <View style={styles.container}>
         <Text style={styles.chartLedgend}>Price chart (3M)</Text>
-        <Chart
-          style={styles.chart}
-          data={data}
-          type='bar'
-          lineWidth={3}
-          showXAxisLabels={false}
-          tightBounds={true}
-          showGrid={false}
-          color={color.blue}
-          axisColor={color.black}
-          axisLabelColor={color.black}
-        />
       </View>
     )
   }

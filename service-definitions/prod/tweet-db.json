@@ -1,11 +1,11 @@
 {
-  "name": "news-pg",
+  "name": "tweet-db",
   "image": "postgres",
   "keywordArgs": [
     "-d",
     "-t",
-    "--mount type=volume,source=news-pg-data,destination=/var/lib/postgresql/data",
-    "--constraint 'node.hostname == mimir-3'"
+    "--constraint node.hostname==mimir-2",
+    "--mount type=volume,source=tweet-db-data,destination=/var/lib/postgresql/data"
   ],
   "envVars": [
     "POSTGRES_PASSWORD=$PG_PASSWORD",

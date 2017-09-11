@@ -7,11 +7,11 @@
     "--replicas=1"
   ],
   "envVars": [
-    "PG_HOST=tweet-pg",
+    "PG_HOST=tweet-db",
     "PG_PASSWORD=$PG_PASSWORD",
     "app_server_ip=app-server",
     "ranker_ip=news-ranker",
     "spam_filter=spam-filter",
-    "HANDLE_SPAM=FALSE"
+    "HANDLE_SPAM=TRUE"
   ]
 }
