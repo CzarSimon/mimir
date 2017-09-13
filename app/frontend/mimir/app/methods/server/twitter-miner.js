@@ -6,7 +6,7 @@ const BELOW_1_SIGMA_SCORE = 2.0;
 const BELOW_2_SIGMA_SCORE = 4.3;
 const ABOVE_2_SIGMA_SCORE = 44.0;
 
-const WEIGHTED_TOTAL = 1.0; // 300.0 Sum of all integer between 1 and 24
+const WEIGHTED_TOTAL = 300.0; // 300.0 Sum of all integer between 1 and 24
 
 const TOTAL_BELOW_MEAN_SCORE = 0.0;
 const TOTAL_BELOW_1_SIGMA_SCORE = WEIGHTED_TOTAL * BELOW_1_SIGMA_SCORE;
@@ -18,8 +18,8 @@ export const classifyUrgency = ({ volume, mean, stdev, minute, hour, ticker }) =
     return "low";
   }
   const MINUTES_IN_HOUR = 60;
-  const v = volume * MINUTES_IN_HOUR / minute;
-  const volumeScore = scoreVolume(mean[hour], stdev[hour], v);
+  volume[hour] = volume[hour] * MINUTES_IN_HOUR / minute;
+  const volumeScore = calculateVolumeScore(hour, volume, mean, stdev);
   return urgencyLevel(volumeScore);
 }
 
@@ -30,6 +30,23 @@ const urgencyLevel = score => {
     return "high";
   }
   return "urgent";
+}
+
+const calculateVolumeScore = (hour, volumes, mean, stdev) => {
+  const scores = mapScore(volumes, mean, stdev);
+  const weight = createWeights(hour);
+  return _.reduce(scores, (result, score, i) => result + score * weight[i], 0)
+}
+
+const mapScore = (volumes, mean, stdev) => (
+  _.map(volumes, (v, i) => scoreVolume(mean[i], stdev[i], v))
+)
+
+const createWeights = hour => {
+  const HOURS_IN_DAY = 24;
+  return _.map(Array(HOURS_IN_DAY), (v, i) => (
+    (i > hour) ? i - hour : HOURS_IN_DAY - hour + i
+  ));
 }
 
 const scoreVolume = (μ, σ, v) => {

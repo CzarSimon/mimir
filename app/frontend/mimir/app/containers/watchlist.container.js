@@ -19,11 +19,13 @@ import { DEV_MODE } from '../credentials/config';
 
 class WatchlistContainer extends Component {
   componentDidMount() {
-    const { logonUser, updateStockData } = this.props.actions;
+    const { logonUser, updateStockData, fetchTwitterData } = this.props.actions;
     //remove(USER_ID_KEY);
     logonUser();
     setInterval(() => {
-      updateStockData(this.props.state.user.tickers);
+      const { tickers } = this.props.state.user;
+      updateStockData(tickers);
+      fetchTwitterData(tickers);
     }, (!DEV_MODE) ? 30000 : 300000); // set this to 30000 (i.e. 30 s. before changing to relese)*/
   }
 

@@ -7,7 +7,7 @@
     "--replicas=1"
   ],
   "envVars": [
-    "PG_HOST=tweet-pg",
+    "PG_HOST=tweet-db",
     "PG_PASSWORD=$PG_PASSWORD",
     "server_ip=app-server",
     "server_port=3000"

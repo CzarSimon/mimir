@@ -5,6 +5,7 @@
     "--replicas=1"
   ],
   "envVars": [
-    "db_host=news-pg"
+    "DB_HOST=news-db",
+    "DB_PASSWORD=$PG_PASSWORD"
   ]
 }
