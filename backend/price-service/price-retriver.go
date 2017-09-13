@@ -14,6 +14,10 @@ import (
 // GetAndStorePrices Retrives end of day prices for a fetched set of tickers
 // and stores the result
 func GetAndStorePrices(config Config) {
+	if CheckIfNotBusinessDay() {
+		log.Println("Not a business day")
+		return
+	}
 	tickers, err := GetTickers(config.TickerDB)
 	if err != nil {
 		util.LogErr(err)
@@ -31,6 +35,12 @@ func GetAndStorePrices(config Config) {
 		return
 	}
 	log.Printf("Retrived and stored prices for %d tickers\n", len(tickers))
+}
+
+// CheckIfNotBusinessDay Checks if the day of the exchange date is a business day or not
+func CheckIfNotBusinessDay() bool {
+	weekday := getCurrentExchangeDate().Weekday()
+	return weekday == time.Saturday || weekday == time.Sunday
 }
 
 // logTickers Logs the tickes for which prices are retrived
