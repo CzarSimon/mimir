@@ -1,0 +1,13 @@
+{
+  "name": "price-server",
+  "image": "czarsimon/mimir-price-server",
+  "keywordArgs": [
+    "-d",
+    "--replicas=1",
+    "-p 4000:4000"
+  ],
+  "envVars": [
+    "PG_PASSWORD=$PG_PASSWORD",
+    "PG_HOST=price-db"
+  ]
+}
