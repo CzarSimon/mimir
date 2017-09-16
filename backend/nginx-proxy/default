@@ -89,7 +89,7 @@ server {
         }
 
         location /api/price {
-            proxy_path   http://price_backend;
+            proxy_pass   http://price_backend;
         }
 
 	      # Redirect non-https traffic to https
