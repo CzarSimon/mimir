@@ -7,6 +7,6 @@
     "-p 3000:3000"
   ],
   "envVars": [
-    "db_host=app-rdb"
+    "DB_HOST=app-rdb"
   ]
 }
