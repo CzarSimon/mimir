@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import StockCard from './stock-card';
+import LogoutButton from '../../logout/components/main';
 import { font, color, length } from '../../../styles/main';
 
 const style = {
@@ -27,11 +28,12 @@ export default class Watchlist extends Component {
   }
 
   render() {
-    const { stocks } = this.props;
+    const { stocks, logout } = this.props;
     return (
       <div>
         <p style={style.header}>Watchlist</p>
         {_.values(stocks.data).map(this.renderItem)}
+        <LogoutButton logout={logout}/>
       </div>
     )
   }

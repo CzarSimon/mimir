@@ -8,15 +8,18 @@ import SearchBarContainer from '../containers/search-bar';
 const style = {
   header: {
     height: length.icons.medium,
+    top: '0',
+    width: '100%',
     backgroundColor: color.blue,
+    position: 'fixed',
     padding: length.small,
     color: color.white,
-    marginBottom: length.small,
     display: 'flex'
   }
 }
 
 const MAIN_ROUTE = '/';
+const LOGIN_ROUTE = '/login';
 const SEARCH_ROUTE = '/search';
 
 export default class Header extends Component {
@@ -30,14 +33,15 @@ export default class Header extends Component {
       default:
         return <Title text={ticker} />
     }
-
   }
+
   render() {
+    const { path } = this.props;
     return (
       <div style={style.header}>
         <Logo />
         {this.getMiddleComponent()}
-        <SearchButtonContainer />
+        {(path !== LOGIN_ROUTE) ? <SearchButtonContainer /> : <div />}
       </div>
     )
   }

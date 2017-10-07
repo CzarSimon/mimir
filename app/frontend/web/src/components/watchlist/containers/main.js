@@ -28,7 +28,8 @@ class WatchlistContainer extends Component {
         user={user}
         stocks={stocks}
         twitterData={twitterData}
-        navigate={this.selectTicker} /> :
+        navigate={this.selectTicker}
+        logout={this.props.logout}/> :
       <Loading />
   }
 }

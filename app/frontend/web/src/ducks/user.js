@@ -2,12 +2,11 @@ import { createAction } from 'redux-actions';
 import { fetchTwitterData } from './twitter-data';
 import { fetchStockData, deleteStockData } from './stocks';
 import { without, concat, uniq } from 'lodash';
-import { retrive, persist, USER_ID_KEY } from '../methods/async-storage';
-import { ID_TOKEN_KEY } from '../methods/auth-service';
+import { retrive, USER_ID_KEY } from '../methods/async-storage';
+import { ID_TOKEN_KEY } from '../methods/auth-service';
 import {
   getRequest,
   postRequest,
-  postRequestJSON,
   deleteRequest
 } from '../methods/api-methods';
 
@@ -27,10 +26,8 @@ const initialState = {
   tickers: [],
   searchHistory: [],
   loaded: false,
-  token: null //retrive(ID_TOKEN_KEY)
+  token: retrive(ID_TOKEN_KEY)
 }
-
-// modifiable is chaned to true on recive user --> modifiable is stored in async-storage
 
 /* --- Reducer --- */
 const user = (state = initialState, action = {}) => {
@@ -89,7 +86,6 @@ export const getUser = () => {
 }
 
 const fetchUser = userId => {
-  console.log("This user id:", userId);
   return dispatch => (
     getRequest(`api/app/user?id=${userId}`)
     .then(user => dispatch(reciveUser(user)))
@@ -99,6 +95,7 @@ const fetchUser = userId => {
   );
 }
 
+/*
 const fetchNewUser = () => {
   return dispatch => (
     postRequestJSON('api/app/user')
@@ -112,6 +109,7 @@ const fetchNewUser = () => {
     })
   );
 }
+*/
 
 export const reciveToken = createAction(RECIVE_TOKEN, token => ({ token }));
 

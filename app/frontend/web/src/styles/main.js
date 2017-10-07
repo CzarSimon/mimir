@@ -32,6 +32,7 @@ export const font = {
 export const length = {
   navbar: '65px',
   button: '50px',
+  large: '20px',
   medium: '15px',
   small: '10px',
   mini: '5px',

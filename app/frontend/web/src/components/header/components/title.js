@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { color, font, length } from '../../../styles/main';
 
 const style = {
-  logo: {
+  title: {
     paddingTop: length.mini,
     textAlign: 'center',
     color: color.white,
@@ -15,6 +15,6 @@ const style = {
 
 export default class Title extends Component {
   render() {
-    return <p style={style.logo}>{this.props.text}</p>
+    return <p style={style.title}>{this.props.text}</p>
   }
 }

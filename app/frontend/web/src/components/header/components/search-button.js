@@ -7,12 +7,14 @@ const style = {
     flex: 1,
     marginTop: '0',
     color: color.white,
+    marginRight: length.medium
   },
   text: {
     flex: 1,
     marginTop: '0',
     paddingTop: length.mini,
-    fontSize: font.size.small
+    fontSize: font.size.small,
+    marginRight: length.large
   }
 }
 

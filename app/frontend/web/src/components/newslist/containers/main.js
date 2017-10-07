@@ -2,14 +2,20 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchNewsItems } from '../../../ducks/news';
+import { setActiveTicker } from '../../../ducks/navigation';
 import Newslist from '../components/main';
 import Loading from '../../helpers/loading';
 
 class NewslistContainer extends Component {
   componentDidMount() {
-    const { actions, state } = this.props;
+    const { actions, state, params } = this.props;
     const { activeTicker } = state.navigation;
-    actions.fetchNewsItems(activeTicker, '3M');
+    if (activeTicker) {
+      actions.fetchNewsItems(activeTicker, 'TODAY');
+    } else {
+      actions.fetchNewsItems(params.ticker, 'TODAY');
+      actions.setActiveTicker(params.ticker);
+    }
   }
 
   render() {
@@ -30,7 +36,8 @@ const mapStateToProps = state => ({
 
 const mapDispatchToActions = dispatch => ({
   actions: bindActionCreators({
-    fetchNewsItems
+    fetchNewsItems,
+    setActiveTicker
   }, dispatch)
 });
 

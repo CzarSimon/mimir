@@ -3,10 +3,10 @@ import { browserHistory } from 'react-router';
 import { AUTH_CONFIG } from '../credentials/config';
 import * as store from './async-storage';
 import { hash } from './helper-methods';
-import { color } from '../styles/main';
 
 export const ID_TOKEN_KEY = 'mimir/user/token/id';
 const ACCESS_TOKEN_KEY = 'mimir/user/token/access';
+const TOKEN_EXPIRY_KEY = 'mimir/user/token/expiry';
 
 export default class Auth {
   auth0 = new auth0.WebAuth({
@@ -24,7 +24,7 @@ export default class Auth {
     this.facebookLogin = this.facebookLogin;
     this.logout = this.logout;
     this.getProfile = this.getProfile;
-    this.handleAuthentication = this.handleAuthentication.bind(this);
+    this.handleAuthentication = this.handleAuthentication;
     this.isAuthenticated = this.isAuthenticated
   }
 
@@ -45,6 +45,7 @@ export default class Auth {
   logout = () => {
     store.remove(ID_TOKEN_KEY);
     store.remove(ACCESS_TOKEN_KEY);
+    store.remove(TOKEN_EXPIRY_KEY);
     store.remove(store.USER_ID_KEY);
     browserHistory.push('/login');
   }
@@ -55,19 +56,29 @@ export default class Auth {
     return (userId && token)
   }
 
-  setSession = (redirect, authResult) => {
-    console.log(authResult);
-    store.persist(ID_TOKEN_KEY, authResult.idToken);
-    store.persist(ACCESS_TOKEN_KEY, authResult.accessToken);
-    const userId = hash(authResult.idTokenPayload.sub);
-    store.persist(store.USER_ID_KEY, userId);
-    redirect(authResult.idToken);
+  calcTokenExpiry = timestamp => (
+    JSON.stringify((timestamp * 1000) + new Date().getTime())
+  )
+
+  persistUserId = userId => {
+    store.persist(store.USER_ID_KEY, hash(userId));
+  }
+
+  setSession = (authResult, persistUser = true) => {
+    const { idToken, idTokenPayload, accessToken, expiresIn } = authResult;
+    store.persist(ID_TOKEN_KEY, idToken);
+    store.persist(ACCESS_TOKEN_KEY, accessToken);
+    if (persistUser) {
+      this.persistUserId(idTokenPayload.sub);
+    }
+    store.persist(TOKEN_EXPIRY_KEY, this.calcTokenExpiry(expiresIn));
   }
 
   handleAuthentication = redirect => {
     this.auth0.parseHash((err, authResult) => {
       if (authResult && authResult.accessToken && authResult.idToken) {
-        this.setSession(redirect, authResult);
+        this.setSession(authResult);
+        redirect(authResult.idToken);
       } else if (err) {
         console.log(err);
         alert(`Error: ${err.error}. Check the console for further details.`);

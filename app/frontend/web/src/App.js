@@ -32,8 +32,7 @@ const history = syncHistoryWithStore(browserHistory, store);
 
 const style = {
   display: 'table',
-  marginLeft: 'auto',
-  marginRight: 'auto',
+  margin: '60px auto',
   width: (portraitMode()) ? '94%' : '50%'
 }
 
@@ -87,6 +86,10 @@ class App extends Component {
     <Login auth={this.auth} />
   )
 
+  renderWatchlist = () => (
+    <WatchlistContainer logout={this.auth.logout} />
+  )
+
   render() {
     const { width } = this.state;
     return (
@@ -102,7 +105,7 @@ class App extends Component {
               <Route
                 path="/"
                 onEnter={this.requireAuth}
-                component={WatchlistContainer} />
+                component={this.renderWatchlist} />
               <Route
                 path="/news/:ticker"
                 onEnter={this.requireAuth}
