@@ -7,8 +7,8 @@ const { nowUTCString, isEmpty } = require('./helper-methods');
 * newUser() Creates, stores and sends back a new user
 * Takes request and response objects and database connection as paramters
 */
-const newUser = (req, res, conn) => {
-  user = createNewUser();
+const newUser = (userId, res, conn) => {
+  const user = createNewUser(userId);
   storeNewUser(user, conn, (err, userWithId) => {
     if (!err) {
       res.status(200).send(userWithId);
@@ -25,13 +25,13 @@ const newUser = (req, res, conn) => {
 const storeNewUser = (user, conn, callback) => {
   r.table(USER_TABLE).insert(user).run(conn, (err, res) => {
     // Add id to user if there was no error, set to empty object if the was one
-    userWithId = (err) ? {} : Object.assign({}, user, {id: parseGeneratedKey(res)})
-    callback(err, _.omit(userWithId, 'sessions'));
+    callback(err, _.omit((err) ? {} : user, 'sessions'));
   })
 }
 
 // createNewUser() Creates a new user shell
-const createNewUser = (email = "") => ({
+const createNewUser = (id, email = "") => ({
+  id,
   email,
   joinDate: nowUTCString(),
   tickers: _initalTickers(),
@@ -45,6 +45,7 @@ const _initalTickers = () => (['AAPL', 'FB', 'TSLA', 'TWTR', 'AMZN'])
 // parseGeneratedKey() Returns the first gnereated key for a new user creation
 const parseGeneratedKey = dbRes => _.head(dbRes.generated_keys)
 
+const NO_USER_MSG = 'Unable to find user';
 
 /**
 * getUser() Gets a user from the database based on a supplied user id
@@ -60,8 +61,11 @@ const getUser = (req, res, conn) => {
     if (!err) {
       res.status(200).send(user);
     } else {
-      console.log(err);
-      res.status(500).send("Unable to fetch user");
+      if (_.startsWith(err, NO_USER_MSG)) {
+        newUser(userId, res, conn);
+      } else {
+        res.status(500).send("Unable to fetch user");
+      }
     }
   });
 }
@@ -73,7 +77,7 @@ const getUser = (req, res, conn) => {
 const getUserFromDB = (userId, conn, callback) => {
   r.table(USER_TABLE).get(userId).without('sessions').run(conn, (err, res) => {
     const user = (!err) ? res : {}
-    const error = (res == null) ? `unable to find user ${userId}` : err
+    const error = (res == null) ? `${NO_USER_MSG} ${userId}` : err
     callback(error, user);
   })
 }
@@ -164,7 +168,7 @@ const addTicker = (req, res, conn) => {
 const getTickers = (userId, conn, callback) => {
   r.table(USER_TABLE).get(userId)('tickers').run(conn, (err, res) => {
     callback(err, res);
-  })
+  });
 }
 
 /**

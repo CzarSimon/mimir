@@ -6,7 +6,7 @@
     "-p 5000:5000"
   ],
   "envVars": [
-    "PG_HOST=news-pg",
+    "PG_HOST=news-db",
     "PG_PASSWORD=$PG_PASSWORD",
     "cluster_host=news-clusterer",
     "cluster_port=6000"

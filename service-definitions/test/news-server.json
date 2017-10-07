@@ -7,7 +7,7 @@
     "-p 5050:5050"
   ],
   "envVars": [
-    "DB_HOST=news-pg",
+    "DB_HOST=news-db",
     "DB_PASSWORD=$PG_PASSWORD"
   ]
 }

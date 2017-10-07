@@ -1,10 +1,9 @@
 {
-  "name": "tweet-pg",
+  "name": "tweet-db",
   "image": "postgres",
   "keywordArgs": [
     "-d",
     "-t",
-    "-p 5432:5432",
     "--mount type=volume,source=tweet-pg-data,destination=/var/lib/postgresql/data"
   ],
   "envVars": [

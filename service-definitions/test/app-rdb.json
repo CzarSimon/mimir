@@ -3,7 +3,7 @@
   "image": "rethinkdb",
   "keywordArgs": [
     "-d",
-    "-p 8080:8080",
+    "-p 8888:8080",
     "-p 28015:28015",
     "--mount type=volume,source=app-rdb-data,destination=/data"
   ],

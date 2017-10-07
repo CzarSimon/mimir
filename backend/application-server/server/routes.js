@@ -33,8 +33,6 @@ const twitterDataRoutes = conn => {
 * Takes a database connection as argument
 */
 const userRoutes = conn => {
-  routes.post('/api/app/user',
-    (req, res) => user.newUser(req, res, conn));
   routes.get('/api/app/user',
     (req, res) => user.getUser(req, res, conn));
   routes.post('/api/app/user/session',

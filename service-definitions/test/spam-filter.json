@@ -8,7 +8,7 @@
     "-p 1000:1000"
   ],
   "envVars": [
-    "PG_HOST=tweet-pg",
+    "PG_HOST=tweet-db",
     "PG_PASSWORD=$PG_PASSWORD"
   ]
 }

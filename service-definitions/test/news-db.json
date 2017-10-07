@@ -1,5 +1,5 @@
 {
-  "name": "news-pg",
+  "name": "news-db",
   "image": "postgres",
   "keywordArgs": [
     "-d",
