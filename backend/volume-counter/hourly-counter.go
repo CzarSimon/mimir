@@ -1,12 +1,9 @@
 package main
 
 import (
-	"bytes"
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"log"
-	"net/http"
 	"time"
 
 	"github.com/CzarSimon/util"
@@ -27,7 +24,7 @@ func VolumeCount(config Config) {
 		util.LogErr(err)
 		return
 	}
-	err = sendResult(NewVolumeResult(tickers), config.Server)
+	err = sendVolumeResult(NewVolumeResult(tickers), config)
 	util.CheckErr(err)
 }
 
@@ -71,33 +68,14 @@ func NewVolumeResult(volumes HourVolumes) VolumeResult {
 	}
 }
 
-// sendResult Sends resulting volumes to revciving server
-func sendResult(volumeResult VolumeResult, server util.ServerConfig) error {
+// sendVolumeResult Sends resulting volumes to revciving server
+func sendVolumeResult(volumeResult VolumeResult, config Config) error {
 	jsonStr, err := json.Marshal(volumeResult)
 	if err != nil {
 		return err
 	}
 	log.Println(string(jsonStr))
-	req, err := http.NewRequest("POST", buildURL(server), bytes.NewBuffer(jsonStr))
-	if err != nil {
-		return err
-	}
-	req.Header.Set("Content-Type", "application/json")
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return err
-	}
-	defer resp.Body.Close()
-	if resp.StatusCode == http.StatusOK {
-		return nil
-	}
-	return fmt.Errorf("Error code %d in response", resp.StatusCode)
-}
-
-// buildURL Returns the url to post volume stats to
-func buildURL(server util.ServerConfig) string {
-	return server.ToURL("api/app/twitter-data/volumes")
+	return Send(jsonStr, config.Server.ToURL(config.Routes.VolumeResult))
 }
 
 // HourVolume conatains this hours count and the minute the count occured
@@ -113,7 +91,7 @@ type HourVolumes map[string]*HourVolume
 // map with the current minute and no recorded volume per ticker
 func getAllTickers(db *sql.DB) (HourVolumes, error) {
 	tickers := make(HourVolumes)
-	rows, err := db.Query("SELECT ticker FROM stocks")
+	rows, err := db.Query("SELECT ticker FROM stocks WHERE is_tracked=TRUE")
 	defer rows.Close()
 	if err != nil {
 		return tickers, err

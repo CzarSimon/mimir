@@ -77,10 +77,10 @@ const parseTickers = query => {
 }
 
 /**
-* updateStockStats() Updates the mean and standard deviation values all stocks supplied
+* updateStockVolumes() Updates the mean and standard deviation values all stocks supplied
 * Takes request and response objects and database connection as arguments
 */
-const updateStockStats = (req, res, conn) => {
+const updateStockVolumes = (req, res, conn) => {
   console.log(req.body);
   const { volumes, hour } = req.body;
   if (!isEmpty(volumes) && !isEmpty(hour)) {
@@ -95,6 +95,46 @@ const updateStockStats = (req, res, conn) => {
   } else {
     res.status(400).send('no data supplied');
   }
+}
+
+/**
+* updateStockStats() Updates the mean and standard deviation values all stocks supplied
+* Takes request and response objects and database connection as arguments
+*/
+const updateStockStats = (req, res, conn) => {
+  console.log(req.body);
+  if (_.size(req.body) > 0) {
+    updateMeanAndStdev(req.body, conn, err => {
+      if (err) {
+        console.log(err);
+        res.status(500).send(err);
+      } else {
+        res.sendStatus(200);
+      }
+    })
+  } else {
+    res.status(400).send('no data supplied');
+  }
+}
+
+/**
+* updateMeanAndStdev() Updates the mean and stdev data in the database for
+* supplied stocks and respective data.
+* Takes stockData, a database connection and a callback as arguments
+*/
+const updateMeanAndStdev = (stockData, conn, callback) => {
+  const data = r.expr(stockData);
+  r.table(STOCK_TABLE)
+   .filter(stock => r.expr(_.keys(stockData)).contains(stock('ticker')))
+   .update(stock => {
+     return {
+       mean: data.getField(stock('ticker')).getField('mean'),
+       stdev: data.getField(stock('ticker')).getField('stdev')
+     }
+   }).run(conn, (err, res) => {
+     console.log(res);
+     callback(err);
+   })
 }
 
 /**
@@ -168,5 +208,6 @@ const downCaseKeys = object => _.mapKeys(object, (val, key) => _.toLower(key))
 // Publicly exposed functions
 module.exports = {
   getTwitterData,
-  updateStockStats
+  updateStockStats,
+  updateStockVolumes
 }

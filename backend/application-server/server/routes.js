@@ -23,7 +23,7 @@ const twitterDataRoutes = conn => {
   routes.get('/api/app/twitter-data',
     (req, res) => twitterData.getTwitterData(req, res, conn));
   routes.post('/api/app/twitter-data/volumes',
-    (req, res) => twitterData.updateStockStats(req, res, conn));
+    (req, res) => twitterData.updateStockVolumes(req, res, conn));
   routes.post('/api/app/twitter-data/mean-and-stdev',
     (req, res) => twitterData.updateStockStats(req, res, conn));
 }

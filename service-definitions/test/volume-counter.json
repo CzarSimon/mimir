@@ -9,6 +9,7 @@
   "envVars": [
     "PG_HOST=tweet-db",
     "PG_PASSWORD=$PG_PASSWORD",
+    "STABLE_DATE=2017-08-01",
     "server_ip=app-server",
     "server_port=3000"
   ]
