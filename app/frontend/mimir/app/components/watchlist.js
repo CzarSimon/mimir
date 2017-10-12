@@ -7,6 +7,7 @@ import { values } from 'lodash';
 
 import Header from './watchlist/header';
 import StockCard from './watchlist/stock-card';
+import LogoutContainer from './login/containers/logout';
 
 export default class Watchlist extends Component {
   _renderItem = ({ item }) => {
@@ -28,6 +29,7 @@ export default class Watchlist extends Component {
         <FlatList
           data={values(this.props.stocks.data)}
           ListHeaderComponent={() => <Header />}
+          ListFooterComponent={() => <LogoutContainer />}
           keyExtractor={item => item.Symbol}
           renderItem={this._renderItem}
           style={styles.list}

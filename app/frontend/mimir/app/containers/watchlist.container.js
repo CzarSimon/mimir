@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
+import LoginContainer from '../components/login/containers/main';
 import Watchlist from '../components/watchlist';
 import Loading from '../components/loading';
 
@@ -12,21 +13,26 @@ import * as twitterDataActions from '../ducks/twitter-data';
 import { setActiveTicker } from '../ducks/navigation';
 import { logonUser } from '../ducks/logon';
 
-import { remove, USER_ID_KEY } from './../methods/async-storage';
+import { remove, USER_ID_KEY } from '../methods/async-storage';
 import { arrayEquals } from '../methods/helper-methods';
 import { companyPageRoute } from '../routing/main';
 import { DEV_MODE } from '../credentials/config';
 
+const updateFrequency = {
+  DEV: 300000,
+  PROD: 30000
+}
+
 class WatchlistContainer extends Component {
   componentDidMount() {
     const { logonUser, updateStockData, fetchTwitterData } = this.props.actions;
-    //remove(USER_ID_KEY);
-    logonUser();
+    remove(USER_ID_KEY);
+    //logonUser();
     setInterval(() => {
       const { tickers } = this.props.state.user;
       updateStockData(tickers);
       fetchTwitterData(tickers);
-    }, (!DEV_MODE) ? 30000 : 300000); // set this to 30000 (i.e. 30 s. before changing to relese)*/
+    }, (!DEV_MODE) ? updateFrequency.PROD : updateFrequency.DEV);
   }
 
   navigateToCompany = ticker => {
@@ -45,8 +51,16 @@ class WatchlistContainer extends Component {
     return (user.loaded && stocks.loaded && twitterData.loaded);
   }
 
+  userLoggedIn = () => {
+    const { id, token } = this.props.state.user;
+    return (id && token);
+  }
+
   render() {
     const { user, stocks, twitterData } = this.props.state;
+    if (!this.userLoggedIn()) {
+      return <LoginContainer />
+    }
     if (this.userAndDataLoaded()) {
       return (
         <Watchlist

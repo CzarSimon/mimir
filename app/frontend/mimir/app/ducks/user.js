@@ -13,6 +13,8 @@ import {
 } from '../methods/api-methods';
 
 /* --- Types --- */
+export const LOGON_USER = 'mimir/user/LOGON';
+export const LOGOUT_USER = 'mimir/user/LOGOUT';
 export const RECIVE_USER = 'mimir/user/RECIVE';
 export const FETCH_USER = 'mimir/user/FETCH';
 export const ADD_TICKER = 'mimir/ticker/ADD';
@@ -26,7 +28,8 @@ const initialState = {
   joinDate: null,
   tickers: [],
   searchHistory: [],
-  loaded: false
+  loaded: false,
+  token: null
 }
 
 // modifiable is chaned to true on recive user --> modifiable is stored in async-storage
@@ -65,6 +68,17 @@ const user = (state = initialState, action = {}) => {
         ...state,
         searchHistory: uniq(concat(action.payload.query, state.searchHistory))
       };
+    case LOGON_USER:
+      return {
+        ...state,
+        token: action.payload.token,
+        id: action.payload.id
+      }
+    case LOGOUT_USER:
+      return {
+        ...state,
+        token: null
+      }
     default:
       return state;
   }
@@ -80,13 +94,19 @@ export const getUser = () => {
       if (userId) {
         return dispatch(fetchUser(userId));
       } else {
-        return dispatch(fetchNewUser());
+        return dispatch(fetchNewUser()); // return error
       }
     })
   )
 }
 
-const fetchUser = userId => {
+export const logonUser = createAction(
+  LOGON_USER, (id, token) => ({ id, token })
+);
+
+export const logoutUser = createAction(LOGOUT_USER);
+
+export const fetchUser = userId => {
   return dispatch => (
     getRequest(`api/app/user?id=${userId}`)
     .then(user => dispatch(reciveUser(user)))

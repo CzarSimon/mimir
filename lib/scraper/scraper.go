@@ -1,42 +1,41 @@
 package scraper
 
-import (
-  "time"
-)
-
-// ScraperInterface Main interface for scraper
-type ScraperInterface interface {
-  Get(URL string)    (string, error)
-  Parse(html string) (Page, error)
+// Interface Main interface for scraper
+type Interface interface {
+	Get(URL string) (string, error)
+	Parse(html string) (Article, error)
 }
 
 // Scraper Implementation of ScraperInterface
 type Scraper struct {
-  UserAgent string
-  Subjects  []Subject
+	UserAgent   string
+	Subjects    []Subject
+	HasSubjects bool
+}
+
+// NewScraper Creates a new scraper with default subjects
+func NewScraper(userAgent string, subjects []Subject) Scraper {
+	return Scraper{
+		UserAgent:   userAgent,
+		Subjects:    subjects,
+		HasSubjects: true,
+	}
+}
+
+// NewEmptyScraper Creates new scraper with no default subjects
+func NewEmptyScraper(userAgent string) Scraper {
+	return Scraper{
+		UserAgent:   userAgent,
+		HasSubjects: false,
+	}
 }
 
 // Get Retrives the raw html from a page
 func (scraper Scraper) Get(URL string) (string, error) {
-  return URL, nil
+	return URL, nil
 }
 
 // Parse Parses raw html and returns a Page struct if successfull
-func (scraper Scraper) Parse(html string) (Page, error) {
-  return Page{}, nil
-}
-
-// Page Struct for scraped page
-type Page struct {
-  Title string    `json:"title"`
-  Text  string    `json:"text"`
-  Date  time.Time `json:"date"`
-  Links []string  `json:"links"`
-}
-
-// Subject Subject which to look for on page
-type Subject struct {
-  Name     string   `json:"name"`
-  Ticker   string   `json:"ticker"`
-  Keywords []string `json:"keywords"`
+func (scraper Scraper) Parse(html string) (Article, error) {
+	return Article{}, nil
 }

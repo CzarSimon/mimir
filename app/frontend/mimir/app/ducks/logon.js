@@ -1,11 +1,8 @@
 'use strict'
-import { getUser } from './user';
+import { getUser, fetchUser } from './user';
 import { fetchTwitterData } from './twitter-data';
 import { fetchStockData } from './stocks';
 import { postRequest } from '../methods/api-methods';
-
-/* --- Types --- */
-export const USER_LOGON = 'mimir/user/LOGON';
 
 /* --- Reducer --- */
 
@@ -22,6 +19,19 @@ export const logonUser = () => {
     })
   }
 }
+
+export const fetchAndInitalizeUser = userId => (
+  (dispatch, getState) => {
+    return dispatch(fetchUser(userId)).then(() => {
+      const { tickers } = getState().user;
+      recordSession(userId);
+      return Promise.all([
+        dispatch(fetchTwitterData(tickers)),
+        dispatch(fetchStockData(tickers))
+      ])
+    })
+  }
+)
 
 const recordSession = userId => {
   postRequest('api/app/user/session', { id: userId })
