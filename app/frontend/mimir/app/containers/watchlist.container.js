@@ -26,8 +26,7 @@ const updateFrequency = {
 class WatchlistContainer extends Component {
   componentDidMount() {
     const { logonUser, updateStockData, fetchTwitterData } = this.props.actions;
-    remove(USER_ID_KEY);
-    //logonUser();
+    logonUser();
     setInterval(() => {
       const { tickers } = this.props.state.user;
       updateStockData(tickers);

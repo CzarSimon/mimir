@@ -29,8 +29,11 @@ export const logout = () => {
   store.remove(store.USER_ID_KEY);
 }
 
-export const storeCredentials = credentials => {
-  console.log(credentials);
+export const storeCredentials = ({idToken, accessToken, expiresIn, id}) => {
+  store.persist(ID_TOKEN_KEY, idToken);
+  store.persist(ACCESS_TOKEN_KEY, accessToken);
+  store.persist(TOKEN_EXPIRY_KEY, calcTokenExpiry(expiresIn));
+  store.persist(store.USER_ID_KEY, id);
 }
 
 export const parseCredentials = accessToken => (
@@ -41,4 +44,22 @@ export const parseCredentials = accessToken => (
 
 const calcTokenExpiry = timestamp => (
   JSON.stringify((timestamp * 1000) + new Date().getTime())
+)
+
+export const getUserCredentials = () => (
+  store.retrive(store.USER_ID_KEY)
+  .then(id => {
+    if (id === null) {
+      throw new Error("No user id found");
+    }
+    return (
+      store.retrive(ID_TOKEN_KEY)
+      .then(token => {
+        if (token === null) {
+          throw new Error("No token found");
+        }
+        return ({id, token})
+      })
+    )
+  })
 )

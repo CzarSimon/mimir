@@ -54,6 +54,6 @@ const style = StyleSheet.create({
   },
   button: {
     alignSelf: 'stretch',
-    borderRadius: 5
+    borderRadius: length.mini
   }
 })

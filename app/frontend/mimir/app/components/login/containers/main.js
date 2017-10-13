@@ -14,8 +14,8 @@ class LoginContainer extends Component {
     .then(credentials => {
       parseCredentials(credentials.accessToken)
       .then(id => {
-        storeCredentials({...credentials, id})
-        logonUser(id, credentials.accessToken);
+        storeCredentials({...credentials, id});
+        logonUser(id, credentials.idToken);
         fetchAndInitalizeUser(id);
       })
       .catch(console.log)

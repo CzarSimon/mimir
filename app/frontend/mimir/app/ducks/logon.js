@@ -17,6 +17,7 @@ export const logonUser = () => {
         dispatch(fetchStockData(tickers))
       ])
     })
+    .catch(console.log)
   }
 }
 

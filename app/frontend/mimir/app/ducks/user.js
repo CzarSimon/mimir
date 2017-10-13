@@ -5,6 +5,7 @@ import { fetchStockData, deleteStockData } from './stocks';
 import { RECIVE_TWITTER_DATA } from './twitter-data';
 import { without, concat, uniq } from 'lodash';
 import { retrive, persist, USER_ID_KEY } from '../methods/async-storage';
+import { getUserCredentials } from '../methods/auth-service';
 import {
   getRequest,
   postRequest,
@@ -89,18 +90,25 @@ export default user
 /* --- Actions --- */
 export const getUser = () => {
   return dispatch => (
-    retrive(USER_ID_KEY)
-    .then(userId => {
-      if (userId) {
-        return dispatch(fetchUser(userId));
+    getUserCredentials()
+    .then(({id, token}) => {
+      if (id && token) {
+        return Promise.all([
+          dispatch(logonUser(id, token)),
+          dispatch(fetchUser(id))
+        ])
       } else {
-        return dispatch(fetchNewUser()); // return error
+        return new Error("No user stored");
       }
     })
   )
 }
 
 export const logonUser = createAction(
+  LOGON_USER, (id, token) => ({ id, token })
+);
+
+export const logonExistingUser = createAction(
   LOGON_USER, (id, token) => ({ id, token })
 );
 

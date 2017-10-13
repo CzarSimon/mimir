@@ -6,9 +6,9 @@ export default class LogoutButton extends Component {
   render() {
     return (
       <View style={style.container}>
-        <TouchableHighlight onPress={this.props.logout}>
-          <View>
-            <Text>Logout</Text>
+        <TouchableHighlight underlayColor={color.grey.dark} onPress={this.props.logout}>
+          <View style={style.button}>
+            <Text style={style.text}>Logout</Text>
           </View>
         </TouchableHighlight>
       </View>
@@ -19,6 +19,21 @@ export default class LogoutButton extends Component {
 const style = StyleSheet.create({
   container: {
     flex: 1,
-    borderWidth: 1
+    marginHorizontal: length.button,
+    marginTop: length.button,
+    marginBottom: length.large,
+    alignItems: 'stretch'
+  },
+  button: {
+    borderWidth: 1,
+    alignItems: 'center',
+    borderRadius: length.mini,
+    borderColor: color.grey.dark,
+    padding: length.large
+  },
+  text: {
+    fontFamily: font.type.sans.bold,
+    fontSize: font.h3,
+    color: color.grey.dark
   }
 })
