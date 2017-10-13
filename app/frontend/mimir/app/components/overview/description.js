@@ -24,12 +24,13 @@ const styles = StyleSheet.create({
   container: {
     marginHorizontal: length.medium,
     marginVertical: length.small,
+    borderRadius: 5,
     ...card
   },
   text: {
     fontFamily: font.type.sans.normal,
     fontSize: font.text,
-    padding: length.small
+    padding: length.medium
   },
   button: {
     padding: length.small

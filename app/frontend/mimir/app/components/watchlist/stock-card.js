@@ -56,14 +56,13 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignSelf: 'stretch',
-    paddingVertical: length.small,
+    paddingVertical: length.medium,
     paddingHorizontal: length.medium,
   },
   card: {
-    flex: 1,
     marginHorizontal: length.medium,
     marginBottom: length.small,
-    backgroundColor: color.white,
+    backgroundColor: color.blue,
     ...card
   }
 });

@@ -1,6 +1,6 @@
 'use strict'
 import React, { Component } from 'react';
-import { Keyboard } from 'react-native';
+import { Keyboard, View } from 'react-native';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import SearchButton from '../../components/navigation/search-button';
@@ -19,23 +19,33 @@ class SearchButtonContainer extends Component {
     Keyboard.dismiss();
   }
 
+  userLoggedIn = () => {
+    const { id, token } = this.props.state.user;
+    return (id && token);
+  }
+
   render() {
     const { route, actions, state } = this.props;
     const active = route.name === SEARCH_PAGE;
-    return (
-      <SearchButton
-        active={active}
-        goToSearch={this.goToSearch}
-        cancelSearch={this.cancelSearch}
-        keyboardDown={state.search.keyboardDown}
-      />
+    return ((this.userLoggedIn()) ?
+      (
+        <SearchButton
+          active={active}
+          goToSearch={this.goToSearch}
+          cancelSearch={this.cancelSearch}
+          keyboardDown={state.search.keyboardDown}
+          />
+      ) : (
+        <View />
+      )
     );
   }
 }
 
 const mapStateToProps = state => ({
   state: {
-    search: state.search
+    search: state.search,
+    user: state.user
   }
 });
 

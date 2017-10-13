@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     alignItems: 'stretch',
-    padding: length.small,
+    padding: length.medium,
     marginHorizontal: length.medium,
     marginBottom: length.small,
     ...card

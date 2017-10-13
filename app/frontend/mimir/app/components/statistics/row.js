@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    padding: length.small,
+    padding: length.medium,
     marginHorizontal: length.medium,
     marginBottom: length.mini,
     ...card

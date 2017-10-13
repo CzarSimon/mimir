@@ -20,8 +20,7 @@ const style = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: length.button,
-    marginTop: length.button,
-    marginBottom: length.large,
+    marginVertical: length.button,
     alignItems: 'stretch'
   },
   button: {

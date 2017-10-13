@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignSelf: 'stretch',
     justifyContent: 'space-between',
-    padding: length.small,
+    padding: length.medium,
     marginRight: length.medium,
     marginBottom: length.small,
     ...card

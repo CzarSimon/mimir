@@ -11,7 +11,7 @@ class NewsContainer extends Component {
   componentDidMount() {
     const { company, actions, state } = this.props;
     const { activeTicker } = state.navigation;
-    actions.fetchNewsItems(activeTicker, 'TODAY');
+    actions.fetchNewsItems(activeTicker, '3M');
   }
 
   render() {

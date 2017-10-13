@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     marginVertical: length.small,
     marginHorizontal: length.medium,
     marginBottom: length.small,
-    padding: length.small,
+    padding: length.medium,
     ...card
   },
   volumeChange: {

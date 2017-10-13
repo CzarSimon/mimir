@@ -1,7 +1,9 @@
 import { color, length } from './styles'
 
 export const card = {
-  borderWidth: 0,
+  borderWidth: 1,
+  borderColor: color.white,
+  borderRadius: length.mini,
   backgroundColor: color.white,
   shadowColor: color.black,
   shadowOffset: {
