@@ -10,10 +10,11 @@ class NewslistContainer extends Component {
   componentDidMount() {
     const { actions, state, params } = this.props;
     const { activeTicker } = state.navigation;
+    const { period } = state.news;
     if (activeTicker) {
-      actions.fetchNewsItems(activeTicker, 'TODAY');
+      actions.fetchNewsItems(activeTicker, period);
     } else {
-      actions.fetchNewsItems(params.ticker, 'TODAY');
+      actions.fetchNewsItems(params.ticker, period);
       actions.setActiveTicker(params.ticker);
     }
   }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { font, color, length } from '../../../styles/main';
 import NewsCard from './news-card';
-import UnfollowButtonContainer from '../containers/unfollow-button';
+import BasicInfoContainer from '../../basic-info/containers/main';
 
 const style = {
   container: {
@@ -26,9 +26,9 @@ export default class Newslist extends Component {
     const { news } = this.props;
     return (
       <div>
+        <BasicInfoContainer />
         <div style={style.container}>
           <p style={style.header}>Top News</p>
-          <UnfollowButtonContainer />
         </div>
         {news.map(this.renderItem)}
       </div>

@@ -4,6 +4,7 @@ import { color, length } from '../../../styles/main';
 const style = {
   container: {
     textAlign: 'center',
+    alignSelf: 'center',
     border: 'solid',
     borderWidth: '1px',
     borderRadius: '5px',
