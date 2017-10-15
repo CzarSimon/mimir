@@ -6,7 +6,7 @@ export const toURL = route => (SERVER_URL + route);
 
 // postRequest() Creates and executes a post request
 export const postRequest = (route, body = {}) => {
-  console.log(postRequestObject(body));
+  //console.log(postRequestObject(body));
   return fetch(toURL(route), postRequestObject(body))
   .then(checkReponse)
 }
@@ -63,6 +63,6 @@ export const checkReponse = response => {
 
 // createTickerQuery() Creates url query of tickers
 export const createTickerQuery = tickers => {
-  console.log(tickers);
+  //console.log(tickers);
   return (tickers.length > 0) ? ('?' + join(map(tickers, ticker => 'ticker=' + ticker), '&')) : ''
 }

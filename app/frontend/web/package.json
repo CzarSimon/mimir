@@ -25,6 +25,7 @@
     "start": "PORT=3001 react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
+    "deploy": "rsync -a build simon@mimir-proxy-lb:/home/simon",
     "eject": "react-scripts eject"
   }
 }

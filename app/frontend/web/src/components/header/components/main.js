@@ -30,6 +30,8 @@ export default class Header extends Component {
         return <Title text='mimir' />
       case SEARCH_ROUTE:
         return <SearchBarContainer />
+      case LOGIN_ROUTE:
+        return <Title text={""} />
       default:
         return <Title text={ticker} />
     }
@@ -38,7 +40,7 @@ export default class Header extends Component {
   render() {
     const { path } = this.props;
     return (
-      <div style={style.header}>
+      <div style={style.header} className="header">
         <Logo />
         {this.getMiddleComponent()}
         {(path !== LOGIN_ROUTE) ? <SearchButtonContainer /> : <div />}

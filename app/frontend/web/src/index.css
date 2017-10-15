@@ -2,16 +2,26 @@ body {
   margin: 0;
   padding: 0;
   font-family: lato, sans-serif;
+  background-color: #FAFAFA;
 }
 
 .card {
   box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.08);
   border-radius: 5px;
   transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  background-color: #FFFFFF;
+}
+
+.header {
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.08);
 }
 
 .card:active, .button:active {
   background-color: #ECEBEB;
+}
+
+.search-bar {
+  -webkit-appearance: none;
 }
 
 .search-bar::-webkit-input-placeholder { /* Chrome */

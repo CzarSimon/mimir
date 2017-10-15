@@ -1,9 +1,9 @@
 {
   "short_name": "mimir",
-  "name": "mimir web frontend",
+  "name": "mimir | aggregated stock market news",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "favicon.png",
       "sizes": "192x192",
       "type": "image/png"
     }

@@ -8,6 +8,7 @@ const style = {
     margin: `${length.navbar} auto`,
     marginBottom: `-${length.large}`,
     border: 'solid',
+    borderWidth: '1px',
     borderRadius: '5px'
   },
   text: {
