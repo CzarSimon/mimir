@@ -1,3 +1,4 @@
+import { includes } from 'lodash';
 import { createAction } from 'redux-actions';
 import { getRequest } from '../methods/api-methods';
 
@@ -6,6 +7,7 @@ export const FETCH_NEWS_ITEMS = 'mimir/news/FETCH';
 export const RECIVE_NEWS_FAILURE = 'mimir/news/RECIVE_FAIL';
 export const RECIVE_NEWS_ITEMS = 'mimir/news/RECIVE';
 export const RECIVE_SHOWCASE_NEWS = 'mimir/news/showcase/RECIVE';
+export const SWITCH_PERIOD = 'mimir/news/period/SWITCH';
 
 const initalState = {
   period: 'TODAY',
@@ -26,6 +28,18 @@ const news = (state = initalState, action = {}) => {
         ...state,
         showcaseNews: action.payload.data
       }
+    case SWITCH_PERIOD:
+      const validPeriods = ['TODAY', '1M', '3M'];
+      return (
+        (includes(validPeriods, action.payload.period)) ? (
+          {
+            ...state,
+            period: action.payload.period
+          }
+        ) : (
+          state
+        )
+      );
     default:
       return state;
   }
@@ -43,6 +57,14 @@ export const fetchNewsItems = (ticker, period) => (
   )
 );
 
-export const reciveNewsItems = createAction(RECIVE_NEWS_ITEMS, data => ({ data }));
+export const reciveNewsItems = createAction(
+  RECIVE_NEWS_ITEMS, data => ({ data })
+);
 
-export const reciveShowcaseNews = createAction(RECIVE_SHOWCASE_NEWS, data => ({ data }));
+export const reciveShowcaseNews = createAction(
+  RECIVE_SHOWCASE_NEWS, data => ({ data })
+);
+
+export const switchPeriod = createAction(
+  SWITCH_PERIOD, period => ({ period })
+);

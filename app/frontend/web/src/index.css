@@ -20,6 +20,10 @@ body {
   background-color: #ECEBEB;
 }
 
+.period-button:active {
+  background-color: #357AE8;
+}
+
 .search-bar {
   -webkit-appearance: none;
 }

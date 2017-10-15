@@ -2,13 +2,14 @@ import React, { Component } from 'react';
 import { font, color, length } from '../../../styles/main';
 import NewsCard from './news-card';
 import BasicInfoContainer from '../../basic-info/containers/main';
+import PeriodButtonsContainer from '../containers/period-buttons';
 
 const style = {
   container: {
-    display: 'flex',
+    display: 'flex'
   },
   header: {
-    flex: 5,
+    flex: 2,
     color: color.blue,
     marginTop: length.small,
     fontSize: font.size.large,
@@ -29,6 +30,7 @@ export default class Newslist extends Component {
         <BasicInfoContainer />
         <div style={style.container}>
           <p style={style.header}>Top News</p>
+          <PeriodButtonsContainer />
         </div>
         {news.map(this.renderItem)}
       </div>
