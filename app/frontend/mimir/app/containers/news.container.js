@@ -11,14 +11,13 @@ class NewsContainer extends Component {
   componentDidMount() {
     const { company, actions, state } = this.props;
     const { activeTicker } = state.navigation;
-    actions.fetchNewsItems(activeTicker, '3M');
+    actions.fetchNewsItems(activeTicker, state.news.period);
   }
 
   render() {
     const { navigation, news }  = this.props.state;
     const companyNews = news[navigation.activeTicker];
-    const component = (companyNews) ? (<Newslist news={companyNews} />) : (<Loading />)
-    return component;
+    return (companyNews) ? (<Newslist news={companyNews} />) : (<Loading />)
   }
 }
 

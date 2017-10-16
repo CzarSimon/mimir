@@ -46,8 +46,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'stretch',
-    justifyContent: 'flex-start',
-    marginBottom: length.button + length.medium
+    justifyContent: 'flex-start'
   },
   title: {
     fontFamily: font.type.sans.bold,

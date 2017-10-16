@@ -27,7 +27,6 @@ export default class TabMenu extends Component {
     };
     return (
       <TabBarIOS
-        style={styles.tab_bar}
         tintColor={color.blue}>
         {
           map(tabs, (component, name) => (
@@ -47,14 +46,13 @@ export default class TabMenu extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
-  tab_bar: {
-    borderTopWidth: 4,
-    borderTopColor: color.red,
+  tabBar: {
+    borderWidth: 1
   }
 })

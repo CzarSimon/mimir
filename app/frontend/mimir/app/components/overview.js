@@ -1,5 +1,3 @@
-'use strict'
-
 import React, { Component } from 'react';
 import { View, StyleSheet, ScrollView, } from 'react-native';
 import Description from './overview/description';
@@ -13,8 +11,8 @@ export default class Overview extends Component {
     const { description, twitterData, company } = this.props;
     //<Topics data={twitterData}/>
     return (
-      <ScrollView>
-        <View style={styles.container}>
+      <ScrollView style={style.scrollView}>
+        <View style={style.container}>
           <Description description={description} />
           <TwitterDiagram data={twitterData} />
           <Statistics {...company} />
@@ -24,9 +22,11 @@ export default class Overview extends Component {
   }
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
+  scrollView: {
+    marginBottom: length.button
+  },
   container: {
-    flex: 1,
     alignItems: 'stretch',
     justifyContent: 'flex-start'
   }

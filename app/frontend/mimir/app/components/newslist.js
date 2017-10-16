@@ -1,5 +1,3 @@
-'use strict';
-
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, ListView, FlatList } from 'react-native';
 import { color, length } from '../styles/styles';
@@ -11,7 +9,7 @@ export default class Newslist extends Component {
   render() {
     if (this.props.news.length > 0) {
       return (
-        <View style={styles.container}>
+        <View style={style.container}>
           <FlatList
             data={this.props.news}
             ListHeaderComponent={() => <Header />}
@@ -21,15 +19,19 @@ export default class Newslist extends Component {
         </View>
       );
     } else {
-      return <NoNews />;
+      return (
+        <View style={style.container}>
+          <Header />
+          <NoNews />
+        </View>
+      );
     }
   }
 }
 
-const styles = StyleSheet.create({
+const style = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     marginBottom: length.button
   }
 })
