@@ -1,20 +1,24 @@
 package scraper
 
+import (
+	"github.com/CzarSimon/mimir/lib/news"
+)
+
 // Interface Main interface for scraper
 type Interface interface {
 	Get(URL string) (string, error)
-	Parse(html string) (Article, error)
+	Parse(html string) (news.Article, error)
 }
 
 // Scraper Implementation of ScraperInterface
 type Scraper struct {
 	UserAgent   string
-	Subjects    []Subject
+	Subjects    []news.Subject
 	HasSubjects bool
 }
 
 // NewScraper Creates a new scraper with default subjects
-func NewScraper(userAgent string, subjects []Subject) Scraper {
+func NewScraper(userAgent string, subjects []news.Subject) Scraper {
 	return Scraper{
 		UserAgent:   userAgent,
 		Subjects:    subjects,

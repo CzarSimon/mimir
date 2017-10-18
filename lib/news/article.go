@@ -19,7 +19,7 @@ type Article struct {
 
 // NewArticle Creates a new article
 func NewArticle(URL string) Article {
-	return Artile{
+	return Article{
 		URLHash: fmt.Sprintf("%x", sha256.Sum256([]byte(URL))),
 		URL:     URL,
 	}

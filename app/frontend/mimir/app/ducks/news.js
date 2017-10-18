@@ -29,7 +29,7 @@ const news = (state = initalState, action = {}) => {
         showcaseNews: action.payload.data
       };
     case SWITCH_PERIOD:
-      const validPeriods = ['TODAY', '1M', '3M'];
+      const validPeriods = ['TODAY', '1W', '1M'];
       return (
         (includes(validPeriods, action.payload.period)) ? (
           {

@@ -7,7 +7,7 @@ import { color, length, font } from '../../../styles/styles';
 export default class PeriodButtons extends Component {
   constructor(props) {
     super(props);
-    this.periods = ['Today', '1M', '3M']
+    this.periods = ['Today', '1W', '1M']
   }
 
   handleClick = periodIndex => {

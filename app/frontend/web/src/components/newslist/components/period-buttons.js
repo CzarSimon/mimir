@@ -74,15 +74,15 @@ export default class PeriodButtons extends Component {
         </div>
         <div
           className="period-button"
-          style={this.buttonStyle('1M', style.buttonMiddle)}
-          onClick={() => this.handleClick('1M')}>
-          <p style={style.text}>1M</p>
+          style={this.buttonStyle('1W', style.buttonMiddle)}
+          onClick={() => this.handleClick('1W')}>
+          <p style={style.text}>1W</p>
         </div>
         <div
           className="period-button"
-          style={this.buttonStyle('3M', buttonRight)}
-          onClick={() => this.handleClick('3M')}>
-          <p style={style.text}>3M</p>
+          style={this.buttonStyle('1M', buttonRight)}
+          onClick={() => this.handleClick('1M')}>
+          <p style={style.text}>1M</p>
         </div>
       </div>
     );

@@ -1,6 +1,6 @@
 {
   "name": "news-db",
-  "image": "postgres",
+  "image": "postgres:9.6",
   "keywordArgs": [
     "-d",
     "-t",

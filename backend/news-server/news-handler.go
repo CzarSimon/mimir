@@ -48,10 +48,14 @@ func getTopArticles(params ArticleParams, db *sql.DB) ([]Article, error) {
 	articles := make([]Article, 0)
 	query := `SELECT a.TITLE, a.URL, a.SUMMARY, a.DATE_INSERTED, a.KEYWORDS, a.TWITTER_REFERENCES
 						FROM ARTICLE_CLUSTER c
-						INNER JOIN ARTICLE a ON c.LEADER = a.URL_HASH
-						WHERE c.TICKER=$1 AND c.ARTICLE_DATE>=$2
-						ORDER BY c.SCORE DESC LIMIT $3;`
-	rows, err := db.Query(query, params.Ticker, params.FromDate, params.Limit)
+						INNER JOIN ARTICLE a
+						ON c.LEADER = a.URL_HASH
+						WHERE c.TICKER=$1
+						AND c.ARTICLE_DATE>=$2
+						AND c.ARTICLE_DATE<=$3
+						ORDER BY c.SCORE DESC LIMIT $4;`
+	rows, err := db.Query(
+		query, params.Ticker, params.FromDate, time.Now().UTC(), params.Limit)
 	defer rows.Close()
 	if err != nil {
 		return articles, err
@@ -76,9 +80,9 @@ func parseArticleParams(ps httprouter.Params, periodMonthMap periodMonthMap) (Ar
 	}
 	return ArticleParams{
 		Ticker:     ticker,
-		FromDate:   parseFromDate(ps, periodMonthMap),
+		FromDate:   parseFromDate(ps),
 		Limit:      parseLimit(ps),
-		TimePeriod: parseTimePeriod(ps, periodMonthMap),
+		TimePeriod: parseTimePeriod(ps),
 	}, nil
 }
 
@@ -93,23 +97,34 @@ func parseLimit(ps httprouter.Params) int {
 }
 
 // parseTimePeriod Parses the TimePeriod from a request
-func parseTimePeriod(ps httprouter.Params, periodMonthMap periodMonthMap) string {
+func parseTimePeriod(ps httprouter.Params) string {
 	period := strings.ToUpper(ps.ByName("period"))
-	if _, present := periodMonthMap[period]; !present {
-		return DefaultPeriod
-	}
 	return period
 }
 
 // parseFromDate Parses the starting date from a request
-func parseFromDate(ps httprouter.Params, periodMonthMap periodMonthMap) time.Time {
+func parseFromDate(ps httprouter.Params) time.Time {
+	period := parseTimePeriod(ps)
+	adjustedDate := calcDateAdjustment(period)
+	return adjustedDate
+}
+
+// FIXME: Move away from switch statement
+// calcDateAdjustment Adjusts from date according to the priod supplied
+func calcDateAdjustment(period string) time.Time {
 	now := time.Now().UTC()
-	period := parseTimePeriod(ps, periodMonthMap)
-	months, found := periodMonthMap[period]
-	if !found {
+	switch period {
+	case "TODAY":
+		return now
+	case "1W":
+		return now.AddDate(0, 0, -7)
+	case "1M":
+		return now.AddDate(0, -1, 0)
+	case "3M":
+		return now.AddDate(0, -3, 0)
+	default:
 		return now
 	}
-	return now.AddDate(0, months, 0)
 }
 
 func printArticles(articles []Article) {

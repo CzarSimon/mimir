@@ -1,4 +1,4 @@
-export const DEV_MODE = !false;
+export const DEV_MODE = false;
 export const SERVER_URL = '/';
 export const KG_KEY ='AIzaSyCdlbj16sLBBpKc2Op0CgWCbAoOn91aPVs';
 
