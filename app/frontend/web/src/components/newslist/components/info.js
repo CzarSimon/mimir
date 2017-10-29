@@ -10,7 +10,7 @@ const style = {
   },
   references: {
     width: '50%',
-    paddingLeft: length.small,
+    paddingLeft: length.medium,
     clear: 'both',
     float: 'left'
   },
@@ -18,7 +18,7 @@ const style = {
     float: 'right',
     width: '30%',
     textAlign: 'right',
-    paddingRight: length.small
+    paddingRight: length.medium
   }
 }
 

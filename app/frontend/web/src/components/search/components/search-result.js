@@ -6,8 +6,8 @@ import IoIosPlusOutline from 'react-icons/lib/io/ios-plus-outline';
 const style = {
   container: {
     padding: length.small,
-    paddingLeft: length.small,
-    marginBottom: length.small,
+    paddingLeft: length.medium,
+    marginBottom: length.medium,
     display: 'flex'
   },
   name: {

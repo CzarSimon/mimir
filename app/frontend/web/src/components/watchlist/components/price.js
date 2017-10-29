@@ -5,7 +5,7 @@ import { round, formatPriceChange, isPositive } from '../../../methods/helper-me
 const style = {
   container: {
     float: 'right',
-    paddingRight: length.small
+    paddingRight: length.medium
   },
   change: {
     fontSize: font.size.medium,

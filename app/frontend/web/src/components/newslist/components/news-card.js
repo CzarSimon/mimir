@@ -9,14 +9,14 @@ const style = {
     width: '100%',
     clear: 'both',
     overflow: 'auto',
-    marginBottom: length.small
+    marginBottom: length.medium
   },
   title: {
     fontSize: font.size.medium,
     fontWeight: 'bold',
     color: color.black,
-    paddingLeft: length.small,
-    paddingRight: length.small,
+    paddingLeft: length.medium,
+    paddingRight: length.medium,
     marginBottom: '0'
   }
 }

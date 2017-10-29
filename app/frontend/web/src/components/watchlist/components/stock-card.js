@@ -9,7 +9,7 @@ const style = {
     width: '100%',
     clear: 'both',
     overflow: 'auto',
-    marginBottom: length.small
+    marginBottom: length.medium
   }
 }
 

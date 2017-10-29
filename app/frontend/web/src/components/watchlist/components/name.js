@@ -5,7 +5,7 @@ import { length, font, color } from '../../../styles/main';
 const style = {
   container: {
     float: 'left',
-    paddingLeft: length.small
+    paddingLeft: length.medium
   },
   name: {
     fontSize: font.size.medium,
