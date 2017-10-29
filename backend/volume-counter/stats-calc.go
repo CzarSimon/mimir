@@ -114,7 +114,7 @@ func CalculateStdev(data []int) float64 {
 // DayTypeTimeseries Holds volume statiscs separated by day type
 type DayTypeTimeseries struct {
 	BusinessDays StatsTimeseries `json:"busdays"`
-	WeekendDays  StatsTimeseries `json:"weekend_days"`
+	WeekendDays  StatsTimeseries `json:"weekendDays"`
 }
 
 // NewDayTypeTimeseries Creates a new, empty DayTypeTimeseries struct

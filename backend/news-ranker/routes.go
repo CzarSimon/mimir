@@ -8,7 +8,7 @@ import (
 	"github.com/CzarSimon/util"
 )
 
-//HandleArticleRanking is the entrypoint for ranking and article
+// HandleArticleRanking is the entrypoint for ranking and article
 func (env *Env) HandleArticleRanking(res http.ResponseWriter, req *http.Request) {
 	decoder := json.NewDecoder(req.Body)
 	var rankObject RankObject
@@ -21,7 +21,7 @@ func (env *Env) HandleArticleRanking(res http.ResponseWriter, req *http.Request)
 	env.rankArticles(rankObject)
 }
 
-//HandleRankedArticle stores the result of a ranked article
+// HandleRankedArticle stores the result of a ranked article
 func (env *Env) HandleRankedArticle(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("Handling Ranked Article")
 	var ranked RankReturn

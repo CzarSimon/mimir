@@ -1,12 +1,13 @@
 {
   "name": "app-server",
-  "image": "czarsimon/mimir-app-server:no-sockets",
+  "image": "czarsimon/mimir-app-server:go-version",
   "keywordArgs": [
     "-d",
     "--replicas=2",
     "-p 3000:3000"
   ],
   "envVars": [
-    "DB_HOST=app-rdb"
+    "DB_HOST=app-db",
+    "DB_PASSWORD=$PG_PASSWORD"
   ]
 }

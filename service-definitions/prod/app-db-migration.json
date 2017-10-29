@@ -1,0 +1,16 @@
+{
+  "name": "app-db-migration",
+  "image": "czarsimon/app-db-migration",
+  "keywordArgs": [
+    "-d",
+    "-t"
+  ],
+  "envVars": [
+    "PG_PASSWORD=$PG_PASSWORD",
+    "PG_USER=simon",
+    "PG_NAME=mimirprod",
+    "PG_HOST=app-db",
+    "RDB_HOST=app-rdb",
+    "RDB_NAME=mimir_app_server"
+  ]
+}
