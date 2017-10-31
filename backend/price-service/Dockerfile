@@ -7,7 +7,6 @@ COPY . /usr/src/price-service
 WORKDIR /usr/src/price-service
 
 RUN go get github.com/lib/pq
-RUN go get gopkg.in/gorethink/gorethink.v3
 RUN go get github.com/jasonlvhit/gocron
 RUN go get github.com/FlashBoys/go-finance
 RUN go get github.com/CzarSimon/util

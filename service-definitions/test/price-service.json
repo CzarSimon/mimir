@@ -8,8 +8,7 @@
   "envVars": [
     "PG_PASSWORD=$PG_PASSWORD",
     "PG_HOST=price-db",
-    "TICKER_DB_HOST=app-rdb",
-    "TICKER_DB_NAME=mimir_app_server",
+    "TICKER_DB_HOST=app-db",
     "RETRIVAL_TIME=02:05",
     "TIMEZONE=America/New_York"
   ]
