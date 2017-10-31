@@ -8,6 +8,7 @@ import (
 func debug(config Config) {
 	tickers, _ := GetTickers(config.TickerDB)
 	logTickers(tickers)
+	GetAndStorePrices(config)
 }
 
 func main() {

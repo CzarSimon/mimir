@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/CzarSimon/mimir/lib/price"
+	"github.com/CzarSimon/mimir/lib/stock"
 	"github.com/CzarSimon/util"
 	"github.com/FlashBoys/go-finance"
 )
@@ -42,9 +42,9 @@ func CheckIfNotBusinessDay(timezone string) bool {
 }
 
 // QuoteToPrice Converts a finance.Quote to a Price given a date
-func QuoteToPrice(quote finance.Quote, date time.Time) price.Price {
+func QuoteToPrice(quote finance.Quote, date time.Time) stock.Price {
 	lastTradePrice, _ := quote.LastTradePrice.Float64()
-	return price.Price{
+	return stock.Price{
 		Ticker: quote.Symbol,
 		Price:  lastTradePrice,
 		Date:   date,
@@ -52,8 +52,8 @@ func QuoteToPrice(quote finance.Quote, date time.Time) price.Price {
 }
 
 // QueryPrices Querys yahoo finance for prices for all supplied tickers
-func QueryPrices(tickers []string, timezone string) ([]price.Price, error) {
-	prices := make([]price.Price, 0)
+func QueryPrices(tickers []string, timezone string) ([]stock.Price, error) {
+	prices := make([]stock.Price, 0)
 	quotes, err := finance.GetQuotes(tickers)
 	if err != nil {
 		return prices, err
@@ -75,10 +75,10 @@ func getCurrentExchangeDate(timezone string) time.Time {
 }
 
 // StorePrices Connects to database and stores prices for queried tickers
-func StorePrices(prices []price.Price, dbConfig util.PGConfig) error {
+func StorePrices(prices []stock.Price, dbConfig util.PGConfig) error {
 	db := util.ConnectPG(dbConfig)
 	defer db.Close()
-	query := "INSERT INTO HISTORICAL_PRICE (TICKER, PRICE_DATE, PRICE) VALUES ($1, $2, $3)"
+	query := "INSERT INTO CLOSE_PRICE (TICKER, PRICE_DATE, PRICE) VALUES ($1, $2, $3)"
 	stmt, err := db.Prepare(query)
 	defer stmt.Close()
 	if err != nil {
