@@ -1,6 +1,8 @@
 package stock
 
 import (
+	"fmt"
+	"strings"
 	"time"
 
 	"github.com/FlashBoys/go-finance"
@@ -18,9 +20,19 @@ type Price struct {
 func QuoteToPrice(quote finance.Quote, date time.Time) Price {
 	lastTradePrice, _ := quote.LastTradePrice.Float64()
 	return Price{
-		Ticker:   quote.Symbol,
+		Ticker:   strings.ToUpper(quote.Symbol),
 		Price:    lastTradePrice,
-		Currency: quote.Currency,
+		Currency: strings.ToUpper(quote.Currency),
 		Date:     date,
 	}
+}
+
+// IsValid Checks if the content of a price is valid
+func (price Price) IsValid() bool {
+	return price.Price != 0.0 && price.Currency == "" && price.Ticker == ""
+}
+
+// ToString Creates a string of the contrents of a price
+func (price Price) ToString() string {
+	return fmt.Sprintf("Ticker=%s Price=%f Currency=%s", price.Ticker, price.Price, price.Currency)
 }
