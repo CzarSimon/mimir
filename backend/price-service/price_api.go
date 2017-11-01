@@ -29,8 +29,12 @@ func QueryYahooPrices(tickers []string, timezone string) ([]stock.Price, error) 
 		return prices, err
 	}
 	date := getCurrentExchangeDate(timezone)
+	var price stock.Price
 	for _, quote := range quotes {
-		prices = append(prices, stock.QuoteToPrice(quote, date))
+		price = stock.QuoteToPrice(quote, date)
+		if price.IsValid() {
+			prices = append(prices, price)
+		}
 	}
 	return prices, nil
 }
