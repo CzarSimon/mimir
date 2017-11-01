@@ -10,8 +10,14 @@ import (
 type Config struct {
 	PriceDB  util.PGConfig
 	TickerDB util.PGConfig
-	Timing   string
+	Timing   TimingConfig
 	Timezone string
+}
+
+// TimingConfig Holds timing config for scheduling
+type TimingConfig struct {
+	ClosePriceTime  string
+	LatestPriceTime string
 }
 
 // GetConfig Returns a new Config struct based on evnirionment variables
@@ -24,12 +30,19 @@ func GetConfig() Config {
 	return Config{
 		PriceDB:  util.GetPGConfig(pdbHost, dbPwd, "simon", "mimirprod"),
 		TickerDB: tickerDBConfig,
-		Timing:   util.GetEnvVar("RETRIVAL_TIME", "02:05"),
+		Timing:   getTimingConfig(),
 		Timezone: util.GetEnvVar("TIMEZONE", "America/New_York"),
+	}
+}
+
+// getTimingConfig Returns the timing config for scheduled tasks
+func getTimingConfig() TimingConfig {
+	return TimingConfig{
+		ClosePriceTime: util.GetEnvVar("RETRIVAL_TIME", "02:05"),
 	}
 }
 
 // LogTiming Logs the timing configuration
 func (config Config) LogTiming() {
-	log.Printf("Trigger time: %s Exchange timezone: %s", config.Timing, config.Timezone)
+	log.Printf("Trigger time: %s Exchange timezone: %s", config.Timing.ClosePriceTime, config.Timezone)
 }

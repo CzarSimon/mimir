@@ -6,15 +6,16 @@ import (
 )
 
 func debug(config Config) {
-	tickers, _ := GetTickers(config.TickerDB)
-	logTickers(tickers)
-	GetAndStorePrices(config)
+	GetAndStoreClosePrices(config)
+	GetAndStoreLatestPrices(config)
 }
 
 func main() {
 	config := GetConfig()
 	config.LogTiming()
-	debug(config)
-	gocron.Every(1).Day().At(config.Timing).Do(GetAndStorePrices, config)
+	//debug(config)
+	gocron.Every(1).Day().At(
+		config.Timing.ClosePriceTime).Do(GetAndStoreClosePrices, config)
+	gocron.Every(1).Minute().Do(GetAndStoreLatestPrices, config)
 	<-gocron.Start()
 }

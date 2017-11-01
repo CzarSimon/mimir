@@ -15,5 +15,6 @@ backend/webscraper/article_ranker/stopwords.py
 backend/news-clustering/news-clustering
 backend/admin-page/server/server
 backend/volume-counter/volume-counter
+backend/price-service/price-service
 db-backups/
 docker-commands/
