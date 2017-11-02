@@ -16,22 +16,26 @@ func GetAndStoreLatestPrices(config Config) {
 		util.LogErr(err)
 		return
 	}
+	fmt.Println("1")
 	db, err := util.ConnectPGErr(config.PriceDB)
 	defer db.Close()
 	if err != nil {
 		util.LogErr(err)
 		return
 	}
+	fmt.Println("2")
 	err = StoreLatestPrices(prices, db)
 	if err != nil {
 		util.LogErr(err)
 		return
 	}
+	fmt.Println("3")
 	err = StoreHistoricalPrices(prices, db)
 	if err != nil {
 		util.LogErr(err)
 		return
 	}
+	fmt.Println("4")
 }
 
 // StoreLatestPrices Stores latest prices in database

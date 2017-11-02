@@ -5,6 +5,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/CzarSimon/mimir/lib/stock"
 	"github.com/FlashBoys/go-finance"
 )
 
@@ -29,10 +30,27 @@ func QuoteToPrice(quote finance.Quote, date time.Time) Price {
 
 // IsValid Checks if the content of a price is valid
 func (price Price) IsValid() bool {
-	return price.Price != 0.0 && price.Currency == "" && price.Ticker == ""
+	return price.Price != 0.0 && price.Currency != "" && price.Ticker != ""
 }
 
 // ToString Creates a string of the contrents of a price
 func (price Price) ToString() string {
 	return fmt.Sprintf("Ticker=%s Price=%f Currency=%s", price.Ticker, price.Price, price.Currency)
+}
+
+// IEXQuote Stock quote from IEX trading API
+type IEXQuote struct {
+	Symbol        string  `json:"symbol"`
+	LatestPrice   float64 `json:"latestPrice"`
+	ChangePercent float64 `json:"changePercent"`
+}
+
+// IEXQuoteToPrice Converts an IEXQuote to Price
+func IEXQuoteToPrice(quote IEXQuote, currency string, date time.Time) stock.Price {
+	return stock.Price{
+		Ticker:   strings.ToUpper(quote.Symbol),
+		Price:    quote.LatestPrice,
+		Currency: strings.ToUpper(currency),
+		Date:     date,
+	}
 }
