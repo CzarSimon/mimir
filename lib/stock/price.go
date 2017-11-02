@@ -5,7 +5,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/CzarSimon/mimir/lib/stock"
 	"github.com/FlashBoys/go-finance"
 )
 
@@ -46,8 +45,8 @@ type IEXQuote struct {
 }
 
 // IEXQuoteToPrice Converts an IEXQuote to Price
-func IEXQuoteToPrice(quote IEXQuote, currency string, date time.Time) stock.Price {
-	return stock.Price{
+func IEXQuoteToPrice(quote IEXQuote, currency string, date time.Time) Price {
+	return Price{
 		Ticker:   strings.ToUpper(quote.Symbol),
 		Price:    quote.LatestPrice,
 		Currency: strings.ToUpper(currency),
