@@ -2,10 +2,7 @@ package stock
 
 import (
 	"fmt"
-	"strings"
 	"time"
-
-	"github.com/FlashBoys/go-finance"
 )
 
 // Price Holds price information about a ticker
@@ -16,17 +13,6 @@ type Price struct {
 	Date     time.Time `json:"date,omitempty"`
 }
 
-// QuoteToPrice Converts a finance.Quote to a Price given a date
-func QuoteToPrice(quote finance.Quote, date time.Time) Price {
-	lastTradePrice, _ := quote.LastTradePrice.Float64()
-	return Price{
-		Ticker:   strings.ToUpper(quote.Symbol),
-		Price:    lastTradePrice,
-		Currency: strings.ToUpper(quote.Currency),
-		Date:     date,
-	}
-}
-
 // IsValid Checks if the content of a price is valid
 func (price Price) IsValid() bool {
 	return price.Price != 0.0 && price.Currency != "" && price.Ticker != ""
@@ -35,21 +21,4 @@ func (price Price) IsValid() bool {
 // ToString Creates a string of the contrents of a price
 func (price Price) ToString() string {
 	return fmt.Sprintf("Ticker=%s Price=%f Currency=%s", price.Ticker, price.Price, price.Currency)
-}
-
-// IEXQuote Stock quote from IEX trading API
-type IEXQuote struct {
-	Symbol        string  `json:"symbol"`
-	LatestPrice   float64 `json:"latestPrice"`
-	ChangePercent float64 `json:"changePercent"`
-}
-
-// IEXQuoteToPrice Converts an IEXQuote to Price
-func IEXQuoteToPrice(quote IEXQuote, currency string, date time.Time) Price {
-	return Price{
-		Ticker:   strings.ToUpper(quote.Symbol),
-		Price:    quote.LatestPrice,
-		Currency: strings.ToUpper(currency),
-		Date:     date,
-	}
 }

@@ -1,6 +1,6 @@
 {
   "name": "price-service",
-  "image": "czarsimon/mimir-price-service",
+  "image": "czarsimon/mimir-price-service:latest",
   "keywordArgs": [
     "-d",
     "--replicas=1"

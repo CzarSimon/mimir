@@ -26,7 +26,7 @@ func GetConfig() Config {
 	tdbHost := util.GetEnvVar("TICKER_DB_HOST", "localhost")
 	dbPwd := util.GetEnvVar("PG_PASSWORD", "pwd")
 	tickerDBConfig := util.GetPGConfig(tdbHost, dbPwd, "simon", "mimirprod")
-	tickerDBConfig.Port = "1000"
+	//tickerDBConfig.Port = "1000"
 	return Config{
 		PriceDB:  util.GetPGConfig(pdbHost, dbPwd, "simon", "mimirprod"),
 		TickerDB: tickerDBConfig,

@@ -11,7 +11,7 @@ import (
 // GetAndStoreClosePrices Retrives end of day prices for a fetched set of tickers
 // and stores the result
 func GetAndStoreClosePrices(config Config) {
-	prices, err := GetPrices(config)
+	prices, err := GetPrices(config, NewIexAPI(config.Timezone))
 	if err != nil {
 		util.LogErr(err)
 		return
