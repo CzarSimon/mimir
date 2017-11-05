@@ -2,17 +2,17 @@ sctl unlock
 sctl check service ls
 
 services=(
+  "stream-listener"
   "app-server"
   "news-server"
   "search-service"
   "price-server"
   "price-service"
-  #"stream-listener"
-  "volume-counter"
+  #"volume-counter"
   "spam-filter"
   "news-ranker"
   "news-clusterer"
-  "app-rdb"
+  "app-db"
   "tweet-db"
   "news-db"
   "price-db"

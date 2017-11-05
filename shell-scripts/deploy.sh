@@ -2,20 +2,20 @@ sctl unlock
 sctl check service ls
 
 services=(
-  "app-rdb"
+  "app-db"
   "tweet-db"
   "news-db"
   "price-db"
-  "price-service"
   "news-clusterer"
-  "news-ranker"
-  "volume-counter"
   "spam-filter"
-  #"stream-listener"
+  "news-ranker"
+  #"volume-counter"
+  "price-service"
   "app-server"
   "news-server"
   "search-service"
   "price-server"
+  "stream-listener"
 )
 
 start_service() {
