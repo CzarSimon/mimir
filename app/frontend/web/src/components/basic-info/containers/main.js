@@ -10,17 +10,16 @@ class BasicInfoContainer extends Component {
     const { navigation, stocks } = this.props.state;
     if (navigation.activeTicker && stocks.loaded) {
       const {
-        Name,
-        LastTradePriceOnly,
-        Currency,
-        PercentChange
+        name,
+        price,
+        currency,
       } = stocks.data[navigation.activeTicker];
       return (
         <BasicInfo
-          name={Name}
-          price={LastTradePriceOnly}
-          currency={Currency}
-          priceChange={PercentChange}/>
+          name={name}
+          price={price}
+          currency={currency}
+          priceChange={"-"}/>
       );
     } else {
       return <div />

@@ -15,29 +15,29 @@ const style = {
 
 export default class StockCard extends Component {
   handleClick = () => {
-    const { Symbol, navigate } = this.props;
-    navigate(Symbol);
+    const { ticker, navigate } = this.props;
+    navigate(ticker);
   }
 
   render() {
     const {
-      Name: StockName,
-      Symbol,
+      name,
+      ticker,
       PercentChange,
-      LastTradePriceOnly,
-      Currency,
+      price,
+      currency,
       twitterData
     } = this.props;
     return (
       <div onClick={this.handleClick} className="card" style={style.card}>
         <UrgencyInicator {...twitterData} />
         <Name
-          name={StockName}
-          ticker={Symbol} />
+          name={name}
+          ticker={ticker} />
         <Price
           percentChange={PercentChange}
-          price={LastTradePriceOnly}
-          currency={Currency} />
+          price={price}
+          currency={currency} />
       </div>
     )
   }

@@ -29,5 +29,6 @@ func setupTwitterDataRoutes(mux *http.ServeMux, env *Env) {
 // setupStockRoutes Sets up API routes related to stock data
 func setupStockRoutes(mux *http.ServeMux, env *Env) {
 	mux.HandleFunc("/api/app/stock", env.HandleStockRequest)
+	mux.HandleFunc("/api/app/stocks", env.HandleStocksRequest)
 	mux.HandleFunc("/api/app/stock/description", env.HandleStockRequest)
 }

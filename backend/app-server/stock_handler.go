@@ -7,13 +7,14 @@ import (
 	"net/http"
 
 	"github.com/CzarSimon/util"
+	"github.com/lib/pq"
 )
 
 // Stock Holds information about a stock
 type Stock struct {
 	Ticker      string `json:"ticker"`
 	Name        string `json:"name"`
-	Description string `json:"description"`
+	Description string `json:"description,omitempty"`
 	ImageURL    string `json:"imageUrl,omitempty"`
 	Website     string `json:"website,omitempty"`
 }
@@ -29,7 +30,7 @@ func (env *Env) HandleStockRequest(res http.ResponseWriter, req *http.Request) {
 		util.SendErrStatus(res, err, http.StatusBadRequest)
 		return
 	}
-	stock, err := RetriveStockInfo(ticker, env.db)
+	stock, err := retriveStockInfo(ticker, env.db)
 	if err != nil {
 		util.SendErrRes(res, err)
 		return
@@ -48,7 +49,7 @@ func parseTickerFromQuery(req *http.Request) (string, error) {
 }
 
 // RetriveStockInfo Retieves stock information from database
-func RetriveStockInfo(ticker string, db *sql.DB) (Stock, error) {
+func retriveStockInfo(ticker string, db *sql.DB) (Stock, error) {
 	query := getStockInfoQuery()
 	var stock Stock
 	err := db.QueryRow(query, ticker).Scan(
@@ -65,4 +66,51 @@ func getStockInfoQuery() string {
             TICKER, NAME, DESCRIPTION, IMAGE_URL, WEBSITE
           FROM STOCK
           WHERE TICKER = $1`
+}
+
+// HandleStocksRequest Retrives stock information for list of requested stocks
+func (env *Env) HandleStocksRequest(res http.ResponseWriter, req *http.Request) {
+	if req.Method != http.MethodGet {
+		util.SendErrStatus(res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
+		return
+	}
+	tickers, err := parseTickersFromQuery(req)
+	if err != nil {
+		util.LogErr(err)
+		util.SendErrStatus(res, err, http.StatusBadRequest)
+		return
+	}
+	stocks, err := retriveStocks(tickers, env.db)
+	if err != nil {
+		util.LogErr(err)
+		util.SendErrRes(res, errors.New("Could not retrieve stocks"))
+		return
+	}
+	jsonBody, err := json.Marshal(stocks)
+	if err != nil {
+		util.LogErr(err)
+		util.SendErrRes(res, errors.New("Could not retrieve stocks"))
+		return
+	}
+	util.SendJSONRes(res, jsonBody)
+}
+
+// retriveStocks Gets a map of stock info for a suplied list of tickers
+func retriveStocks(tickers Tickers, db *sql.DB) (map[string]Stock, error) {
+	stocks := make(map[string]Stock)
+	query := "SELECT TICKER, NAME FROM STOCK WHERE TICKER = ANY($1)"
+	rows, err := db.Query(query, pq.Array(tickers))
+	defer rows.Close()
+	if err != nil {
+		return stocks, err
+	}
+	var stock Stock
+	for rows.Next() {
+		err = rows.Scan(&stock.Ticker, &stock.Name)
+		if err != nil {
+			return stocks, err
+		}
+		stocks[stock.Ticker] = stock
+	}
+	return stocks, nil
 }

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _ from 'lodash';
 import StockCard from './stock-card';
 import LogoutButton from '../../logout/components/main';
 import { font, color, length } from '../../../styles/main';
@@ -15,24 +14,25 @@ const style = {
 }
 
 export default class Watchlist extends Component {
-  renderItem = (stock, key) => {
-    const { twitterData, navigate } = this.props;
+  renderItem = (ticker, key) => {
+    const { twitterData, navigate, stocks } = this.props;
+    const stock = stocks.data[ticker]
     return (
       <StockCard
         key={key}
         {...stock}
         className='list-group-item'
-        twitterData={twitterData[stock.Symbol]}
+        twitterData={twitterData[ticker]}
         navigate={navigate} />
     )
   }
 
   render() {
-    const { stocks, logout } = this.props;
+    const { logout, user } = this.props;
     return (
       <div>
         <p style={style.header}>Watchlist</p>
-        {_.values(stocks.data).map(this.renderItem)}
+        {user.tickers.map(this.renderItem)}
         <LogoutButton logout={logout}/>
       </div>
     )

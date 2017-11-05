@@ -1,6 +1,7 @@
-import { mapValues, omit } from 'lodash'
-import { createAction } from 'redux-actions'
-import { retriveStockData, retriveHistoricalData } from './../methods/yahoo-api'
+import _ from 'lodash';
+import { createAction } from 'redux-actions';
+import { getRequest, createTickerQuery } from '../methods/api-methods';
+import { retriveStockData, retriveHistoricalData } from '../methods/yahoo-api';
 
 /* --- Types --- */
 export const RECIVE_STOCK_DATA = 'mimir/stockData/RECIVE';
@@ -31,7 +32,7 @@ const stocks = (state = initialState, action = {}) => {
     case RECIVE_UPDATED_STOCK_DATA:
       return {
         ...state,
-        data: mapValues(state.data, (val) => (
+        data: _.mapValues(state.data, (val) => (
           {
             ...val,
             ...action.payload.data[val.Symbol]
@@ -55,7 +56,7 @@ const stocks = (state = initialState, action = {}) => {
     case DELETE_STOCK_DATA:
       return {
         ...state,
-        data: omit(state.data, action.payload.ticker)
+        data: _.omit(state.data, action.payload.ticker)
       }
     default:
       return state;
@@ -64,12 +65,29 @@ const stocks = (state = initialState, action = {}) => {
 export default stocks
 
 /* --- Actions --- */
-export const fetchStockData = tickers => (
-  dispatch => (
-    retriveStockData(tickers)
-    .then(data => dispatch(reciveStockData(data)))
+export const fetchStockData = tickers => {
+  return dispatch => (
+    getRequest('api/price/latest' + createTickerQuery(tickers))
+    .then(res => _.keyBy(res, 'ticker'))
+    .then(stockData => dispatch(fetchStockInfo(stockData, tickers)))
     .catch(err => console.log("THERE WAS AN ERROR:", err))
   )
+}
+
+const fetchStockInfo = (stockData, tickers) => (
+  dispatch => (
+    getRequest('api/app/stocks' + createTickerQuery(tickers))
+    .then(stockInfo => mergeStockData(stockData, stockInfo))
+    .then(stocks => dispatch(reciveStockData(stocks)))
+    .catch(err => console.log("THERE WAS AN ERROR:", err))
+  )
+)
+
+const mergeStockData = (stockData, stockInfo) => (
+  _.mapValues(stockData, (data, ticker) => ({
+    ...data,
+    ...stockInfo[ticker]
+  }))
 )
 
 export const reciveStockData = createAction(
