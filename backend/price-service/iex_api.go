@@ -71,9 +71,10 @@ type IEXQuote struct {
 // IEXQuoteToPrice Converts an IEXQuote to Price
 func IEXQuoteToPrice(quote IEXQuote, currency string, date time.Time) stock.Price {
 	return stock.Price{
-		Ticker:   strings.ToUpper(quote.Symbol),
-		Price:    quote.LatestPrice,
-		Currency: strings.ToUpper(currency),
-		Date:     date,
+		Ticker:      strings.ToUpper(quote.Symbol),
+		Price:       quote.LatestPrice,
+		PriceChange: quote.ChangePercent,
+		Currency:    strings.ToUpper(currency),
+		Date:        date,
 	}
 }

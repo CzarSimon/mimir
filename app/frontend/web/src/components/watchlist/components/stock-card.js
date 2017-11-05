@@ -23,7 +23,7 @@ export default class StockCard extends Component {
     const {
       name,
       ticker,
-      PercentChange,
+      priceChange,
       price,
       currency,
       twitterData
@@ -35,7 +35,7 @@ export default class StockCard extends Component {
           name={name}
           ticker={ticker} />
         <Price
-          percentChange={PercentChange}
+          percentChange={priceChange}
           price={price}
           currency={currency} />
       </div>

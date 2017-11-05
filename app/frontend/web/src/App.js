@@ -20,7 +20,7 @@ import { updateStockData } from './ducks/stocks';
 import { fetchTwitterData } from './ducks/twitter-data';
 import { logonUser } from './ducks/logon';
 
-const createStoreWithMiddleware = (!DEV_MODE)
+const createStoreWithMiddleware = (!DEV_MODE && false)
   ? applyMiddleware(thunk)(createStore)
   : applyMiddleware(thunk, logger)(createStore)
 const reducer = combineReducers({

@@ -11,10 +11,10 @@ export const arrayEquals = (a1, a2) => {
   return true
 }
 
-export const isPositive = changeStr => (_.startsWith(changeStr, "-")) ? false : true
+export const isPositive = number => (number < 0) ? false : true
 
 export const formatPriceChange = change => (
-  (isPositive(change) ? "+" : "") + round(change).toString() + "%"
+  (isPositive(change) ? "+" : "") + round(change * 100).toString() + "%"
 )
 
 export const portraitMode = () => {

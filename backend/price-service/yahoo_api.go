@@ -32,7 +32,7 @@ func (api YahooAPI) QueryPrices(tickers []string) ([]stock.Price, error) {
 	date := getCurrentExchangeDate(api.Timezone)
 	var price stock.Price
 	for _, quote := range quotes {
-		price = stock.QuoteToPrice(quote, date)
+		price = YahooQuoteToPrice(quote, date)
 		fmt.Println(price.ToString(), price.IsValid())
 		if price.IsValid() {
 			prices = append(prices, price)
@@ -42,7 +42,7 @@ func (api YahooAPI) QueryPrices(tickers []string) ([]stock.Price, error) {
 }
 
 // QuoteToPrice Converts a finance.Quote to a Price given a date
-func QuoteToPrice(quote finance.Quote, date time.Time) stock.Price {
+func YahooQuoteToPrice(quote finance.Quote, date time.Time) stock.Price {
 	lastTradePrice, _ := quote.LastTradePrice.Float64()
 	return stock.Price{
 		Ticker:   strings.ToUpper(quote.Symbol),

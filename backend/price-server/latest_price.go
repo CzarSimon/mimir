@@ -41,7 +41,7 @@ func (env *Env) GetLatestPrices(res http.ResponseWriter, req *http.Request) {
 // getLatestPricesFromDB Gets latest prices for a supplied set of tickers from the database
 func getLatestPricesFromDB(tickers []string, db *sql.DB) ([]stock.Price, error) {
 	prices := make([]stock.Price, 0)
-	query := "SELECT TICKER, PRICE, CURRENCY, DATE_INSERTED FROM LATEST_PRICE WHERE TICKER=ANY($1)"
+	query := "SELECT TICKER, PRICE, CURRENCY, PRICE_CHANGE, DATE_INSERTED FROM LATEST_PRICE WHERE TICKER=ANY($1)"
 	rows, err := db.Query(query, pq.Array(tickers))
 	defer rows.Close()
 	if err != nil {
@@ -49,7 +49,8 @@ func getLatestPricesFromDB(tickers []string, db *sql.DB) ([]stock.Price, error) 
 	}
 	var price stock.Price
 	for rows.Next() {
-		err = rows.Scan(&price.Ticker, &price.Price, &price.Currency, &price.Date)
+		err = rows.Scan(
+			&price.Ticker, &price.Price, &price.Currency, &price.PriceChange, &price.Date)
 		if err != nil {
 			return prices, err
 		}

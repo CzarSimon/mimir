@@ -50,13 +50,16 @@ func StoreLatestPrices(prices []stock.Price, db *sql.DB) error {
 // returns a list of the prices which could not be updated
 func updateLatestPrices(prices []stock.Price, db *sql.DB) ([]stock.Price, error) {
 	notUpdatedPrices := make([]stock.Price, 0)
-	stmt, err := db.Prepare("UPDATE LATEST_PRICE SET DATE_INSERTED=$1, PRICE=$2, CURRENCY=$3 WHERE TICKER=$4")
+	stmt, err := db.Prepare(`
+		UPDATE LATEST_PRICE
+		SET DATE_INSERTED=$1, PRICE=$2, PRICE_CHANGE=$3 CURRENCY=$4
+		WHERE TICKER=$5`)
 	defer stmt.Close()
 	if err != nil {
 		return notUpdatedPrices, err
 	}
 	for _, price := range prices {
-		res, err := stmt.Exec(price.Date, price.Price, price.Currency, price.Ticker)
+		res, err := stmt.Exec(price.Date, price.Price, price.PriceChange, price.Currency, price.Ticker)
 		if err != nil {
 			util.LogErr(err)
 			notUpdatedPrices = append(notUpdatedPrices, price)

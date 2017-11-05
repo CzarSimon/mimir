@@ -13,13 +13,14 @@ class BasicInfoContainer extends Component {
         name,
         price,
         currency,
+        priceChange
       } = stocks.data[navigation.activeTicker];
       return (
         <BasicInfo
           name={name}
           price={price}
           currency={currency}
-          priceChange={"-"}/>
+          priceChange={priceChange}/>
       );
     } else {
       return <div />
