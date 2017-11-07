@@ -3,7 +3,7 @@
   "image": "czarsimon/mimir-app-server:go-version",
   "keywordArgs": [
     "-d",
-    "--replicas=2",
+    "--replicas=1",
     "-p 3000:3000"
   ],
   "envVars": [

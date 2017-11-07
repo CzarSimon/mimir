@@ -3,7 +3,7 @@
   "image": "czarsimon/mimir-price-server",
   "keywordArgs": [
     "-d",
-    "--replicas=2",
+    "--replicas=1",
     "-p 4000:4000"
   ],
   "envVars": [

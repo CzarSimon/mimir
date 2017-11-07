@@ -3,7 +3,7 @@
   "image": "czarsimon/news-server",
   "keywordArgs": [
     "-d",
-    "--replicas=2",
+    "--replicas=1",
     "-p 5050:5050"
   ],
   "envVars": [

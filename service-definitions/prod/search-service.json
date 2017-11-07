@@ -3,7 +3,7 @@
   "image": "czarsimon/mimir-search",
   "keywordArgs": [
     "-d",
-    "--replicas=2",
+    "--replicas=1",
     "-p 7000:7000"
   ],
   "envVars": [

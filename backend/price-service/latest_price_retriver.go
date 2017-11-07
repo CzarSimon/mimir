@@ -52,7 +52,7 @@ func updateLatestPrices(prices []stock.Price, db *sql.DB) ([]stock.Price, error)
 	notUpdatedPrices := make([]stock.Price, 0)
 	stmt, err := db.Prepare(`
 		UPDATE LATEST_PRICE
-		SET DATE_INSERTED=$1, PRICE=$2, PRICE_CHANGE=$3 CURRENCY=$4
+		SET DATE_INSERTED=$1, PRICE=$2, PRICE_CHANGE=$3, CURRENCY=$4
 		WHERE TICKER=$5`)
 	defer stmt.Close()
 	if err != nil {

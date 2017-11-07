@@ -96,7 +96,8 @@ export const reciveStockData = createAction(
 
 export const updateStockData = tickers => (
   dispatch => (
-    retriveStockData(tickers)
+    getRequest('api/price/latest' + createTickerQuery(tickers))
+    .then(res => _.keyBy(res, 'ticker'))
     .then(data => dispatch(reciveUpdatedStockData(data)))
     .catch(err => console.log("THERE WAS AN ERROR:", err))
   )
