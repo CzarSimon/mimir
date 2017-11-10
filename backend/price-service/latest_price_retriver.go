@@ -9,14 +9,14 @@ import (
 )
 
 // GetAndStoreLatetsPrices Retrives and stores the latest prices for the active list of tickers
-func GetAndStoreLatestPrices(config Config) {
+func (env *Env) GetAndStoreLatestPrices() {
 	fmt.Println("Running: GetAndStoreLatestPrices")
-	prices, err := GetPrices(config, NewIexAPI(config.Timezone))
+	prices, err := env.GetPrices()
 	if err != nil {
 		util.LogErr(err)
 		return
 	}
-	db, err := util.ConnectPGErr(config.PriceDB)
+	db, err := util.ConnectPGErr(env.Config.PriceDB)
 	defer db.Close()
 	if err != nil {
 		util.LogErr(err)

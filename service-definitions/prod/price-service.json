@@ -10,6 +10,7 @@
     "PG_HOST=price-db",
     "TICKER_DB_HOST=app-db",
     "RETRIVAL_TIME=02:05",
-    "TIMEZONE=America/New_York"
+    "TIMEZONE=America/New_York",
+    "PRICE_API=IEX"
   ]
 }
