@@ -1,10 +1,6 @@
 package qc
 
-import (
-	"encoding/json"
-	
-	"github.com/CzarSimon/mimir/lib/news"
-)
+import "encoding/json"
 
 // QueueItem Struct to
 type QueueItem struct {

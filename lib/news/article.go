@@ -1,4 +1,4 @@
-package scraper
+package news
 
 import (
 	"crypto/sha256"
