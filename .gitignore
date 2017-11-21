@@ -16,5 +16,6 @@ backend/news-clustering/news-clustering
 backend/admin-page/server/server
 backend/volume-counter/volume-counter
 backend/price-service/price-service
+backend/tweet-handler/tweet-handler
 db-backups/
 docker-commands/

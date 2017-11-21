@@ -5,7 +5,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/github.com/CzarSimon/mimir/lib/news"
+	"github.com/CzarSimon/mimir/lib/news"
 )
 
 // TrackedTickers Slice of all tracked tickers and aliases
@@ -48,10 +48,10 @@ func (aliases Aliases) Add(alias, ticker string) error {
 type TickerSet map[string]news.Subject
 
 // Add Adds ticker to ticker set
-func (tickers TickerSet) Add(ticker string) error {
-	if _, present := tickers[ticker]; present {
-		return errors.New(fmt.Sprintf("Ticker: %s already present", ticker))
+func (tickers TickerSet) Add(subject news.Subject) error {
+	if _, present := tickers[subject.Ticker]; present {
+		return errors.New(fmt.Sprintf("Ticker: %s already present", subject.Ticker))
 	}
-	tickers[ticker] = true
+	tickers[subject.Ticker] = subject
 	return nil
 }

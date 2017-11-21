@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 
+	"github.com/CzarSimon/mimir/lib/news"
 	"github.com/CzarSimon/util"
 )
 
@@ -32,18 +33,18 @@ func SetupEnv(config Config) *Env {
 // GetTickers Gets tickers to track
 func GetTickers(db *sql.DB) (TickerSet, error) {
 	tickers := make(TickerSet)
-	rows, err := db.Query("SELECT TICKER FROM STOCKS")
+	rows, err := db.Query("SELECT TICKER, NAME FROM STOCKS")
 	defer rows.Close()
 	if err != nil {
 		return tickers, err
 	}
-	var ticker string
+	var subject news.Subject
 	for rows.Next() {
-		err = rows.Scan(&ticker)
+		err = rows.Scan(&subject.Ticker, &subject.Name)
 		if err != nil {
 			return tickers, err
 		}
-		err = tickers.Add(ticker)
+		err = tickers.Add(subject)
 		if err != nil {
 			util.LogErr(err)
 		}
