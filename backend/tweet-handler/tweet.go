@@ -8,7 +8,7 @@ type Tweet struct {
 	Entities TweetEntities `json:"entities"`
 	ID       string        `json:"id_str"`
 	Language string        `json:"lang"`
-	Date     time.Time     `json:"created_at"`
+	Date     string        `json:"created_at"`
 	User     TwitterUser   `json:"user"`
 }
 
@@ -46,4 +46,9 @@ func (url URL) Get() string {
 // TwitterUser Information about user who created tweet
 type TwitterUser struct {
 	ID string `json:"id_str"`
+}
+
+// GetDate Parses tweet date into a timestamp
+func (tweet Tweet) GetDate() (time.Time, error) {
+	return time.Parse(time.RubyDate, tweet.Date)
 }
