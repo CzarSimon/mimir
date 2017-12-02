@@ -1,26 +1,78 @@
 package main
 
-import "github.com/CzarSimon/util"
+import (
+	"os"
+
+	"github.com/CzarSimon/util"
+)
+
+const (
+	FilterSpamKey        = "HANDLE_SPAM"
+	ShoudFilterSpamValue = "TRUE"
+	TweetHandlerPort     = "2000"
+	DBHostKey            = "PG_HOST"
+	DBPasswordKey        = "PG_PASSWORD"
+	RankerHostKey        = "RANKER_HOST"
+	RankerPortKey        = "RANKER_PORT"
+	SpamFilterHostKey    = "SPAM_FILTER_HOST"
+	SpamFilterPortKey    = "SPAM_FILTER_PORT"
+)
 
 //Config is the main configuration type
 type Config struct {
-	server util.ServerConfig
-	db     util.PGConfig
+	filterSpam bool
+	ranker     util.ServerConfig
+	spamFilter util.ServerConfig
+	server     util.ServerConfig
+	db         util.PGConfig
+}
+
+// getConfig Sets up inital config
+func getConfig() Config {
+	return Config{
+		filterSpam: getShouldFilterSpamConfig(),
+		ranker:     getRankerConfig(),
+		spamFilter: getSpamFilterConfig(),
+		server:     getServerConfig(),
+		db:         getDBConfig(),
+	}
+}
+
+// getShouldFilterSpamConfig Gets config for whether the tweet handler
+// should filter for spam
+func getShouldFilterSpamConfig() bool {
+	shouldFilterSpam := os.Getenv(FilterSpamKey)
+	return shouldFilterSpam == ShoudFilterSpamValue
+}
+
+// getRankerConfig Gets config info for news ranker server
+func getRankerConfig() util.ServerConfig {
+	return util.ServerConfig{
+		Protocol: "http",
+		Host:     util.GetEnvVar(RankerHostKey, "localhost"),
+		Port:     util.GetEnvVar(RankerPortKey, "5000"),
+	}
+}
+
+// getSpamFilterConfig Gets config info for spam filter
+func getSpamFilterConfig() util.ServerConfig {
+	return util.ServerConfig{
+		Protocol: "http",
+		Host:     util.GetEnvVar(SpamFilterHostKey, "localhost"),
+		Port:     util.GetEnvVar(SpamFilterPortKey, "1000"),
+	}
 }
 
 // getServerConfig Sets up server config
 func getServerConfig() util.ServerConfig {
 	return util.ServerConfig{
-		Port: "2000",
+		Port: TweetHandlerPort,
 	}
 }
 
-// getConfig Sets up inital config
-func getConfig() Config {
-	pgHost := util.GetEnvVar("PG_HOST", "localhost")
-	pgPwd := util.GetEnvVar("PG_PASSWORD", "pwd")
-	return Config{
-		server: getServerConfig(),
-		db:     util.GetPGConfig(pgHost, pgPwd, "simon", "mimirprod"),
-	}
+// getDBConfig Sets up database configuration
+func getDBConfig() util.PGConfig {
+	pgHost := util.GetEnvVar(DBHostKey, "localhost")
+	pgPwd := util.GetEnvVar(DBPasswordKey, "pwd")
+	return util.GetPGConfig(pgHost, pgPwd, "simon", "mimirprod")
 }

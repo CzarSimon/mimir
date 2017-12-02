@@ -45,10 +45,15 @@ func (url URL) Get() string {
 
 // TwitterUser Information about user who created tweet
 type TwitterUser struct {
-	ID string `json:"id_str"`
+	ID        string `json:"id_str"`
+	Followers int64  `json:"followers_count"`
 }
 
 // GetDate Parses tweet date into a timestamp
-func (tweet Tweet) GetDate() (time.Time, error) {
-	return time.Parse(time.RubyDate, tweet.Date)
+func (tweet Tweet) GetDate() time.Time {
+	timestamp, err := time.Parse(time.RubyDate, tweet.Date)
+	if err != nil {
+		return time.Now().UTC()
+	}
+	return timestamp
 }
