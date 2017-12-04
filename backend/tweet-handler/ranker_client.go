@@ -11,3 +11,11 @@ func (env *Env) SendLinksToRanker(tweet Tweet, subjects []news.Subject) {
 	log.Println(env.Config.ranker.ToURL("api/rank-article"))
 	log.Println(tweet.Text)
 }
+
+// createRankObject Truns a tweet and list of subjects to a rankt object
+func createRankObject(tweet Tweet, subjects []news.Subject) (news.RankObject, error) {
+	return news.RankObject{
+		Subjects: subjects,
+		Language: tweet.Language,
+	}, nil
+}
