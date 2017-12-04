@@ -57,3 +57,12 @@ func (tweet Tweet) GetDate() time.Time {
 	}
 	return timestamp
 }
+
+// GetURLS Gets the tweet urls as strings
+func (tweet Tweet) GetURLs() []string {
+	urls := make([]string, len(tweet.Entities.URLs))
+	for i, url := range tweet.Entities.URLs {
+		urls[i] = url.Get()
+	}
+	return urls
+}
