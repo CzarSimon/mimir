@@ -47,7 +47,7 @@ def test_rank_objects():
 
 
 def main():
-    url = "http://localhost:5000/api/rank-article"
+    url = "http://mimir-dev.news:30080/api/rank-article"
     rank_objects = test_rank_objects()
     for rank_object in rank_objects:
         time.sleep(0.01)

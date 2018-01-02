@@ -1,0 +1,53 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: news-db
+  namespace: mimir
+  labels:
+    app: news-db
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: news-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:9.6
+          ports:
+            - name: news-db-port
+              containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: news-db-credentials
+                  key: password
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: news-db-credentials
+                  key: username
+            - name: POSTGRES_DB
+              valueFrom:
+                secretKeyRef:
+                  name: news-db-credentials
+                  key: database
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: news-db-volume
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-h", "localhost", "-U", "postgres"]
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-h", "localhost", "-U", "postgres"]
+            initialDelaySeconds: 5
+            timeoutSeconds: 1
+      volumes:
+        - name: news-db-volume
+          persistentVolumeClaim:
+            claimName: news-db-vol-claim

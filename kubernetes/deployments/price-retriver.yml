@@ -1,0 +1,33 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: price-retriver
+  namespace: mimir
+  labels:
+    app: price-retriver
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: price-retriver
+    spec:
+      containers:
+        - name: price-retriver
+          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/price-retriver:latest
+          env:
+            - name: PG_HOST
+              value: price-db
+            - name: TICKER_DB_HOST
+              value: app-db
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: price-db-credentials
+                  key: password
+            - name: RETRIVAL_TIME
+              value: 02:05
+            - name: TIMEZONE
+              value: America/New_York
+            - name: PRICE_API
+              value: IEX

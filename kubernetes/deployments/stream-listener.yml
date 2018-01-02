@@ -1,0 +1,43 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: stream-listener
+  namespace: mimir
+  labels:
+    app: stream-listener
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: stream-listener
+    spec:
+      containers:
+        - name: stream-listener
+          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/stream-listener:latest
+          env:
+            - name: PG_HOST
+              value: tweet-db
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-db-credentials
+                  key: password
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-db-credentials
+                  key: username
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-db-credentials
+                  key: database
+            - name: app_server_ip
+              value: app-server
+            - name: ranker_ip
+              value: news-ranker
+            - name: spam_filter
+              value: spam-filter
+            - name: HANDLE_SPAM
+              value: "TRUE"

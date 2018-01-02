@@ -19,3 +19,4 @@ backend/price-service/price-service
 backend/tweet-handler/tweet-handler
 db-backups/
 docker-commands/
+kubernetes/secrets/
