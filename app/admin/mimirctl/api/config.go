@@ -6,12 +6,16 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/user"
 
 	endpoint "github.com/CzarSimon/go-endpoint"
 	"github.com/CzarSimon/util"
 )
 
-const CONFIG_PATH = "~/.mimirctl/config.json"
+const (
+	CONFIG_FOLDER = "/.mimirctl/"
+	CONFIG_PATH   = CONFIG_FOLDER + "config.json"
+)
 
 // Auth Authorization credentials for the admin-api
 type Auth struct {
@@ -34,11 +38,12 @@ func GetConfig() (Config, error) {
 
 // readConfigFile Reads the content of the api configuration file
 func readConfigFile() []byte {
-	bytes, err := ioutil.ReadFile(CONFIG_PATH)
+	configPath := prependUserDir(CONFIG_PATH)
+	bytes, err := ioutil.ReadFile(configPath)
 	if err != nil {
 		fmt.Printf(
 			"Could not read config in: %s have you run mimirctl configure?\n Error: %s",
-			CONFIG_PATH, err.Error())
+			configPath, err.Error())
 		log.Fatal()
 	}
 	return bytes
@@ -47,19 +52,32 @@ func readConfigFile() []byte {
 // Save Saves an config struct to the CONFIG_PATH as
 // read/writeable only by the current user
 func (config Config) Save() {
-	bytes, err := json.MarshalIndent(config, "", "\t")
+	bytes, err := json.MarshalIndent(config, "", "    ")
 	util.CheckErrFatal(err)
-	err = ioutil.WriteFile(CONFIG_PATH, bytes, 0644)
-	if os.IsNotExist(err) {
-		f, err := os.Create(CONFIG_PATH)
-		util.CheckErrFatal(err)
-		defer f.Close()
-		f.Write(bytes)
-	}
+	createConfigDir()
+	err = ioutil.WriteFile(prependUserDir(CONFIG_PATH), bytes, 0600)
+	util.CheckErrFatal(err)
 }
 
 // String Returns a string representation of the configuration
 func (config Config) String() string {
 	return fmt.Sprintf("Host=%s Port=%s Protocol=%s",
 		config.API.Host, config.API.Port, config.API.Protocol)
+}
+
+// prependUserDir Prepends a supplied path with the current users home directory
+func prependUserDir(path string) string {
+	usr, err := user.Current()
+	if err != nil {
+		panic(err)
+	}
+	return usr.HomeDir + path
+}
+
+// createConfigDir Creates configuration folder if missing
+func createConfigDir() {
+	err := os.Mkdir(prependUserDir(CONFIG_FOLDER), os.ModePerm)
+	if err != nil && !os.IsExist(err) {
+		util.CheckErrFatal(err)
+	}
 }
