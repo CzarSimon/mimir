@@ -21,7 +21,7 @@ func ConfigureCommand() cli.Command {
 	return cli.Command{
 		Name:   "configure",
 		Usage:  fmt.Sprintf("Configures %s for use", APP_NAME),
-		Action: action.Placeholder,
+		Action: action.Configure,
 	}
 }
 

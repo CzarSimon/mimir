@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/CzarSimon/mimir/app/admin/mimirctl/api"
+	"github.com/CzarSimon/util"
 	"github.com/urfave/cli"
 )
 
@@ -15,6 +16,9 @@ func Placeholder(c *cli.Context) error {
 
 // testApiConfig Checks if a supplied config is correct
 func testApiConfig(config api.Config) {
+	if err := api.Ping(config); err != nil {
+		util.CheckErrFatal(err)
+	}
 	fmt.Println("Success! mimirctl authenticated")
 }
 

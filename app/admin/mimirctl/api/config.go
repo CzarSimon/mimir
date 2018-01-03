@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"os"
 
 	endpoint "github.com/CzarSimon/go-endpoint"
 	"github.com/CzarSimon/util"
@@ -48,8 +49,13 @@ func readConfigFile() []byte {
 func (config Config) Save() {
 	bytes, err := json.MarshalIndent(config, "", "\t")
 	util.CheckErrFatal(err)
-	err = ioutil.WriteFile(CONFIG_PATH, bytes, 0600)
-	util.CheckErrFatal(err)
+	err = ioutil.WriteFile(CONFIG_PATH, bytes, 0644)
+	if os.IsNotExist(err) {
+		f, err := os.Create(CONFIG_PATH)
+		util.CheckErrFatal(err)
+		defer f.Close()
+		f.Write(bytes)
+	}
 }
 
 // String Returns a string representation of the configuration
