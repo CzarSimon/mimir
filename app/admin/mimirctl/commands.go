@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 
+	"github.com/CzarSimon/mimir/app/admin/mimirctl/action"
 	"github.com/urfave/cli"
 )
 
@@ -11,7 +12,7 @@ func LoginCommand() cli.Command {
 	return cli.Command{
 		Name:   "login",
 		Usage:  "Sets and verifies login credentials",
-		Action: placeholderAction,
+		Action: action.Placeholder,
 	}
 }
 
@@ -20,7 +21,7 @@ func ConfigureCommand() cli.Command {
 	return cli.Command{
 		Name:   "configure",
 		Usage:  fmt.Sprintf("Configures %s for use", APP_NAME),
-		Action: placeholderAction,
+		Action: action.Placeholder,
 	}
 }
 
@@ -29,11 +30,6 @@ func LogoutCommand() cli.Command {
 	return cli.Command{
 		Name:   "logout",
 		Usage:  "Closes the admin api and removes the clients login credentials",
-		Action: placeholderAction,
+		Action: action.Placeholder,
 	}
-}
-
-func placeholderAction(c *cli.Context) error {
-	fmt.Println(c.Args)
-	return nil
 }

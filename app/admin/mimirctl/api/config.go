@@ -51,3 +51,9 @@ func (config Config) Save() {
 	err = ioutil.WriteFile(CONFIG_PATH, bytes, 0600)
 	util.CheckErrFatal(err)
 }
+
+// String Returns a string representation of the configuration
+func (config Config) String() string {
+	return fmt.Sprintf("Host=%s Port=%s Protocol=%s",
+		config.API.Host, config.API.Port, config.API.Protocol)
+}
