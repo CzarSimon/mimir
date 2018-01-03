@@ -10,7 +10,6 @@ import (
 // Configure Gets and stores api configuration information from the user
 func Configure(c *cli.Context) error {
 	config := getApiConfig()
-	fmt.Println(config)
 	testApiConfig(config)
 	config.Save()
 	return nil

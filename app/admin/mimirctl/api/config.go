@@ -69,7 +69,8 @@ func (config Config) String() string {
 func prependUserDir(path string) string {
 	usr, err := user.Current()
 	if err != nil {
-		panic(err)
+		fmt.Println(err.Error())
+		log.Fatal()
 	}
 	return usr.HomeDir + path
 }
@@ -78,6 +79,7 @@ func prependUserDir(path string) string {
 func createConfigDir() {
 	err := os.Mkdir(prependUserDir(CONFIG_FOLDER), os.ModePerm)
 	if err != nil && !os.IsExist(err) {
-		util.CheckErrFatal(err)
+		fmt.Println(err.Error())
+		log.Fatal()
 	}
 }
