@@ -7,6 +7,7 @@ import (
 	"log"
 	"os"
 	"os/user"
+	"path/filepath"
 
 	endpoint "github.com/CzarSimon/go-endpoint"
 	"github.com/CzarSimon/util"
@@ -72,7 +73,7 @@ func prependUserDir(path string) string {
 		fmt.Println(err.Error())
 		log.Fatal()
 	}
-	return usr.HomeDir + path
+	return filepath.Join(usr.HomeDir, path)
 }
 
 // createConfigDir Creates configuration folder if missing
