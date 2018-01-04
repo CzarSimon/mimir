@@ -25,6 +25,7 @@ func Ping(config Config) error {
 // performRequest Performs an http request and returs the result
 func performRequest(req *http.Request) (*http.Response, error) {
 	client := &http.Client{}
+	fmt.Println(req.Header)
 	return client.Do(req)
 }
 
