@@ -11,7 +11,7 @@ import (
 
 // Placeholder Action to user for command development
 func Placeholder(c *cli.Context) error {
-	fmt.Printf("Command: %+v", c.Args())
+	fmt.Printf("Command: %+v\n", c.Args())
 	return nil
 }
 

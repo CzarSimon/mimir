@@ -20,7 +20,7 @@ const (
 // GeneratePassword Command to generate a new password
 func GeneratePassword(c *cli.Context) error {
 	passphrase := getPassphrase()
-	fmt.Printf("Password: %s", createPassword(passphrase))
+	fmt.Printf("Password: %s\n", createPassword(passphrase))
 	return nil
 }
 

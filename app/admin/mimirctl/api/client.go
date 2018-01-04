@@ -5,12 +5,13 @@ import (
 	"io"
 	"log"
 	"net/http"
+	"time"
 )
 
 // Ping Attempts to authenticate towards the admin-api using
 // the supplied config, returns an error if unsuccessfull
 func Ping(config Config) error {
-	res, err := performRequest(newGetRequest("/admin/ping", config))
+	res, err := performRequest(newGetRequest("admin/ping", config))
 	if err != nil {
 		return err
 	}
@@ -24,8 +25,7 @@ func Ping(config Config) error {
 
 // performRequest Performs an http request and returs the result
 func performRequest(req *http.Request) (*http.Response, error) {
-	client := &http.Client{}
-	fmt.Println(req.Header)
+	client := newClient()
 	return client.Do(req)
 }
 
@@ -38,7 +38,9 @@ func newGetRequest(route string, config Config) *http.Request {
 // newGetRequest Creates a new Post request to the admin-api and
 // embends the api access key
 func newPostRequest(route string, config Config, body io.Reader) *http.Request {
-	return newRequest(http.MethodPost, route, config, body)
+	req := newRequest(http.MethodPost, route, config, body)
+	req.Header.Set("Content-Type", "application/json")
+	return req
 }
 
 // newGetRequest Creates a new http request of a supplied method
@@ -49,7 +51,14 @@ func newRequest(method, route string, config Config, body io.Reader) *http.Reque
 		fmt.Println(err.Error())
 		log.Fatal()
 	}
-	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", config.Auth.AccessKey)
 	return req
+}
+
+// newClient Sets up a new client for use
+func newClient() *http.Client {
+	const TIMEOUT_SECONDS = 5
+	return &http.Client{
+		Timeout: time.Second * TIMEOUT_SECONDS,
+	}
 }

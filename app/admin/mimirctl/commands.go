@@ -33,3 +33,12 @@ func LogoutCommand() cli.Command {
 		Action: action.Placeholder,
 	}
 }
+
+// PwdGenCommand Generates a password for use in the admin-api
+func PwdGenCommand() cli.Command {
+	return cli.Command{
+		Name:   "pwd-gen",
+		Usage:  "Generates a password for use in the admin-api",
+		Action: action.GeneratePassword,
+	}
+}

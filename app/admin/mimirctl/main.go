@@ -28,10 +28,12 @@ func getAppCommands() []cli.Command {
 		LoginCommand(),
 		ConfigureCommand(),
 		LogoutCommand(),
+		PwdGenCommand(),
 	}
 }
 
 func main() {
+	test()
 	app := getApp()
 	app.Run(os.Args)
 }
