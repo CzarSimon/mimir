@@ -3,15 +3,15 @@ package action
 import (
 	"fmt"
 	"log"
-	
-	"golang.org/x/crypto/ssh/terminal"
+
 	"github.com/CzarSimon/mimir/app/admin/mimirctl/api"
 	"github.com/urfave/cli"
+	"golang.org/x/crypto/ssh/terminal"
 )
 
 // Placeholder Action to user for command development
 func Placeholder(c *cli.Context) error {
-	fmt.Printf("Command: mimirctl %s", c.Args(1))
+	fmt.Printf("Command: %+v", c.Args())
 	return nil
 }
 
