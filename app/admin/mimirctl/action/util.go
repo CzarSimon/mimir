@@ -40,8 +40,9 @@ func getInputWithDefault(key, defaultVal string) string {
 
 // getHiddenInput Gets hidden user input from stdin
 func getHiddenInput(key string) string {
-	fmt.Printf("%s: \n", key)
+	fmt.Printf("%s: ", key)
 	value, err := terminal.ReadPassword(0)
+	fmt.Println()
 	checkErr(err)
 	return string(value)
 }

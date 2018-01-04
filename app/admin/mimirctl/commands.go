@@ -12,7 +12,7 @@ func LoginCommand() cli.Command {
 	return cli.Command{
 		Name:   "login",
 		Usage:  "Sets and verifies login credentials",
-		Action: action.Placeholder,
+		Action: action.Login,
 	}
 }
 
@@ -30,7 +30,7 @@ func LogoutCommand() cli.Command {
 	return cli.Command{
 		Name:   "logout",
 		Usage:  "Closes the admin api and removes the clients login credentials",
-		Action: action.Placeholder,
+		Action: action.Logout,
 	}
 }
 
@@ -48,6 +48,6 @@ func PingCommand() cli.Command {
 	return cli.Command{
 		Name:   "ping",
 		Usage:  "Tests that the cli can authenticate with the admin-api",
-		Action: action.Placeholder,
+		Action: action.Ping,
 	}
 }
