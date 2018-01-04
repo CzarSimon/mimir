@@ -42,3 +42,12 @@ func PwdGenCommand() cli.Command {
 		Action: action.GeneratePassword,
 	}
 }
+
+// PingCommand Tests that the cli can authenticate with the admin-api
+func PingCommand() cli.Command {
+	return cli.Command{
+		Name:   "ping",
+		Usage:  "Tests that the cli can authenticate with the admin-api",
+		Action: action.Placeholder,
+	}
+}

@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 
@@ -33,6 +32,5 @@ func getAccessToken() string {
 	if !ok {
 		log.Fatal("Could not find access key")
 	}
-	fmt.Println(token)
 	return token
 }

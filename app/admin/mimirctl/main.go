@@ -29,11 +29,11 @@ func getAppCommands() []cli.Command {
 		ConfigureCommand(),
 		LogoutCommand(),
 		PwdGenCommand(),
+		PingCommand(),
 	}
 }
 
 func main() {
-	test()
 	app := getApp()
 	app.Run(os.Args)
 }
