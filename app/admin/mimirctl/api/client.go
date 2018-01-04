@@ -49,6 +49,7 @@ func newRequest(method, route string, config Config, body io.Reader) *http.Reque
 		fmt.Println(err.Error())
 		log.Fatal()
 	}
+	req.Header.Set("Content-Type", "application/json")
 	req.Header.Set("Authorization", config.Auth.AccessKey)
 	return req
 }
