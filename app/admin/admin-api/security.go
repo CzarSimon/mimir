@@ -14,6 +14,7 @@ type Handler func(http.ResponseWriter, *http.Request)
 // auth Authorizes a request and calls the supplied handler if successfull
 func (env *Env) auth(handler Handler) Handler {
 	return func(res http.ResponseWriter, req *http.Request) {
+		fmt.Println(req.Header)
 		if env.validAccessKey(req) {
 			logAuthStatus("Auth Success", req)
 			handler(res, req)
