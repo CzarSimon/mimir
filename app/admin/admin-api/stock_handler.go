@@ -5,7 +5,7 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/CzarSimon/mimir/lib/stock"
+	"github.com/CzarSimon/mimir/app/lib/go/schema/stock"
 	"github.com/CzarSimon/util"
 )
 

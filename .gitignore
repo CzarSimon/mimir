@@ -1,22 +1,22 @@
-backend/stream-listener/config.py
-backend/stream-listener/example_tweet.py
-backend/**/*.pyc
+app/backend/stream-listener/config.py
+app/backend/stream-listener/example_tweet.py
+app/backend/**/*.pyc
 
-backend/stream-listener/miner.log
+app/backend/stream-listener/miner.log
 .idea/
-backend/application-server/node_modules
-backend/application-server/npm-debug.log
+app/backend/application-server/node_modules
+app/backend/application-server/npm-debug.log
 app/rethinkdb_data
 .gitignore
 
-backend/webscraper/article_ranker/news_corpus.py
-backend/webscraper/article_ranker/stopwords.py
+app/backend/webscraper/article_ranker/news_corpus.py
+app/backend/webscraper/article_ranker/stopwords.py
 
-backend/news-clustering/news-clustering
-backend/admin-page/server/server
-backend/volume-counter/volume-counter
-backend/price-service/price-service
-backend/tweet-handler/tweet-handler
+app/backend/news-clustering/news-clustering
+app/backend/admin-page/server/server
+app/backend/volume-counter/volume-counter
+app/backend/price-service/price-service
+app/backend/tweet-handler/tweet-handler
 db-backups/
 docker-commands/
 kubernetes/secrets/
