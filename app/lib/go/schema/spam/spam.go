@@ -28,6 +28,11 @@ func (candidate Candidate) IsSpam() bool {
 	return candidate.Label == SPAM_LABEL
 }
 
+// ValidLabel Checks if a candidates label is valid
+func (candidate Candidate) ValidLabel() bool {
+	return candidate.Label == SPAM_LABEL || candidate.Label == NON_SPAM_LABEL
+}
+
 // String Returns a string representation of a spam Candidate
 func (candidate Candidate) String() string {
 	return fmt.Sprintf("Text=%s Label=%s", candidate.Text, candidate.Label)
