@@ -8,22 +8,27 @@ import (
 
 // spamHandler Handles request related to spam candidates and labeleing resource
 func (env *Env) spamHandler(res http.ResponseWriter, req *http.Request) {
+	status := http.StatusMethodNotAllowed
+	err := METHOD_NOT_ALLOWED
 	switch req.Method {
 	case http.MethodGet:
-		env.getSpamCandidates(res, req)
+		status, err = env.getSpamCandidates(res, req)
 	case http.MethodPost:
-		env.labelSpam(res, req)
-	default:
-		util.SendErrStatus(res, METHOD_NOT_ALLOWED, http.StatusMethodNotAllowed)
+		status, err = env.labelSpam(res, req)
+	}
+	if err != nil {
+		util.SendErrStatus(res, err, status)
 	}
 }
 
 // getSpamCandidates Sends a number of spam candidates to label
-func (env *Env) getSpamCandidates(res http.ResponseWriter, req *http.Request) {
+func (env *Env) getSpamCandidates(res http.ResponseWriter, req *http.Request) (int, error) {
 	util.SendOK(res)
+	return http.StatusOK, nil
 }
 
 // labelSpam Labels a text with with its spam class
-func (env *Env) labelSpam(res http.ResponseWriter, req *http.Request) {
+func (env *Env) labelSpam(res http.ResponseWriter, req *http.Request) (int, error) {
 	util.SendOK(res)
+	return http.StatusOK, nil
 }

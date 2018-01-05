@@ -1,15 +1,15 @@
 go build # Builds the api server
 
 # Tweet db config
-export TWEET_DB_HOST=localhost
-export TWEET_DB_PORT=3
+export TWEET_DB_HOST=mimir-dev.news
+export TWEET_DB_PORT=32201
 export TWEET_DB_USER=simon
 export TWEET_DB_PASSWORD=$PG_PASSWORD
 export TWEET_DB_NAME=mimirprod
 
 # App db config
-export APP_DB_HOST=localhost
-export APP_DB_PORT=3
+export APP_DB_HOST=mimir-dev.news
+export APP_DB_PORT=30012
 export APP_DB_USER=simon
 export APP_DB_PASSWORD=$PG_PASSWORD
 export APP_DB_NAME=mimirprod
