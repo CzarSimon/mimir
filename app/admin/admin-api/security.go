@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/CzarSimon/util"
 )
@@ -27,7 +28,14 @@ func (env *Env) auth(handler Handler) Handler {
 
 // validAccessKey Checks if the request contains a valid access key
 func (env *Env) validAccessKey(req *http.Request) bool {
-	return env.Config.accessToken == req.Header.Get("Authorization")
+	accessKeyIsValid := env.Config.accessToken == req.Header.Get("Authorization")
+	return accessKeyIsValid && !env.accessTokenExpired()
+
+}
+
+// accessTokenExpired Checks if access token has expired
+func (env *Env) accessTokenExpired() bool {
+	return env.Config.tokenValidTo.Before(time.Now().UTC())
 }
 
 // logAuthStatus Logs outcome of authorization challange

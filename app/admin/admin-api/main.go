@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	endpoint "github.com/CzarSimon/go-endpoint"
 	"github.com/CzarSimon/util"
 )
 
@@ -18,8 +19,17 @@ type Env struct {
 // NewEnv Sets up handler environment
 func NewEnv(config Config) *Env {
 	return &Env{
-		Config: config,
+		TweetDB: connectToDB(config.tweetDB),
+		AppDB:   connectToDB(config.appDB),
+		Config:  config,
 	}
+}
+
+// connectToDB Connect to a database, exits if unsuccessfull
+func connectToDB(config endpoint.SQLConfig) *sql.DB {
+	db, err := config.Connect()
+	util.CheckErrFatal(err)
+	return db
 }
 
 // NewServer Creates a server with a route handler
@@ -32,6 +42,7 @@ func NewServer(env *Env) *http.Server {
 
 func main() {
 	config := NewConfig()
+	//fmt.Println(config)
 	env := NewEnv(config)
 
 	server := NewServer(env)

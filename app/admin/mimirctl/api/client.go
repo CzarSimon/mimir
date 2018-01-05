@@ -11,7 +11,7 @@ import (
 // Ping Attempts to authenticate towards the admin-api using
 // the supplied config, returns an error if unsuccessfull
 func Ping(config Config) error {
-	res, err := performRequest(newGetRequest("admin/ping", config))
+	res, err := performRequest(newGetRequest("api/admin/ping", config))
 	if err != nil {
 		return err
 	}
