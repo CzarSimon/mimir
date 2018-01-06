@@ -5,37 +5,31 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/mimir/app/lib/go/schema/spam"
 	"github.com/CzarSimon/util"
 )
 
 // spamHandler Handles request related to spam candidates and labeleing resource
-func (env *Env) spamHandler(res http.ResponseWriter, req *http.Request) {
-	status := http.StatusMethodNotAllowed
-	err := METHOD_NOT_ALLOWED
-	switch req.Method {
+func (env *Env) spamHandler(w http.ResponseWriter, r *http.Request) error {
+	switch r.Method {
 	case http.MethodGet:
-		status, err = env.getSpamCandidates(res, req)
+		return env.getSpamCandidates(w, r)
 	case http.MethodPost:
-		status, err = env.labelSpam(res, req)
-	}
-	if err != nil {
-		util.SendErrStatus(res, err, status)
+		return env.labelSpam(w, r)
+	default:
+		return httputil.MethodNotAllowed
 	}
 }
 
 // getSpamCandidates Sends a number of spam candidates to label
-func (env *Env) getSpamCandidates(res http.ResponseWriter, req *http.Request) (int, error) {
+func (env *Env) getSpamCandidates(w http.ResponseWriter, r *http.Request) error {
 	candidates, err := queryForSpamCandidates(env.TweetDB)
 	if err != nil {
 		log.Println(err)
-		return InternalServerError()
+		return httputil.InternalServerError
 	}
-	err = SendJSON(res, candidates)
-	if err != nil {
-		return http.StatusInternalServerError, err
-	}
-	return http.StatusOK, nil
+	return httputil.SendJSON(w, candidates)
 }
 
 // queryForSpamCandidates Get spam candidates from database
@@ -63,20 +57,20 @@ func constructSpamCandidatesList(rows *sql.Rows) ([]spam.Candidate, error) {
 }
 
 // labelSpam Labels a text with with its spam class
-func (env *Env) labelSpam(res http.ResponseWriter, req *http.Request) (int, error) {
+func (env *Env) labelSpam(w http.ResponseWriter, r *http.Request) error {
 	var candidate spam.Candidate
-	err := util.DecodeJSON(req.Body, &candidate)
+	err := util.DecodeJSON(r.Body, &candidate)
 	if err != nil {
 		log.Println(err)
-		return BadRequest()
+		return httputil.BadRequest
 	}
 	err = storeSpamLabel(candidate, env.TweetDB)
 	if err != nil {
 		log.Println(err)
-		return InternalServerError()
+		return httputil.InternalServerError
 	}
-	util.SendOK(res)
-	return http.StatusOK, nil
+	httputil.SendOK(w)
+	return nil
 }
 
 // storeSpamLabel Stores the text and spam label of a supplied candidate

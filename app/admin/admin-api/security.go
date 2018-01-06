@@ -1,27 +1,25 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
 	"time"
 
-	"github.com/CzarSimon/util"
+	"github.com/CzarSimon/httputil"
 )
 
 // Handler Function for dealing with http request / responses
 type Handler func(http.ResponseWriter, *http.Request)
 
 // auth Authorizes a request and calls the supplied handler if successfull
-func (env *Env) auth(handler Handler) Handler {
-	return func(res http.ResponseWriter, req *http.Request) {
-		if env.validAccessKey(req) {
-			logAuthStatus("Auth Success", req)
-			handler(res, req)
+func (env *Env) auth(fn http.Handler) Handler {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if env.validAccessKey(r) {
+			logAuthStatus("Auth Success", r)
+			fn.ServeHTTP(w, r)
 		} else {
-			logAuthStatus("Auth failed", req)
-			util.SendErrStatus(
-				res, fmt.Errorf("Not authorized"), http.StatusUnauthorized)
+			logAuthStatus("Auth failed", r)
+			httputil.SendErr(w, httputil.NotAuthorized)
 		}
 	}
 }
