@@ -14,8 +14,7 @@ import (
 func (env *Env) stockHandler(w http.ResponseWriter, r *http.Request) error {
 	switch r.Method {
 	case http.MethodGet:
-		httputil.SendOK(w)
-		return nil
+		return env.getStocks(w, r)
 	case http.MethodPost:
 		return env.storeNewStock(w, r)
 	default:
@@ -47,15 +46,34 @@ func queryForStocks(r *http.Request, db *sql.DB) ([]stock.Stock, error) {
 // constructStocksList creates a list of stocks from a result set
 func constructStocksList(rows *sql.Rows) ([]stock.Stock, error) {
 	stocks := make([]stock.Stock, 0)
-	var s stock.Stock
+	var ns NullStock
 	for rows.Next() {
-		err := rows.Scan(&s.Ticker, &s.Ticker, &s.Description, &s.ImageURL, &s.Website)
+		err := rows.Scan(&ns.Ticker, &ns.Name, &ns.Description, &ns.ImageURL, &ns.Website)
 		if err != nil {
 			return nil, err
 		}
-		stocks = append(stocks, s)
+		stocks = append(stocks, ns.ToStock())
 	}
 	return stocks, nil
+}
+
+type NullStock struct {
+	Ticker      sql.NullString
+	Name        sql.NullString
+	Description sql.NullString
+	ImageURL    sql.NullString
+	Website     sql.NullString
+}
+
+// ToStock turns a nullable stock into a stock struct
+func (ns NullStock) ToStock() stock.Stock {
+	return stock.Stock{
+		Ticker:      ns.Ticker.String,
+		Name:        ns.Name.String,
+		Description: ns.Description.String,
+		ImageURL:    ns.ImageURL.String,
+		Website:     ns.Website.String,
+	}
 }
 
 // getStockQuery creates query for tracked stocks.
