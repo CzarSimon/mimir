@@ -3,18 +3,18 @@ package main
 import (
 	"net/http"
 
-	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/httputil/auth"
+	"github.com/CzarSimon/httputil/handler"
 )
 
-// SetupRoutes Sets up routes and handlers
+// SetupRoutes sets up routes and handlers.
 func SetupRoutes(env *Env) *http.ServeMux {
 	mux := http.NewServeMux()
 	check := auth.NewWrapper(env.validAccessKey)
-	mux.HandleFunc("/api/admin/stock", env.stockHandler)
-	mux.HandleFunc("/api/admin/untracked-tickers", env.untrackedTickerHandler)
-	mux.Handle("/api/admin/spam", check.Wrap(httputil.NewHandler(env.spamHandler)))
-	mux.Handle("/api/admin/ping", check.Wrap(httputil.HealthCheck))
-	mux.Handle("/api/admin/health", httputil.HealthCheck)
+	mux.Handle("/api/admin/stock", handler.New(env.stockHandler))
+	mux.Handle("/api/admin/untracked-tickers", handler.New(env.untrackedTickerHandler))
+	mux.Handle("/api/admin/spam", check.Wrap(handler.New(env.spamHandler)))
+	mux.Handle("/api/admin/ping", check.Wrap(handler.HealthCheck))
+	mux.Handle("/api/admin/health", handler.HealthCheck)
 	return mux
 }
