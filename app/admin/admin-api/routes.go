@@ -11,8 +11,9 @@ import (
 func SetupRoutes(env *Env) *http.ServeMux {
 	mux := http.NewServeMux()
 	check := auth.NewWrapper(env.validAccessKey)
-	mux.Handle("/api/admin/stock", handler.New(env.stockHandler))
-	mux.Handle("/api/admin/untracked-tickers", handler.New(env.untrackedTickerHandler))
+	mux.Handle("/api/admin/stock", check.Wrap(handler.New(env.stockHandler)))
+	mux.Handle("/api/admin/untracked-tickers",
+		check.Wrap(handler.New(env.untrackedTickerHandler)))
 	mux.Handle("/api/admin/spam", check.Wrap(handler.New(env.spamHandler)))
 	mux.Handle("/api/admin/ping", check.Wrap(handler.HealthCheck))
 	mux.Handle("/api/admin/health", handler.HealthCheck)

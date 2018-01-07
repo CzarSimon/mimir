@@ -46,34 +46,15 @@ func queryForStocks(r *http.Request, db *sql.DB) ([]stock.Stock, error) {
 // constructStocksList creates a list of stocks from a result set
 func constructStocksList(rows *sql.Rows) ([]stock.Stock, error) {
 	stocks := make([]stock.Stock, 0)
-	var ns NullStock
+	var ns stock.NullStock
 	for rows.Next() {
 		err := rows.Scan(&ns.Ticker, &ns.Name, &ns.Description, &ns.ImageURL, &ns.Website)
 		if err != nil {
 			return nil, err
 		}
-		stocks = append(stocks, ns.ToStock())
+		stocks = append(stocks, ns.Stock())
 	}
 	return stocks, nil
-}
-
-type NullStock struct {
-	Ticker      sql.NullString
-	Name        sql.NullString
-	Description sql.NullString
-	ImageURL    sql.NullString
-	Website     sql.NullString
-}
-
-// ToStock turns a nullable stock into a stock struct
-func (ns NullStock) ToStock() stock.Stock {
-	return stock.Stock{
-		Ticker:      ns.Ticker.String,
-		Name:        ns.Name.String,
-		Description: ns.Description.String,
-		ImageURL:    ns.ImageURL.String,
-		Website:     ns.Website.String,
-	}
 }
 
 // getStockQuery creates query for tracked stocks.

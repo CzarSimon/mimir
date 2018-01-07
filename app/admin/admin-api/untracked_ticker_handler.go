@@ -10,7 +10,7 @@ import (
 	"github.com/CzarSimon/httputil/query"
 )
 
-const defaultUntrackedTickerLimit = 100
+const defaultUntrackedTickerLimit = 10
 
 // untrackedTickerHandler handles request for the resource untracked tickers.
 func (env *Env) untrackedTickerHandler(w http.ResponseWriter, r *http.Request) error {
@@ -61,7 +61,7 @@ func topUntrackedQuery() string {
 	return `
 		SELECT TICKER
 		FROM UNTRACKED_TICKERS
-		WHERE TICKER NOT IN (SELECT TICKER FROM STOCK WHERE IS_TRACKED=TRUE)
+		WHERE TICKER NOT IN (SELECT TICKER FROM STOCKS WHERE IS_TRACKED=TRUE)
 		GROUP BY TICKER ORDER BY COUNT(*) DESC LIMIT $1`
 }
 
