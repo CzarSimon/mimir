@@ -30,6 +30,9 @@ func getAppCommands() []cli.Command {
 		LogoutCommand(),
 		PwdGenCommand(),
 		PingCommand(),
+		GetCommand(),
+		AddCommand(),
+		LabelCommand(),
 	}
 }
 

@@ -7,7 +7,7 @@ import (
 	"github.com/urfave/cli"
 )
 
-// LoginCommand Sets and verifies login credentials
+// LoginCommand sets and verifies login credentials.
 func LoginCommand() cli.Command {
 	return cli.Command{
 		Name:   "login",
@@ -16,7 +16,7 @@ func LoginCommand() cli.Command {
 	}
 }
 
-// ConfigureCommand Configures the cli app for use
+// ConfigureCommand configures the cli app for use.
 func ConfigureCommand() cli.Command {
 	return cli.Command{
 		Name:   "configure",
@@ -25,7 +25,7 @@ func ConfigureCommand() cli.Command {
 	}
 }
 
-// LogoutCommand Closes the admin api and removes the clients login credentials
+// LogoutCommand closes the admin api and removes the clients login credentials.
 func LogoutCommand() cli.Command {
 	return cli.Command{
 		Name:   "logout",
@@ -34,7 +34,7 @@ func LogoutCommand() cli.Command {
 	}
 }
 
-// PwdGenCommand Generates a password for use in the admin-api
+// PwdGenCommand generates a password for use in the admin-api.
 func PwdGenCommand() cli.Command {
 	return cli.Command{
 		Name:   "pwd-gen",
@@ -43,11 +43,39 @@ func PwdGenCommand() cli.Command {
 	}
 }
 
-// PingCommand Tests that the cli can authenticate with the admin-api
+// PingCommand tests that the cli can authenticate with the admin-api.
 func PingCommand() cli.Command {
 	return cli.Command{
 		Name:   "ping",
 		Usage:  "Tests that the cli can authenticate with the admin-api",
+		Action: action.Ping,
+	}
+}
+
+// GetCommand querys the admin api for a list of the specified resource.
+func GetCommand() cli.Command {
+	return cli.Command{
+		Name:   "get",
+		Usage:  "Querys the admin api for a list of the specified resource",
+		Action: action.Ping,
+	}
+}
+
+// AddCommand adds a specified resource.
+func AddCommand() cli.Command {
+	return cli.Command{
+		Name:   "add",
+		Usage:  "Adds a specified resource",
+		Action: action.Ping,
+	}
+}
+
+// LabelCommand querys the admin api for labeling candidtes
+// and sends back labeled data.
+func LabelCommand() cli.Command {
+	return cli.Command{
+		Name:   "label",
+		Usage:  "Querys the admin api for labeling candidtes and sends back labeled data",
 		Action: action.Ping,
 	}
 }
