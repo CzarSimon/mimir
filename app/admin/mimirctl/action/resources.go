@@ -31,6 +31,6 @@ func (rm ResourceMap) GetFunc(resource string) cli.ActionFunc {
 
 // getResource gets a resource type from supplied command line arguments
 func getResource(c *cli.Context) string {
-	resourceArgIndex := 2
+	resourceArgIndex := 0
 	return c.Args().Get(resourceArgIndex)
 }
