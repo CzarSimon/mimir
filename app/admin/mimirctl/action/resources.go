@@ -18,10 +18,10 @@ const (
 type ResourceType string
 
 // ResourceMap maps a resource to an action function
-type ResourceMap map[ResourceType]cli.ActionFunc
+type ResourceMap map[string]cli.ActionFunc
 
 // GetFunc gets an action function based on a resource type. Exits if unsuccessful
-func (rm ResourceMap) GetFunc(resource ResourceType) cli.ActionFunc {
+func (rm ResourceMap) GetFunc(resource string) cli.ActionFunc {
 	function, ok := rm[resource]
 	if !ok {
 		checkErr(fmt.Errorf("No action exists for resource \"%s\"", resource))
@@ -30,7 +30,7 @@ func (rm ResourceMap) GetFunc(resource ResourceType) cli.ActionFunc {
 }
 
 // getResource gets a resource type from supplied command line arguments
-func getResource(c *cli.Context) ResourceType {
+func getResource(c *cli.Context) string {
 	resourceArgIndex := 2
-	return ResourceType(c.Args().Get(resourceArgIndex))
+	return c.Args().Get(resourceArgIndex)
 }

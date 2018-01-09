@@ -57,7 +57,7 @@ func GetCommand() cli.Command {
 	return cli.Command{
 		Name:   "get",
 		Usage:  "Querys the admin api for a list of the specified resource",
-		Action: action.Ping,
+		Action: action.Get,
 	}
 }
 
@@ -66,7 +66,7 @@ func AddCommand() cli.Command {
 	return cli.Command{
 		Name:   "add",
 		Usage:  "Adds a specified resource",
-		Action: action.Ping,
+		Action: action.Add,
 	}
 }
 
@@ -76,6 +76,6 @@ func LabelCommand() cli.Command {
 	return cli.Command{
 		Name:   "label",
 		Usage:  "Querys the admin api for labeling candidtes and sends back labeled data",
-		Action: action.Ping,
+		Action: action.Label,
 	}
 }
