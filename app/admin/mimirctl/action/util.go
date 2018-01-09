@@ -38,7 +38,7 @@ func getInputWithDefault(key, defaultVal string) string {
 	return value
 }
 
-// getHiddenInput Gets hidden user input from stdin
+// getHiddenInput gets hidden user input from stdin.
 func getHiddenInput(key string) string {
 	fmt.Printf("%s: ", key)
 	value, err := terminal.ReadPassword(0)
@@ -47,7 +47,7 @@ func getHiddenInput(key string) string {
 	return string(value)
 }
 
-// checkErr Prints error and halts execution if error is not nil
+// checkErr prints error and halts execution if error is not nil.
 func checkErr(err error) {
 	if err != nil {
 		fmt.Println(err.Error())

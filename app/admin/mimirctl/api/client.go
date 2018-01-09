@@ -3,7 +3,6 @@ package api
 import (
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"path/filepath"
 	"time"
@@ -60,10 +59,7 @@ func newPostRequest(route string, config Config, body io.Reader) *http.Request {
 // to the admin-api and embends the api access key
 func newRequest(method, route string, config Config, body io.Reader) *http.Request {
 	req, err := http.NewRequest(method, config.API.ToURL(route), body)
-	if err != nil {
-		fmt.Println(err.Error())
-		log.Fatal()
-	}
+	checkErr(err)
 	req.Header.Set("Authorization", config.Auth.AccessKey)
 	return req
 }
