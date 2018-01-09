@@ -2,7 +2,7 @@ package action
 
 import (
 	"fmt"
-	"log"
+	"os"
 
 	"github.com/CzarSimon/mimir/app/admin/mimirctl/api"
 	"github.com/urfave/cli"
@@ -51,6 +51,11 @@ func getHiddenInput(key string) string {
 func checkErr(err error) {
 	if err != nil {
 		fmt.Println(err.Error())
-		log.Fatal()
+		os.Exit(0)
 	}
+}
+
+// printHeader prints a highighted message to stdout.
+func printHeader(msg string) {
+	fmt.Printf("------- %s -------\n", msg)
 }

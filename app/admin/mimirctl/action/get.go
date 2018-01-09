@@ -3,6 +3,7 @@ package action
 import (
 	"fmt"
 
+	"github.com/CzarSimon/mimir/app/admin/mimirctl/api"
 	"github.com/urfave/cli"
 )
 
@@ -21,12 +22,20 @@ func Get(c *cli.Context) error {
 
 // getStocks gets a list of stocks from the api.
 func getStocks(c *cli.Context) error {
-	fmt.Println("getting stocks")
+	stocks := api.GetStocks()
+	printHeader("Stocks")
+	for _, s := range stocks {
+		fmt.Printf("%s\n\n", s.String())
+	}
 	return nil
 }
 
 // getUntrackedTickers gets a ranked list of untracked tickers from the api.
 func getUntrackedTickers(c *cli.Context) error {
-	fmt.Println("getting untracked tickers")
+	tickers := api.GetUntrackedTickers()
+	printHeader("Untracked Tickers")
+	for i, ticker := range tickers {
+		fmt.Printf("%d. - %s\n", i, ticker)
+	}
 	return nil
 }
