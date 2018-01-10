@@ -32,7 +32,7 @@ func getSpamCandidates(c *cli.Context) error {
 
 // labelSpam interacts with the user to label a spam candidate.
 func labelSpam(candidate spam.Candidate) {
-	fmt.Printf("Text: %s \nChose label (press any other key to skip)\n")
+	fmt.Printf("Text: %s \nChose label (press any other key to skip)\n", candidate.Text)
 	choice := getInput(spamChoices.String())
 	label, ok := spamChoices[choice]
 	if !ok {
@@ -41,6 +41,18 @@ func labelSpam(candidate spam.Candidate) {
 	}
 	candidate.Label = label
 	fmt.Println(candidate)
+}
+
+// confirmAndSendLabel asks for user conifirmation of a spam label
+// and sends result to admin api if affirmative
+func confirmAndSendLabel(candidate spam.Candidate) {
+	fmt.Printf("Is this correct: %s", candidate)
+	confirmation := getInput("(yes / no)")
+	if confirmation != "yes" {
+		labelSpam(candidate)
+		return
+	}
+	api.AddLabeledSpam(candidate)
 }
 
 // choiceMap map used for linking user input to a string label.

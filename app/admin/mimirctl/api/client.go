@@ -1,6 +1,8 @@
 package api
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
 	"net/http"
@@ -27,12 +29,26 @@ func Ping(config Config) error {
 	return nil
 }
 
+// makeGetRequest gets api config and performs a get request
 func makeGetRequest(route string) (*http.Response, error) {
 	config, err := GetConfig()
 	if err != nil {
 		return nil, err
 	}
 	return performRequest(newGetRequest(route, config))
+}
+
+// makePostRequest marshals a json body and performs a post request
+func makePostRequest(route string, v interface{}) (*http.Response, error) {
+	config, err := GetConfig()
+	if err != nil {
+		return nil, err
+	}
+	js, err := json.Marshal(v)
+	if err != nil {
+		return nil, err
+	}
+	return performRequest(newPostRequest(route, config, bytes.NewBuffer(js)))
 }
 
 // performRequest Performs an http request and returs the result
