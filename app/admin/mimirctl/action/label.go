@@ -24,7 +24,7 @@ func Label(c *cli.Context) error {
 func getSpamCandidates(c *cli.Context) error {
 	candidates := api.GetSpamCandidates()
 	for i, candidate := range candidates {
-		fmt.Println("Candidate %d of %d", i+1, len(candidates))
+		fmt.Printf("Candidate %d of %d\n", i+1, len(candidates))
 		labelSpam(candidate)
 	}
 	return nil
@@ -40,7 +40,7 @@ func labelSpam(candidate spam.Candidate) {
 		return
 	}
 	candidate.Label = label
-	fmt.Println(candidate)
+	confirmAndSendLabel(candidate)
 }
 
 // confirmAndSendLabel asks for user conifirmation of a spam label
