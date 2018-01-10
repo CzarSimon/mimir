@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
 
@@ -34,12 +35,21 @@ func (env *Env) getSpamCandidates(w http.ResponseWriter, r *http.Request) error 
 
 // queryForSpamCandidates Get spam candidates from database
 func queryForSpamCandidates(db *sql.DB) ([]spam.Candidate, error) {
-	rows, err := db.Query("SELECT TWEET FROM STOCKTWEETS LIMIT 10")
+	rows, err := db.Query(getSpamCandidatesQuery(10))
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
 	return constructSpamCandidatesList(rows)
+}
+
+// getSpamCandidatesQuery constructs and returns the query for spam retrival.
+func getSpamCandidatesQuery(limit int) string {
+	return fmt.Sprintf(
+		`SELECT DISTINCT T.TWEET
+  		FROM STOCKTWEETS T
+  		INNER JOIN SPAM_DATA S
+  		ON S.TWEET != T.TWEET LIMIT %d`, limit)
 }
 
 // constructSpamCandidatesList Structures a result set into a slice of spam candidates
