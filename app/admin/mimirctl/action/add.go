@@ -36,10 +36,10 @@ func addStock(c *cli.Context) error {
 func getNewStock(ticker string) stock.Stock {
 	newStock := api.GetNewStock(ticker)
 	fmt.Printf("Ticker: %s\n", ticker)
-	newStock.Name = getInput("Name")
-	newStock.Description = getInput("Description")
-	newStock.ImageURL = getInput("Image Url")
-	newStock.Website = getInput("Website")
+	newStock.Name = getInputWithDefault("Name", newStock.Name)
+	newStock.Description = getInputWithDefault("Description", newStock.Description)
+	newStock.ImageURL = getInputWithDefault("Image Url", newStock.ImageURL)
+	newStock.Website = getInputWithDefault("Website", newStock.Website)
 	return newStock
 }
 

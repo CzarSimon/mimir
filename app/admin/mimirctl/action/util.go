@@ -34,7 +34,11 @@ func getInput(key string) string {
 
 // getInputWithDefault Gets user input, if empty returns a supplied default value
 func getInputWithDefault(key, defaultVal string) string {
-	value := getInput(fmt.Sprintf("%s (%s)", key, defaultVal))
+	instruction := key + " "
+	if defaultVal != "" {
+		instruction += fmt.Sprintf("(%s)", defaultVal)
+	}
+	value := getInput(instruction)
 	if value == "" {
 		return defaultVal
 	}
