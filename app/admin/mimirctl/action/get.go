@@ -35,7 +35,7 @@ func getUntrackedTickers(c *cli.Context) error {
 	tickers := api.GetUntrackedTickers()
 	printHeader("Untracked Tickers")
 	for i, ticker := range tickers {
-		fmt.Printf("%d. - %s\n", i, ticker)
+		fmt.Printf("%d. - %s\n", i+1, ticker)
 	}
 	return nil
 }

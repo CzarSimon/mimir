@@ -18,7 +18,7 @@ type Stock struct {
 // String Returns a string representation of a stock
 func (stock Stock) String() string {
 	return fmt.Sprintf(
-		"Ticker=%s Name=%s\nDescription=%s\nImageURL=%s\nWebsite=%s",
+		"Ticker=%s \nName=%s\nDescription=%s\nImageURL=%s\nWebsite=%s",
 		stock.Ticker, stock.Name, stock.Description, stock.ImageURL, stock.Website)
 }
 

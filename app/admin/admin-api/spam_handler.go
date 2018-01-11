@@ -48,8 +48,9 @@ func getSpamCandidatesQuery(limit int) string {
 	return fmt.Sprintf(
 		`SELECT DISTINCT T.TWEET
   		FROM STOCKTWEETS T
-  		INNER JOIN SPAM_DATA S
-  		ON S.TWEET != T.TWEET LIMIT %d`, limit)
+  		WHERE T.TWEET NOT IN (
+    		SELECT S.TWEET FROM SPAM_DATA S
+  		) LIMIT %d`, limit)
 }
 
 // constructSpamCandidatesList Structures a result set into a slice of spam candidates
