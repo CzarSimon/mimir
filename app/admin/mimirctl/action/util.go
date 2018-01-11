@@ -1,8 +1,10 @@
 package action
 
 import (
+	"bufio"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/CzarSimon/mimir/app/admin/mimirctl/api"
 	"github.com/urfave/cli"
@@ -23,10 +25,11 @@ func testApiConfig(config api.Config) {
 
 // getInput Gets user input from stdin
 func getInput(key string) string {
-	var value string
+	reader := bufio.NewReader(os.Stdin)
 	fmt.Print(key + ": ")
-	fmt.Scanf("%s", &value)
-	return value
+	text, err := reader.ReadString('\n')
+	checkErr(err)
+	return strings.Replace(text, "\n", "", -1)
 }
 
 // getInputWithDefault Gets user input, if empty returns a supplied default value
