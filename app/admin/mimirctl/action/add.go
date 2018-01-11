@@ -3,6 +3,7 @@ package action
 import (
 	"fmt"
 
+	"github.com/CzarSimon/mimir/app/admin/mimirctl/api"
 	"github.com/CzarSimon/mimir/app/lib/go/schema/spam"
 	"github.com/CzarSimon/mimir/app/lib/go/schema/stock"
 	"github.com/urfave/cli"
@@ -23,7 +24,11 @@ func Add(c *cli.Context) error {
 
 // addStock add command for the stock resource.
 func addStock(c *cli.Context) error {
-	fmt.Println("Adding stock")
+	ticker := c.String("ticker")
+	if ticker == "" {
+		checkErr(fmt.Errorf("No ticker specified"))
+	}
+	api.AddStock(getNewStock(ticker))
 	return nil
 }
 

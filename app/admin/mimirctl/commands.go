@@ -67,6 +67,12 @@ func AddCommand() cli.Command {
 		Name:   "add",
 		Usage:  "Adds a specified resource",
 		Action: action.Add,
+		Flags: []cli.Flag{
+			cli.StringFlag{
+				Name:  "ticker",
+				Usage: "Specifies a the ticker of a new stock to add",
+			},
+		},
 	}
 }
 
