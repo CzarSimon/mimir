@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/mimir/app/lib/go/schema/stock"
@@ -64,7 +65,7 @@ func getStockQuery() string {
 		FROM STOCK`
 }
 
-// storeNewStock stores a new stock.
+// storeNewStock stores a new stock in the connected databases.
 func (env *Env) storeNewStock(w http.ResponseWriter, r *http.Request) error {
 	var newStock stock.Stock
 	err := util.DecodeJSON(r.Body, &newStock)
@@ -72,7 +73,43 @@ func (env *Env) storeNewStock(w http.ResponseWriter, r *http.Request) error {
 		log.Println(err)
 		return httputil.BadRequest
 	}
-	log.Println(newStock)
+	err = storeStockInAppDB(newStock, env.AppDB)
+	if err != nil {
+		return err
+	}
+	err = storeStockInTweetDB(newStock, env.TweetDB)
+	if err != nil {
+		return err
+	}
 	httputil.SendOK(w)
 	return nil
+}
+
+// storeStockInAppDB attempts to store a new stock in the app database.
+func storeStockInAppDB(newStock stock.Stock, db *sql.DB) error {
+	stmt, err := db.Prepare("INSERT INTO STOCK(TICKER, NAME, DESCRIPTION, IMAGE_URL, WEBSITE) VALUES($1,$2,$3,$4,$5)")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(
+		newStock.Ticker, newStock.Name, newStock.Description, newStock.ImageURL, newStock.Website)
+	return err
+}
+
+// storeStockInTweetDB attempts to store a new stock in the tweet.
+func storeStockInTweetDB(newStock stock.Stock, db *sql.DB) error {
+	stmt, err := db.Prepare("INSERT INTO STOCKS(TICKER, NAME, STOREDAT) VALUES($1,$2,$3)")
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+	_, err = stmt.Exec(newStock.Ticker, newStock.Name, getFirstStoredDate())
+	return err
+}
+
+// getFirstStoredDate returns the datestamp when ticker tracking
+// should begin from the point of view of the tweet db.
+func getFirstStoredDate() time.Time {
+	return time.Now().UTC().AddDate(0, 0, 1)
 }
