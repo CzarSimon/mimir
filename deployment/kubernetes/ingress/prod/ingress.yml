@@ -5,7 +5,7 @@ metadata:
   namespace: mimir
 spec:
   rules:
-    - host: mimir-dev.news
+    - host: mimir.news
       http:
         paths:
           - path: /api/app/
@@ -24,7 +24,7 @@ spec:
             backend:
               serviceName: search-server
               servicePort: 7000
-    - host: admin.mimir-dev.news
+    - host: admin.mimir.news
       http:
         paths:
           - path: /api/admin/

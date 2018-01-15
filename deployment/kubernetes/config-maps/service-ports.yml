@@ -4,8 +4,7 @@ metadata:
   name: service-ports
   namespace: mimir
 data:
-  pg: "5432"
-  admin-page: "8000"
+  admin-api: "8000"
   app-server: "3000"
   news-clusterer: "6000"
   news-server: "5050"
@@ -15,3 +14,7 @@ data:
   tweet-handler: "2000"
   spam-filter: "1000"
   webserver: "80"
+  tweet-db: "5432"
+  price-db: "5432"
+  news-db: "5432"
+  app-db: "5432"
