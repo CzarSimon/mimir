@@ -1,22 +1,27 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 
 
-def get_env(key, default=""):
-    return os.environ[key] if (key in os.environ) else default
+
+def _get_cashtag_threshold():
+    threshold_str = os.getenv("CASHTAG_THRESHOLD", "0.8")
+    try:
+        return float(threshold_str)
+    except:
+        print "{}: could not parse value as float".format(threshold_str)
+        sys.exit(1)
 
 
-server = {
-    "PORT": "1000"
-}
+cashtag_threshold = _get_cashtag_threshold()
 
 
-postgres = {
-    "NAME": "mimirprod",
-    "USER": "simon",
-    "PASSWORD": get_env("PG_PASSWORD", "56error78"),
-    "HOST": get_env("PG_HOST", "localhost"),
-    "PORT": get_env("PG_PORT", "5432")
+database = {
+    "NAME": os.getenv("PG_NAME", "mimirprod"),
+    "USER": os.getenv("PG_USER","simon"),
+    "HOST": os.getenv("PG_HOST", "localhost"),
+    "PASSWORD": os.getenv("PG_PASSWORD", "pwd"),
+    "PORT": os.getenv("PG_PORT", "5432")
 }
 
 
@@ -24,5 +29,3 @@ categories = {
     "SPAM": 'SPAM',
     "NON-SPAM": 'NON-SPAM'
 }
-
-cashtag_threshold = 0.8

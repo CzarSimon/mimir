@@ -66,8 +66,9 @@ def get_training_data():
 
 def _connect_pg():
     conn = None
-    database = config.postgres
-    conn_string = "host='{}' dbname='{}' user='{}' password='{}'".format(database["HOST"], database["NAME"], database["USER"], database["PASSWORD"])
+    database = config.database
+    conn_string = "host='{}' dbname='{}' user='{}' password='{}' port='{}'".format(
+        database["HOST"], database["NAME"], database["USER"], database["PASSWORD"], database["PORT"])
     try:
         conn = psycopg2.connect(conn_string)
     except Exception as e:

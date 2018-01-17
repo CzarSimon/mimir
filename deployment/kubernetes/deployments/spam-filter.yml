@@ -26,13 +26,30 @@ spec:
                 secretKeyRef:
                   name: tweet-db-credentials
                   key: password
-            - name: DB_USER
+            - name: PG_USER
               valueFrom:
                 secretKeyRef:
                   name: tweet-db-credentials
                   key: username
-            - name: DB_NAME
+            - name: PG_NAME
               valueFrom:
                 secretKeyRef:
                   name: tweet-db-credentials
                   key: database
+            - name: PG_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: tweet-db
+            - name: CASHTAG_THRESHOLD
+              value: "0.8"
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: sf-port
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: sf-port
+            initialDelaySeconds: 30
