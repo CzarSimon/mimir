@@ -9,7 +9,7 @@ import (
 // InitalTickers default list of inital tickers.s
 var InitalTickers = Tickers{"AAPL", "FB", "TSLA", "TWTR", "AMZN"}
 
-// Tickers slice of tickers that can be queried and inserted into a postgres database.
+// Tickers slice of tickers that can be queried and inserted into a sql database.
 type Tickers []string
 
 // Scan scans a slice of tickers.

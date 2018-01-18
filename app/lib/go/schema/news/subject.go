@@ -1,6 +1,6 @@
 package news
 
-// Subject Subject which to look for on page
+// Subject subject which to look for in an article.
 type Subject struct {
 	Name     string   `json:"name"`
 	Ticker   string   `json:"ticker"`

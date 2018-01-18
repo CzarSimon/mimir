@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// Article contains article info
+// Article contains article info.
 type Article struct {
 	URLHash      string    `json:"urlHash"`
 	URL          string    `json:"url"`
@@ -17,7 +17,7 @@ type Article struct {
 	Keywords     []string  `json:"keywords"`
 }
 
-// NewArticle Creates a new article
+// NewArticle creates a new article.
 func NewArticle(URL string) Article {
 	return Article{
 		URLHash: CreateURLHash(URL),
@@ -25,7 +25,7 @@ func NewArticle(URL string) Article {
 	}
 }
 
-// CreateURLHash Creates a sha256 hash from a URL
+// CreateURLHash creates a sha256 hash from a URL.
 func CreateURLHash(URL string) string {
 	return fmt.Sprintf("%x", sha256.Sum256([]byte(URL)))
 }
