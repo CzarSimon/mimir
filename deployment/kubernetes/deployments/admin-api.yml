@@ -20,7 +20,7 @@ spec:
               containerPort: 8000
           env:
             - name: TOKEN_EXPIRIY_MINUTES
-              value: "10"
+              value: "60"
             - name: ADMIN_API_ACCESS_KEY
               valueFrom:
                 secretKeyRef:

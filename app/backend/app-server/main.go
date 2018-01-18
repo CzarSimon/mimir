@@ -15,8 +15,10 @@ type Env struct {
 
 // SetupEnv Sets up environment
 func SetupEnv(config Config) *Env {
+	db, err := config.DB.Connect()
+	util.CheckErrFatal(err)
 	return &Env{
-		db: util.ConnectPG(config.DB),
+		db: db,
 	}
 }
 
@@ -29,7 +31,7 @@ func main() {
 		Handler: SetupRoutes(env),
 	}
 
-	log.Printf("Running app-server on port: %s\n", config.Server.Port)
+	log.Printf("Running %s on port: %s\n", SERVER_NAME, config.Server.Port)
 	err := server.ListenAndServe()
 	util.LogErr(err)
 }

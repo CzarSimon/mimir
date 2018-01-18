@@ -26,3 +26,33 @@ spec:
                 secretKeyRef:
                   name: app-db-credentials
                   key: password
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: app-db-credentials
+                  key: username
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-db-credentials
+                  key: database
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: app-db
+            - name: APP_SERVER
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: app-server
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: app-server-port
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: app-server-port
+            initialDelaySeconds: 30

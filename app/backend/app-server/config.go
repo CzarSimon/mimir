@@ -1,21 +1,24 @@
 package main
 
 import (
-	"github.com/CzarSimon/util"
+	endpoint "github.com/CzarSimon/go-endpoint"
+)
+
+const (
+	DATABASE_NAME = "DB"
+	SERVER_NAME   = "APP_SERVER"
 )
 
 // Config Struct to hold configurations
 type Config struct {
-	DB     util.PGConfig
-	Server util.ServerConfig
+	DB     endpoint.SQLConfig
+	Server endpoint.ServerAddr
 }
 
 // getConfig Gets main configurations
 func getConfig() Config {
 	return Config{
-		DB: util.GetPGConfig("localhost", "pwd", "simon", "mimirprod"),
-		Server: util.ServerConfig{
-			Port: "3000",
-		},
+		DB:     endpoint.NewPGConfig(DATABASE_NAME),
+		Server: endpoint.NewServerAddr(SERVER_NAME),
 	}
 }

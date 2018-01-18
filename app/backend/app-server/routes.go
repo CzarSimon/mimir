@@ -1,6 +1,10 @@
 package main
 
-import "net/http"
+import (
+	"net/http"
+
+	"github.com/CzarSimon/httputil/handler"
+)
 
 // SetupRoutes Sets up routes and route handlers
 func SetupRoutes(env *Env) *http.ServeMux {
@@ -8,6 +12,7 @@ func SetupRoutes(env *Env) *http.ServeMux {
 	setupUserRoutes(mux, env)
 	setupTwitterDataRoutes(mux, env)
 	setupStockRoutes(mux, env)
+	mux.Handle("/health", handler.HealthCheck)
 	return mux
 }
 
