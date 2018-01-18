@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-// Stock Contains information about a stock and issuing company
+// Stock contains information about a stock and issuing company.
 type Stock struct {
 	Ticker      string   `json:"ticker"`
 	Name        string   `json:"name,omitempty"`
@@ -15,7 +15,7 @@ type Stock struct {
 	Keywords    []string `json:"keyworks,omitempty"`
 }
 
-// String Returns a string representation of a stock
+// String returns a string representation of a stock.
 func (stock Stock) String() string {
 	return fmt.Sprintf(
 		"Ticker=%s \nName=%s\nDescription=%s\nImageURL=%s\nWebsite=%s",
