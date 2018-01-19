@@ -6,18 +6,13 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/CzarSimon/httputil/query"
+	"github.com/CzarSimon/mimir/app/lib/go/schema/stock"
 	"github.com/CzarSimon/util"
 	"github.com/lib/pq"
 )
 
-// Stock Holds information about a stock
-type Stock struct {
-	Ticker      string `json:"ticker"`
-	Name        string `json:"name"`
-	Description string `json:"description,omitempty"`
-	ImageURL    string `json:"imageUrl,omitempty"`
-	Website     string `json:"website,omitempty"`
-}
+const TICKER_KEY = "ticker"
 
 // HandleStockRequest Retrives stock information of a requested stock
 func (env *Env) HandleStockRequest(res http.ResponseWriter, req *http.Request) {
@@ -25,7 +20,7 @@ func (env *Env) HandleStockRequest(res http.ResponseWriter, req *http.Request) {
 		util.SendErrStatus(res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
 		return
 	}
-	ticker, err := parseTickerFromQuery(req)
+	ticker, err := query.ParseValue(req, TICKER_KEY)
 	if err != nil {
 		util.SendErrStatus(res, err, http.StatusBadRequest)
 		return
@@ -43,21 +38,13 @@ func (env *Env) HandleStockRequest(res http.ResponseWriter, req *http.Request) {
 	util.SendJSONRes(res, jsonRes)
 }
 
-// parseTickerFromQuery Parses request for a ticker
-func parseTickerFromQuery(req *http.Request) (string, error) {
-	return util.ParseValueFromQuery(req, "ticker", "No ticker supplied")
-}
-
 // RetriveStockInfo Retieves stock information from database
-func retriveStockInfo(ticker string, db *sql.DB) (Stock, error) {
+func retriveStockInfo(ticker string, db *sql.DB) (stock.Stock, error) {
 	query := getStockInfoQuery()
-	var stock Stock
+	var stck stock.Stock
 	err := db.QueryRow(query, ticker).Scan(
-		&stock.Ticker, &stock.Name, &stock.Description, &stock.ImageURL, &stock.Website)
-	if err != nil {
-		return stock, err
-	}
-	return stock, nil
+		&stck.Ticker, &stck.Name, &stck.Description, &stck.ImageURL, &stck.Website)
+	return stck, err
 }
 
 // getStockInfoQuery Returns a query for retriving stock info for a specific ticker
@@ -74,7 +61,7 @@ func (env *Env) HandleStocksRequest(res http.ResponseWriter, req *http.Request) 
 		util.SendErrStatus(res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
 		return
 	}
-	tickers, err := parseTickersFromQuery(req)
+	tickers, err := query.ParseValues(req, TICKER_KEY)
 	if err != nil {
 		util.LogErr(err)
 		util.SendErrStatus(res, err, http.StatusBadRequest)
@@ -96,21 +83,21 @@ func (env *Env) HandleStocksRequest(res http.ResponseWriter, req *http.Request) 
 }
 
 // retriveStocks Gets a map of stock info for a suplied list of tickers
-func retriveStocks(tickers Tickers, db *sql.DB) (map[string]Stock, error) {
-	stocks := make(map[string]Stock)
+func retriveStocks(tickers stock.Tickers, db *sql.DB) (map[string]stock.Stock, error) {
+	stocks := make(map[string]stock.Stock)
 	query := "SELECT TICKER, NAME FROM STOCK WHERE TICKER = ANY($1)"
 	rows, err := db.Query(query, pq.Array(tickers))
-	defer rows.Close()
 	if err != nil {
-		return stocks, err
+		return nil, err
 	}
-	var stock Stock
+	defer rows.Close()
+	var stck stock.Stock
 	for rows.Next() {
-		err = rows.Scan(&stock.Ticker, &stock.Name)
+		err = rows.Scan(&stck.Ticker, &stck.Name)
 		if err != nil {
 			return stocks, err
 		}
-		stocks[stock.Ticker] = stock
+		stocks[stck.Ticker] = stck
 	}
 	return stocks, nil
 }

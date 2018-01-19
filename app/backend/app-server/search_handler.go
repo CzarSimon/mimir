@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/CzarSimon/httputil/query"
 	"github.com/CzarSimon/util"
 )
 
@@ -73,7 +74,7 @@ func storeSearch(search Search, db *sql.DB) error {
 
 // HandleSearchHistoryRequest Retrives and sends a supplied users search history
 func (env *Env) HandleSearchHistoryRequest(res http.ResponseWriter, req *http.Request) {
-	userID, err := parseUserIDFromQuery(req)
+	userID, err := query.ParseValue(req, USER_ID_KEY)
 	if err != nil {
 		util.SendErrStatus(res, err, http.StatusBadRequest)
 		return
@@ -121,8 +122,8 @@ func getSeachHistoryQuery() string {
 
 // HandleDeleteSearchHistoryRequest Handles the deletrion of a users search history
 func (env *Env) HandleDeleteSearchHistoryRequest(res http.ResponseWriter, req *http.Request) {
-	userID, err := parseUserIDFromQuery(req)
-	if err != nil || userID == "" {
+	userID, err := query.ParseValue(req, USER_ID_KEY)
+	if err != nil {
 		util.SendErrStatus(res, err, http.StatusBadRequest)
 		return
 	}

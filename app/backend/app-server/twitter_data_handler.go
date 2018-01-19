@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/CzarSimon/mimir/app/lib/go/schema/stock"
 	"github.com/CzarSimon/util"
 	"github.com/lib/pq"
 )
@@ -122,7 +123,7 @@ func getTwitterDataQuery() string {
 }
 
 // parseTickersFromQuery Parses ticker from query
-func parseTickersFromQuery(req *http.Request) (Tickers, error) {
+func parseTickersFromQuery(req *http.Request) (stock.Tickers, error) {
 	tickers := req.URL.Query()["ticker"]
 	if len(tickers) < 1 {
 		return tickers, errors.New("No tickers supplied")

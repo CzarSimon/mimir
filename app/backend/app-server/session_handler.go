@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/CzarSimon/mimir/app/lib/go/schema/user"
 	"github.com/CzarSimon/util"
 )
 
@@ -16,9 +17,9 @@ type Session struct {
 }
 
 // NewSession Creates a new user session
-func NewSession(user User) Session {
+func NewSession(usr user.User) Session {
 	return Session{
-		UserID:       user.ID,
+		UserID:       usr.ID,
 		SessionStart: time.Now().UTC(),
 	}
 }
