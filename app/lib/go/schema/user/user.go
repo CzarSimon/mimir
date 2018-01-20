@@ -19,25 +19,6 @@ func New(ID string) User {
 	return User{
 		ID:       ID,
 		Tickers:  stock.InitalTickers,
-		JoinDate: getCurrentTimestamp(),
+		JoinDate: time.Now().UTC(),
 	}
-}
-
-// Session Holds user session info
-type Session struct {
-	UserID       string    `json:"userId"`
-	SessionStart time.Time `json:"sessionStart"`
-}
-
-// NewSession Creates a new user session
-func NewSession(user User) Session {
-	return Session{
-		UserID:       user.ID,
-		SessionStart: getCurrentTimestamp(),
-	}
-}
-
-// getCurrentTimestamp gets a current timestamp in the correct timezone.
-func getCurrentTimestamp() time.Time {
-	return time.Now().UTC()
 }

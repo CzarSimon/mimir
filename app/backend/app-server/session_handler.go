@@ -29,11 +29,11 @@ func (env *Env) HandleSessionRequest(w http.ResponseWriter, r *http.Request) err
 	if r.Method != http.MethodPost {
 		return httputil.MethodNotAllowed
 	}
-	user, err := parseUserFromBody(r)
+	usr, err := parseUserFromBody(r)
 	if err != nil {
 		return httputil.BadRequest
 	}
-	err = storeUserSession(NewSession(user), env.db)
+	err = storeUserSession(NewSession(usr), env.db)
 	if err != nil {
 		log.Println(err)
 		return httputil.InternalServerError
