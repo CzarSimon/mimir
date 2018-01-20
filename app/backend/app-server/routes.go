@@ -18,8 +18,8 @@ func SetupRoutes(env *Env) *http.ServeMux {
 
 // setupUserRoutes Sets up API routes related to users
 func setupUserRoutes(mux *http.ServeMux, env *Env) {
-	mux.HandleFunc("/api/app/user", env.HandleUserRequest)
-	mux.HandleFunc("/api/app/user/session", env.HandleSessionRequest)
+	mux.Handle("/api/app/user", handler.New(env.HandleUserRequest))
+	mux.Handle("/api/app/user/session", handler.New(env.HandleSessionRequest))
 	mux.HandleFunc("/api/app/user/search", env.HandleUserSearch)
 	mux.HandleFunc("/api/app/user/ticker", env.HandleTickerRequest)
 }

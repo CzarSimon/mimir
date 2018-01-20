@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/CzarSimon/mimir/app/lib/go/schema/stock"
+	"github.com/CzarSimon/httputil/query"
 	"github.com/CzarSimon/util"
 	"github.com/lib/pq"
 )
@@ -76,7 +76,7 @@ func (env *Env) HandleGetTwitterDataRequest(res http.ResponseWriter, req *http.R
 		util.SendErrStatus(res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
 		return
 	}
-	tickers, err := parseTickersFromQuery(req)
+	tickers, err := query.ParseValues(req, TICKER_KEY)
 	if err != nil {
 		util.SendErrStatus(res, err, http.StatusBadRequest)
 		return
@@ -120,15 +120,6 @@ func getTwitterDataQuery() string {
 		return fmt.Sprintf(query, "BUSDAY_MEAN, BUSDAY_STDEV")
 	}
 	return fmt.Sprintf(query, "WEEKEND_MEAN, WEEKEND_STDEV")
-}
-
-// parseTickersFromQuery Parses ticker from query
-func parseTickersFromQuery(req *http.Request) (stock.Tickers, error) {
-	tickers := req.URL.Query()["ticker"]
-	if len(tickers) < 1 {
-		return tickers, errors.New("No tickers supplied")
-	}
-	return tickers, nil
 }
 
 // Volume Holds info about volumes for a given minute

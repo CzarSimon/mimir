@@ -2,12 +2,12 @@ package main
 
 import (
 	"database/sql"
-	"errors"
+	"log"
 	"net/http"
 	"time"
 
+	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/mimir/app/lib/go/schema/user"
-	"github.com/CzarSimon/util"
 )
 
 // Session Holds user session info
@@ -25,23 +25,21 @@ func NewSession(usr user.User) Session {
 }
 
 // HandleSessionRequest Records a session start of the user specified in the request
-func (env *Env) HandleSessionRequest(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodPost {
-		util.SendErrStatus(
-			res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
-		return
+func (env *Env) HandleSessionRequest(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodPost {
+		return httputil.MethodNotAllowed
 	}
-	user, err := parseUserFromBody(req)
+	user, err := parseUserFromBody(r)
 	if err != nil {
-		util.SendErrStatus(res, err, http.StatusBadRequest)
-		return
+		return httputil.BadRequest
 	}
 	err = storeUserSession(NewSession(user), env.db)
 	if err != nil {
-		util.SendErrRes(res, err)
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	util.SendOK(res)
+	httputil.SendOK(w)
+	return nil
 }
 
 // storeUserSession Stores a new user sesssion
@@ -52,8 +50,5 @@ func storeUserSession(session Session, db *sql.DB) error {
 		return err
 	}
 	_, err = stmt.Exec(session.UserID, session.SessionStart)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }

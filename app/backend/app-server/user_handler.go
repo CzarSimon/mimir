@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"errors"
 	"log"
 	"net/http"
@@ -18,39 +17,29 @@ import (
 const USER_ID_KEY = "id"
 
 // HandleUserRequest Handles retrival of user or creation of new user
-func (env *Env) HandleUserRequest(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodGet {
-		err := httputil.MethodNotAllowed
-		util.SendErrStatus(res, err, err.Status)
-		return
+func (env *Env) HandleUserRequest(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodGet {
+		return httputil.MethodNotAllowed
 	}
-	userID, err := query.ParseValue(req, USER_ID_KEY)
+	userID, err := query.ParseValue(r, USER_ID_KEY)
 	log.Println(userID)
 	if err != nil {
-		util.SendErrStatus(res, err, http.StatusBadRequest)
-		return
+		return httputil.BadRequest
 	}
-	user, err := GetUser(userID, env.db)
+	user, err := getUser(userID, env.db)
 	if err != nil {
-		util.LogErr(err)
-		util.SendErrRes(res, err)
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
 	err = storeUserSession(NewSession(user), env.db)
 	if err != nil {
 		log.Println("Unable to store user session")
 	}
-	jsonBody, err := json.Marshal(user)
-	if err != nil {
-		util.LogErr(err)
-		util.SendErrRes(res, err)
-		return
-	}
-	util.SendJSONRes(res, jsonBody)
+	return httputil.SendJSON(w, user)
 }
 
-// GetUser Retrives user from datababase if exist, returns new user if not
-func GetUser(userID string, db *sql.DB) (user.User, error) {
+// getUser Retrives user from datababase if exist, returns new user if not
+func getUser(userID string, db *sql.DB) (user.User, error) {
 	var usr user.User
 	err := db.QueryRow("SELECT ID, TICKERS, JOIN_DATE FROM APP_USER WHERE ID=$1", userID).Scan(
 		&usr.ID, &usr.Tickers, &usr.JoinDate)
