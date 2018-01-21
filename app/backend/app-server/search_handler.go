@@ -2,11 +2,11 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
-	"errors"
+	"log"
 	"net/http"
 	"time"
 
+	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/httputil/query"
 	"github.com/CzarSimon/util"
 )
@@ -24,35 +24,33 @@ func (search Search) IsPopulated() bool {
 }
 
 // HandleUserSearch Handles requests regarding a users search history
-func (env *Env) HandleUserSearch(res http.ResponseWriter, req *http.Request) {
-	switch req.Method {
+func (env *Env) HandleUserSearch(w http.ResponseWriter, r *http.Request) error {
+	switch r.Method {
 	case http.MethodGet:
-		env.HandleSearchHistoryRequest(res, req)
+		return env.HandleSearchHistoryRequest(w, r)
 	case http.MethodPost:
-		env.HandleNewSearch(res, req)
+		return env.HandleNewSearch(w, r)
 	case http.MethodDelete:
-		env.HandleDeleteSearchHistoryRequest(res, req)
+		return env.HandleDeleteSearchHistoryRequest(w, r)
 	default:
-		util.SendErrStatus(
-			res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
+		return httputil.MethodNotAllowed
 	}
 }
 
 // HandleNewSearch Stores a new search in the user search history
-func (env *Env) HandleNewSearch(res http.ResponseWriter, req *http.Request) {
+func (env *Env) HandleNewSearch(w http.ResponseWriter, r *http.Request) error {
 	var search Search
-	err := util.DecodeJSON(req.Body, &search)
+	err := util.DecodeJSON(r.Body, &search)
 	if err != nil || !search.IsPopulated() {
-		util.SendErrStatus(
-			res, errors.New("Could not parse search"), http.StatusBadRequest)
-		return
+		return httputil.BadRequest
 	}
 	err = storeSearch(search, env.db)
 	if err != nil {
-		util.SendErrRes(res, errors.New("Could not record the search"))
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	util.SendOK(res)
+	httputil.SendOK(w)
+	return nil
 }
 
 // storeSearch Records a search in the supplied search history
@@ -61,51 +59,41 @@ func storeSearch(search Search, db *sql.DB) error {
     INSERT INTO SEARCH_HISTORY (
       USER_ID, SEARCH_TERM, DATE_INSERTED
     ) VALUES ($1, $2, CURRENT_TIMESTAMP)`)
+	if err != nil {
+		return err
+	}
 	defer stmt.Close()
-	if err != nil {
-		return err
-	}
 	_, err = stmt.Exec(search.UserID, search.Query)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 // HandleSearchHistoryRequest Retrives and sends a supplied users search history
-func (env *Env) HandleSearchHistoryRequest(res http.ResponseWriter, req *http.Request) {
-	userID, err := query.ParseValue(req, USER_ID_KEY)
+func (env *Env) HandleSearchHistoryRequest(w http.ResponseWriter, r *http.Request) error {
+	userID, err := query.ParseValue(r, USER_ID_KEY)
 	if err != nil {
-		util.SendErrStatus(res, err, http.StatusBadRequest)
-		return
+		return httputil.BadRequest
 	}
 	searchHistory, err := getSearchHistory(userID, env.db)
 	if err != nil {
-		util.LogErr(err)
-		util.SendErrRes(res, errors.New("Unable to get users search history"))
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	jsonBody, err := json.Marshal(searchHistory)
-	if err != nil {
-		util.SendErrRes(res, errors.New("Unable to get users search history"))
-		return
-	}
-	util.SendJSONRes(res, jsonBody)
+	return httputil.SendJSON(w, searchHistory)
 }
 
 // getSearchHistory Retrives a users search history from the database
 func getSearchHistory(userID string, db *sql.DB) ([]string, error) {
-	searchHistory := make([]string, 0)
 	rows, err := db.Query(getSeachHistoryQuery(), userID)
 	defer rows.Close()
 	if err != nil {
-		return searchHistory, err
+		return nil, err
 	}
+	searchHistory := make([]string, 0)
 	var search Search
 	for rows.Next() {
 		err = rows.Scan(&search.Query, &search.DateInserted)
 		if err != nil {
-			return searchHistory, err
+			return nil, err
 		}
 		searchHistory = append(searchHistory, search.Query)
 	}
@@ -121,30 +109,28 @@ func getSeachHistoryQuery() string {
 }
 
 // HandleDeleteSearchHistoryRequest Handles the deletrion of a users search history
-func (env *Env) HandleDeleteSearchHistoryRequest(res http.ResponseWriter, req *http.Request) {
-	userID, err := query.ParseValue(req, USER_ID_KEY)
+func (env *Env) HandleDeleteSearchHistoryRequest(w http.ResponseWriter, r *http.Request) error {
+	userID, err := query.ParseValue(r, USER_ID_KEY)
 	if err != nil {
-		util.SendErrStatus(res, err, http.StatusBadRequest)
-		return
+		log.Println(err)
+		return httputil.BadRequest
 	}
 	err = clearSearchHistory(userID, env.db)
 	if err != nil {
-		util.SendErrRes(res, errors.New("Could not clear search history"))
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	util.SendOK(res)
+	httputil.SendOK(w)
+	return nil
 }
 
 // clearSearchHistory Removes the search history for a given user
 func clearSearchHistory(userID string, db *sql.DB) error {
 	stmt, err := db.Prepare("DELETE FROM SEARCH_HISTORY WHERE USER_ID=$1")
+	if err != nil {
+		return err
+	}
 	defer stmt.Close()
-	if err != nil {
-		return err
-	}
 	_, err = stmt.Exec(userID)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }

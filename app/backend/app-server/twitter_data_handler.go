@@ -2,12 +2,13 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"time"
 
+	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/httputil/query"
 	"github.com/CzarSimon/util"
 	"github.com/lib/pq"
@@ -71,27 +72,21 @@ func (statistics *Statistics) Scan(source interface{}) error {
 }
 
 // HandleGetTwitterDataRequest Handles GET request for twitter data for a supplied set of tickers
-func (env *Env) HandleGetTwitterDataRequest(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodGet {
-		util.SendErrStatus(res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
-		return
+func (env *Env) HandleGetTwitterDataRequest(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodGet {
+		return httputil.MethodNotAllowed
 	}
-	tickers, err := query.ParseValues(req, TICKER_KEY)
+	tickers, err := query.ParseValues(r, TICKER_KEY)
 	if err != nil {
-		util.SendErrStatus(res, err, http.StatusBadRequest)
-		return
+		log.Println(err)
+		return httputil.BadRequest
 	}
 	twitterData, err := getTwitterData(tickers, env.db)
 	if err != nil {
-		util.SendErrRes(res, errors.New("Could not retrive tickers"))
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	jsonBody, err := json.Marshal(twitterData)
-	if err != nil {
-		util.SendErrRes(res, errors.New("Could not retrive tickers"))
-		return
-	}
-	util.SendJSONRes(res, jsonBody)
+	return httputil.SendJSON(w, twitterData)
 }
 
 // getTwitterData Retreives twitter data for a supplied set of tickers from the database
@@ -135,23 +130,23 @@ type HourVolumes struct {
 }
 
 // HandleNewVolumesRequest Handles posting of new ticker volumes
-func (env *Env) HandleNewVolumesRequest(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodPost {
-		util.SendErrStatus(res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
-		return
+func (env *Env) HandleNewVolumesRequest(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodPost {
+		return httputil.MethodNotAllowed
 	}
 	var volumes HourVolumes
-	err := util.DecodeJSON(req.Body, &volumes)
+	err := util.DecodeJSON(r.Body, &volumes)
 	if err != nil {
-		util.SendErrStatus(res, errors.New("Could not parse volumes"), http.StatusBadRequest)
-		return
+		log.Println(err)
+		return httputil.BadRequest
 	}
 	err = storeVolumes(volumes, env.db)
 	if err != nil {
-		util.SendErrRes(res, errors.New("Could not store volumes"))
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	util.SendOK(res)
+	httputil.SendOK(w)
+	return nil
 }
 
 // storeVolumes Stores volumes in the database
@@ -179,15 +174,12 @@ func updateTickerVolume(ticker string, hour int, volume Volume, tx *sql.Tx) erro
 	}
 	volumes[hour] = volume.Volume
 	stmt, err := tx.Prepare("UPDATE TWITTER_DATA SET VOLUME=$1, MINUTE=$2 WHERE TICKER=$3")
+	if err != nil {
+		return err
+	}
 	defer stmt.Close()
-	if err != nil {
-		return err
-	}
 	_, err = stmt.Exec(pq.Array(volumes), volume.Minute, ticker)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
 
 // getTickerVolumes Gets the currently stored volumes for a ticker
@@ -204,25 +196,23 @@ type VolumeStatistics struct {
 }
 
 // HandleNewStatsRequest Handles postings of new volumes statistics
-func (env *Env) HandleNewStatsRequest(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodPost {
-		util.SendErrStatus(res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
-		return
+func (env *Env) HandleNewStatsRequest(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodPost {
+		return httputil.MethodNotAllowed
 	}
 	statistics := make(map[string]VolumeStatistics)
-	err := util.DecodeJSON(req.Body, &statistics)
+	err := util.DecodeJSON(r.Body, &statistics)
 	if err != nil {
-		util.LogErr(err)
-		util.SendErrStatus(res, errors.New("Could not parse statistics"), http.StatusBadRequest)
-		return
+		log.Println(err)
+		return httputil.BadRequest
 	}
 	err = storeStatistics(statistics, env.db)
 	if err != nil {
-		util.LogErr(err)
-		util.SendErrRes(res, errors.New("Could not store statistics"))
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	util.SendOK(res)
+	httputil.SendOK(w)
+	return nil
 }
 
 // storeStatistics Stores updated volume statistics in database
@@ -254,8 +244,5 @@ func updateStatistics(ticker string, statistics VolumeStatistics, tx *sql.Tx) er
 		pq.Array(statistics.Stdev.Busdays),
 		pq.Array(statistics.Stdev.WeekendDays),
 		ticker)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }

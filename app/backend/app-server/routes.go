@@ -20,20 +20,20 @@ func SetupRoutes(env *Env) *http.ServeMux {
 func setupUserRoutes(mux *http.ServeMux, env *Env) {
 	mux.Handle("/api/app/user", handler.New(env.HandleUserRequest))
 	mux.Handle("/api/app/user/session", handler.New(env.HandleSessionRequest))
-	mux.HandleFunc("/api/app/user/search", env.HandleUserSearch)
-	mux.HandleFunc("/api/app/user/ticker", env.HandleTickerRequest)
+	mux.Handle("/api/app/user/search", handler.New(env.HandleUserSearch))
+	mux.Handle("/api/app/user/ticker", handler.New(env.HandleTickerRequest))
 }
 
 // setupTwitterDataRoutes Sets up API routes related to twitter data
 func setupTwitterDataRoutes(mux *http.ServeMux, env *Env) {
-	mux.HandleFunc("/api/app/twitter-data", env.HandleGetTwitterDataRequest)
-	mux.HandleFunc("/api/app/twitter-data/volumes", env.HandleNewVolumesRequest)
-	mux.HandleFunc("/api/app/twitter-data/mean-and-stdev", env.HandleNewStatsRequest)
+	mux.Handle("/api/app/twitter-data", handler.New(env.HandleGetTwitterDataRequest))
+	mux.Handle("/api/app/twitter-data/volumes", handler.New(env.HandleNewVolumesRequest))
+	mux.Handle("/api/app/twitter-data/mean-and-stdev", handler.New(env.HandleNewStatsRequest))
 }
 
 // setupStockRoutes Sets up API routes related to stock data
 func setupStockRoutes(mux *http.ServeMux, env *Env) {
-	mux.HandleFunc("/api/app/stock", env.HandleStockRequest)
-	mux.HandleFunc("/api/app/stocks", env.HandleStocksRequest)
-	mux.HandleFunc("/api/app/stock/description", env.HandleStockRequest)
+	mux.Handle("/api/app/stock", handler.New(env.HandleStockRequest))
+	mux.Handle("/api/app/stocks", handler.New(env.HandleStocksRequest))
+	mux.Handle("/api/app/stock/description", handler.New(env.HandleStockRequest))
 }

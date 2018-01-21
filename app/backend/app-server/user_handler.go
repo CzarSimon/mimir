@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"errors"
 	"log"
 	"net/http"
 
@@ -24,18 +23,20 @@ func (env *Env) HandleUserRequest(w http.ResponseWriter, r *http.Request) error 
 	userID, err := query.ParseValue(r, USER_ID_KEY)
 	log.Println(userID)
 	if err != nil {
+		log.Println(err)
 		return httputil.BadRequest
 	}
-	user, err := getUser(userID, env.db)
+	usr, err := getUser(userID, env.db)
 	if err != nil {
 		log.Println(err)
 		return httputil.InternalServerError
 	}
-	err = storeUserSession(NewSession(user), env.db)
+	err = storeUserSession(user.NewSession(usr), env.db)
 	if err != nil {
-		log.Println("Unable to store user session")
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	return httputil.SendJSON(w, user)
+	return httputil.SendJSON(w, usr)
 }
 
 // getUser Retrives user from datababase if exist, returns new user if not
@@ -77,24 +78,20 @@ type TickerRequest struct {
 }
 
 // HandleTickerRequest Handles requests regarding a users ticker
-func (env *Env) HandleTickerRequest(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodPost && req.Method != http.MethodDelete {
-		util.SendErrStatus(
-			res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
-		return
+func (env *Env) HandleTickerRequest(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodPost && r.Method != http.MethodDelete {
+		return httputil.MethodNotAllowed
 	}
 	var tickerRequest TickerRequest
-	err := util.DecodeJSON(req.Body, &tickerRequest)
+	err := util.DecodeJSON(r.Body, &tickerRequest)
 	if err != nil {
-		util.SendErrStatus(
-			res, errors.New("Could not parse request"), http.StatusBadRequest)
-		return
+		log.Println(err)
+		return httputil.BadRequest
 	}
 	if !checkTickerIsValid(tickerRequest.Ticker, env.db) {
-		util.SendErrStatus(res, errors.New("Invalid ticker"), http.StatusBadRequest)
-		return
+		return httputil.BadRequest
 	}
-	env.handleTickerUpdate(res, tickerRequest, req.Method)
+	return env.handleTickerUpdate(w, tickerRequest, r.Method)
 }
 
 // checkTickerIsValid Checks if ticker exists in database
@@ -109,23 +106,24 @@ func checkTickerIsValid(ticker string, db *sql.DB) bool {
 
 // handleTickerUpdate Handles the update of a users tickers
 func (env *Env) handleTickerUpdate(
-	res http.ResponseWriter, tickerRequest TickerRequest, method string) {
+	w http.ResponseWriter, tickerRequest TickerRequest, method string) error {
 	tickers, err := getUserTickers(tickerRequest.UserID, env.db)
 	if err != nil {
-		util.SendErrRes(res, errors.New("Could not alter tickers"))
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
 	err = alterTickers(&tickers, tickerRequest.Ticker, method)
 	if err != nil {
-		util.SendErrRes(res, errors.New("Could not alter tickers"))
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
 	err = updateUserTickers(tickers, tickerRequest.UserID, env.db)
 	if err != nil {
-		util.SendErrRes(res, errors.New("Could not alter tickers"))
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	util.SendOK(res)
+	httputil.SendOK(w)
+	return nil
 }
 
 // alterTickers Changes a slice of tickers based on the method passed
@@ -136,7 +134,7 @@ func alterTickers(tickers *stock.Tickers, ticker, method string) error {
 	case http.MethodDelete:
 		return tickers.Remove(ticker)
 	default:
-		return errors.New("Method not allowed")
+		return httputil.MethodNotAllowed
 	}
 }
 
@@ -153,13 +151,10 @@ func getUserTickers(userID string, db *sql.DB) (stock.Tickers, error) {
 // updateUserTickers Stores the update of a user tickers in the database
 func updateUserTickers(tickers stock.Tickers, userID string, db *sql.DB) error {
 	stmt, err := db.Prepare("UPDATE APP_USER SET TICKERS=$1 WHERE ID=$2")
+	if err != nil {
+		return err
+	}
 	defer stmt.Close()
-	if err != nil {
-		return err
-	}
 	_, err = stmt.Exec(pq.Array(tickers), userID)
-	if err != nil {
-		return err
-	}
-	return nil
+	return err
 }
