@@ -24,6 +24,9 @@ spec:
             backend:
               serviceName: search-server
               servicePort: 7000
+          - backend:
+              serviceName: webserver
+              servicePort: 8080
     - host: admin.mimir-dev.news
       http:
         paths:

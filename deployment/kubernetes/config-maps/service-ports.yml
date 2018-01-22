@@ -13,7 +13,7 @@ data:
   search-service: "7000"
   tweet-handler: "2000"
   spam-filter: "1000"
-  webserver: "80"
+  webserver: "8080"
   tweet-db: "5432"
   price-db: "5432"
   news-db: "5432"
