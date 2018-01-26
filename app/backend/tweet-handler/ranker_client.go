@@ -7,7 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/CzarSimon/mimir/lib/news"
+	"github.com/CzarSimon/mimir/app/lib/go/schema/news"
 	"github.com/CzarSimon/util"
 )
 

@@ -3,16 +3,16 @@ package main
 import (
 	"bytes"
 	"encoding/json"
-	"errors"
+	"fmt"
 	"log"
 	"net/http"
 
+	"github.com/CzarSimon/mimir/app/lib/go/schema/spam"
 	"github.com/CzarSimon/util"
 )
 
 const (
-	Spam    = "SPAM"
-	NonSpam = "NON-SPAM"
+	ClassifyRoute = "classify"
 )
 
 // FilterSpam Querys spam filter to check if tweet is spam
@@ -20,63 +20,29 @@ func (env *Env) FilterSpam(tweet Tweet) bool {
 	if !env.Config.filterSpam {
 		return false
 	}
-	endpoint := getSpamFilterURL(env.Config.spamFilter)
-	spamResult, err := queryForSpam(newSpamQuery(tweet), endpoint)
+	endpoint := env.Config.spamFilter.ToURL(ClassifyRoute)
+	spamResult, err := queryForSpam(spam.NewCandidate(tweet.Text), endpoint)
 	if err != nil {
-		util.LogErr(err)
-		return false
+		log.Println(err)
 	}
-	spamResult.Log(tweet.Text)
+	log.Println(spamResult)
 	return spamResult.IsSpam()
 }
 
 // queryForSpam Resuests the spam filter to evaluate a request
-func queryForSpam(spamQuery SpamQuery, url string) (SpamResult, error) {
-	var spamResult SpamResult
-	body, err := json.Marshal(spamQuery)
+func queryForSpam(candidate spam.Candidate, URL string) (spam.Candidate, error) {
+	body, err := json.Marshal(candidate)
 	if err != nil {
-		return spamResult, err
+		return candidate, err
 	}
-	resp, err := http.Post(url, "application/json", bytes.NewBuffer(body))
+	resp, err := http.Post(URL, BodyType, bytes.NewBuffer(body))
 	if err != nil {
-		return spamResult, err
+		return candidate, err
 	}
 	defer resp.Body.Close()
 	if resp.StatusCode != http.StatusOK {
-		return spamResult, errors.New("Unsuccessfull call to spam filter")
+		return candidate, fmt.Errorf("Failed spam filter call. Status=%d", resp.StatusCode)
 	}
-	err = util.DecodeJSON(resp.Body, &spamResult)
-	return spamResult, err
-}
-
-// getSpamFilterURL Gets the URL to which to send spam filter requests
-func getSpamFilterURL(spamFilter util.ServerConfig) string {
-	return spamFilter.ToURL("/classify")
-}
-
-// SpamQuery Query to send to spam filter for evaluation
-type SpamQuery struct {
-	Text string `json:"text"`
-}
-
-// newSpamQuery Creates a spam query from a tweet
-func newSpamQuery(tweet Tweet) SpamQuery {
-	return SpamQuery{
-		Text: tweet.Text,
-	}
-}
-
-// SpamResult Result from spam query
-type SpamResult struct {
-	Result string `json:"result"`
-}
-
-// IsSpam Evaluates if a spam result indicated spam or not
-func (spamResult SpamResult) IsSpam() bool {
-	return !(spamResult.Result == NonSpam)
-}
-
-// Log Logs a spam result
-func (spamResult SpamResult) Log(text string) {
-	log.Printf("%s : %s\n", spamResult.Result, text)
+	err = util.DecodeJSON(resp.Body, &candidate)
+	return candidate, err
 }

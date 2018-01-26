@@ -3,7 +3,7 @@ package main
 import (
 	"database/sql"
 
-	"github.com/CzarSimon/mimir/lib/news"
+	"github.com/CzarSimon/mimir/app/lib/go/schema/news"
 	"github.com/CzarSimon/util"
 )
 
@@ -17,7 +17,8 @@ type Env struct {
 
 // SetupEnv Sets up handler environment
 func SetupEnv(config Config) *Env {
-	db := util.ConnectPG(config.db)
+	db, err := config.db.Connect()
+	util.CheckErrFatal(err)
 	tickers, err := GetTickers(db)
 	util.CheckErrFatal(err)
 	aliases, err := GetAliases(db)

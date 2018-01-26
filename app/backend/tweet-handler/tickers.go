@@ -4,7 +4,7 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/CzarSimon/mimir/lib/news"
+	"github.com/CzarSimon/mimir/app/lib/go/schema/news"
 )
 
 // Tickers Map of tracked tickers and their corresponding subjects
