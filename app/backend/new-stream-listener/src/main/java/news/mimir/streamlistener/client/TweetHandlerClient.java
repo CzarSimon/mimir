@@ -9,7 +9,6 @@ import news.mimir.streamlistener.config.Config;
 import news.mimir.streamlistener.config.ServerConfig;
 import org.json.JSONArray;
 
-import java.util.concurrent.Future;
 import java.util.logging.Logger;
 
 /**
@@ -64,7 +63,7 @@ public class TweetHandlerClient implements HttpClient {
             @Override
             public void completed(HttpResponse<String> httpResponse) {
                 if (httpResponse.getStatus() == STATUS_OK) {
-                    log.info("Tweet sent and accepted");
+                    log.fine("Tweet sent and accepted");
                 } else {
                     log.warning(String.format(
                             "%s - %s", httpResponse.getStatus(), httpResponse.getBody()));

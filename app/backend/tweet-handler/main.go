@@ -20,8 +20,7 @@ func main() {
 	env := SetupEnv(config)
 
 	server := SetupServer(env)
-	log.Println(env.Config.ranker.ToURL(RankRoute))
-	log.Println(env.Config.spamFilter.ToURL(ClassifyRoute))
+
 	log.Printf("Starting %s on port: %s\n", SERVER_NAME, config.server.Port)
 	err := server.ListenAndServe()
 	util.CheckErrFatal(err)
