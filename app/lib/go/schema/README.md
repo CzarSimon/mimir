@@ -21,3 +21,11 @@ Data models related stocks, identifiers and prices.
 ## user
 Data models related to an application user
 1. User - Holds user information
+
+## tweet
+Data models related to tweets
+1. Tweet - Tweet holds tweet information.
+2. TweetEntities - Entities referenced in tweet.
+3. Hashtag - Hashtag referenced in tweet.
+4. Symbol - Symbol referenced in tweet.
+5. URL - Linked URL in tweet.
