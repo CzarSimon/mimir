@@ -20,6 +20,7 @@ app/rethinkdb_data
 deployment/kubernetes/secrets/
 
 test/**/*.pyc
+test/mock-tweet/data/
 
 docker-commands/
 
