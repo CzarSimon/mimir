@@ -5,7 +5,9 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/mimir/app/lib/go/schema/news"
+	"github.com/CzarSimon/mimir/app/lib/go/schema/tweet"
 	"github.com/CzarSimon/util"
 )
 
@@ -15,36 +17,36 @@ func (env *Env) ReciveNewTweet(res http.ResponseWriter, req *http.Request) {
 		util.SendErrStatus(res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
 		return
 	}
-	var tweet Tweet
-	err := util.DecodeJSON(req.Body, &tweet)
+	var twt tweet.Tweet
+	err := util.DecodeJSON(req.Body, &twt)
 	if err != nil {
 		util.LogErr(err)
 		util.SendErrStatus(res, errors.New("Could not parse tweet"), http.StatusMethodNotAllowed)
 		return
 	}
-	go env.HandleNewTweet(tweet)
-	util.SendOK(res)
+	go env.HandleNewTweet(twt)
+	httputil.SendOK(res)
 }
 
 // HandleNewTweet Checks if tweets if spam and handles it if not
-func (env *Env) HandleNewTweet(tweet Tweet) {
-	if isSpam := env.FilterSpam(tweet); isSpam {
+func (env *Env) HandleNewTweet(twt tweet.Tweet) {
+	if isSpam := env.FilterSpam(twt); isSpam {
 		return
 	}
-	env.HandleNonSpamTweet(tweet)
+	env.HandleNonSpamTweet(twt)
 }
 
 // HandleNonSpamTweet Stores tweet, untracked tickers and sends urls to news-ranker
-func (env *Env) HandleNonSpamTweet(tweet Tweet) {
-	trackedSubjects, untrackedTickers := env.separateTrackedAndUntrackedTickers(tweet)
-	env.storeTweet(tweet, trackedSubjects)
-	env.SendLinksToRanker(tweet, trackedSubjects)
-	env.storeUntrackedTickers(tweet, untrackedTickers)
+func (env *Env) HandleNonSpamTweet(twt tweet.Tweet) {
+	trackedSubjects, untrackedTickers := env.separateTrackedAndUntrackedTickers(twt)
+	env.storeTweet(twt, trackedSubjects)
+	env.SendLinksToRanker(twt, trackedSubjects)
+	env.storeUntrackedTickers(twt, untrackedTickers)
 }
 
 // separateTrackedAndUntrackedTickers Separates tracked subjects and untracked ticker from a tweet
-func (env *Env) separateTrackedAndUntrackedTickers(tweet Tweet) ([]news.Subject, []string) {
-	tickers := env.mapSymbolListToTickers(tweet)
+func (env *Env) separateTrackedAndUntrackedTickers(twt tweet.Tweet) ([]news.Subject, []string) {
+	tickers := env.mapSymbolListToTickers(twt)
 	trackedSubjects := env.mapTrackedTickersToSubjects(tickers)
 	untrackedTickers := env.filterUntrackedTickers(tickers)
 	return trackedSubjects, untrackedTickers
@@ -52,9 +54,9 @@ func (env *Env) separateTrackedAndUntrackedTickers(tweet Tweet) ([]news.Subject,
 }
 
 // mapSymbolList Maps list of symbols in a tweet to tickers, converting aliases to tickers
-func (env *Env) mapSymbolListToTickers(tweet Tweet) []string {
+func (env *Env) mapSymbolListToTickers(twt tweet.Tweet) []string {
 	tickerSet := NewTickerSet()
-	for _, ticker := range tweet.Entities.Symbols {
+	for _, ticker := range twt.Entities.Symbols {
 		if mappedAlias, isAnAlias := env.Aliases[ticker.Text]; isAnAlias {
 			tickerSet.Add(mappedAlias)
 		} else {
@@ -87,7 +89,7 @@ func (env *Env) filterUntrackedTickers(tickers []string) []string {
 }
 
 // storeTweet Stores tweet in database
-func (env *Env) storeTweet(tweet Tweet, subjects []news.Subject) {
+func (env *Env) storeTweet(twt tweet.Tweet, subjects []news.Subject) {
 	insertStmt, err := getStoreTweetStmt(env.DB)
 	if err != nil {
 		util.LogErr(err)
@@ -95,7 +97,7 @@ func (env *Env) storeTweet(tweet Tweet, subjects []news.Subject) {
 	}
 	defer insertStmt.Close()
 	for _, subject := range subjects {
-		err = insertTweet(tweet, subject, insertStmt)
+		err = insertTweet(twt, subject, insertStmt)
 		if err != nil {
 			util.LogErr(err)
 		}
@@ -103,15 +105,15 @@ func (env *Env) storeTweet(tweet Tweet, subjects []news.Subject) {
 }
 
 // insertTweet Inserts a tweet into a database through a supplied prepared statement
-func insertTweet(tweet Tweet, subject news.Subject, insertStmt *sql.Stmt) error {
+func insertTweet(twt tweet.Tweet, subject news.Subject, insertStmt *sql.Stmt) error {
 	_, err := insertStmt.Exec(
-		tweet.ID,
-		tweet.User.ID,
-		tweet.GetDate(),
-		tweet.Text,
+		twt.ID,
+		twt.User.ID,
+		twt.GetDate(),
+		twt.Text,
 		subject.Ticker,
-		tweet.Language,
-		tweet.User.Followers)
+		twt.Language,
+		twt.User.Followers)
 	return err
 }
 
@@ -123,8 +125,8 @@ func getStoreTweetStmt(db *sql.DB) (*sql.Stmt, error) {
 }
 
 // storeUntrackedTickers Stores occurances of untracked tickers
-func (env *Env) storeUntrackedTickers(tweet Tweet, untrackedTickers []string) {
-	timestamp := tweet.GetDate()
+func (env *Env) storeUntrackedTickers(twt tweet.Tweet, untrackedTickers []string) {
+	timestamp := twt.GetDate()
 	stmt, err := env.DB.Prepare(
 		"INSERT INTO UNTRACKED_TICKERS(ID, TICKER, TIMESTAMP) VALUES ($1, $2, $3)")
 	if err != nil {
@@ -133,7 +135,7 @@ func (env *Env) storeUntrackedTickers(tweet Tweet, untrackedTickers []string) {
 	}
 	defer stmt.Close()
 	for _, ticker := range untrackedTickers {
-		_, err = stmt.Exec(tweet.ID, ticker, timestamp)
+		_, err = stmt.Exec(twt.ID, ticker, timestamp)
 		if err != nil {
 			util.LogErr(err)
 			return

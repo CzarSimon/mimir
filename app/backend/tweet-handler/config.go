@@ -10,13 +10,6 @@ const (
 	SERVER_NAME          = "TWEET_HANDLER"
 	FilterSpamKey        = "HANDLE_SPAM"
 	ShoudFilterSpamValue = "TRUE"
-	TweetHandlerPort     = "2000"
-	DBHostKey            = "PG_HOST"
-	DBPasswordKey        = "PG_PASSWORD"
-	RankerHostKey        = "RANKER_HOST"
-	RankerPortKey        = "RANKER_PORT"
-	SpamFilterHostKey    = "SPAM_FILTER_HOST"
-	SpamFilterPortKey    = "SPAM_FILTER_PORT"
 )
 
 //Config is the main configuration type
