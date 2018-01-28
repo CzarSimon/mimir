@@ -2,35 +2,30 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
-	"errors"
+	"log"
 	"net/http"
 
-	"github.com/CzarSimon/util"
+	"github.com/CzarSimon/httputil"
+	"github.com/CzarSimon/httputil/query"
 )
 
 //SearchStocks Searches for stocks using a given query
-func (env *Env) SearchStocks(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodGet {
-		util.SendErrRes(res, errors.New("Method not allowed"))
-		return
+func (env *Env) SearchStocks(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodGet {
+		return httputil.MethodNotAllowed
 	}
-	query, err := parseQuery(req)
+	q, err := query.ParseValue(r, "query")
 	if err != nil {
-		util.SendErrRes(res, err)
-		return
+		log.Println(err)
+		return httputil.BadRequest
 	}
-	stocks, err := queryForStock(query, env.db)
+	stocks, err := queryForStock(q, env.db)
 	if err != nil {
-		util.SendErrRes(res, err)
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	jsonBody, err := json.Marshal(stocks)
-	if err != nil {
-		util.SendErrRes(res, err)
-		return
-	}
-	util.SendJSONRes(res, jsonBody)
+	httputil.SendJSON(w, stocks)
+	return nil
 }
 
 // queryForStock Query database for stocks matching the supplied query
@@ -54,13 +49,4 @@ func queryForStock(query string, db *sql.DB) ([]Stock, error) {
 		stocks = append(stocks, stock)
 	}
 	return stocks, nil
-}
-
-// parseQuery Parses the requested search query
-func parseQuery(req *http.Request) (string, error) {
-	query := req.URL.Query().Get("query")
-	if query == "" {
-		return query, errors.New("No query supplied")
-	}
-	return query, nil
 }

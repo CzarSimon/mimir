@@ -2,10 +2,11 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
+	"log"
 	"net/http"
 	"strings"
 
+	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/util"
 	"github.com/lib/pq"
 )
@@ -22,19 +23,18 @@ type Stock struct {
 }
 
 // GetSearchSugestions retrives search sugestions of a user excluding a given set of tickers
-func (env *Env) GetSearchSugestions(res http.ResponseWriter, req *http.Request) {
-	tickers := getTickers(req)
+func (env *Env) GetSearchSugestions(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodGet && r.Method != http.MethodPost {
+		return httputil.MethodNotAllowed
+	}
+	tickers := getTickers(r)
 	sugestions, err := getSugestions(tickers, env.db)
 	if err != nil {
-		util.SendErrRes(res, err)
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	js, err := json.Marshal(sugestions)
-	if err != nil {
-		util.SendErrRes(res, err)
-		return
-	}
-	util.SendJSONRes(res, js)
+	httputil.SendJSON(w, sugestions)
+	return nil
 }
 
 //ParseTickers turns a search request into a query

@@ -8,21 +8,23 @@ import (
 	"github.com/CzarSimon/util"
 )
 
-//Env is the struct for environment objects
+//Env is the struct for environment objects.
 type Env struct {
 	db     *sql.DB
 	config Config
 }
 
-// SetupEnv Sets up the service enironment
-func SetupEnv(config Config) Env {
-	return Env{
-		db:     util.ConnectPG(config.db),
+// SetupEnv sets up the service enironment.
+func SetupEnv(config Config) *Env {
+	db, err := config.db.Connect()
+	util.CheckErrFatal(err)
+	return &Env{
+		db:     db,
 		config: config,
 	}
 }
 
-// SetupServer Creates a server with a route handler
+// SetupServer creates a server with a route handler.
 func SetupServer(env *Env) *http.Server {
 	return &http.Server{
 		Addr:    ":" + env.config.server.Port,
@@ -35,9 +37,9 @@ func main() {
 	env := SetupEnv(config)
 	defer env.db.Close()
 
-	server := SetupServer(&env)
+	server := SetupServer(env)
 
-	log.Println("Starting server at port: " + config.server.Port)
+	log.Printf("Starting %s at port: %s\n", config.server.Port, SERVER_NAME)
 	err := server.ListenAndServe()
 	util.CheckErr(err)
 }
