@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/CzarSimon/mimir/app/lib/go/schema"
 	"github.com/CzarSimon/mimir/app/lib/go/schema/news"
-	"github.com/CzarSimon/util"
 )
 
 const (
@@ -17,16 +17,16 @@ const (
 )
 
 // SendLinksToRanker Sends attached links to news ranker along with mentioned subjects
-func (env *Env) SendLinksToRanker(tweet Tweet, subjects []news.Subject) {
+func (env *Env) SendLinksToRanker(tweet schema.Tweet, subjects []news.Subject) {
 	rankObject, err := createJsonRankObject(tweet, subjects)
 	if err != nil {
-		util.LogErr(err)
+		log.Println(err)
 		return
 	}
 	resp, err := http.Post(
 		env.Config.ranker.ToURL(RankRoute), BodyType, bytes.NewBuffer(rankObject))
 	if err != nil {
-		util.LogErr(err)
+		log.Println(err)
 		return
 	}
 	defer resp.Body.Close()
@@ -36,7 +36,7 @@ func (env *Env) SendLinksToRanker(tweet Tweet, subjects []news.Subject) {
 }
 
 // createJsonRankObject Creates json serialized rank object
-func createJsonRankObject(tweet Tweet, subjects []news.Subject) ([]byte, error) {
+func createJsonRankObject(tweet schema.Tweet, subjects []news.Subject) ([]byte, error) {
 	rankObject, err := createRankObject(tweet, subjects)
 	if err != nil {
 		return []byte{}, err
@@ -45,7 +45,7 @@ func createJsonRankObject(tweet Tweet, subjects []news.Subject) ([]byte, error) 
 }
 
 // createRankObject Truns a tweet and list of subjects to a rankt object
-func createRankObject(tweet Tweet, subjects []news.Subject) (news.RankObject, error) {
+func createRankObject(tweet schema.Tweet, subjects []news.Subject) (news.RankObject, error) {
 	author, err := twitterUserToAuthor(tweet.User)
 	return news.RankObject{
 		Urls:     tweet.GetURLs(),
@@ -56,7 +56,7 @@ func createRankObject(tweet Tweet, subjects []news.Subject) (news.RankObject, er
 }
 
 // twitterUserToAuthor Converts a TwitterUser to Author type
-func twitterUserToAuthor(user TwitterUser) (news.Author, error) {
+func twitterUserToAuthor(user schema.TwitterUser) (news.Author, error) {
 	id, err := strconv.ParseInt(user.ID, 10, 64)
 	if err != nil {
 		return news.Author{}, err

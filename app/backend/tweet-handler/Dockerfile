@@ -7,8 +7,7 @@ WORKDIR /usr/src/tweet-handler
 
 # Install dependencies
 RUN go get github.com/lib/pq
-RUN go get github.com/CzarSimon/mimir/app/lib/go/schema/tweet
-RUN go get github.com/CzarSimon/mimir/app/lib/go/schema/news
+RUN go get github.com/CzarSimon/mimir/app/lib/go/schema
 RUN go get github.com/CzarSimon/httputil
 RUN go get github.com/CzarSimon/go-endpoint
 RUN go get github.com/CzarSimon/util

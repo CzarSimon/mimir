@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/CzarSimon/mimir/app/lib/go/schema"
 	"github.com/CzarSimon/mimir/app/lib/go/schema/spam"
 	"github.com/CzarSimon/util"
 )
@@ -16,7 +17,7 @@ const (
 )
 
 // FilterSpam Querys spam filter to check if tweet is spam
-func (env *Env) FilterSpam(tweet Tweet) bool {
+func (env *Env) FilterSpam(tweet schema.Tweet) bool {
 	if !env.Config.filterSpam {
 		return false
 	}

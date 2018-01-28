@@ -1,23 +1,24 @@
 package main
 
 import (
-	"errors"
+	"log"
 	"net/http"
 
+	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/util"
 )
 
 // GetTrackedTickers Returns tracked tickers to a requestor
-func (env *Env) GetTrackedTickers(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodGet {
-		util.SendErrStatus(res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
-		return
+func (env *Env) GetTrackedTickers(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodGet {
+		return httputil.MethodNotAllowed
 	}
 	trackedTickers := CreateTrackedTickersList(env.Tickers, env.Aliases)
 	jsonBody, err := trackedTickers.ToJSON()
 	if err != nil {
-		util.SendErrRes(res, errors.New("Could not retrive tracked tickers"))
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	util.SendJSONRes(res, jsonBody)
+	util.SendJSONRes(w, jsonBody)
+	return nil
 }
