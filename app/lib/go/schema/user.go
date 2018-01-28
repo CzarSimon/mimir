@@ -1,4 +1,4 @@
-package user
+package schema
 
 import (
 	"time"
@@ -6,7 +6,7 @@ import (
 	"github.com/CzarSimon/mimir/app/lib/go/schema/stock"
 )
 
-// User Holds user information
+// User holds user information.
 type User struct {
 	ID       string        `json:"id"`
 	Email    string        `json:"email,omitempty"`
@@ -14,8 +14,8 @@ type User struct {
 	JoinDate time.Time     `json:"joinDate"`
 }
 
-// NewUser Creates new user based on a userID
-func New(ID string) User {
+// NewUser creates new user based on a userID.
+func NewUser(ID string) User {
 	return User{
 		ID:       ID,
 		Tickers:  stock.InitalTickers,
