@@ -1,9 +1,8 @@
-FROM golang:1.8-alpine
+FROM czarsimon/golang:1.8
 RUN apk update && apk upgrade && apk add --no-cache git
 
 RUN mkdir -p /usr/src/news-server
 COPY . /usr/src/news-server
-
 WORKDIR /usr/src/news-server
 
 RUN go get github.com/lib/pq

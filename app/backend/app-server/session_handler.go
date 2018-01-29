@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/CzarSimon/httputil"
-	"github.com/CzarSimon/mimir/app/lib/go/schema/user"
+	"github.com/CzarSimon/mimir/app/lib/go/schema"
 )
 
 // HandleSessionRequest Records a session start of the user specified in the request
@@ -14,11 +14,11 @@ func (env *Env) HandleSessionRequest(w http.ResponseWriter, r *http.Request) err
 	if r.Method != http.MethodPost {
 		return httputil.MethodNotAllowed
 	}
-	usr, err := parseUserFromBody(r)
+	user, err := parseUserFromBody(r)
 	if err != nil {
 		return httputil.BadRequest
 	}
-	err = storeUserSession(user.NewSession(usr), env.db)
+	err = storeUserSession(schema.NewSession(user), env.db)
 	if err != nil {
 		log.Println(err)
 		return httputil.InternalServerError
@@ -28,7 +28,7 @@ func (env *Env) HandleSessionRequest(w http.ResponseWriter, r *http.Request) err
 }
 
 // storeUserSession Stores a new user sesssion
-func storeUserSession(session user.Session, db *sql.DB) error {
+func storeUserSession(session schema.Session, db *sql.DB) error {
 	stmt, err := db.Prepare("INSERT INTO SESSION(USER_ID, SESSION_START) VALUES($1, $2)")
 	defer stmt.Close()
 	if err != nil {

@@ -2,14 +2,15 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
+	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/util"
 	"github.com/julienschmidt/httprouter"
 )
@@ -23,30 +24,60 @@ type ArticleParams struct {
 }
 
 // GetNews Retrives a ranked list of news based on parsed article params
-func (env *Env) GetNews(res http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+func (env *Env) GetNews(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
 	params, err := parseArticleParams(ps, env.periodMonthMap)
 	if err != nil {
-		util.SendErrRes(res, err)
+		httputil.SendErr(w, httputil.BadRequest)
 		return
 	}
 	articles, err := getTopArticles(params, env.db)
 	if err != nil {
-		util.SendErrRes(res, err)
+		log.Println(err)
+		httputil.SendErr(w, httputil.InternalServerError)
 		return
 	}
-	jsonBody, err := json.Marshal(articles)
-	if err != nil {
-		util.SendErrRes(res, err)
-		return
-	}
-	util.SendJSONRes(res, jsonBody)
+	httputil.SendJSON(w, articles)
 }
 
 // getTopArticles Gets the leading articles of the highest ranked article cluster
 // for a given ticker and time preiod
 func getTopArticles(params ArticleParams, db *sql.DB) ([]Article, error) {
+	query := getSelectArticlesQuery()
+	rows, err := db.Query(
+		query, params.Ticker, params.FromDate, time.Now().UTC(), params.Limit)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	return constructArticles(rows)
+}
+
+func constructArticles(rows *sql.Rows) ([]Article, error) {
 	articles := make([]Article, 0)
-	query := `SELECT a.TITLE, a.URL, a.SUMMARY, a.DATE_INSERTED, a.KEYWORDS, a.TWITTER_REFERENCES
+	var article Article
+	for rows.Next() {
+		err := populateArticle(&article, rows)
+		if err != nil {
+			return articles, err
+		}
+		articles = append(articles, article)
+	}
+	return articles, nil
+}
+
+func populateArticle(article *Article, rows *sql.Rows) error {
+	err := rows.Scan(
+		&article.Title,
+		&article.URL,
+		&article.Summary,
+		&article.Timestamp,
+		&article.Keywords,
+		&article.TwitterReferences)
+	return err
+}
+
+func getSelectArticlesQuery() string {
+	return `SELECT a.TITLE, a.URL, a.SUMMARY, a.DATE_INSERTED, a.KEYWORDS, a.TWITTER_REFERENCES
 						FROM ARTICLE_CLUSTER c
 						INNER JOIN ARTICLE a
 						ON c.LEADER = a.URL_HASH
@@ -54,22 +85,6 @@ func getTopArticles(params ArticleParams, db *sql.DB) ([]Article, error) {
 						AND c.ARTICLE_DATE>=$2
 						AND c.ARTICLE_DATE<=$3
 						ORDER BY c.SCORE DESC LIMIT $4;`
-	rows, err := db.Query(
-		query, params.Ticker, params.FromDate, time.Now().UTC(), params.Limit)
-	defer rows.Close()
-	if err != nil {
-		return articles, err
-	}
-	var article Article
-	for rows.Next() {
-		err = rows.Scan(
-			&article.Title, &article.URL, &article.Summary, &article.Timestamp, &article.Keywords, &article.TwitterReferences)
-		if err != nil {
-			return articles, err
-		}
-		articles = append(articles, article)
-	}
-	return articles, nil
 }
 
 // parseArticleParams Parses ArticleParams from a request

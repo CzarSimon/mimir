@@ -12,14 +12,26 @@ import (
 //Env is the environment variables struct
 type Env struct {
 	db             *sql.DB
+	config         Config
 	periodMonthMap periodMonthMap
 }
 
 // setupEnv Sets up the service environment
 func setupEnv(config Config) *Env {
+	db, err := config.db.Connect()
+	util.CheckErrFatal(err)
 	return &Env{
-		db:             util.ConnectPG(config.db),
+		db:             db,
+		config:         config,
 		periodMonthMap: newPeriodMonthMap(),
+	}
+}
+
+// SetupServer creates a server with a route handler.
+func SetupServer(env *Env) *http.Server {
+	return &http.Server{
+		Addr:    ":" + env.config.server.Port,
+		Handler: SetupRoutes(env),
 	}
 }
 
@@ -29,11 +41,9 @@ func main() {
 	env := setupEnv(config)
 	defer env.db.Close()
 
-	server := &http.Server{
-		Addr:    ":" + config.server.Port,
-		Handler: setupRoutes(env),
-	}
-	log.Println("Started news-server on port: " + config.server.Port)
+	server := SetupServer(env)
+
+	log.Printf("Started %s on port: %s\n", SERVER_NAME, config.server.Port)
 	err := server.ListenAndServe()
 	util.LogErr(err)
 }

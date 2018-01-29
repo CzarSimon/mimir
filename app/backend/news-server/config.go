@@ -1,26 +1,23 @@
 package main
 
-import "github.com/CzarSimon/util"
+import endpoint "github.com/CzarSimon/go-endpoint"
 
 // DefaultPeriod Is the default time period for retrieving news
-const DefaultPeriod string = "TODAY"
+const (
+	DefaultPeriod = "TODAY"
+	SERVER_NAME   = "NEWS_SERVER"
+)
 
 //Config contains internal config variables for the server
 type Config struct {
-	server util.ServerConfig
-	db     util.PGConfig
+	server endpoint.ServerAddr
+	db     endpoint.SQLConfig
 }
 
 func getConfig() Config {
 	return Config{
-		server: getServerConfig(),
-		db:     util.GetPGConfig("localhost", "pwd", "simon", "mimirprod"),
-	}
-}
-
-func getServerConfig() util.ServerConfig {
-	return util.ServerConfig{
-		Port: "5050",
+		server: endpoint.NewServerAddr(SERVER_NAME),
+		db:     endpoint.NewPGConfig("PG"),
 	}
 }
 

@@ -3,6 +3,7 @@ package main
 import (
 	"net/http"
 
+	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/httputil/handler"
 )
 
@@ -13,6 +14,7 @@ func SetupRoutes(env *Env) *http.ServeMux {
 	setupTwitterDataRoutes(mux, env)
 	setupStockRoutes(mux, env)
 	mux.Handle("/health", handler.HealthCheck)
+	mux.HandleFunc("/readiness", env.ReadinessCheck)
 	return mux
 }
 
@@ -36,4 +38,14 @@ func setupStockRoutes(mux *http.ServeMux, env *Env) {
 	mux.Handle("/api/app/stock", handler.New(env.HandleStockRequest))
 	mux.Handle("/api/app/stocks", handler.New(env.HandleStocksRequest))
 	mux.Handle("/api/app/stock/description", handler.New(env.HandleStockRequest))
+}
+
+// ReadinessCheck checks that the server is ready to recieve traffic.
+func (env *Env) ReadinessCheck(w http.ResponseWriter, r *http.Request) {
+	err := env.db.Ping()
+	if err != nil {
+		httputil.SendErr(w, httputil.InternalServerError)
+		return
+	}
+	httputil.SendOK(w)
 }
