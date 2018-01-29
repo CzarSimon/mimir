@@ -17,7 +17,7 @@ type Config struct {
 func getConfig() Config {
 	return Config{
 		server: endpoint.NewServerAddr(SERVER_NAME),
-		db:     endpoint.NewPGConfig("PG"),
+		db:     endpoint.NewPGConfig("DB"),
 	}
 }
 

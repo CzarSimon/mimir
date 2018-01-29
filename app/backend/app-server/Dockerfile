@@ -9,6 +9,7 @@ RUN go get github.com/lib/pq
 RUN go get github.com/CzarSimon/util
 RUN go get github.com/CzarSimon/go-endpoint
 RUN go get github.com/CzarSimon/httputil
+RUN go get github.com/CzarSimon/mimir/app/lib/go/schema
 RUN export GOPATH=$GOPATH:$PWD
 RUN go build
 
