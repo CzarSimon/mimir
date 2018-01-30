@@ -19,24 +19,24 @@ spec:
             - name: sf-port
               containerPort: 1000
           env:
-            - name: PG_HOST
+            - name: DB_HOST
               value: tweet-db
-            - name: PG_PASSWORD
+            - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: tweet-db-credentials
                   key: password
-            - name: PG_USER
+            - name: DB_USER
               valueFrom:
                 secretKeyRef:
                   name: tweet-db-credentials
                   key: username
-            - name: PG_NAME
+            - name: DB_NAME
               valueFrom:
                 secretKeyRef:
                   name: tweet-db-credentials
                   key: database
-            - name: PG_PORT
+            - name: DB_PORT
               valueFrom:
                 configMapKeyRef:
                   name: service-ports

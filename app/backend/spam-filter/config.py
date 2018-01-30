@@ -17,11 +17,11 @@ cashtag_threshold = _get_cashtag_threshold()
 
 
 database = {
-    "NAME": os.getenv("PG_NAME", "mimirprod"),
-    "USER": os.getenv("PG_USER","simon"),
-    "HOST": os.getenv("PG_HOST", "localhost"),
-    "PASSWORD": os.getenv("PG_PASSWORD", "pwd"),
-    "PORT": os.getenv("PG_PORT", "5432")
+    "NAME": os.getenv("DB_NAME", "mimirprod"),
+    "USER": os.getenv("DB_USER","simon"),
+    "HOST": os.getenv("DB_HOST", "localhost"),
+    "PASSWORD": os.getenv("DB_PASSWORD", "pwd"),
+    "PORT": os.getenv("DB_PORT", "5432")
 }
 
 
