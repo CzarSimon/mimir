@@ -9,4 +9,4 @@ spec:
       protocol: TCP
   selector:
     app: price-server
-  type: ClusterIP
+  type: NodePort
