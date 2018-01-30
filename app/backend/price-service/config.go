@@ -3,15 +3,18 @@ package main
 import (
 	"log"
 
+	"github.com/CzarSimon/go-file-heartbeat/heartbeat"
+	endpoint "github.com/CzarSimon/go-endpoint"
 	"github.com/CzarSimon/util"
 )
 
 // Config Holds configuration values
 type Config struct {
-	PriceDB  util.PGConfig
-	TickerDB util.PGConfig
-	Timing   TimingConfig
-	Timezone string
+	PriceDB   endpoint.SQLConfig
+	TickerDB  endpoint.SQLConfig
+	Timing    TimingConfig
+	Timezone  string
+	Heartbeat heartbeat.Config
 }
 
 // TimingConfig Holds timing config for scheduling
@@ -22,16 +25,14 @@ type TimingConfig struct {
 
 // GetConfig Returns a new Config struct based on evnirionment variables
 func GetConfig() Config {
-	pdbHost := util.GetEnvVar("PG_HOST", "localhost")
-	tdbHost := util.GetEnvVar("TICKER_DB_HOST", "localhost")
-	dbPwd := util.GetEnvVar("PG_PASSWORD", "pwd")
-	tickerDBConfig := util.GetPGConfig(tdbHost, dbPwd, "simon", "mimirprod")
-	//tickerDBConfig.Port = "1000"
+	heartbeatConfig, err := heartbeat.NewConfigFromEnv()
+	util.CheckErrFatal(err)
 	return Config{
-		PriceDB:  util.GetPGConfig(pdbHost, dbPwd, "simon", "mimirprod"),
-		TickerDB: tickerDBConfig,
-		Timing:   getTimingConfig(),
-		Timezone: util.GetEnvVar("TIMEZONE", "America/New_York"),
+		PriceDB:   endpoint.NewPGConfig("PRICE_DB"),
+		TickerDB:  endpoint.NewPGConfig("TICKER_DB"),,
+		Timing:    getTimingConfig(),
+		Timezone:  util.GetEnvVar("TIMEZONE", "America/New_York"),
+		Heartbeat: heartbeatConfig,
 	}
 }
 
