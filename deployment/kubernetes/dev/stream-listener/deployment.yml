@@ -25,3 +25,23 @@ spec:
                 configMapKeyRef:
                   name: service-ports
                   key: tweet-handler
+            - name: TWITTER_CONSUMER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: twitter-api-credentials
+                  key: consumerKey
+            - name: TWITTER_CONSUMER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: twitter-api-credentials
+                  key: consumerSecret
+            - name: TWITTER_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: twitter-api-credentials
+                  key: accessToken
+            - name: TWITTER_ACCESS_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: twitter-api-credentials
+                  key: accessSecret
