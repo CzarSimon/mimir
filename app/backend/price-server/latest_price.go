@@ -2,40 +2,32 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 
-	"github.com/CzarSimon/mimir/lib/stock"
-	"github.com/CzarSimon/util"
+	"github.com/CzarSimon/httputil"
+	"github.com/CzarSimon/mimir/app/lib/go/schema/stock"
 	"github.com/lib/pq"
 )
 
 // GetLatestPrices Gets the latest prices for a supplied set of tickers
-func (env *Env) GetLatestPrices(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodGet {
-		util.SendErrStatus(
-			res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
-		return
+func (env *Env) GetLatestPrices(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodGet {
+		return httputil.MethodNotAllowed
 	}
-	tickers, err := parseTickersFromQuery(req)
+	tickers, err := parseTickersFromQuery(r)
 	if err != nil {
-		util.SendErrStatus(res, err, http.StatusBadRequest)
-		return
+		log.Println(err)
+		return httputil.BadRequest
 	}
 	prices, err := getLatestPricesFromDB(tickers, env.db)
 	if err != nil {
-		util.LogErr(err)
-		util.SendErrRes(res, errors.New("Could not get prices"))
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	jsonBody, err := json.Marshal(prices)
-	if err != nil {
-		util.LogErr(err)
-		util.SendErrRes(res, errors.New("Could not get prices"))
-		return
-	}
-	util.SendJSONRes(res, jsonBody)
+	httputil.SendJSON(w, prices)
+	return nil
 }
 
 // getLatestPricesFromDB Gets latest prices for a supplied set of tickers from the database

@@ -1,26 +1,23 @@
 package main
 
-import "github.com/CzarSimon/util"
+import (
+	endpoint "github.com/CzarSimon/go-endpoint"
+)
+
+const (
+	SERVER_NAME = "PRICE_SERVER"
+)
 
 // Config Holds configuration values
 type Config struct {
-	DB     util.PGConfig
-	Server util.ServerConfig
+	DB     endpoint.SQLConfig
+	Server endpoint.ServerAddr
 }
 
 // GetConfig Returns a new Config struct based on evnirionment variables
 func GetConfig() Config {
-	pdbHost := util.GetEnvVar("PG_HOST", "localhost")
-	pdbPwd := util.GetEnvVar("PG_PASSWORD", "pwd")
 	return Config{
-		DB:     util.GetPGConfig(pdbHost, pdbPwd, "simon", "mimirprod"),
-		Server: getServerConfig(),
-	}
-}
-
-// getServerConfig Retruns a new server configuration
-func getServerConfig() util.ServerConfig {
-	return util.ServerConfig{
-		Port: "4000",
+		DB:     endpoint.NewPGConfig("DB"),
+		Server: endpoint.NewServerAddr(SERVER_NAME),
 	}
 }

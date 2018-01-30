@@ -2,13 +2,14 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"errors"
+	"log"
 	"net/http"
 	"strings"
 	"time"
 
-	"github.com/CzarSimon/mimir/lib/stock"
+	"github.com/CzarSimon/httputil"
+	"github.com/CzarSimon/mimir/app/lib/go/schema/stock"
 	"github.com/CzarSimon/util"
 )
 
@@ -20,28 +21,22 @@ type PriceRequest struct {
 
 // GetHistoricalPrices Request handler for retrival of a tickers historical
 // price after a given start date
-func (env *Env) GetHistoricalPrices(res http.ResponseWriter, req *http.Request) {
-	if req.Method != http.MethodGet {
-		util.SendErrStatus(
-			res, errors.New("Method not allowed"), http.StatusMethodNotAllowed)
-		return
+func (env *Env) GetHistoricalPrices(w http.ResponseWriter, r *http.Request) error {
+	if r.Method != http.MethodGet {
+		return httputil.MethodNotAllowed
 	}
-	priceRequest, err := parsePriceRequest(req)
+	priceRequest, err := parsePriceRequest(r)
 	if err != nil {
-		util.SendErrRes(res, err)
-		return
+		log.Println(err)
+		return httputil.BadRequest
 	}
 	prices, err := GetPricesFromDB(priceRequest, env.db)
 	if err != nil {
-		util.SendErrRes(res, err)
-		return
+		log.Println(err)
+		return httputil.InternalServerError
 	}
-	jsonBody, err := json.Marshal(prices)
-	if err != nil {
-		util.SendErrRes(res, err)
-		return
-	}
-	util.SendJSONRes(res, jsonBody)
+	httputil.SendJSON(w, prices)
+	return nil
 }
 
 // GetPricesFromDB Retrives historical prices from database

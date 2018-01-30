@@ -1,0 +1,27 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: stream-listener
+  namespace: mimir
+  labels:
+    app: stream-listener
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: stream-listener
+    spec:
+      containers:
+        - name: stream-listener
+          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/stream-listener:0.1-java
+          env:
+            - name: TWEET_HANDLER_HOST
+              value: tweet-handler
+            - name: TWEET_HANDLER_PROTOCOL
+              value: http
+            - name: TWEET_HANDLER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: tweet-handler
