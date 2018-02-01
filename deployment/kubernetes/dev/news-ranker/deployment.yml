@@ -1,23 +1,23 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: news-clusterer
+  name: news-ranker
   namespace: mimir
   labels:
-    app: news-clusterer
+    app: news-ranker
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: news-clusterer
+        app: news-ranker
     spec:
       containers:
-        - name: news-clusterer
-          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/news-clusterer:latest
+        - name: news-ranker
+          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/news-ranker:latest
           ports:
-            - name: nc-port
-              containerPort: 6000
+            - name: nr-port
+              containerPort: 5000
           env:
             - name: DB_HOST
               value: news-db
@@ -41,18 +41,27 @@ spec:
                 configMapKeyRef:
                   name: service-ports
                   key: news-db
+            - name: NEWS_CLUSTERER_HOST
+              value: news-clusterer
+            - name: NEWS_CLUSTERER_PROTOCOL
+              value: http
             - name: NEWS_CLUSTERER_PORT
               valueFrom:
                 configMapKeyRef:
                   name: service-ports
                   key: news-clusterer
+            - name: NEWS_RANKER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: news-ranker
           livenessProbe:
             httpGet:
               path: /health
-              port: nc-port
+              port: nr-port
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
               path: /readiness
-              port: nc-port
+              port: nr-port
             initialDelaySeconds: 30

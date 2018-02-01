@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	endpoint "github.com/CzarSimon/go-endpoint"
 	"github.com/CzarSimon/util"
 )
 
@@ -12,23 +13,36 @@ import (
 type Env struct {
 	db        *sql.DB
 	rank      RankConfig
-	clusterer util.ServerConfig
+	clusterer endpoint.ServerAddr
 }
 
-func setupEnvironment(config Config) Env {
-	return Env{
-		db:        util.ConnectPG(config.db),
+// SetupEnv sets up environment.
+func SetupEnv(config Config) *Env {
+	db, err := config.db.Connect()
+	util.CheckErrFatal(err)
+	return &Env{
+		db:        db,
 		rank:      config.rank,
 		clusterer: config.clusterer,
 	}
 }
 
+// SetupServer sets up server and routes.
+func SetupServer(env *Env, config Config) *http.Server {
+	return &http.Server{
+		Addr:    ":" + config.server.Port,
+		Handler: SetupRoutes(env),
+	}
+}
+
 func main() {
 	config := getConfig()
-	env := setupEnvironment(config)
+	env := SetupEnv(config)
 	defer env.db.Close()
-	http.HandleFunc("/api/rank-article", env.HandleArticleRanking)
-	http.HandleFunc("/api/ranked-article", env.HandleRankedArticle)
+
+	server := SetupServer(env, config)
+
 	log.Println("Starting server at port: " + config.server.Port)
-	http.ListenAndServe(":"+config.server.Port, nil)
+	err := server.ListenAndServe()
+	util.CheckErr(err)
 }

@@ -1,20 +1,27 @@
-FROM golang:1.8 as go_builder
-RUN mkdir -p /usr/src/news-ranker
-WORKDIR /usr/src/news-ranker
+FROM golang:1.8-stretch as go-build
 
-# Bundle app source
+# Create source directory and bundle app source
+WORKDIR /usr/src/news-ranker
 COPY . /usr/src/news-ranker
 
+# Install go dependecies
 RUN go get github.com/lib/pq
+RUN go get github.com/CzarSimon/httputil
+RUN go get github.com/CzarSimon/go-endpoint
 RUN go get github.com/CzarSimon/util
+
+# Build go app
 RUN export GOPATH=$GOPATH:$PWD
 RUN go build
 
 # python runtime
-FROM python:3.6-stretch
+FROM python:3.6-slim-stretch as python-run
 
 # Scikit-learn dependencies
-RUN apt-get update && apt-get install -y libatlas-dev libatlas3gf-base libblas-dev liblapack-dev libatlas-base-dev gfortran
+RUN apt-get update
+RUN apt-get install -y apt-utils
+RUN apt-get update && apt-get install -y \
+    libatlas-dev libatlas3-base libblas-dev liblapack-dev libatlas-base-dev gfortran
 RUN update-alternatives --set libblas.so.3 \
     /usr/lib/atlas-base/atlas/libblas.so.3
 RUN update-alternatives --set liblapack.so.3 \
@@ -22,7 +29,7 @@ RUN update-alternatives --set liblapack.so.3 \
 
 # Newspaper dependencies
 RUN apt-get install -y libxml2-dev libxslt-dev
-RUN apt-get install -y libjpeg-dev zlib1g-dev libpng12-dev
+RUN apt-get install -y libjpeg-dev zlib1g-dev libpng-dev
 
 # Install python dependecies
 RUN pip3 install --upgrade pip
@@ -34,13 +41,13 @@ RUN pip3 install nltk
 RUN pip3 install scikit-learn
 
 # Corpora required to run newspapers nlp functions
+RUN apt-get install -y curl
 RUN curl https://raw.githubusercontent.com/codelucas/newspaper/master/download_corpora.py | python3
 
 # Create app directory
-RUN mkdir -p /usr/src/news-ranker
-WORKDIR /usr/src/news-ranker
-COPY --from=go_builder /usr/src/news-ranker/news-ranker .
-COPY --from=go_builder /usr/src/news-ranker/article_ranker/ .
+WORKDIR /root/
+COPY --from=go-build /usr/src/news-ranker/news-ranker .
+COPY --from=go-build /usr/src/news-ranker/article_ranker/ article_ranker/
 
 # Build python files
 RUN python3 -m compileall -b ./article_ranker

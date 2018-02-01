@@ -1,35 +1,56 @@
 package main
 
 import (
-	"encoding/json"
-	"fmt"
+	"log"
 	"net/http"
 
+	"github.com/CzarSimon/httputil"
+	"github.com/CzarSimon/httputil/handler"
 	"github.com/CzarSimon/util"
 )
 
+func SetupRoutes(env *Env) *http.ServeMux {
+	mux := http.NewServeMux()
+	mux.Handle("/api/rank-article", handler.New(env.HandleArticleRanking))
+	mux.Handle("/api/ranked-article", handler.New(env.HandleRankedArticle))
+	mux.Handle("/health", handler.HealthCheck)
+	mux.HandleFunc("/readiness", env.ReadinessCheck)
+	return mux
+}
+
 // HandleArticleRanking is the entrypoint for ranking and article
-func (env *Env) HandleArticleRanking(res http.ResponseWriter, req *http.Request) {
-	decoder := json.NewDecoder(req.Body)
+func (env *Env) HandleArticleRanking(w http.ResponseWriter, r *http.Request) error {
 	var rankObject RankObject
-	err := decoder.Decode(&rankObject)
+	err := util.DecodeJSON(r.Body, &rankObject)
 	if err != nil {
-		util.SendErrRes(res, err)
-		return
+		log.Println(err)
+		return httputil.BadRequest
 	}
-	util.SendJSONStringRes(res, "Sent to ranking")
+	httputil.SendOK(w)
 	env.rankArticles(rankObject)
+	return nil
 }
 
 // HandleRankedArticle stores the result of a ranked article
-func (env *Env) HandleRankedArticle(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("Handling Ranked Article")
+func (env *Env) HandleRankedArticle(w http.ResponseWriter, r *http.Request) error {
+	log.Println("Handling Ranked Article")
 	var ranked RankReturn
-	err := json.NewDecoder(req.Body).Decode(&ranked)
-	if util.IsErr(err) {
-		util.CheckErr(err)
-		return
+	err := util.DecodeJSON(r.Body, &ranked)
+	if err != nil {
+		log.Println(err)
+		return httputil.BadRequest
 	}
 	go storeRankReturn(ranked, env.db, env.clusterer)
-	util.SendJSONStringRes(res, "success")
+	httputil.SendOK(w)
+	return nil
+}
+
+// ReadinessCheck checks that the server is ready to recieve traffic.
+func (env *Env) ReadinessCheck(w http.ResponseWriter, r *http.Request) {
+	err := env.db.Ping()
+	if err != nil {
+		httputil.SendErr(w, httputil.InternalServerError)
+		return
+	}
+	httputil.SendOK(w)
 }

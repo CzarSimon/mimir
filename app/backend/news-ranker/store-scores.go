@@ -3,43 +3,57 @@ package main
 import (
 	"database/sql"
 	"fmt"
+	"log"
 
+	endpoint "github.com/CzarSimon/go-endpoint"
 	"github.com/CzarSimon/util"
 	"github.com/lib/pq"
 )
 
-func storeRankReturn(rankReturn RankReturn, db *sql.DB, clusterer util.ServerConfig) {
+func storeRankReturn(rankReturn RankReturn, db *sql.DB, clusterer endpoint.ServerAddr) {
 	var err error
 	if !rankReturn.StoredArticle.IsScraped {
 		err = insertArticle(rankReturn, db)
 	}
-	if util.IsErr(err) {
-		util.LogErr(err)
-	} else {
-		insertScores(rankReturn.NewArticle, db)
-		go rankReturnToClustering(rankReturn, clusterer)
+	if err != nil {
+		log.Println(err)
+		return
 	}
+	insertScores(rankReturn.NewArticle, db)
+	go rankReturnToClustering(rankReturn, clusterer)
 }
 
 func insertArticle(rankReturn RankReturn, db *sql.DB) error {
-	query := "INSERT INTO ARTICLE(" +
-		"URL, URL_HASH, TITLE, REFERENCE_SCORE, SUMMARY, " +
-		"BODY, DATE_INSERTED, TWITTER_REFERENCES, KEYWORDS) " +
-		"VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)"
+	query := getArticleInsert()
 	stmt, err := db.Prepare(query)
+	if err != nil {
+		return err
+	}
 	defer stmt.Close()
-	if util.IsErr(err) {
-		return err
-	}
-	a := rankReturn.StoredArticle
-	n := rankReturn.NewArticle
-	_, err = stmt.Exec(
-		string(a.URL), a.URLHash, n.Title, a.ReferenceScore, n.Summary,
-		n.Body, n.Timestamp, pq.Array(a.TwitterReferences), pq.Array(n.Keywords))
-	if util.IsErr(err) {
-		return err
-	}
-	return nil
+	article := rankReturn.StoredArticle
+	rank := rankReturn.NewArticle
+	return storeArticle(stmt, article, rank)
+}
+
+func getArticleInsert() string {
+	return `INSERT INTO ARTICLE(
+						URL, URL_HASH, TITLE, REFERENCE_SCORE, SUMMARY,
+						BODY, DATE_INSERTED, TWITTER_REFERENCES, KEYWORDS)
+						VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)`
+}
+
+func storeArticle(stmt *sql.Stmt, article Article, rank RankResult) error {
+	_, err := stmt.Exec(
+		string(article.URL),
+		article.URLHash,
+		rank.Title,
+		article.ReferenceScore,
+		rank.Summary,
+		rank.Body,
+		rank.Timestamp,
+		pq.Array(article.TwitterReferences),
+		pq.Array(rank.Keywords))
+	return err
 }
 
 func insertScores(rankResult RankResult, db *sql.DB) {
@@ -62,12 +76,12 @@ func insertScore(table string, subjects []TickerScore, tx *sql.Tx) error {
 	query := fmt.Sprintf("INSERT INTO %s(URL_HASH, TICKER, SCORE) VALUES ($1,$2,$3)", table)
 	stmt, err := tx.Prepare(query)
 	defer stmt.Close()
-	if util.IsErr(err) {
+	if err != nil {
 		return err
 	}
 	for _, subject := range subjects {
 		_, err = stmt.Exec(subject.URLHash, subject.Ticker, subject.Score)
-		if util.IsErr(err) {
+		if err != nil {
 			fmt.Println(query)
 			return err
 		}
@@ -116,7 +130,7 @@ func updateCompoundScores(referenceScore float64, subjectScores []TickerScore, t
 	for _, score := range subjectScores {
 		compundScore = referenceScore + score.Score
 		_, err = stmt.Exec(compundScore, score.URLHash, score.Ticker)
-		if util.IsErr(err) {
+		if err != nil {
 			return err
 		}
 	}
