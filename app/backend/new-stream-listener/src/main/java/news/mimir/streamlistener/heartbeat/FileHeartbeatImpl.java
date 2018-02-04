@@ -16,7 +16,7 @@ public class FileHeartbeatImpl implements FileHeartbeat {
     private static final Logger log =
             Logger.getLogger(FileHeartbeatImpl.class.getName());
 
-    private String filepath;
+    private String filePath;
     private long interval;
 
     private static final int MS_IN_SECOND = 1000;
@@ -26,12 +26,12 @@ public class FileHeartbeatImpl implements FileHeartbeat {
      */
     public FileHeartbeatImpl() {
         Config config = new Config();
-        this.filepath = config.HEARTBEAT_FILE;
+        this.filePath = config.HEARTBEAT_FILE;
         this.interval = MS_IN_SECOND * config.HEARTBEAT_INTERVAL_SECONDS;
     }
 
     @Override
-    public void runHeartbeat() {
+    public void run() {
         while (!Thread.interrupted()) {
             emitToFile();
             try {
@@ -44,9 +44,10 @@ public class FileHeartbeatImpl implements FileHeartbeat {
 
     @Override
     public void emitToFile() {
-        File file = new File(filepath);
+        File file = new File(filePath);
         try {
             touch(file, System.currentTimeMillis());
+            log.info("heartbeat");
         } catch (IOException e) {
             log.severe(e.getMessage());
             throw new RuntimeException(e.getMessage());
@@ -54,15 +55,17 @@ public class FileHeartbeatImpl implements FileHeartbeat {
     }
 
     /**
-     *
+     * Touches a supplied file.
      * @param file
      * @param timestamp
      * @throws IOException
      */
     private void touch(File file, long timestamp) throws IOException {
         if (!file.exists()) {
+            log.info("Creating file: " + filePath);
             new FileOutputStream(file).close();
         }
         file.setLastModified(timestamp);
     }
+
 }

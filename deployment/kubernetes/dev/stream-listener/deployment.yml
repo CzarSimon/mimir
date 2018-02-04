@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: stream-listener
-          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/stream-listener:0.1-java
+          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/stream-listener:1.0-java
           env:
             - name: TWEET_HANDLER_HOST
               value: tweet-handler
@@ -45,3 +45,21 @@ spec:
                 secretKeyRef:
                   name: twitter-api-credentials
                   key: accessSecret
+            - name: HEARTBEAT_FILE
+              value: /tmp/STREAM_LISTENER_HEARTBEAT.txt
+            - name: HEARTBEAT_INTERVAL
+              value: "15"
+          readinessProbe:
+            exec:
+              command:
+                - test
+                - '`find /tmp/STREAM_LISTENER_HEARTBEAT.txt -mmin 1`'
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          livenessProbe:
+            exec:
+              command:
+                - test
+                - '`find /tmp/STREAM_LISTENER_HEARTBEAT.txt -mmin 1`'
+            initialDelaySeconds: 15
+            periodSeconds: 15

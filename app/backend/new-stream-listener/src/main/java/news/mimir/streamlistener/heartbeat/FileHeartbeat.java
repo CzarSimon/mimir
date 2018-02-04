@@ -10,7 +10,7 @@ public interface FileHeartbeat {
     /**
      * Continously runs heartbeat emission.
      */
-    void runHeartbeat();
+    void run();
 
     /**
      * Emits a heartbeat to a file.

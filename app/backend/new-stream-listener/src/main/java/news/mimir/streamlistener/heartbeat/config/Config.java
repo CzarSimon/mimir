@@ -10,6 +10,7 @@ public class Config {
 
     public final String HEARTBEAT_FILE;
     public final int HEARTBEAT_INTERVAL_SECONDS;
+    public final String DEFAULT_INTERVAL_SECONDS = "15";
 
     public Config() {
         this.HEARTBEAT_FILE = EnvVar.get("HEARTBEAT_FILE");
@@ -21,7 +22,7 @@ public class Config {
      * @return Heartbeat interval in seconds
      */
     private int getHeartbeatInterval() {
-        String intervalStr = EnvVar.get("HEARTBEAT_INTERVAL");
+        String intervalStr = EnvVar.get("HEARTBEAT_INTERVAL", DEFAULT_INTERVAL_SECONDS);
         return Integer.parseInt(intervalStr);
     }
 

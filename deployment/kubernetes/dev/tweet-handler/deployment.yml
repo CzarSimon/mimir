@@ -50,6 +50,8 @@ spec:
                 configMapKeyRef:
                   name: service-ports
                   key: spam-filter
+            - name: HANDLE_SPAM
+              value: "FALSE"
             - name: NEWS_RANKER_HOST
               value: news-ranker
             - name: NEWS_RANKER_PROTOCOL

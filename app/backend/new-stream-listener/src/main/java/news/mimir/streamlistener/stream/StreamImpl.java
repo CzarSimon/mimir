@@ -3,6 +3,7 @@ package news.mimir.streamlistener.stream;
 import news.mimir.streamlistener.client.HttpClient;
 import news.mimir.streamlistener.config.Config;
 import news.mimir.streamlistener.handler.Handler;
+import news.mimir.streamlistener.listener.RateLimitListener;
 import news.mimir.streamlistener.listener.StreamListener;
 import twitter4j.*;
 
@@ -28,10 +29,10 @@ public class StreamImpl implements Stream {
         this.client = client;
         stream = new TwitterStreamFactory(Config.TWITTER_CONFIG).getInstance();
         stream.addListener(new StreamListener(handler));
+        stream.addRateLimitStatusListener(new RateLimitListener());
     }
 
     /**
-     * (non-Javadoc)
      * @see Stream#start()
      */
     @Override
@@ -46,7 +47,6 @@ public class StreamImpl implements Stream {
     }
 
     /**
-     * (non-Javadoc)
      * @see Stream#stop()
      */
     @Override
@@ -61,4 +61,5 @@ public class StreamImpl implements Stream {
     private void logTrackedTickers(String[] tickers) {
         log.info("Tracking tickers: " + String.join(", ", tickers));
     }
+
 }
