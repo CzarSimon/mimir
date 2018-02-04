@@ -49,10 +49,10 @@ database = {
 
 
 twitter_credentials = {
-    "consumer_key": os.environ("TWITTER_CONSUMER_KEY"), #"Lt9RkL58dttJ844S5z4438VVX",
-    "consumer_secret": os.environ("TWITTER_CONSUMER_SECRET"), #"oD1q9GFJPt5B7ZnhbnLHI9Rc48srYVhMssUGaQ8ujCpIvzNvzP",
-    "access_token": os.environ("TWITTER_ACCESS_TOKEN"), #"2415072665-XLxE75HDMBYCHlroyZLoJgigNi4yweHIR3pLnqW",
-    "access_secret": os.environ("TWITTER_ACCESS_TOKEN_SECRET") #"aBT77jhPu7edRploBEtKQB6oqZIEMbbBhRbz2qjKIlMna"
+    "consumer_key": os.environ("TWITTER_CONSUMER_KEY"),
+    "consumer_secret": os.environ("TWITTER_CONSUMER_SECRET"),
+    "access_token": os.environ("TWITTER_ACCESS_TOKEN"),
+    "access_secret": os.environ("TWITTER_ACCESS_TOKEN_SECRET")
 }
 
 

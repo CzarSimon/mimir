@@ -1,7 +1,0 @@
-gunicorn==19.7.1
-falcon==1.2.0
-psycopg2==2.6.1
-numpy==1.11.1
-nltk==3.2.1
-scipy==0.18.0
-sklearn==0.17.1

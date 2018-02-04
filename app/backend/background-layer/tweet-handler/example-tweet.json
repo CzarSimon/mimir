@@ -1,0 +1,83 @@
+{
+    "created_at": "Thu Apr 06 15:24:15 +0000 2017",
+    "entities": {
+        "hashtags": [],
+        "symbols": [
+            {
+                "indices": [
+                    67,
+                    72
+                ],
+                "text": "ORCL"
+            },
+            {
+                "indices": [
+                    67,
+                    72
+                ],
+                "text": "TSLA"
+            },
+            {
+                "indices": [
+                    67,
+                    72
+                ],
+                "text": "NOT"
+            },
+            {
+                "indices": [
+                    67,
+                    72
+                ],
+                "text": "GOOGL"
+            }
+        ],
+        "urls": [
+            {
+                "display_url": "ift.tt/2wOjrVh",
+                "expanded_url": "http://ift.tt/2wOjrVh",
+                "indices": [
+                    73,
+                    96
+                ],
+                "url": "https://t.co/xEB120bOF2"
+            }
+        ],
+        "user_mentions": []
+    },
+    "favorite_count": 0,
+    "favorited": "False",
+    "filter_level": "low",
+    "id": 902414451567198208,
+    "id_str": "902414451567198208",
+    "lang": "en",
+    "quote_count": 0,
+    "reply_count": 0,
+    "retweet_count": 0,
+    "source": "<a href=\"https://ifttt.com\" rel=\"nofollow\">IFTTT</a>",
+    "text": "Weekly Investment Analysts\u2019 Ratings Updates for Oracle Corporation $ORCL https://t.co/xEB120bOF2",
+    "timestamp_ms": "1503987345960",
+    "user": {
+        "created_at": "Fri Jan 15 17:15:13 +0000 2016",
+        "favourites_count": 0,
+        "followers_count": 154,
+        "friends_count": 36,
+        "id": 4816109896,
+        "id_str": "4816109896",
+        "lang": "en",
+        "listed_count": 16,
+        "name": "EMQ News",
+        "profile_background_color": "F5F8FA",
+        "profile_background_image_url": "",
+        "profile_background_image_url_https": "",
+        "profile_image_url": "http://pbs.twimg.com/profile_images/688048912293167104/UmUO1efq_normal.png",
+        "profile_image_url_https": "https://pbs.twimg.com/profile_images/688048912293167104/UmUO1efq_normal.png",
+        "profile_link_color": "1DA1F2",
+        "profile_sidebar_border_color": "C0DEED",
+        "profile_sidebar_fill_color": "DDEEF6",
+        "profile_text_color": "333333",
+        "screen_name": "emq_news",
+        "statuses_count": 185081,
+        "translator_type": "none"
+    }
+}
