@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	endpoint "github.com/CzarSimon/go-endpoint"
+	"github.com/CzarSimon/mimir/app/lib/go/api"
 	"github.com/CzarSimon/util"
 )
 
@@ -13,6 +14,7 @@ import (
 type Env struct {
 	Tickers []string
 	PriceDB *sql.DB
+	API     api.PriceAPI
 	config  Config
 }
 
@@ -23,6 +25,7 @@ func SetupEnv(config Config) *Env {
 	return &Env{
 		Tickers: getTickers(config.TickerDB),
 		PriceDB: priceDB,
+		API:     api.NewIexAPI(config.Timezone),
 		config:  config,
 	}
 }

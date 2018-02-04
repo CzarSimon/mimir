@@ -1,0 +1,64 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: close-price-retriever
+  namespace: mimir
+  labels:
+    app: close-price-retriever
+spec:
+  schedule: "5 2 * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          containers:
+            - name: close-price-retriver
+              image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/close-price-retriever:latest
+              env:
+                - name: PRICE_DB_HOST
+                  value: price-db
+                - name: PRICE_DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: price-db-credentials
+                      key: password
+                - name: PRICE_DB_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: price-db-credentials
+                      key: username
+                - name: PRICE_DB_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: price-db-credentials
+                      key: database
+                - name: PRICE_DB_PORT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: service-ports
+                      key: price-db
+                - name: TICKER_DB_HOST
+                  value: app-db
+                - name: TICKER_DB_PASSWORD
+                  valueFrom:
+                    secretKeyRef:
+                      name: app-db-credentials
+                      key: password
+                - name: TICKER_DB_USER
+                  valueFrom:
+                    secretKeyRef:
+                      name: app-db-credentials
+                      key: username
+                - name: TICKER_DB_NAME
+                  valueFrom:
+                    secretKeyRef:
+                      name: app-db-credentials
+                      key: database
+                - name: TICKER_DB_PORT
+                  valueFrom:
+                    configMapKeyRef:
+                      name: service-ports
+                      key: app-db
+                - name: TIMEZONE
+                  value: America/New_York
