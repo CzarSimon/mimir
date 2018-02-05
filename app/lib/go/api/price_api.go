@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -25,6 +26,7 @@ func IsBusinessDay(timezone string) bool {
 func GetCurrentExchangeDate(timezone string) time.Time {
 	location, err := time.LoadLocation(timezone)
 	if err != nil {
+		log.Println(err)
 		return time.Now().UTC().Add(-4 * time.Hour)
 	}
 	return time.Now().In(location)
