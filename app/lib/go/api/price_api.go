@@ -2,6 +2,7 @@ package api
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -18,13 +19,14 @@ type PriceAPI interface {
 // IsBusinessDay checks if the day of the exchange date is a business day or not.
 func IsBusinessDay(timezone string) bool {
 	weekday := GetCurrentExchangeDate(timezone).Weekday()
-	return weekday == time.Saturday || weekday == time.Sunday
+	return weekday != time.Saturday && weekday != time.Sunday
 }
 
 // GetCurrentExchangeDate gets the current date of the Exchanges in New York.
 func GetCurrentExchangeDate(timezone string) time.Time {
 	location, err := time.LoadLocation(timezone)
 	if err != nil {
+		log.Println(err)
 		return time.Now().UTC().Add(-4 * time.Hour)
 	}
 	return time.Now().In(location)
