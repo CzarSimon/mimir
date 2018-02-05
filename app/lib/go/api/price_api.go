@@ -18,7 +18,7 @@ type PriceAPI interface {
 // IsBusinessDay checks if the day of the exchange date is a business day or not.
 func IsBusinessDay(timezone string) bool {
 	weekday := GetCurrentExchangeDate(timezone).Weekday()
-	return weekday == time.Saturday || weekday == time.Sunday
+	return weekday != time.Saturday && weekday != time.Sunday
 }
 
 // GetCurrentExchangeDate gets the current date of the Exchanges in New York.
