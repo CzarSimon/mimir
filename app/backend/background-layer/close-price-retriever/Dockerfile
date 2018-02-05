@@ -16,6 +16,7 @@ RUN export GOPATH=$GOPATH:$PWD
 RUN go build
 
 FROM alpine:latest as run
+
 # Installing and updating root certs
 RUN apk update && \
     apk upgrade && \

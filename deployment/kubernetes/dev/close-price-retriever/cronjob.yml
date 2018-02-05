@@ -6,7 +6,7 @@ metadata:
   labels:
     app: close-price-retriever
 spec:
-  schedule: "5 2 * * *"
+  schedule: "5 2 * * 1-5"
   jobTemplate:
     spec:
       template:
