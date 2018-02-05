@@ -15,6 +15,7 @@ type Env struct {
 
 // SetupEnv Creates a new evironmnet
 func SetupEnv(config Config) *Env {
+	log.Printf("Exchange time: %s\n", api.GetCurrentExchangeDate(config.Timezone))
 	tickers, err := GetTickers(config.TickerDB)
 	if err != nil {
 		log.Fatalln(err)
