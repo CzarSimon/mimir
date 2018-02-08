@@ -10,7 +10,7 @@ export TICKER_DB_HOST=mimir-dev.news
 export TICKER_DB_PASSWORD=$PG_PASSWORD
 export TICKER_DB_PORT=30012
 
-export TIMEZONE="America/New_York"
+export TIMEZONE="America/New_Yor"
 
 export HEARTBEAT_FILE="$PWD/heartbeat.txt"
 export HEARTBEAT_INTERVAL=15

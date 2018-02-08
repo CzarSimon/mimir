@@ -15,7 +15,7 @@ RUN go get github.com/CzarSimon/mimir/app/lib/go/schema/stock
 RUN export GOPATH=$GOPATH:$PWD
 RUN go build
 
-FROM alpine:latest as run
+FROM czarsimon/golang-timezone:1.8-alpine3.6 as run
 
 # Installing and updating root certs
 RUN apk update && \
