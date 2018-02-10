@@ -14,7 +14,7 @@ RUN go get github.com/CzarSimon/go-endpoint
 RUN export GOPATH=$GOPATH:$PWD
 RUN go build
 
-FROM alpine:3.6 as run
+FROM czarsimon/golang-timezone:1.8-alpine3.6 as run
 WORKDIR /root/
 COPY --from=build /usr/src/total-volume-counter/total-volume-counter .
 CMD ["./total-volume-counter"]
