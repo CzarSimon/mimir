@@ -10,6 +10,5 @@ func main() {
 	VolumeCount(config)
 	StatsCalc(config)
 	gocron.Every(1).Minute().Do(VolumeCount, config)
-	gocron.Every(1).Day().At(config.Timing.StatsCount).Do(StatsCalc, config)
 	<-gocron.Start()
 }
