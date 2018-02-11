@@ -2,30 +2,34 @@ package main
 
 import (
 	"database/sql"
-	"encoding/json"
 	"log"
 	"time"
 
 	"github.com/CzarSimon/util"
 )
 
-// VolumeCount Counts the tweet volume in the last hour
-func VolumeCount(config Config) {
+func RunVolumeCount(config Config) {
 	log.Println("Running volume count")
-	db := util.ConnectPG(config.DB)
+	err := countVolume(config)
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+// VolumeCount Counts the tweet volume in the last hour
+func countVolume(config Config) error {
+	db, err := config.TweetDB.Connect()
+	util.CheckErrFatal(err)
 	defer db.Close()
 	tickers, err := getAllTickers(db)
 	if err != nil {
-		util.LogErr(err)
-		return
+		return err
 	}
 	err = countHourlyVolumes(tickers, db)
 	if err != nil {
-		util.LogErr(err)
-		return
+		return err
 	}
-	err = sendVolumeResult(NewVolumeResult(tickers), config)
-	util.CheckErr(err)
+	return storeVolumes(NewVolumeResult(tickers), config)
 }
 
 // Volume Value pair of the ticker and volume for a specific stock
@@ -43,7 +47,7 @@ func countHourlyVolumes(volumes HourVolumes, db *sql.DB) error {
 		return err
 	}
 	var ticker string
-	var count int
+	var count int64
 	for rows.Next() {
 		err = rows.Scan(&ticker, &count)
 		if err != nil {
@@ -68,20 +72,10 @@ func NewVolumeResult(volumes HourVolumes) VolumeResult {
 	}
 }
 
-// sendVolumeResult Sends resulting volumes to revciving server
-func sendVolumeResult(volumeResult VolumeResult, config Config) error {
-	jsonStr, err := json.Marshal(volumeResult)
-	if err != nil {
-		return err
-	}
-	log.Println(string(jsonStr))
-	return Send(jsonStr, config.Server.ToURL(config.Routes.VolumeResult))
-}
-
 // HourVolume conatains this hours count and the minute the count occured
 type HourVolume struct {
-	Volume int `json:"volume"`
-	Minute int `json:"minute"`
+	Volume int64 `json:"volume"`
+	Minute int   `json:"minute"`
 }
 
 // HourVolumes is a ticker -> HourVolume map
@@ -111,7 +105,7 @@ func getAllTickers(db *sql.DB) (HourVolumes, error) {
 	return tickers, nil
 }
 
-// getHour Returns the current time rounded down to the nearest hour
+// getHour returns the current time rounded down to the nearest hour.
 func getHour() string {
 	now := time.Now().UTC().Truncate(time.Hour)
 	return now.Format(time.RFC3339)
