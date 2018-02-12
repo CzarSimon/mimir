@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: service-ports
+  namespace: mimir
+data:
+  admin-api: "8000"
+  app-server: "3000"
+  news-clusterer: "6000"
+  news-server: "5050"
+  news-ranker: "5000"
+  price-server: "4000"
+  search-service: "7000"
+  tweet-handler: "2000"
+  spam-filter: "1000"
+  webserver: "8080"
+  tweet-db: "5432"
+  price-db: "5432"
+  news-db: "5432"
+  app-db: "5432"

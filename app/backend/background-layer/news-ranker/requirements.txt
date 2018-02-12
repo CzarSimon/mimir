@@ -1,0 +1,4 @@
+numpy==1.11.1
+scipy==0.18.0
+scikit-learn==0.17
+nltk==3.2.1

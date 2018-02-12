@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: forbidden-urls
+  namespace: mimir
+data:
+  config: |
+    [
+        "owler.us",
+        "owler.com",
+        "stocktwits.com",
+        "investorshangout.com",
+        "thepiratebay.org",
+        "1broker.com",
+        "twitter.com",
+        "cityfalcon.com",
+        "mixlr.com"
+    ]
