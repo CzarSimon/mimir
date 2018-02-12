@@ -7,6 +7,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/mimir/app/lib/go/schema"
 	"github.com/CzarSimon/mimir/app/lib/go/schema/spam"
 	"github.com/CzarSimon/util"
@@ -36,7 +37,7 @@ func queryForSpam(candidate spam.Candidate, URL string) (spam.Candidate, error) 
 	if err != nil {
 		return candidate, err
 	}
-	resp, err := http.Post(URL, BodyType, bytes.NewBuffer(body))
+	resp, err := http.Post(URL, httputil.JSON, bytes.NewBuffer(body))
 	if err != nil {
 		return candidate, err
 	}

@@ -1,0 +1,86 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: price-retriever
+  namespace: mimir
+  labels:
+    app: price-retriever
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: price-retriever
+    spec:
+      containers:
+        - name: price-retriever
+          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/price-retriever:latest
+          env:
+            - name: PRICE_DB_HOST
+              value: price-db
+            - name: PRICE_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: price-db-credentials
+                  key: password
+            - name: PRICE_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: price-db-credentials
+                  key: username
+            - name: PRICE_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: price-db-credentials
+                  key: database
+            - name: PRICE_DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: price-db
+            - name: TICKER_DB_HOST
+              value: app-db
+            - name: TICKER_DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: app-db-credentials
+                  key: password
+            - name: TICKER_DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: app-db-credentials
+                  key: username
+            - name: TICKER_DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: app-db-credentials
+                  key: database
+            - name: TICKER_DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: app-db
+            - name: TIMEZONE
+              value: America/New_York
+            - name: EXCHANGE_OPEN_HOUR
+              value: "10"
+            - name: EXCHANGE_CLOSE_HOUR
+              value: "17"
+            - name: HEARTBEAT_FILE
+              value: /tmp/PRICE_RETRIEVER_HEARTBEAT.txt
+            - name: HEARTBEAT_INTERVAL
+              value: "15"
+          readinessProbe:
+            exec:
+              command:
+                - test
+                - '`find /tmp/PRICE_RETRIEVER_HEARTBEAT.txt -mmin 1`'
+            initialDelaySeconds: 5
+            periodSeconds: 15
+          livenessProbe:
+            exec:
+              command:
+                - test
+                - '`find /tmp/PRICE_RETRIEVER_HEARTBEAT.txt -mmin 1`'
+            initialDelaySeconds: 15
+            periodSeconds: 15

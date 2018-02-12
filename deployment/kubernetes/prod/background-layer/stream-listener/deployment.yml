@@ -1,0 +1,84 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: stream-listener
+  namespace: mimir
+  labels:
+    app: stream-listener
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: stream-listener
+    spec:
+      containers:
+        - name: stream-listener
+          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/stream-listener:latest
+          env:
+            # Database variables
+            - name: PG_HOST
+              value: tweet-db
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-db-credentials
+                  key: password
+            - name: PG_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-db-credentials
+                  key: username
+            - name: PG_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-db-credentials
+                  key: database
+            - name: PG_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: tweet-db
+            # News ranker variables
+            - name: NEWS_RANKER_HOST
+              value: news-ranker
+            - name: NEWS_RANKER_PROTOCOL
+              value: http
+            - name: NEWS_RANKER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: news-ranker
+            # Spam filter variables
+            - name: SPAM_FILTER_HOST
+              value: spam-filter
+            - name: SPAM_FILTER_PROTOCOL
+              value: http
+            - name: SPAM_FILTER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: spam-filter
+            - name: HANDLE_SPAM
+              value: "TRUE"
+            # Twitter consumer tokens
+            - name: TWITTER_CONSUMER_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: twitter-api-credentials
+                  key: consumerKey
+            - name: TWITTER_CONSUMER_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: twitter-api-credentials
+                  key: consumerSecret
+            - name: TWITTER_ACCESS_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: twitter-api-credentials
+                  key: accessToken
+            - name: TWITTER_ACCESS_TOKEN_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: twitter-api-credentials
+                  key: accessSecret

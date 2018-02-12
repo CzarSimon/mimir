@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: mimir-proxy
+  namespace: mimir
+spec:
+  rules:
+    - host: mimir.news
+      http:
+        paths:
+          - path: /api/app/
+            backend:
+              serviceName: app-server
+              servicePort: 3000
+          - path: /api/price/
+            backend:
+              serviceName: price-server
+              servicePort: 4000
+          - path: /api/news/
+            backend:
+              serviceName: news-server
+              servicePort: 5050
+          - path: /api/search/
+            backend:
+              serviceName: search-server
+              servicePort: 7000
+          - backend:
+              serviceName: webserver
+              servicePort: 8080
+    - host: admin.mimir.news
+      http:
+        paths:
+          - path: /api/admin/
+            backend:
+              serviceName: admin-api
+              servicePort: 8000

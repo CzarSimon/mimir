@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"fmt"
 
 	"github.com/CzarSimon/mimir/app/lib/go/schema/news"
 	"github.com/CzarSimon/util"
@@ -23,6 +24,7 @@ func SetupEnv(config Config) *Env {
 	util.CheckErrFatal(err)
 	aliases, err := GetAliases(db)
 	util.CheckErrFatal(err)
+	fmt.Printf("Forbidden URLs: %+v\n", config.forbiddenURLs)
 	return &Env{
 		DB:      db,
 		Config:  config,

@@ -7,24 +7,24 @@ import (
 	"net/http"
 	"strconv"
 
+	"github.com/CzarSimon/httputil"
 	"github.com/CzarSimon/mimir/app/lib/go/schema"
 	"github.com/CzarSimon/mimir/app/lib/go/schema/news"
 )
 
 const (
 	RankRoute = "api/rank-article"
-	BodyType  = "application/json"
 )
 
 // SendLinksToRanker Sends attached links to news ranker along with mentioned subjects
 func (env *Env) SendLinksToRanker(tweet schema.Tweet, subjects []news.Subject) {
-	rankObject, err := createJsonRankObject(tweet, subjects)
+	rankObject, err := env.createJsonRankObject(tweet, subjects)
 	if err != nil {
 		log.Println(err)
 		return
 	}
 	resp, err := http.Post(
-		env.Config.ranker.ToURL(RankRoute), BodyType, bytes.NewBuffer(rankObject))
+		env.Config.ranker.ToURL(RankRoute), httputil.JSON, bytes.NewBuffer(rankObject))
 	if err != nil {
 		log.Println(err)
 		return
@@ -36,8 +36,8 @@ func (env *Env) SendLinksToRanker(tweet schema.Tweet, subjects []news.Subject) {
 }
 
 // createJsonRankObject Creates json serialized rank object
-func createJsonRankObject(tweet schema.Tweet, subjects []news.Subject) ([]byte, error) {
-	rankObject, err := createRankObject(tweet, subjects)
+func (env *Env) createJsonRankObject(tweet schema.Tweet, subjects []news.Subject) ([]byte, error) {
+	rankObject, err := env.createRankObject(tweet, subjects)
 	if err != nil {
 		return []byte{}, err
 	}
@@ -45,10 +45,10 @@ func createJsonRankObject(tweet schema.Tweet, subjects []news.Subject) ([]byte, 
 }
 
 // createRankObject Truns a tweet and list of subjects to a rankt object
-func createRankObject(tweet schema.Tweet, subjects []news.Subject) (news.RankObject, error) {
+func (env *Env) createRankObject(tweet schema.Tweet, subjects []news.Subject) (news.RankObject, error) {
 	author, err := twitterUserToAuthor(tweet.User)
 	return news.RankObject{
-		Urls:     tweet.GetURLs(),
+		Urls:     env.Config.forbiddenURLs.FilterURLs(tweet.GetURLs()),
 		Subjects: subjects,
 		Author:   author,
 		Language: tweet.Language,

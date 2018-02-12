@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: tweet-db-vol
+spec:
+  storageClassName: manual
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 120Mi
+  hostPath:
+    path: /data/tweet-db-vol/
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: tweet-db-vol-claim
+  namespace: mimir
+spec:
+  storageClassName: manual
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 120Mi

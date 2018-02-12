@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: spam-filter
+  namespace: mimir
+spec:
+  ports:
+    - port: 1000
+      protocol: TCP
+  selector:
+    app: spam-filter
+  type: NodePort

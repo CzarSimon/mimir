@@ -18,6 +18,7 @@ app/database/**/*.pyc
 app/rethinkdb_data
 
 deployment/kubernetes/secrets/
+deployment/kubernetes/**/*secret.yml
 
 test/**/*.pyc
 test/mock-tweet/data/
