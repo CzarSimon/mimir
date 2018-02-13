@@ -10,7 +10,7 @@ data:
   news-server: "5050"
   news-ranker: "5000"
   price-server: "4000"
-  search-service: "7000"
+  search-server: "7000"
   tweet-handler: "2000"
   spam-filter: "1000"
   webserver: "8080"

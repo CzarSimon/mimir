@@ -1,35 +1,35 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: search-server
+  name: app-server
   namespace: mimir
   labels:
-    app: search-server
+    app: app-server
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: search-server
+        app: app-server
     spec:
       containers:
-        - name: search-server
-          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/search-server:latest
+        - name: app-server
+          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/app-server:latest
           ports:
-            - name: ss-port
-              containerPort: 7000
+            - name: app-server-port
+              containerPort: 3000
           env:
             - name: DB_HOST
-              value: tweet-db
+              value: app-db
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: tweet-db-credentials
+                  name: app-db-credentials
                   key: password
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: tweet-db-credentials
+                  name: app-db-credentials
                   key: username
             - name: DB_NAME
               valueFrom:
@@ -40,19 +40,19 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: service-ports
-                  key: tweet-db
-            - name: SEARCH_SERVER_PORT
+                  key: app-db
+            - name: APP_SERVER_PORT
               valueFrom:
                 configMapKeyRef:
                   name: service-ports
-                  key: search-server
+                  key: app-server
           livenessProbe:
             httpGet:
               path: /health
-              port: ss-port
+              port: app-server-port
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
               path: /readiness
-              port: ss-port
+              port: app-server-port
             initialDelaySeconds: 30

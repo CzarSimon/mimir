@@ -1,58 +1,58 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: search-server
+  name: news-server
   namespace: mimir
   labels:
-    app: search-server
+    app: news-server
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        app: search-server
+        app: news-server
     spec:
       containers:
-        - name: search-server
-          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/search-server:latest
+        - name: news-server
+          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/news-server:latest
           ports:
-            - name: ss-port
-              containerPort: 7000
+            - name: ns-port
+              containerPort: 5050
           env:
             - name: DB_HOST
-              value: tweet-db
+              value: news-db
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: tweet-db-credentials
+                  name: news-db-credentials
                   key: password
             - name: DB_USER
               valueFrom:
                 secretKeyRef:
-                  name: tweet-db-credentials
+                  name: news-db-credentials
                   key: username
             - name: DB_NAME
               valueFrom:
                 secretKeyRef:
-                  name: tweet-db-credentials
+                  name: news-db-credentials
                   key: database
             - name: DB_PORT
               valueFrom:
                 configMapKeyRef:
                   name: service-ports
-                  key: tweet-db
-            - name: SEARCH_SERVER_PORT
+                  key: news-db
+            - name: NEWS_SERVER_PORT
               valueFrom:
                 configMapKeyRef:
                   name: service-ports
-                  key: search-server
+                  key: news-server
           livenessProbe:
             httpGet:
               path: /health
-              port: ss-port
+              port: ns-port
             initialDelaySeconds: 30
           readinessProbe:
             httpGet:
               path: /readiness
-              port: ss-port
+              port: ns-port
             initialDelaySeconds: 30
