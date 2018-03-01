@@ -1,0 +1,88 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: tweet-handler
+  namespace: mimir
+  labels:
+    app: tweet-handler
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: tweet-handler
+    spec:
+      containers:
+        - name: tweet-handler
+          image: 377827096411.dkr.ecr.eu-central-1.amazonaws.com/mimir/tweet-handler:latest
+          ports:
+            - name: th-port
+              containerPort: 2000
+          env:
+            - name: DB_HOST
+              value: tweet-db
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-db-credentials
+                  key: password
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-db-credentials
+                  key: username
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: tweet-db-credentials
+                  key: database
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: tweet-db
+            - name: SPAM_FILTER_HOST
+              value: spam-filter
+            - name: SPAM_FILTER_PROTOCOL
+              value: http
+            - name: SPAM_FILTER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: spam-filter
+            - name: HANDLE_SPAM
+              value: "FALSE"
+            - name: NEWS_RANKER_HOST
+              value: news-ranker
+            - name: NEWS_RANKER_PROTOCOL
+              value: http
+            - name: NEWS_RANKER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: news-ranker
+            - name: TWEET_HANDLER_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: service-ports
+                  key: tweet-handler
+          volumeMounts:
+            - mountPath: /root/resources
+              name: forbidden-urls
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: th-port
+            initialDelaySeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /readiness
+              port: th-port
+            initialDelaySeconds: 30
+      volumes:
+        - name: forbidden-urls
+          configMap:
+            name: forbidden-urls
+            items:
+              - key: config
+                path: forbidden-urls.json

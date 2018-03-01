@@ -38,4 +38,3 @@ spec:
                     configMapKeyRef:
                       name: service-ports
                       key: tweet-db
-                
