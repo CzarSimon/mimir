@@ -5,11 +5,12 @@ COPY . /usr/src/app-server
 
 WORKDIR /usr/src/app-server
 
-RUN go get github.com/lib/pq
-RUN go get github.com/CzarSimon/util
-RUN go get github.com/CzarSimon/go-endpoint
-RUN go get github.com/CzarSimon/httputil
-RUN go get github.com/CzarSimon/mimir/app/lib/go/schema
+RUN go get github.com/lib/pq \
+           github.com/CzarSimon/util \
+           github.com/CzarSimon/go-endpoint \
+           github.com/CzarSimon/httputil \
+           github.com/CzarSimon/mimir/app/lib/go/schema \
+
 RUN export GOPATH=$GOPATH:$PWD
 RUN go build
 
