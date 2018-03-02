@@ -16,7 +16,6 @@
 upstream app_backend {
         server mimir-1:3000;
         server mimir-2:3000;
-        server mimir-3:3000;
 }
 
 upstream news_backend {
