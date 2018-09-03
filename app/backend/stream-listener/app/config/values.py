@@ -1,0 +1,28 @@
+# Standard library
+import os
+
+# Internal modules
+from app.config import util
+
+
+DEVELOPMENT_PROFILE = 'DEVELOPMENT'
+TEST_PROFILE = 'TEST'
+PRODUCTION_PROFILE = 'PRODUCTION'
+
+PACKAGE_NAME = 'medication-search'
+USER_AGENT = 'mimir stream listener'
+
+APP_PROFILE = os.getenv('APP_PROFILE', PRODUCTION_PROFILE)
+HANDLE_SPAM = os.getenv("HANDLE_SPAM", "FALSE") == "TRUE"
+
+
+FORBIDDEN_DOMAINS = set([
+    "owler.us",
+    "owler.com",
+    "stocktwits.com",
+    "investorshangout.com",
+    "1broker.com",
+    "twitter.com",
+    "cityfalcon.com",
+    "mixlr.com"
+])
