@@ -11,18 +11,20 @@ PRODUCTION_PROFILE = 'PRODUCTION'
 
 PACKAGE_NAME = 'medication-search'
 USER_AGENT = 'mimir stream listener'
+RPC_TIMEOUT = 1
 
 APP_PROFILE = os.getenv('APP_PROFILE', PRODUCTION_PROFILE)
-HANDLE_SPAM = os.getenv("HANDLE_SPAM", "FALSE") == "TRUE"
+HANDLE_SPAM = os.getenv('HANDLE_SPAM', 'FALSE') == 'TRUE'
+SPAM_LABEL = 'SPAM'
 
 
 FORBIDDEN_DOMAINS = set([
-    "owler.us",
-    "owler.com",
-    "stocktwits.com",
-    "investorshangout.com",
-    "1broker.com",
-    "twitter.com",
-    "cityfalcon.com",
-    "mixlr.com"
+    'owler.us',
+    'owler.com',
+    'stocktwits.com',
+    'investorshangout.com',
+    '1broker.com',
+    'twitter.com',
+    'cityfalcon.com',
+    'mixlr.com'
 ])
