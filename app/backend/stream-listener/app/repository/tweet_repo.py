@@ -44,7 +44,6 @@ class SQLTweetRepo(metaclass=ABCMeta):
         db.session.add(tweet)
         db.session.commit()
 
-    @abstractmethod
     def save_links(self, links):
         """Stores the links in a tweet.
 
@@ -54,7 +53,6 @@ class SQLTweetRepo(metaclass=ABCMeta):
             db.session.add(link)
         db.session.commit()
 
-    @abstractmethod
     def save_symbols(self, symbols):
         """Stores symbols referenced in a tweet.
 
