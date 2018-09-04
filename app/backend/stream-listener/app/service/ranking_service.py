@@ -4,7 +4,7 @@ import logging
 from abc import ABCMeta, abstractmethod
 
 # 3rd party modules
-import request
+import requests
 
 # Internal modules
 from app.config import values
