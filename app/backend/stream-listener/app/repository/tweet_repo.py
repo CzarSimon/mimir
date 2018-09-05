@@ -33,7 +33,7 @@ class TweetRepo(metaclass=ABCMeta):
         pass
 
 
-class SQLTweetRepo(metaclass=ABCMeta):
+class SQLTweetRepo(TweetRepo):
     """TweetRepo implemented against a SQL database."""
 
     def save_tweet(self, tweet):

@@ -31,8 +31,8 @@ class SQLStockRepo(StockRepo):
 
     def get_all(self, include_inactive=False):
         if include_inactive:
-            return Stock.query.all()
-        return Stock.query.filter(Stock.is_active == True).all()
+            return db.session.query(Stock).all()
+        return db.session.query(Stock).filter(Stock.is_active == True).all()
 
 
     def save(self, stock):

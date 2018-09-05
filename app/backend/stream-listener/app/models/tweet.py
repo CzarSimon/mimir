@@ -21,7 +21,7 @@ class Tweet(db.Model):
 
     def __init__(self, text, language, author_id,
                  author_followers, id=None):
-        self.id = id or str(uuid4())
+        self.id = id or str(uuid4()).upper()
         self.text = text
         self.language = language
         self.author_id = author_id
@@ -29,10 +29,10 @@ class Tweet(db.Model):
         self.created_at = datetime.utcnow()
 
     def __repr__(self):
-        return ('Stock(symbol={} name={} is_active={} '
-                'total_count={} updated_at={})'.format(
-                self.symbol, self.name, self.is_active,
-                self.total_count, self.updated_at))
+        return ('Tweet(id={} text={} language={} author_id={} '
+                'author_followers={} created_at={})'.format(
+                self.id, self.text, self.language, self.author_id,
+                self.author_followers, self.created_at))
 
 
 class TweetLink(db.Model):
@@ -64,4 +64,4 @@ class TweetSymbol(db.Model):
 
     def __repr__(self):
         return 'TweetSymbol(id={} symbol={} tweet_id={})'\
-                .format(self.id, self.url, self.tweet_id)
+                .format(self.id, self.symbol, self.tweet_id)

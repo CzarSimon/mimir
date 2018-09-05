@@ -3,13 +3,11 @@ from sqlalchemy import create_engine
 
 # Internal modules
 from app.config import values, DBConfig
-from .app import App
 from .database import Database
 
 
-db_config = DBConfig()
-db = Database(_db_config)
-listner = App()
+db = Database(DBConfig())
 
 
-from app import models
+from .app import App
+stream_listner = App()

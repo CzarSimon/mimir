@@ -12,16 +12,16 @@ from app.config import util
 
 class DBConfig(object):
     URI = util.get_database_uri()
-    ECHO = True
+    ECHO = False
 
 
 class TwitterConfig(object):
-    CONSUMER_KEY = util.getenv("TWITTER_CONSUMER_KEY"),
-    CONSUMER_SECRET = util.getenv("TWITTER_CONSUMER_SECRET"),
-    ACCESS_TOKEN = util.getenv("TWITTER_ACCESS_TOKEN"),
-    TWITTER_ACCESS_TOKEN_SECRET = util.getenv("TWITTER_ACCESS_TOKEN_SECRET")
+    CONSUMER_KEY = util.getenv('TWITTER_CONSUMER_KEY')
+    CONSUMER_SECRET = util.getenv('TWITTER_CONSUMER_SECRET')
+    ACCESS_TOKEN = util.getenv('TWITTER_ACCESS_TOKEN')
+    ACCESS_TOKEN_SECRET = util.getenv('TWITTER_ACCESS_TOKEN_SECRET')
+    RATE_LIMIT_CODE = 420
     ERROR_PAUSE_SECONDS = 180
-    TIMEOUT_SECONDS = 0.5
 
 
 class SpamFilterConfig(object):

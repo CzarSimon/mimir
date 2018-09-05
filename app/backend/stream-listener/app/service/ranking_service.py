@@ -2,6 +2,7 @@
 import json
 import logging
 from abc import ABCMeta, abstractmethod
+from urlparse import urlparse
 
 # 3rd party modules
 import requests
@@ -52,7 +53,7 @@ class RankingServiceImpl(RankingService):
         :return: Rank object as a dict.
         """
         return {
-            'urls': [link.url for link in links],
+            'urls': [link.url for link in links if self.__allowed_link(link)],
             'subjects': [self.TRACKED_STOCKS[s.symbol] for s in symbols],
             'author': {
                 'id': tweet.author_id,
@@ -60,3 +61,11 @@ class RankingServiceImpl(RankingService):
             },
             'language': tweet.language
         }
+
+    def __allowed_link(self, link):
+        """Checks if a tweet link points to an allowd domain.
+
+        :param link: TweetLink to check.
+        :return: Boolean indicating that the link is allowed.
+        """
+        return urlparse(link.url).netloc not in values.FORBIDDEN_DOMAINS

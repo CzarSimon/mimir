@@ -34,7 +34,9 @@ class SpamFilterService(FilterService):
         }
 
     def is_spam(self, tweet):
-        body = json.dumps(self.__create_spam_body(tweet, links, symbols))
+        spam_candidate = self.__create_spam_body(tweet)
+        self.__log.info(spam_candidate)
+        body = json.dumps(spam_candidate)
         self.__log.info(body)
         resp = requests.post(self.CLASSIFY_URL, data=body,
                              headers=self.HEADERS, timeout=values.RPC_TIMEOUT)

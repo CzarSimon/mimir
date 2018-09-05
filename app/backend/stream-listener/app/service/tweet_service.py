@@ -2,8 +2,6 @@
 import json
 import logging
 from abc import ABCMeta, abstractmethod
-from datetime import datetime
-from uuid import uuid4
 
 # Internal modules
 from app.config import values
@@ -24,7 +22,7 @@ class TweetService(metaclass=ABCMeta):
 
 class TweetServiceImpl(TweetService):
 
-    __log = logging.getLoggger('TweetServiceImpl')
+    __log = logging.getLogger('TweetServiceImpl')
 
     def __init__(self, tracked_symbols, filter_svc, ranking_svc, tweet_repo):
         self.TRACKED_SYMBOLS = tracked_symbols
@@ -34,6 +32,9 @@ class TweetServiceImpl(TweetService):
 
     def handle(self, raw_tweet):
         tweet, links, symbols = self.__parse_tweet_contents(raw_tweet)
+        self.__log.info(f'{tweet}')
+        self.__log.info(f'{links}')
+        self.__log.info(f'{symbols}')
         if self.__filter_svc.is_spam(tweet):
             self.__log.info(f'SPAM: {tweet}')
             return
@@ -60,12 +61,10 @@ class TweetServiceImpl(TweetService):
         :param tweet_dict: Full tweet dictionary.
         :return: Parsed Tweet
         """
-        return Tweet(id=str(uuid4()),
-                     text=tweet_dict['tweet'].encode('utf-8'),
+        return Tweet(text=tweet_dict['text'],
                      language=tweet_dict['user']['id_str'],
                      author_id=tweet_dict['user']['followers_count'],
-                     author_followers=tweet_dict['lang'],
-                     created_at=datetime.utcnow())
+                     author_followers=tweet_dict['lang'])
 
     def __parse_links(self, tweet_id, tweet_dict):
         """Parses tweet as dict into a list of TweetLinks.
@@ -74,7 +73,8 @@ class TweetServiceImpl(TweetService):
         :param tweet_dict: Full tweet dictionary.
         :return: List of TweetLinks
         """
-        urls = [self.__parse_url(url) in tweet_dict['urls']]
+        entities = tweet_dict['entities']
+        urls = [self.__parse_url(url) for url in entities['urls']]
         full_urls = filter(lambda url: url != '' and url != None, urls)
         return [TweetLink(url=url, tweet_id=tweet_id) for url in full_urls]
 
@@ -97,7 +97,8 @@ class TweetServiceImpl(TweetService):
         :param tweet_dict: Full tweet dictionary.
         :return: List of TweetSymbols
         """
-        all_symbols = [s['text'].upper() for s in tweet_dict['symbols']]
+        entities = tweet_dict['entities']
+        all_symbols = [s['text'].upper() for s in entities['symbols']]
         symbols = filter(lambda s: s in self.TRACKED_SYMBOLS, all_symbols)
         return [TweetSymbol(symbol=s, tweet_id=tweet_id) for s in symbols]
 
