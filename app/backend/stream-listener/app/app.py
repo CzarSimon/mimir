@@ -6,10 +6,11 @@ from tweepy import OAuthHandler, Stream
 
 # Internal modules
 from app.config import TwitterConfig, SpamFilterConfig, NewsRankerConfig
+from app.mocks import MockFilter, MockRanker
 from app.repository import SQLStockRepo, SQLTweetRepo
 from app.service import (
     StreamListenerImpl, TweetServiceImpl, SpamFilterService,
-    RankingServiceImpl, StreamLogger)
+    RankingServiceImpl, StreamLogger, FileStreamer)
 
 class App(object):
 
@@ -20,7 +21,8 @@ class App(object):
         tweet_svc = self.__setup_tweet_service()
         config = TwitterConfig()
         listener = StreamListenerImpl(tweet_svc, config)
-        self.__stream = Stream(self.__setup_auth(config), listener)
+        self.__stream = Stream(self.__setup_auth(config),
+                               FileStreamer('/Users/simonlindgren/.mimir/tweets'))
 
     def start(self):
         cashtags = [f'${symbol}' for symbol in self.TRACKED_STOCKS.keys()]
@@ -60,4 +62,4 @@ class App(object):
         tweet_repo = SQLTweetRepo()
         tracked_symbols = set([symbol for symbol in self.TRACKED_STOCKS])
         return TweetServiceImpl(
-            tracked_symbols, filter_svc, ranking_svc, tweet_repo)
+            tracked_symbols, MockFilter(), MockRanker(), tweet_repo)

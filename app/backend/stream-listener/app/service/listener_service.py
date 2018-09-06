@@ -1,6 +1,7 @@
 # Standard library
 import logging
 import json
+import os
 import time
 import sys
 from threading import Thread
@@ -51,3 +52,35 @@ class StreamLogger(StreamListener):
     def __format_data(self, data):
         deserialized_data = json.loads(data)
         return json.dumps(deserialized_data, indent=4, sort_keys=True)
+
+
+class FileStreamer(StreamListener):
+
+    __log = logging.getLogger('FileStreamer')
+
+    def __init__(self, output_dir):
+        self.output_dir = output_dir
+        self.__create_dir_if_missing(output_dir)
+
+    def on_data(self, data):
+        id, tweet = self.__format_data(data)
+        self.__save_tweet(id, tweet)
+        self.__log.info(f'Saved tweet: {id}')
+
+    def on_error(self, status_code):
+        self.__log.error(f'Encountered error: {status_code}, exiting')
+        sys.exit(1)
+
+    def __format_data(self, data):
+        deserialized_data = json.loads(data)
+        formated_data = json.dumps(deserialized_data, indent=4, sort_keys=True)
+        return deserialized_data['id_str'], formated_data
+
+    def __save_tweet(self, name, tweet):
+        filename = os.path.join(self.output_dir, f'{name}.json')
+        with open(filename, 'w+') as f:
+            f.write(tweet)
+
+    def __create_dir_if_missing(self, output_dir):
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)

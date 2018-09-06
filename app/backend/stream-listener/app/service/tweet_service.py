@@ -32,9 +32,6 @@ class TweetServiceImpl(TweetService):
 
     def handle(self, raw_tweet):
         tweet, links, symbols = self.__parse_tweet_contents(raw_tweet)
-        self.__log.info(f'{tweet}')
-        self.__log.info(f'{links}')
-        self.__log.info(f'{symbols}')
         if self.__filter_svc.is_spam(tweet):
             self.__log.info(f'SPAM: {tweet}')
             return
@@ -62,9 +59,9 @@ class TweetServiceImpl(TweetService):
         :return: Parsed Tweet
         """
         return Tweet(text=tweet_dict['text'],
-                     language=tweet_dict['user']['id_str'],
-                     author_id=tweet_dict['user']['followers_count'],
-                     author_followers=tweet_dict['lang'])
+                     language=tweet_dict['lang'],
+                     author_id=tweet_dict['user']['id_str'],
+                     author_followers=tweet_dict['user']['followers_count'])
 
     def __parse_links(self, tweet_id, tweet_dict):
         """Parses tweet as dict into a list of TweetLinks.
@@ -90,19 +87,22 @@ class TweetServiceImpl(TweetService):
             return url['url']
         return ''
 
-    def __parse_symbols(self, tweet_id, tweet_dict):
+    def __parse_symbols(self, tweet_id, tweet):
         """Parses tweet as dict into a list of TweetSymbol.
 
         :param tweet_id: Id of the parent tweet.
-        :param tweet_dict: Full tweet dictionary.
+        :param tweet: Full tweet dictionary.
         :return: List of TweetSymbols
         """
-        entities = tweet_dict['entities']
-        all_symbols = [s['text'].upper() for s in entities['symbols']]
-        symbols = filter(lambda s: s in self.TRACKED_SYMBOLS, all_symbols)
+        raw_symbols = tweet['entities']['symbols']
+        all_symbols = [s['text'].upper() for s in raw_symbols]
+        if 'extended_tweet' in tweet and 'symbols' in tweet['extended_tweet']:
+            extended_symbols = tweet['extended_tweet']['symbols']
+            all_symbols += [s['text'].upper() for s in extended_symbols]
+        symbols = filter(lambda s: s in self.TRACKED_SYMBOLS, set(all_symbols))
         return [TweetSymbol(symbol=s, tweet_id=tweet_id) for s in symbols]
 
-    def __store_content(self, tweet, links, symbols):
+    def __save_content(self, tweet, links, symbols):
         """Stores tweet, links and symbols from a raw tweet.
 
         :param tweet: Tweet to store.

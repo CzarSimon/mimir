@@ -8,7 +8,7 @@ export SPAM_FILTER_URL=http://localhost:3000
 export NEWS_RANKER_URL=http://localhost:5000
 
 run:
-	python main.py
+	sh start.sh
 
 new-migration:
 	alembic revision

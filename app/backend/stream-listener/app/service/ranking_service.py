@@ -2,7 +2,7 @@
 import json
 import logging
 from abc import ABCMeta, abstractmethod
-from urlparse import urlparse
+from urllib.parse import urlparse
 
 # 3rd party modules
 import requests
