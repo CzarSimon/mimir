@@ -6,7 +6,7 @@ from tweepy import OAuthHandler, Stream
 
 # Internal modules
 from app.config import TwitterConfig, SpamFilterConfig, NewsRankerConfig
-from app.mocks import MockFilter, MockRanker
+from app.mocks import MockFilter, MockRanker, MockStream
 from app.repository import SQLStockRepo, SQLTweetRepo
 from app.service import (
     StreamListenerImpl, TweetServiceImpl, SpamFilterService,
@@ -21,8 +21,9 @@ class App(object):
         tweet_svc = self.__setup_tweet_service()
         config = TwitterConfig()
         listener = StreamListenerImpl(tweet_svc, config)
-        self.__stream = Stream(self.__setup_auth(config),
-                               FileStreamer('/Users/simonlindgren/.mimir/tweets'))
+        mock_dir = '/Users/simonlindgren/.mimir/tweets'
+        self.__stream = MockStream(mock_dir, listener)
+        # self.__stream = Stream(self.__setup_auth(config), listener)
 
     def start(self):
         cashtags = [f'${symbol}' for symbol in self.TRACKED_STOCKS.keys()]

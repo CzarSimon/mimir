@@ -15,3 +15,6 @@ new-migration:
 
 db-upgrade:
 	alembic upgrade head
+
+db-downgrade:
+	alembic downgrade -1

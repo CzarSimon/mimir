@@ -28,7 +28,7 @@ def upgrade():
     op.create_table('tweet',
     sa.Column('id', sa.String(length=50), nullable=False),
     sa.Column('text', sa.String(length=500), nullable=True),
-    sa.Column('language', sa.String(length=2), nullable=True),
+    sa.Column('language', sa.String(length=10), nullable=True),
     sa.Column('author_id', sa.String(length=50), nullable=True),
     sa.Column('author_followers', sa.Integer(), nullable=True),
     sa.Column('created_at', sa.DateTime(), nullable=True),

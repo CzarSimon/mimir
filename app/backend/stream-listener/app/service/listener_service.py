@@ -29,7 +29,8 @@ class StreamListenerImpl(StreamListener):
         self.__error_count = 0
 
     def on_error(self, status_code):
-        self.__log.error(f'Encountered error: {status_code}, exiting')
+        self.__log.error(f'Encountered error: {status_code}')
+        self.__error_count += 1
         pause_seconds = self.ERROR_PAUSE * self.__error_count
         if status_code == self.RATE_LIMIT_CODE:
             pause_seconds *= 2
