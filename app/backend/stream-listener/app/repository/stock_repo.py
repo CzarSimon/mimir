@@ -15,7 +15,6 @@ class StockRepo(metaclass=ABCMeta):
 
         :return: List of all stored stocks.
         """
-        pass
 
     @abstractmethod
     def save(self, stock):
@@ -23,7 +22,6 @@ class StockRepo(metaclass=ABCMeta):
 
         :param stock: Stock to store.
         """
-        pass
 
 
 class SQLStockRepo(StockRepo):

@@ -6,11 +6,11 @@ from tweepy import OAuthHandler, Stream
 
 # Internal modules
 from app.config import TwitterConfig, SpamFilterConfig, NewsRankerConfig
-from app.mocks import MockFilter, MockRanker, MockStream
 from app.repository import SQLStockRepo, SQLTweetRepo
-from app.service import (
-    StreamListenerImpl, TweetServiceImpl, SpamFilterService,
-    RankingServiceImpl, StreamLogger, FileStreamer)
+from app.service import StreamListenerImpl
+from app.service import TweetServiceImpl
+from app.service import SpamFilterService
+from app.service import RankingServiceImpl
 
 class App(object):
 
@@ -21,9 +21,7 @@ class App(object):
         tweet_svc = self.__setup_tweet_service()
         config = TwitterConfig()
         listener = StreamListenerImpl(tweet_svc, config)
-        mock_dir = '/Users/simonlindgren/.mimir/tweets'
-        self.__stream = MockStream(mock_dir, listener)
-        # self.__stream = Stream(self.__setup_auth(config), listener)
+        self.__stream = Stream(self.__setup_auth(config), listener)
 
     def start(self):
         cashtags = [f'${symbol}' for symbol in self.TRACKED_STOCKS.keys()]
@@ -58,9 +56,7 @@ class App(object):
         :return: TweetService
         """
         filter_svc = SpamFilterService(SpamFilterConfig())
-        ranking_svc = RankingServiceImpl(
-            self.TRACKED_STOCKS, NewsRankerConfig())
+        filter_svc = RankingServiceImpl(self.TRACKED_STOCKS, NewsRankerConfig())
         tweet_repo = SQLTweetRepo()
         tracked_symbols = set([symbol for symbol in self.TRACKED_STOCKS])
-        return TweetServiceImpl(
-            tracked_symbols, MockFilter(), MockRanker(), tweet_repo)
+        return TweetServiceImpl(tracked_symbols, filter_svc, filter_svc, tweet_repo)

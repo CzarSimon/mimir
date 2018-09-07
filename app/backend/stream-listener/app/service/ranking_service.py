@@ -21,7 +21,6 @@ class RankingService(metaclass=ABCMeta):
         :param links: Links to extract and rank.
         :param symbols: Symbols to match against.
         """
-        pass
 
 
 class RankingServiceImpl(RankingService):
@@ -38,7 +37,6 @@ class RankingServiceImpl(RankingService):
 
     def rank(self, tweet, links, symbols):
         body = json.dumps(self.__create_rank_body(tweet, links, symbols))
-        self.__log.info(body)
         resp = requests.post(self.RANK_URL, data=body, headers=self.HEADERS,
                              timeout=values.RPC_TIMEOUT)
         if not resp.ok:

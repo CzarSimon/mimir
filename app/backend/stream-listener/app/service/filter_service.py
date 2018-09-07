@@ -19,7 +19,6 @@ class FilterService(metaclass=ABCMeta):
         :param tweet: Tweet to check.
         :return: Boolean indicating if tweet is spam.
         """
-        pass
 
 
 class SpamFilterService(FilterService):
@@ -35,9 +34,7 @@ class SpamFilterService(FilterService):
 
     def is_spam(self, tweet):
         spam_candidate = self.__create_spam_body(tweet)
-        self.__log.info(spam_candidate)
         body = json.dumps(spam_candidate)
-        self.__log.info(body)
         resp = requests.post(self.CLASSIFY_URL, data=body,
                              headers=self.HEADERS, timeout=values.RPC_TIMEOUT)
         if not resp.ok:

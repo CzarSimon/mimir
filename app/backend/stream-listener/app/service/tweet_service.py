@@ -17,7 +17,6 @@ class TweetService(metaclass=ABCMeta):
 
         :param raw_tweet: Raw tweet dict to handle.
         """
-        pass
 
 
 class TweetServiceImpl(TweetService):
@@ -50,6 +49,7 @@ class TweetServiceImpl(TweetService):
         tweet = self.__parse_tweet(deserilized_tweet)
         links = self.__parse_links(tweet.id, deserilized_tweet)
         symbols = self.__parse_symbols(tweet.id, deserilized_tweet)
+        # assert len(symbols) != 0
         return tweet, links, symbols
 
     def __parse_tweet(self, tweet_dict):
@@ -94,13 +94,34 @@ class TweetServiceImpl(TweetService):
         :param tweet: Full tweet dictionary.
         :return: List of TweetSymbols
         """
-        raw_symbols = tweet['entities']['symbols']
-        all_symbols = [s['text'].upper() for s in raw_symbols]
-        if 'extended_tweet' in tweet and 'symbols' in tweet['extended_tweet']:
-            extended_symbols = tweet['extended_tweet']['symbols']
-            all_symbols += [s['text'].upper() for s in extended_symbols]
+        all_symbols = self.__parse_symbol_text(tweet)
         symbols = filter(lambda s: s in self.TRACKED_SYMBOLS, set(all_symbols))
         return [TweetSymbol(symbol=s, tweet_id=tweet_id) for s in symbols]
+
+    def __parse_symbol_text(self, tweet):
+        """Parses symbols from a complete tweet.
+
+        :param tweet: Raw tweet as dict.
+        :return: List of stock symbols in tweet.
+        """
+        all_symbols = self.__parse_symbols_from_entities(tweet)
+        if 'extended_tweet' in tweet:
+            extended_tweet = tweet['extended_tweet']
+            all_symbols += self.__parse_symbols_from_entities(extended_tweet)
+        if 'retweeted_status' in tweet:
+            all_symbols += self.__parse_symbol_text(tweet['retweeted_status'])
+        return all_symbols
+
+    def __parse_symbols_from_entities(self, component):
+        """Parses stock symbols from a tweet component.
+
+        :param component: Tweet component as a dict to search through.
+        :return: List of stock symbols as strings.
+        """
+        if 'entities' not in component:
+            return []
+        entities = component['entities']
+        return [symbol['text'].upper() for symbol in entities['symbols']]
 
     def __save_content(self, tweet, links, symbols):
         """Stores tweet, links and symbols from a raw tweet.

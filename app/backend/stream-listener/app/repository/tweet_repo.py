@@ -14,7 +14,6 @@ class TweetRepo(metaclass=ABCMeta):
 
         :param tweet: Tweet to store.
         """
-        pass
 
     @abstractmethod
     def save_links(self, links):
@@ -22,7 +21,6 @@ class TweetRepo(metaclass=ABCMeta):
 
         :param links: List of TweetLinks to store.
         """
-        pass
 
     @abstractmethod
     def save_symbols(self, symbols):
@@ -30,7 +28,6 @@ class TweetRepo(metaclass=ABCMeta):
 
         :param symbols: List of TweetSymbols to store.
         """
-        pass
 
 
 class SQLTweetRepo(TweetRepo):
