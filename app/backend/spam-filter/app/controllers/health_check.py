@@ -4,6 +4,7 @@ import logging
 # Internal modules
 from app import db
 from app.controllers import status
+from app.service import classification_svc
 
 
 _log = logging.getLogger(__name__)
@@ -19,9 +20,15 @@ def check_health():
     :return: Status info as a dict.
     :return: HTTP status code.
     """
+    db_status, db_ok = _check_db_status()
     model_status, model_ok = _check_model_status()
-    overall_status, status_code = _determine_overall_status(model_ok)
-    return {'status': overall_status, 'model': model_status}, status_code
+    overall_status, status_code = _determine_overall_status(model_ok, db_ok)
+    health_info = {
+        'status': overall_status,
+        'model': model_status,
+        'db': db_status
+    }
+    return health_info, status_code
 
 
 def _check_model_status():
@@ -31,7 +38,22 @@ def _check_model_status():
     :return: Status text.
     :return: Boolean indication if status is healthy
     """
-    return STATUS_DOWN, False
+    model_ok = classification_svc.has_model()
+    return STATUS_UP if model_ok else STATUS_DOWN, model_ok
+
+
+def _check_db_status():
+    """Pings the database to check if the service is connetcted.
+
+    :return: Status text.
+    :return: Boolean indication if status is healthy
+    """
+    try:
+        db.engine.execute('SELECT 1')
+        return 'UP', True
+    except Exception as e:
+        _log.error(str(e))
+        return 'DOWN', False
 
 
 def _determine_overall_status(*statuses):

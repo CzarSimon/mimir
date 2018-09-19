@@ -4,6 +4,7 @@ export DB_NAME=spamfilter
 export DB_USERNAME=spamfilter
 export DB_PASSWORD=password
 export CASHTAG_THRESHOLD=0.8
+export TRAIN_MODEL=FALSE
 
 run:
 	sh start.sh

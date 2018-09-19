@@ -4,12 +4,14 @@ from flask import jsonify, make_response
 # Internal modules
 from app import app
 from app import controllers
+from app.controllers import classification
 from app.controllers import status, errors
 
 
 @app.route('/v1/classify', methods=['POST'])
 def classify_spam():
-    raise errors.NotImplementedError()
+    result = classification.is_spam()
+    return _create_response(result)
 
 
 @app.route('/v1/training-data', methods=['POST'])

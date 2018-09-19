@@ -5,6 +5,7 @@ from enum import Enum
 
 # Internal modules
 from app import db
+from app.service.training_service import format_text
 
 
 class Label(Enum):
@@ -31,16 +32,19 @@ class TrainingData(db.Model):
             format(self.id, self.text, self.label, self.created_at)
 
 
-class Classifier(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    training_samples = db.Column(db.Integer, nullable=False)
-    test_samples = db.Column(db.Integer, nullable=False)
-    accuracy = db.Column(db.Float, nullable=False)
-    model_hash = db.Column(db.String(64))
-    created_at = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)
+class SpamCandidate(object):
+    def __init__(self, text, label=None):
+        self.text = format_text(text)
+        self.label = label
 
-    def __repr__(self):
-        return ('Classifier(id={} training_samples={} test_samples={} '
-                'accuracy={} model_hash={} created_at={})').format(
-                    self.id, self.training_samples, self.test_samples,
-                    self.accuracy, self.model_hash, self.created_at)
+    def to_dict(self):
+        return {
+            'text': self.text,
+            'label': self.label
+        }
+
+    @staticmethod
+    def from_dict(raw_dict):
+        return SpamCandidate(
+            text=raw_dict['text'],
+            label=raw_dict['label'] if 'label' in raw_dict else None)

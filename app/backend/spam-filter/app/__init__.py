@@ -16,6 +16,7 @@ migrate = Migrate(app, db)
 
 
 from app import routes, models
+from app.controllers import errors
 
 
 _error_log = logging.getLogger('ErrorHandler')
@@ -30,6 +31,6 @@ def handle_request_error(error):
     """
     _error_log.warning(str(error))
     json_error = jsonify(error=str(error),
-                         status=error.status()
+                         status=error.status(),
                          path=request.path)
     return make_response(json_error, error.status())
