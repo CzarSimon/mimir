@@ -55,6 +55,62 @@ def data_upgrades():
         {'label': 'SPAM', 'created_at': datetime.utcnow()},
         {'label': 'NON-SPAM', 'created_at': datetime.utcnow()}
     ])
+    training_data = table('training_data',
+                          column('text', sa.String),
+                          column('label', sa.String),
+                          column('created_at', sa.DateTime))
+    op.bulk_insert(training_data, [
+        {
+            'text': 'RT @ElixiumCapital: Trade with #Bitcoin',
+            'label': 'SPAM',
+            'created_at': datetime.utcnow()
+        },
+        {
+            'text': 'RT @ElixiumCapital: Trade with',
+            'label': 'SPAM',
+            'created_at': datetime.utcnow()
+        },
+        {
+            'text': 'RT @BIGMONEYMIKE6: WHEN MY NAME ( #BMM ) COMES UP , RESPEK IT !!!!',
+            'label': 'SPAM',
+            'created_at': datetime.utcnow()
+        },
+        {
+            'text': 'RT @BIGMONEYMIKE6: THINGS OF UTMOST IMPORTANCE 1) GOD 2) FAMILY 3) SELF 4) #PENNYSTOCKS 5) WIFEY',
+            'label': 'SPAM',
+            'created_at': datetime.utcnow()
+        },
+        {
+            'text': 'RT @BColwell_Invest: #Nvidia DCF Implied Valuation - $nvda #tech #investing #ai #machinelearning',
+            'label': 'SPAM',
+            'created_at': datetime.utcnow()
+        },
+        {
+            'text': 'Not much of a hero call, but I''m doing it anyways. The bottom is in for $TWTR',
+            'label': 'NON-SPAM',
+            'created_at': datetime.utcnow()
+        },
+        {
+            'text': 'Apple expected to reveal new 10.5-inch iPad Pro at WWDC #AppleInsider $AAPL',
+            'label': 'NON-SPAM',
+            'created_at': datetime.utcnow()
+        },
+        {
+            'text': 'Steve Ballmer wants to Donate most his fortune to save the birds @Twitter $TWTR',
+            'label': 'NON-SPAM',
+            'created_at': datetime.utcnow()
+        },
+        {
+            'text': '$NVDA "Re: Google''s TPU" on The Motley Fool message boards:',
+            'label': 'NON-SPAM',
+            'created_at': datetime.utcnow()
+        },
+        {
+            'text': 'NVIDIA''s Explosive Growth in 5 Charts @themotleyfool #stocks $NVDA',
+            'label': 'NON-SPAM',
+            'created_at': datetime.utcnow()
+        }
+    ])
 
 
 def downgrade():

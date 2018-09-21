@@ -29,10 +29,11 @@ def get_optional_param(param_name, default=None):
     return value
 
 
-def get_json_body(*required_fields):
+def get_json_body(*required_fields, fields_as_strings=True):
     """Gets, parses and validated a requests body.
 
     :param required_fields: Optional list of required field names in the body.
+    :param fields_as_strings:
     :return: Request body as a dict.
     """
     body = request.get_json(silent=True)
@@ -41,4 +42,15 @@ def get_json_body(*required_fields):
     for field in required_fields:
         if not field in body or body[field] == None:
             raise errors.BadRequestError(f'Missing field: "{field}"')
+        if not is_string(body[field]):
+            raise errors.BadRequestError(f'"{field}" not of string type')
     return body
+
+
+def is_string(obj):
+    """Checks if an object is of type string.
+
+    :param obj: Ojbect to check.
+    :return: Boolean
+    """
+    return isinstance(obj, str)

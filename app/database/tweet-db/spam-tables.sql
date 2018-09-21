@@ -1,9 +1,4 @@
 INSERT INTO training_data (text, label, created_at) VALUES
-('RT @ElixiumCapital: Trade with #Bitcoin', 'SPAM', NOW()),
-('RT @ElixiumCapital: Trade with', 'SPAM', NOW()),
-('RT @BIGMONEYMIKE6: WHEN MY NAME ( #BMM ) COMES UP , RESPEK IT !!!!', 'SPAM', NOW()),
-('RT @BIGMONEYMIKE6: THINGS OF UTMOST IMPORTANCE 1) GOD 2) FAMILY 3) SELF 4) #PENNYSTOCKS 5) WIFEY', 'SPAM', NOW()),
-('RT @BColwell_Invest: #Nvidia DCF Implied Valuation - $nvda #tech #investing #ai #machinelearning', 'SPAM', NOW()),
 ('Try a multimillionaire traders chatroom and alerts for $49 !', 'SPAM', NOW()),
 ('Jason Bond wants u to try his trading alerts 4 *FREE* ', 'SPAM', NOW()),
 ('RT @Escells: $FDBL Friendable Inc.  Nice #SocialMedia App | $NFLX $FB $GOOGL $AAPL $YELP $MEET $MTCH', 'SPAM', NOW()),
@@ -70,46 +65,6 @@ INSERT INTO training_data (text, label, created_at) VALUES
 ('RT @InvestorHangout: We are LIVE Covering:', 'SPAM', NOW()),
 ('Are you Bullish or Bearish on #Snapchat? Start #Trading $SNAP with #Bitcoin. 15:1 Leverage. #Stocks #Fintech #BTC… https://t.co/mAnr3lus67', 'SPAM', NOW()),
 ('Trade with the best indicators', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW()),
-('', 'SPAM', NOW());
-
-,
-('', 'SPAM', NOW())
-
-INSERT INTO training_data (text, label, created_at) VALUES
 ('Not much of a hero call, but I''m doing it anyways. The bottom is in for $TWTR', 'NON-SPAM', NOW()),
 ('Apple expected to reveal new 10.5-inch iPad Pro at WWDC #AppleInsider $AAPL', 'NON-SPAM', NOW()),
 ('Steve Ballmer wants to Donate most his fortune to save the birds @Twitter $TWTR', 'NON-SPAM', NOW()),
@@ -263,63 +218,4 @@ INSERT INTO training_data (text, label, created_at) VALUES
 ('Yo follow the StockTwits Snapchat right now it''s just getting started. Tha takeover $SNAP', 'NON-SPAM', NOW()),
 ('If You Think Netflix, Amazon Disrupted Hollywood, You''ll Love $Snap https://t.co/LN6QgkRWb1', 'NON-SPAM', NOW()),
 ('When 2 personalities with the same fire and passion meet, they create $GOOG $SNAP ....; create #BetterLiving', 'NON-SPAM', NOW()),
-('$SNAP people still buying the hype when they shouldn''t  https://t.co/J9O4we5wBJ  $FB', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW()),
-('', 'NON-SPAM', NOW());
-
-,
-('', 'NON-SPAM', NOW())
-
-
- --T      | AT&T, Inc.                    | 2016-05-30 | t
- --WMT    | Wal-Mart Stores Inc.          | 2016-05-30 | t
- --PYPL   | PayPal Holdings, Inc.         | 2016-05-30 | t
- --TWTR   | Twitter, Inc.                 | 2016-05-30 | t
- --NFLX   | Netflix, Inc.                 | 2016-05-30 | t
- --FB     | Facebook Inc.                 | 2016-05-30 | t
- --NKE    | Nike, Inc.                    | 2016-05-30 | t
- --GOOG   | Alphabet Inc.                 | 2016-05-30 | t
- SNAP   | Snap Inc.                     | 2017-02-27 | t
- F      | Ford Motor Company            | 2017-02-27 | t
- V      | Visa Inc.                     | 2017-02-27 | t
- AMD    | Advanced Micro Devices, Inc.  | 2017-02-27 | t
- BIDU   | Baidu, Inc.                   | 2017-02-27 | t
- MON    | Monsanto Company              | 2017-02-27 | t
- S      | Sprint Corporation            | 2017-03-01 | t
- M      | Macy's Inc                    | 2017-03-01 | t
- C      | Citigroup, Inc.               | 2017-03-01 | t
- JPM    | JP Morgan Chase & Co.         | 2017-03-01 | t
- GM     | General Motors Company        | 2017-03-01 | t
- HPQ    | HP Inc.                       | 2017-03-01 | t
- PG     | Procter & Gamble Company      | 2017-03-01 | t
- SQ     | Square, Inc.                  | 2017-03-01 | t
- CSCO   | Cisco Systems, Inc.           | 2017-03-01 | t
- ZNGA   | Zynga Inc.                    | 2017-03-01 | t
- FIT    | Fitbit, Inc.                  | 2017-03-01 | t
- BABA   | Alibaba Group Holding Limited | 2017-03-01 | t
- ORCL   | Oracle Corporation            | 2017-03-23 | t
- UA     | Under Armour, Inc.            | 2017-03-23 | t
- GE     | General Electric Company      | 2017-03-23 | t
- DIS    | Walt Disney Company           | 2017-03-23 | t
- VZ     | Verizon Communications Inc.   | 2017-03-23 | t
- BA     | Boeing Company                | 2017-03-23 | t
- GPRO   | GoPro, Inc.                   | 2017-03-23 | t
- CRM    | Salesforce.com Inc            | 2017-03-23 | t
- LNKD   | LinkedIn Corporation          | 2016-05-30 | f
- SCTY   | SolarCity Corporation         | 2016-05-30 | f
- KO     | Coca-Cola Company             | 2017-04-03 | f
+('$SNAP people still buying the hype when they shouldn''t  https://t.co/J9O4we5wBJ  $FB', 'NON-SPAM', NOW());

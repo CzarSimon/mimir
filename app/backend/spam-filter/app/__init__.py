@@ -5,6 +5,7 @@ import logging
 from flask import Flask, jsonify, make_response, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flasgger import Swagger
 
 # Internal modules
 from app.config import AppConfig
@@ -13,6 +14,7 @@ app = Flask('Mimir Spam Filter')
 app.config.from_object(AppConfig)
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
+swagger = Swagger(app)
 
 
 from app import routes, models
