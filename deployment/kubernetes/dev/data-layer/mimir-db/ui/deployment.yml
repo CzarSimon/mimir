@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mimir-dbui
+  labels:
+    app: mimir-dbui
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mimir-dbui
+    spec:
+      containers:
+        - name: mimir-dbui
+          image: sosedoff/pgweb:latest
+          ports:
+            - name: svc-port
+              containerPort: 8081

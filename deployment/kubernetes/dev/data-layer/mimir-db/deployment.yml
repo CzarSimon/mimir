@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mimir-db
+  labels:
+    app: mimir-db
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: mimir-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:10.2-alpine
+          ports:
+            - name: db-port
+              containerPort: 5432
+          env:
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: postgres.password
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: mimir-db-volume
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-h", "localhost", "-U", "postgres"]
+            initialDelaySeconds: 30
+            timeoutSeconds: 5
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-h", "localhost", "-U", "postgres"]
+            initialDelaySeconds: 30
+            timeoutSeconds: 1
+      volumes:
+        - name: mimir-db-volume
+          persistentVolumeClaim:
+            claimName: mimir-db-vol-claim
