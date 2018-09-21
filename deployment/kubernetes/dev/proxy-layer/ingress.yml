@@ -2,10 +2,9 @@ apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: mimir-proxy
-  namespace: mimir
 spec:
   rules:
-    - host: mimir-dev.news
+    - host: dev.mimir.news
       http:
         paths:
           - path: /api/app/
@@ -31,10 +30,8 @@ spec:
           - backend:
               serviceName: webserver
               servicePort: 8080
-    - host: admin.mimir-dev.news
+    - host: db.dev.mimir.news
       http:
         paths:
-          - path: /api/admin/
-            backend:
-              serviceName: admin-api
-              servicePort: 8000
+          - backend: mimir-dbui
+            servicePort: 8081

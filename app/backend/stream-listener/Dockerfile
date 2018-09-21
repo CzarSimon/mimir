@@ -1,8 +1,12 @@
-FROM python:3.6-alpine
+FROM python:3.6-slim-stretch
+RUN apt-get update && apt-get upgrade -y && apt-get install -y build-essential
 
-WORKDIR /src/stream-listener
+# Copy app source.
+WORKDIR /app/streamlistener
 COPY . .
 
-RUN pip install -r requirements.txt
+# Install requirements.
+RUN pip install --no-cache-dir -r requirements.txt
 
+# Start command.
 CMD ["sh", "start.sh"]

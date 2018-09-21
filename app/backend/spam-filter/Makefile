@@ -6,7 +6,7 @@ export DB_PASSWORD=password
 export CASHTAG_THRESHOLD=0.8
 export TRAIN_MODEL=FALSE
 
-VERSION=1.0
+VERSION=2.0
 
 run:
 	sh start.sh
@@ -28,4 +28,4 @@ install:
 	pip install -r requirements.txt
 
 build:
-	docker build -t eu.gcr.io/mimir-185212/spamfilter:$(VERSION) .
+	docker build -t eu.gcr.io/mimir-185212/spam-filter:$(VERSION) .

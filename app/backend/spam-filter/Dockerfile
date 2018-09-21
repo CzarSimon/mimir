@@ -8,7 +8,7 @@ WORKDIR /app/spamfilter
 COPY . .
 
 # Install requirements.
-RUN pip3 install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Prepare environment.
 EXPOSE 8080
