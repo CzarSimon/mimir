@@ -27,3 +27,4 @@ docker-commands/
 
 .idea/
 .gitignore
+vendor/
