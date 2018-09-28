@@ -13,6 +13,7 @@ from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.metrics import f1_score
 from sklearn.naive_bayes import MultinomialNB
 from sklearn.svm import LinearSVC
+from sklearn.linear_model import SGDClassifier
 from sklearn.pipeline import Pipeline
 from stop_words import get_stop_words
 
@@ -60,6 +61,17 @@ class TrainingService(object):
             ('counter', CountVectorizer(stop_words=get_stop_words('english'))),
             ('tfidf', TfidfTransformer()),
             ('classifier', MultinomialNB())
+        ])
+
+    def __init_logistic_regression_model(self):
+        """Initalizes an untrained Logistic Regression model.
+
+        :return: Sklearn Pipeline with vectorization and prediction model.
+        """
+        return Pipeline([
+            ('counter', CountVectorizer(stop_words=get_stop_words('english'))),
+            ('tfidf', TfidfTransformer()),
+            ('classifier', SGDClassifier(loss='log'))
         ])
 
     def __init_model(self, type):

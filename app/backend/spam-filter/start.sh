@@ -4,4 +4,4 @@ export TRAIN_MODEL=FALSE
 flask db upgrade
 
 export TRAIN_MODEL=TRUE
-flask run
+uwsgi uwsgi.ini

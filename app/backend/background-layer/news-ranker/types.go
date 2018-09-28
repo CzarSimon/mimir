@@ -178,7 +178,6 @@ func NewRankArgument(rankObject RankObject, article Article) RankArgument {
 		URL:            article.URL,
 		ReferenceScore: article.ReferenceScore,
 		StoredArticle:  article,
-	}
 }
 
 //ToString turns RankArgument to a json string

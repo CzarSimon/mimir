@@ -29,3 +29,9 @@ install:
 
 build:
 	docker build -t eu.gcr.io/mimir-185212/spam-filter:$(VERSION) .
+
+run-container:
+	docker run -d --name spam-filter -p 8080:8080 --network=mimir-net \
+		-e DB_HOST=mimir-db -e DB_PORT=5432 -e DB_NAME=spamfilter \
+		-e DB_USERNAME=spamfilter -e DB_PASSWORD=password \
+		eu.gcr.io/mimir-185212/spam-filter:$(VERSION)
