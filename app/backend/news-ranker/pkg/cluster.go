@@ -46,6 +46,7 @@ func selectHighestScoreMember(members []ClusterMember) ClusterMember {
 	highScore := 0.0
 	for _, member := range members {
 		if member.Score() >= highScore {
+			highScore = member.Score()
 			highScoreMember = member
 		}
 	}
