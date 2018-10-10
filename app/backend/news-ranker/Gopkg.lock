@@ -2,14 +2,26 @@
 
 
 [[projects]]
-  name = "github.com/caarlos0/env"
+  branch = "master"
+  name = "github.com/CzarSimon/mimir"
+  packages = ["app/backend/pkg/id"]
+  revision = "9945a57e86b8750e8bb642bdd135a0571c796d23"
+
+[[projects]]
+  name = "github.com/satori/go.uuid"
   packages = ["."]
-  revision = "7f73d6597823c7a0c39edd46e1998f90692b2add"
-  version = "v3.4.0"
+  revision = "f58768cc1a7a7e77a3bd49e98cdd21419399b6a3"
+  version = "v1.2.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/streadway/amqp"
+  packages = ["."]
+  revision = "70e15c650864f4fc47f5d3c82ea117285480895d"
 
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "27725d5310983628b4662e67be4b40d4fcee5a72edbd4bac166afdfbb6e56516"
+  inputs-digest = "d5fb80756229c47ac3980ab8d44dd79b8e1ec6ecbb8dd751634f9d88afffcf6c"
   solver-name = "gps-cdcl"
   solver-version = 1

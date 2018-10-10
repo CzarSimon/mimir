@@ -34,6 +34,7 @@ func (a *ArticleCluster) AddMember(newMember ClusterMember) {
 	a.Members = append(a.Members, newMember)
 }
 
+// ElectLeaderAndScore finds highes scoring member and sums up the total cluster score.
 func (a *ArticleCluster) ElectLeaderAndScore() {
 	leader := selectHighestScoreMember(a.Members)
 	referenceSum := sumReferenceScore(a.Members)
