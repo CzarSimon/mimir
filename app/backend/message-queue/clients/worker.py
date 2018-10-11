@@ -1,7 +1,6 @@
 # Standard library
 import json
 import os
-import time
 from dataclasses import dataclass, asdict
 
 # Internal packages
@@ -17,8 +16,7 @@ channel: util.MQChannel = conn.channel()
 def handle_message(
         channel: util.MQChannel, method: util.MQDeliver,
         properties: util.MQProperties, body: bytes) -> None:
-    print(parse_message(body))
-    time.sleep(1)
+    print(json.loads(body))
     send_ack(channel, method)
 
 

@@ -59,7 +59,6 @@ class App:
         :return: TweetService
         """
         filter_svc = SpamFilterService(SpamFilterConfig())
-        filter_svc = MQRankingService(self.TRACKED_STOCKS, MQConfig())
+        ranking_svc = MQRankingService(self.TRACKED_STOCKS, MQConfig())
         tweet_repo = SQLTweetRepo()
-        tracked_symbols = set([symbol for symbol in self.TRACKED_STOCKS])
-        return TweetServiceImpl(tracked_symbols, filter_svc, filter_svc, tweet_repo)
+        return TweetServiceImpl(self.TRACKED_STOCKS, filter_svc, ranking_svc, tweet_repo)

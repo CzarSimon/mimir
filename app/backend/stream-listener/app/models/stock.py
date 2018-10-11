@@ -1,5 +1,5 @@
 # Standard library
-from dataclasses import dataclass
+from dataclasses import dataclass # Backport for support of python 3.7 dataclasses
 from datetime import datetime
 from typing import Dict
 
@@ -23,16 +23,13 @@ class TrackedStock:
         }
 
 
-TrackedStocks = Dict[str, TrackedStocks]
-
-
-class Stock(db.Model):
+class Stock(db.Model): # type: ignore
     __tablename__ = 'stock'
 
     symbol = sa.Column(sa.String(20), primary_key=True)
     name = sa.Column(sa.String(100))
     is_active = sa.Column(sa.Boolean)
-    total_count =sa. Column(sa.Integer)
+    total_count = sa. Column(sa.Integer)
     updated_at = sa.Column(sa.DateTime)
 
     def __init__(self, symbol, name, is_active, total_count, updated_at=None):

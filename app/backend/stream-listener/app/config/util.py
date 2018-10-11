@@ -20,15 +20,26 @@ def getenv(key):
         sys.exit(1)
 
 
-def get_database_uri():
-    """Gets database connection uri based on the current APP_PROFILE.
+def get_database_uri() -> str:
+    """Gets database connection uri from the environment.
 
     :return: DB connection string.
     """
-    DB_USERNAME = getenv('DB_USERNAME')
-    DB_PASSWORD = getenv('DB_PASSWORD')
-    DB_HOST = getenv('DB_HOST')
-    DB_PORT = getenv('DB_PORT')
+    USER = getenv('DB_USERNAME')
+    PASSWORD = getenv('DB_PASSWORD')
+    HOST = getenv('DB_HOST')
+    PORT = getenv('DB_PORT')
     DB_NAME = getenv('DB_NAME')
-    return 'postgresql://{}:{}@{}:{}/{}'.format(
-        DB_USERNAME, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME)
+    return f'postgresql://{USER}:{PASSWORD}@{HOST}:{PORT}/{DB_NAME}'
+
+
+def get_mq_uri() -> str:
+    """Gets mq connection uri from the environment.
+
+    :return: MQ connection string.
+    """
+    USER = getenv('MQ_USER')
+    PASSWORD = getenv('MQ_PASSWORD')
+    HOST = getenv('MQ_HOST')
+    PORT = getenv('MQ_PORT')
+    return f'amqp://{USER}:{PASSWORD}@{HOST}:{PORT}/'

@@ -8,6 +8,5 @@ from .database import Database
 
 db = Database(DBConfig())
 
-
 from .app import App
 stream_listner = App()

@@ -7,7 +7,7 @@ from typing import Dict, List
 # Internal modules
 from app.config import values
 from app.models import Tweet, TweetLink, TweetSymbol, TweetContent
-from app.models import TrackedStocks
+from app.models import TrackedStock
 from app.service import FilterService
 from app.service import RankingService
 from app.service import FilterService
@@ -29,20 +29,21 @@ class TweetServiceImpl(TweetService):
 
     __log = logging.getLogger('TweetServiceImpl')
 
-    def __init__(self, tracked_symbols: TrackedStocks, filter_svc: FilterService,
-                 ranking_svc: RankingService, tweet_repo: TweetRepo) -> None:
+    def __init__(self, tracked_symbols: Dict[str, TrackedStock],
+                 filter_svc: FilterService, ranking_svc: RankingService,
+                 tweet_repo: TweetRepo) -> None:
         self.TRACKED_SYMBOLS = tracked_symbols
         self.__filter_svc = filter_svc
         self.__ranking_svc = ranking_svc
         self.__tweet_repo = tweet_repo
 
     def handle(self, raw_tweet: bytes) -> None:
-        tweet, links, symbols = self.__parse_tweet_contents(raw_tweet)
-        if self.__filter_svc.is_spam(tweet):
-            self.__log.info(f'SPAM: {tweet}')
+        content = self.__parse_tweet_contents(raw_tweet)
+        if self.__filter_svc.is_spam(content.tweet):
+            self.__log.info(f'SPAM: {content.tweet}')
             return
-        self.__save_content(tweet, links, symbols)
-        self.__ranking_svc.rank(tweet, links, symbols)
+        self.__save_content(content)
+        self.__ranking_svc.rank(content)
 
     def __parse_tweet_contents(self, raw_tweet) -> TweetContent:
         """Parses a raw tweet dict into a tweet, links and symbols.
@@ -117,7 +118,7 @@ class TweetServiceImpl(TweetService):
             all_symbols += self.__parse_symbol_text(tweet['retweeted_status'])
         return all_symbols
 
-    def __parse_symbols_from_entities(self, component: Dict[str, str]) -> List[str]:
+    def __parse_symbols_from_entities(self, component: Dict) -> List[str]:
         """Parses stock symbols from a tweet component.
 
         :param component: Tweet component as a dict to search through.

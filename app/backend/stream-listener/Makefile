@@ -4,8 +4,15 @@ export DB_NAME=streamlistener
 export DB_USERNAME=streamlistener
 export DB_PASSWORD=password
 
-export SPAM_FILTER_URL=http://localhost:3000
+export SPAM_FILTER_URL=http://localhost:8080
 export NEWS_RANKER_URL=http://localhost:5000
+
+export MQ_EXCHANGE=x-news
+export MQ_QUEUE_NAME=q-rank-objects
+export MQ_USER=streamlistener
+export MQ_PASSWORD=password
+export MQ_HOST=localhost
+export MQ_PORT=5672
 
 VERSION=3.0
 
@@ -20,6 +27,9 @@ db-upgrade:
 
 db-downgrade:
 	alembic downgrade -1
+
+test:
+	mypy --ignore-missing-imports main.py
 
 install:
 	pip install -r requirements.txt

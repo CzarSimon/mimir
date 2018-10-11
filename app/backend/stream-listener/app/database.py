@@ -6,9 +6,12 @@ from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
+# Internal modules
+from app.config import DBConfig
 
-class Database(object):
-    def __init__(self, config):
+
+class Database:
+    def __init__(self, config: DBConfig) -> None:
         self.engine = create_engine(config.URI)
         self.engine.echo = config.ECHO
         self.Model = declarative_base()

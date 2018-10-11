@@ -1,5 +1,5 @@
 # Standard library
-from dataclasses import dataclass
+from dataclasses import dataclass # Backport for support of python 3.7 dataclasses
 from datetime import datetime
 from typing import List
 from uuid import uuid4
@@ -11,7 +11,7 @@ import sqlalchemy as sa
 from app import db
 
 
-class Tweet(db.Model):
+class Tweet(db.Model): # type: ignore
     __tablename__ = 'tweet'
 
     id = sa.Column(sa.String(50), primary_key=True)
@@ -37,7 +37,7 @@ class Tweet(db.Model):
                 self.author_followers, self.created_at))
 
 
-class TweetLink(db.Model):
+class TweetLink(db.Model): # type: ignore
     __tablename__ = 'tweet_link'
 
     id = sa.Column(sa.Integer, primary_key=True)
@@ -53,7 +53,7 @@ class TweetLink(db.Model):
                 .format(self.id, self.url, self.tweet_id)
 
 
-class TweetSymbol(db.Model):
+class TweetSymbol(db.Model): # type: ignore
     __tablename__ = 'tweet_symbol'
 
     def __init__(self, symbol, tweet_id):

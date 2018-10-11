@@ -36,10 +36,5 @@ class NewsRankerConfig:
 
 class MQConfig:
     EXCHANGE = util.getenv('MQ_EXCHANGE')
-    __USER = util.getenv('MQ_EXCHANGE')
-    __PASSWORD = util.getenv('MQ_EXCHANGE')
-    __HOST = util.getenv('MQ_HOST')
-    __PORT = util.getenv('MQ_PORT')
-
-    def URI() -> str:
-        return f'amqp://{self.__USER}:{self.__PASSWORD}@{self.__HOST}:{self.__PORT}/'
+    QUEUE_NAME = util.getenv('MQ_QUEUE_NAME')
+    URI = util.get_mq_uri()
