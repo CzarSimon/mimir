@@ -50,5 +50,34 @@ spec:
                   key: accessSecret
             - name: SPAM_FILTER_URL
               value: http://spam-filter:8080
-            - name: NEWS_RANKER_URL
-              value: http://news-ranker:8080
+            - name: MQ_EXCHANGE
+              value: x-news
+            - name: MQ_QUEUE_NAME
+              value: q-rank-objects
+            - name: MQ_HOST
+              value: message-queue
+            - name: MQ_PORT
+              value: "5672"
+            - name: MQ_USER
+              value: streamlistener
+            - name: MQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mq-credentials
+                  key: streamlistener.password
+            - name: HEARTBEAT_FILE
+              value: "/tmp/stream-listener-health.txt"
+            - name: HEARTBEAT_INTERVAL
+              value: "20"
+            readinessProbe:
+              exec:
+                command:
+                  - test
+                  - '`find /tmp/stream-listener-health.txt -mmin 1`'
+              initialDelaySeconds: 40
+            livenessProbe:
+              exec:
+                command:
+                  - test
+                  - '`find /tmp/stream-listener-health.txt -mmin 1`'
+              initialDelaySeconds: 60
