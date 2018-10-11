@@ -1,11 +1,29 @@
 # Standard library
+from dataclasses import dataclass
 from datetime import datetime
+from typing import Dict
+
 
 # 3rd party modules
 import sqlalchemy as sa
 
 # Internal modules
 from app import db
+
+
+@dataclass(frozen=True)
+class TrackedStock:
+    name: str
+    symbol: str
+
+    def asdict(self) -> Dict[str, str]:
+        return {
+            'name': self.name,
+            'symbol': self.symbol
+        }
+
+
+TrackedStocks = Dict[str, TrackedStocks]
 
 
 class Stock(db.Model):

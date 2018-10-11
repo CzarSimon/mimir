@@ -1,4 +1,4 @@
-FROM python:3.6-slim-stretch
+FROM python:3.7-slim-stretch
 RUN apt-get update && apt-get upgrade -y && apt-get install -y build-essential
 
 # Copy app source.

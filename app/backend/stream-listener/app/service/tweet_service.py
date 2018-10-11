@@ -2,10 +2,16 @@
 import json
 import logging
 from abc import ABCMeta, abstractmethod
+from typing import Dict, List
 
 # Internal modules
 from app.config import values
-from app.models import Tweet, TweetLink, TweetSymbol
+from app.models import Tweet, TweetLink, TweetSymbol, TweetContent
+from app.models import TrackedStocks
+from app.service import FilterService
+from app.service import RankingService
+from app.service import FilterService
+from app.repository import TweetRepo
 
 
 class TweetService(metaclass=ABCMeta):
@@ -23,13 +29,14 @@ class TweetServiceImpl(TweetService):
 
     __log = logging.getLogger('TweetServiceImpl')
 
-    def __init__(self, tracked_symbols, filter_svc, ranking_svc, tweet_repo):
+    def __init__(self, tracked_symbols: TrackedStocks, filter_svc: FilterService,
+                 ranking_svc: RankingService, tweet_repo: TweetRepo) -> None:
         self.TRACKED_SYMBOLS = tracked_symbols
         self.__filter_svc = filter_svc
         self.__ranking_svc = ranking_svc
         self.__tweet_repo = tweet_repo
 
-    def handle(self, raw_tweet):
+    def handle(self, raw_tweet: bytes) -> None:
         tweet, links, symbols = self.__parse_tweet_contents(raw_tweet)
         if self.__filter_svc.is_spam(tweet):
             self.__log.info(f'SPAM: {tweet}')
@@ -37,22 +44,20 @@ class TweetServiceImpl(TweetService):
         self.__save_content(tweet, links, symbols)
         self.__ranking_svc.rank(tweet, links, symbols)
 
-    def __parse_tweet_contents(self, raw_tweet):
+    def __parse_tweet_contents(self, raw_tweet) -> TweetContent:
         """Parses a raw tweet dict into a tweet, links and symbols.
 
         :param raw_tweet: Raw tweet to parse.
-        :return: Parsed Tweet
-        :return: Parsed list of TweetLinks
-        :return: Parsed list of TweetSymbols
+        :return: Parsed TweetContent
         """
         deserilized_tweet = json.loads(raw_tweet)
         tweet = self.__parse_tweet(deserilized_tweet)
         links = self.__parse_links(tweet.id, deserilized_tweet)
         symbols = self.__parse_symbols(tweet.id, deserilized_tweet)
         # assert len(symbols) != 0
-        return tweet, links, symbols
+        return TweetContent(tweet=tweet, links=links, symbols=symbols)
 
-    def __parse_tweet(self, tweet_dict):
+    def __parse_tweet(self, tweet_dict: Dict) -> Tweet:
         """Parses tweet as dict into the Tweet model structure.
 
         :param tweet_dict: Full tweet dictionary.
@@ -63,7 +68,7 @@ class TweetServiceImpl(TweetService):
                      author_id=tweet_dict['user']['id_str'],
                      author_followers=tweet_dict['user']['followers_count'])
 
-    def __parse_links(self, tweet_id, tweet_dict):
+    def __parse_links(self, tweet_id: str, tweet_dict: Dict) -> List[TweetLink]:
         """Parses tweet as dict into a list of TweetLinks.
 
         :param tweet_id: Id of the parent tweet.
@@ -75,7 +80,7 @@ class TweetServiceImpl(TweetService):
         full_urls = filter(lambda url: url != '' and url != None, urls)
         return [TweetLink(url=url, tweet_id=tweet_id) for url in full_urls]
 
-    def __parse_url(self, url):
+    def __parse_url(self, url: Dict[str, str]) -> str:
         """Extracts url string from a dict of urls.
 
         :param url: URLs as a dict.
@@ -87,7 +92,7 @@ class TweetServiceImpl(TweetService):
             return url['url']
         return ''
 
-    def __parse_symbols(self, tweet_id, tweet):
+    def __parse_symbols(self, tweet_id: str, tweet: Dict) -> List[TweetSymbol]:
         """Parses tweet as dict into a list of TweetSymbol.
 
         :param tweet_id: Id of the parent tweet.
@@ -98,7 +103,7 @@ class TweetServiceImpl(TweetService):
         symbols = filter(lambda s: s in self.TRACKED_SYMBOLS, set(all_symbols))
         return [TweetSymbol(symbol=s, tweet_id=tweet_id) for s in symbols]
 
-    def __parse_symbol_text(self, tweet):
+    def __parse_symbol_text(self, tweet: Dict) -> List[str]:
         """Parses symbols from a complete tweet.
 
         :param tweet: Raw tweet as dict.
@@ -112,7 +117,7 @@ class TweetServiceImpl(TweetService):
             all_symbols += self.__parse_symbol_text(tweet['retweeted_status'])
         return all_symbols
 
-    def __parse_symbols_from_entities(self, component):
+    def __parse_symbols_from_entities(self, component: Dict[str, str]) -> List[str]:
         """Parses stock symbols from a tweet component.
 
         :param component: Tweet component as a dict to search through.
@@ -123,13 +128,11 @@ class TweetServiceImpl(TweetService):
         entities = component['entities']
         return [symbol['text'].upper() for symbol in entities['symbols']]
 
-    def __save_content(self, tweet, links, symbols):
+    def __save_content(self, tweet_content: TweetContent) -> None:
         """Stores tweet, links and symbols from a raw tweet.
 
-        :param tweet: Tweet to store.
-        :param links: List of TweetLinks to store.
-        :param symbols: List of TweetSymbols to store.
+        :param tweet_content: TweetContent to store.
         """
-        self.__tweet_repo.save_tweet(tweet)
-        self.__tweet_repo.save_links(links)
-        self.__tweet_repo.save_symbols(symbols)
+        self.__tweet_repo.save_tweet(tweet_content.tweet)
+        self.__tweet_repo.save_links(tweet_content.links)
+        self.__tweet_repo.save_symbols(tweet_content.symbols)

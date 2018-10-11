@@ -1,5 +1,7 @@
 # Standard library
+from dataclasses import dataclass
 from datetime import datetime
+from typing import List
 from uuid import uuid4
 
 # 3rd party modules
@@ -65,3 +67,10 @@ class TweetSymbol(db.Model):
     def __repr__(self):
         return 'TweetSymbol(id={} symbol={} tweet_id={})'\
                 .format(self.id, self.symbol, self.tweet_id)
+
+
+@dataclass(frozen=True)
+class TweetContent:
+    tweet: Tweet
+    links: List[TweetLink]
+    symbols: List[TweetSymbol]
