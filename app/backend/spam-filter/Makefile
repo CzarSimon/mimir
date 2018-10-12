@@ -24,6 +24,9 @@ db-upgrade:
 db-downgrade:
 	flask db downgrade
 
+test:
+	mypy --ignore-missing-imports run.py
+
 install:
 	pip install -r requirements.txt
 

@@ -10,7 +10,7 @@ class ModelType(Enum):
     NAIVE_BAYES = 'NAIVE-BAYES'
 
 
-class Classifier(db.Model):
+class Classifier(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     type = db.Column(db.String(50))
     training_samples = db.Column(db.Integer, nullable=False)

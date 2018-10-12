@@ -20,7 +20,7 @@ def getenv(key):
         sys.exit(1)
 
 
-def get_database_uri():
+def get_database_uri() -> str:
     """Gets database connection uri based on the current APP_PROFILE.
 
     :return: DB connection string.

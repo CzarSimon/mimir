@@ -2,6 +2,7 @@
 import logging
 
 # 3rd party modules.
+import flask
 from flask import Flask, jsonify, make_response, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
@@ -25,7 +26,7 @@ _error_log = logging.getLogger('ErrorHandler')
 
 
 @app.errorhandler(errors.RequestError)
-def handle_request_error(error):
+def handle_request_error(error: errors.RequestError) -> flask.Response:
     """Handles errors encountered when handling requests.
 
     :param error: Encountered RequestError.

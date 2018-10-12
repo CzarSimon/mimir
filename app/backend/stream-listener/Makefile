@@ -10,7 +10,7 @@ export NEWS_RANKER_URL=http://localhost:5000
 export MQ_EXCHANGE=x-news
 export MQ_QUEUE_NAME=q-rank-objects
 export MQ_USER=streamlistener
-export MQ_PASSWORD=adb5c892a74af9c3fcf4522f7117d8aea3af8123
+export MQ_PASSWORD=password
 export MQ_HOST=localhost
 export MQ_PORT=5672
 

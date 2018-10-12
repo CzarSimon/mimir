@@ -14,6 +14,6 @@ CASHTAG_THRESHOLD = float(os.getenv('CASHTAG_THRESHOLD', '0.8'))
 TRAIN_MODEL = os.getenv('TRAIN_MODEL', 'TRUE') == 'TRUE'
 
 
-class AppConfig(object):
+class AppConfig:
     SQLALCHEMY_DATABASE_URI = util.get_database_uri()
     SQLALCHEMY_TRACK_MODIFICATIONS = False
