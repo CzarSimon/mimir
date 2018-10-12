@@ -32,14 +32,15 @@ class Stock(db.Model): # type: ignore
     total_count = sa. Column(sa.Integer)
     updated_at = sa.Column(sa.DateTime)
 
-    def __init__(self, symbol, name, is_active, total_count, updated_at=None):
+    def __init__(self, symbol: str, name: str, is_active: bool,
+                 total_count: int, updated_at: datetime = None) -> None:
         self.symbol = symbol
         self.name = name
         self.is_active = is_active
         self.total_count = total_count
         self.updated_at = updated_at or datetime.utcnow()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ('Stock(symbol={} name={} is_active={} '
                 'total_count={} updated_at={})'.format(
                 self.symbol, self.name, self.is_active,

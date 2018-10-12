@@ -38,3 +38,8 @@ class MQConfig:
     EXCHANGE = util.getenv('MQ_EXCHANGE')
     QUEUE_NAME = util.getenv('MQ_QUEUE_NAME')
     URI = util.get_mq_uri()
+
+
+class HealthCheckConfig:
+    FILENAME = util.getenv('HEARTBEAT_FILE')
+    INTERVAL = int(util.getenv('HEARTBEAT_INTERVAL'))

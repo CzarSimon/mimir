@@ -9,7 +9,7 @@ DEVELOPMENT_PROFILE = 'DEVELOPMENT'
 TEST_PROFILE = 'TEST'
 PRODUCTION_PROFILE = 'PRODUCTION'
 
-PACKAGE_NAME = 'medication-search'
+PACKAGE_NAME = 'stream-listener'
 USER_AGENT = 'mimir stream listener'
 RPC_TIMEOUT = 1
 

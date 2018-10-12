@@ -69,15 +69,15 @@ spec:
               value: "/tmp/stream-listener-health.txt"
             - name: HEARTBEAT_INTERVAL
               value: "20"
-            readinessProbe:
-              exec:
-                command:
-                  - test
-                  - '`find /tmp/stream-listener-health.txt -mmin 1`'
-              initialDelaySeconds: 40
-            livenessProbe:
-              exec:
-                command:
-                  - test
-                  - '`find /tmp/stream-listener-health.txt -mmin 1`'
-              initialDelaySeconds: 60
+          readinessProbe:
+            exec:
+              command:
+                - test
+                - '`find /tmp/stream-listener-health.txt -mmin 1`'
+            initialDelaySeconds: 40
+          livenessProbe:
+            exec:
+              command:
+                - test
+                - '`find /tmp/stream-listener-health.txt -mmin 1`'
+            initialDelaySeconds: 60

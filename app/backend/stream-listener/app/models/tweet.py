@@ -21,8 +21,8 @@ class Tweet(db.Model): # type: ignore
     author_followers = sa.Column(sa.Integer)
     created_at = sa.Column(sa.DateTime)
 
-    def __init__(self, text, language, author_id,
-                 author_followers, id=None):
+    def __init__(self, text: str, language: str, author_id: str,
+                 author_followers: int, id: str = None) -> None:
         self.id = id or str(uuid4()).upper()
         self.text = text
         self.language = language
@@ -30,7 +30,7 @@ class Tweet(db.Model): # type: ignore
         self.author_followers = author_followers
         self.created_at = datetime.utcnow()
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return ('Tweet(id={} text={} language={} author_id={} '
                 'author_followers={} created_at={})'.format(
                 self.id, self.text, self.language, self.author_id,
@@ -44,11 +44,11 @@ class TweetLink(db.Model): # type: ignore
     url = sa.Column(sa.String(200))
     tweet_id = sa.Column(sa.String(50), sa.ForeignKey('tweet.id'))
 
-    def __init__(self, url, tweet_id):
+    def __init__(self, url: str, tweet_id: str) -> None:
         self.url = url
         self.tweet_id = tweet_id
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'TweetLink(id={} url={} tweet_id={})'\
                 .format(self.id, self.url, self.tweet_id)
 
@@ -56,7 +56,7 @@ class TweetLink(db.Model): # type: ignore
 class TweetSymbol(db.Model): # type: ignore
     __tablename__ = 'tweet_symbol'
 
-    def __init__(self, symbol, tweet_id):
+    def __init__(self, symbol: str, tweet_id: str) -> None:
         self.symbol = symbol
         self.tweet_id = tweet_id
 
@@ -64,7 +64,7 @@ class TweetSymbol(db.Model): # type: ignore
     symbol = sa.Column(sa.String(20), sa.ForeignKey('stock.symbol'))
     tweet_id = sa.Column(sa.String(50), sa.ForeignKey('tweet.id'))
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return 'TweetSymbol(id={} symbol={} tweet_id={})'\
                 .format(self.id, self.symbol, self.tweet_id)
 
