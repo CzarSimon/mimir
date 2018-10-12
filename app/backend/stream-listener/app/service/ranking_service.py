@@ -48,7 +48,8 @@ class MQRankingService(RankingService):
         self.__channel.basic_publish(
             exchange=self.config.EXCHANGE,
             routing_key=self.config.QUEUE_NAME,
-            body=json.dumps(rank_object))
+            body=json.dumps(rank_object),
+            properties=pika.BasicProperties(content_type='application/json'))
         self.__log.info('Sent tweet content for ranking')
 
     def __create_rank_object(self, content: TweetContent) -> Dict:
