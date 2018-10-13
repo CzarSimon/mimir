@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
         - name: spam-filter
-          image: eu.gcr.io/mimir-185212/spam-filter:2.0
+          image: eu.gcr.io/mimir-185212/spam-filter:2.1
           ports:
             - name: svc-port
               containerPort: 8080
@@ -37,7 +37,7 @@ spec:
               httpGet:
                 path: /health
                 port: svc-port
-              initialDelaySeconds: 120
+              initialDelaySeconds: 130
             readinessProbe:
               httpGet:
                 path: /health

@@ -10,10 +10,10 @@ dictConfig(LOGGING_CONIFG)
 from app.config import util
 
 
-CASHTAG_THRESHOLD = float(os.getenv('CASHTAG_THRESHOLD', '0.8'))
-TRAIN_MODEL = os.getenv('TRAIN_MODEL', 'TRUE') == 'TRUE'
+CASHTAG_THRESHOLD: float = float(os.getenv('CASHTAG_THRESHOLD', '0.8'))
+TRAIN_MODEL: bool = os.getenv('TRAIN_MODEL', 'TRUE') == 'TRUE'
 
 
 class AppConfig:
-    SQLALCHEMY_DATABASE_URI = util.get_database_uri()
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_DATABASE_URI: str = util.get_database_uri()
+    SQLALCHEMY_TRACK_MODIFICATIONS: bool = False

@@ -7,7 +7,7 @@ from app.repository import TrainingDataRepo
 from app.repository import ModelRepo
 
 
-def __setup_classification_svc():
+def __setup_classification_svc() -> ClassifcationService:
     training_svc = TrainingService(TrainingDataRepo())
     if not TRAIN_MODEL:
         return ClassifcationService(None)
@@ -15,14 +15,14 @@ def __setup_classification_svc():
     return ClassifcationService(model_repo)
 
 
-def __setup_model_repo():
+def __setup_model_repo() -> ModelRepo:
     training_svc = TrainingService(TrainingDataRepo())
     svm_model, svm_classfier = training_svc.train_model(ModelType.SVM)
     nb_model, nb_classfier = training_svc.train_model(ModelType.NAIVE_BAYES)
     model_repo = ModelRepo(svm_model, nb_model)
-    model_repo.save_classfier(svm_classfier)
-    model_repo.save_classfier(nb_classfier)
+    model_repo.save_classifier(svm_classfier)
+    model_repo.save_classifier(nb_classfier)
     return model_repo
 
 
-classification_svc = __setup_classification_svc()
+classification_svc: ClassifcationService = __setup_classification_svc()

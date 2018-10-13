@@ -8,13 +8,13 @@ class RequestError(Exception):
     message: Error message as a string.
     """
 
-    def __init__(self, message):
+    def __init__(self, message: str) -> None:
         self.message = message
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.message
 
-    def status(self):
+    def status(self) -> int:
         return status.HTTP_500_INTERNAL_SERVER_ERROR
 
 
@@ -23,7 +23,7 @@ class BadRequestError(RequestError):
 
     message: Error message as a string.
     """
-    def status(self):
+    def status(self) -> int:
         return status.HTTP_400_BAD_REQUEST
 
 
@@ -32,7 +32,7 @@ class ConflictError(RequestError):
 
     message: Error message as a string.
     """
-    def status(self):
+    def status(self) -> int:
         return status.HTTP_409_CONFLICT
 
 
@@ -41,7 +41,7 @@ class NotFoundError(RequestError):
 
     message: Error message as a string.
     """
-    def status(self):
+    def status(self) -> int:
         return status.HTTP_404_NOT_FOUND
 
 
@@ -60,8 +60,8 @@ class NotImplementedError(RequestError):
 
     message: Error message as a string.
     """
-    def __init__(self):
+    def __init__(self) -> None:
         self.message = 'Not implemented'
 
-    def status(self):
+    def status(self) -> int:
         return status.HTTP_501_NOT_IMPLEMENTED

@@ -1,12 +1,11 @@
 # Standard library
+import re
 from datetime import datetime
 from enum import Enum
 from typing import Dict, Optional
 
-
 # Internal modules
 from app import db
-from app.service.training_service import format_text
 
 
 class Label(Enum):
@@ -49,3 +48,16 @@ class SpamCandidate:
         return SpamCandidate(
             text=raw_dict['text'],
             label=raw_dict['label'] if 'label' in raw_dict else None)
+
+
+# Regex for identifiying URLs.
+_URL_PATTERN = re.compile(r'(https?|ftp):\/\/[\.[a-zA-Z0-9\/\-]+')
+
+
+def format_text(original: str) -> str:
+    """Strips an original string of URLs, double, leading and trailing spaces.
+
+    :param original: String to format.
+    :return: Formated string.
+    """
+    return _URL_PATTERN.sub('', original).replace('  ', ' ').strip().lower()

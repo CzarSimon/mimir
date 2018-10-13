@@ -1,3 +1,6 @@
+# Standard library
+from typing import Any, Dict, List, Optional
+
 # 3rd party modules
 from flask import request
 
@@ -5,7 +8,7 @@ from flask import request
 from app.controllers import errors
 
 
-def get_param(param_name):
+def get_param(param_name: str) -> str:
     """Gets a required query parameter from a request.
 
     :param param_name: Name of parameter.
@@ -17,7 +20,7 @@ def get_param(param_name):
     return value
 
 
-def get_optional_param(param_name, default=None):
+def get_optional_param(param_name: str, default: str) -> str:
     """Gets an optional query parameter from a request.
 
     :param param_name: Name of parameter.
@@ -29,7 +32,7 @@ def get_optional_param(param_name, default=None):
     return value
 
 
-def get_json_body(*required_fields, fields_as_strings=True):
+def get_json_body(*required_fields: str, fields_as_strings: bool = True) -> Dict[str, Any]:
     """Gets, parses and validated a requests body.
 
     :param required_fields: Optional list of required field names in the body.
@@ -47,7 +50,7 @@ def get_json_body(*required_fields, fields_as_strings=True):
     return body
 
 
-def is_string(obj):
+def is_string(obj: Any) -> bool:
     """Checks if an object is of type string.
 
     :param obj: Ojbect to check.

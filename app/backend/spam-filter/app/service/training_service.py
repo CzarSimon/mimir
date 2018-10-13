@@ -3,9 +3,11 @@ import logging
 import re
 from collections import namedtuple
 from hashlib import sha1
+from typing import Iterable, Tuple
 
 # Internal modules
-from app.models import Classifier, ModelType
+from app.models import Classifier, ModelType, TrainingData
+from app.repository import TrainingDataRepo
 
 # 3rd party library
 from sklearn.feature_extraction.text import CountVectorizer
@@ -21,14 +23,14 @@ from stop_words import get_stop_words
 DataList = namedtuple('DataList', ['texts', 'labels'])
 
 
-class TrainingService(object):
+class TrainingService:
 
     __log = logging.getLogger('TrainingServiceImpl')
 
-    def __init__(self, sample_repo):
+    def __init__(self, sample_repo: TrainingDataRepo) -> None:
         self.__sample_repo = sample_repo
 
-    def train_model(self, type):
+    def train_model(self, type: ModelType) -> Tuple[Pipeline, Classifier]:
         """Retrieves training data and creates a model.
 
         :param type: Type of model to train.
@@ -41,7 +43,7 @@ class TrainingService(object):
         metadata = self.__create_metadata(model, type, training_data, test_data)
         return model, metadata
 
-    def __init_svm_model(self):
+    def __init_svm_model(self) -> Pipeline:
         """Initalizes an untrained Support Vector Machine model.
 
         :return: Sklearn Pipeline with vectorization and prediction model.
@@ -52,7 +54,7 @@ class TrainingService(object):
             ('classifier', LinearSVC())
         ])
 
-    def __init_naive_bayes_model(self):
+    def __init_naive_bayes_model(self) -> Pipeline:
         """Initalizes an untrained Mulitonomial Naive Bayes model.
 
         :return: Sklearn Pipeline with vectorization and prediction model.
@@ -63,7 +65,7 @@ class TrainingService(object):
             ('classifier', MultinomialNB())
         ])
 
-    def __init_logistic_regression_model(self):
+    def __init_logistic_regression_model(self) -> Pipeline:
         """Initalizes an untrained Logistic Regression model.
 
         :return: Sklearn Pipeline with vectorization and prediction model.
@@ -74,7 +76,7 @@ class TrainingService(object):
             ('classifier', SGDClassifier(loss='log'))
         ])
 
-    def __init_model(self, type):
+    def __init_model(self, type: ModelType) -> Pipeline:
         """Intalizes a model of a given type.
 
         :param type: Type of model to initialize.
@@ -84,7 +86,8 @@ class TrainingService(object):
             return self.__init_svm_model()
         return self.__init_naive_bayes_model()
 
-    def __create_metadata(self, model, type, training_data, test_data):
+    def __create_metadata(self, model: Pipeline, type: ModelType,
+                          training_data: DataList, test_data: DataList) -> Classifier:
         """Creates a metadata object for a trained model.
 
         :return: Classifier
@@ -98,7 +101,7 @@ class TrainingService(object):
         self.__log.info(f'Trained model: {classifier}')
         return classifier
 
-    def __check_model_accuracy(self, model, test_data):
+    def __check_model_accuracy(self, model: Pipeline, test_data: DataList) -> float:
         """Checks the prediction accuracy of a trained model.
 
         :param model: Trained model pipeline.
@@ -108,7 +111,7 @@ class TrainingService(object):
         predictions = model.predict(test_data.texts)
         return f1_score(test_data.labels, predictions, average='micro')
 
-    def __get_and_split_data(self):
+    def __get_and_split_data(self) -> Tuple[DataList, DataList]:
         """Retrieves training data and splits between training and test data.
 
         :return: DataList with training data.
@@ -121,18 +124,18 @@ class TrainingService(object):
         training_data = self.__samples_to_datalist(training_list)
         return training_data, test_data
 
-    def __samples_to_datalist(self, training_data):
+    def __samples_to_datalist(self, training_data: Iterable[TrainingData]) -> DataList:
         """Transformes a list of TrainingData into
         a DataList of texts and labels.
 
-        :param training_data: List of TrainingData.
+        :param training_data: TrainingData list.
         :return: DataList
         """
         texts = [format_text(td.text) for td in training_data]
         labels = [td.label for td in training_data]
         return DataList(texts=texts, labels=labels)
 
-    def __calc_model_hash(self, type, training_data):
+    def __calc_model_hash(self, type, training_data) -> str:
         """Calculates the sha1 hash of the data used to train the model.
 
         :param type: ModelType.
@@ -149,10 +152,18 @@ class TrainingService(object):
 _URL_PATTERN = re.compile(r'(https?|ftp):\/\/[\.[a-zA-Z0-9\/\-]+')
 
 
-def format_text(original):
+def format_text(original: str) -> str:
     """Strips an original string of URLs, double, leading and trailing spaces.
 
     :param original: String to format.
     :return: Formated string.
     """
     return _URL_PATTERN.sub('', original).replace('  ', ' ').strip().lower()
+
+
+def dummy_pipeline() -> Pipeline:
+    """Creates an untrained placeholder pipeline"""
+    return Pipeline([
+        ('counter', CountVectorizer()),
+        ('classifier', MultinomialNB())
+    ])

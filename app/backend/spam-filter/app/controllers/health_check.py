@@ -1,5 +1,6 @@
 # Standard library
 import logging
+from typing import Dict, List, Tuple
 
 # Internal modules
 from app import db
@@ -10,11 +11,11 @@ from app.service import classification_svc
 _log = logging.getLogger(__name__)
 
 
-STATUS_UP = 'UP'
-STATUS_DOWN = 'DOWN'
+STATUS_UP: str = 'UP'
+STATUS_DOWN: str = 'DOWN'
 
 
-def check_health():
+def check_health() -> Tuple[Dict[str, str], int]:
     """Handles health check requests.
 
     :return: Status info as a dict.
@@ -31,7 +32,7 @@ def check_health():
     return health_info, status_code
 
 
-def _check_model_status():
+def _check_model_status() -> Tuple[str, bool]:
     """Checks that the spam filter model is trained
     and ready to classify requests
 
@@ -42,7 +43,7 @@ def _check_model_status():
     return STATUS_UP if model_ok else STATUS_DOWN, model_ok
 
 
-def _check_db_status():
+def _check_db_status() -> Tuple[str, bool]:
     """Pings the database to check if the service is connetcted.
 
     :return: Status text.
@@ -56,7 +57,7 @@ def _check_db_status():
         return 'DOWN', False
 
 
-def _determine_overall_status(*statuses):
+def _determine_overall_status(*statuses: bool) -> Tuple[str, int]:
     """Checks that all statuses entered are true for healthy.
 
     :param statuses: List of booelans indicating individual components health.

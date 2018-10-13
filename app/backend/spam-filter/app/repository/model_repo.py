@@ -13,7 +13,7 @@ class ModelRepo:
 
     __log = logging.getLogger('ModelRepo')
 
-    def __init__(self, svm_model: ModelType, nb_model: ModelType) -> None:
+    def __init__(self, svm_model: Pipeline, nb_model: Pipeline) -> None:
         self.__models = {
             ModelType.SVM: svm_model,
             ModelType.NAIVE_BAYES: nb_model
@@ -27,18 +27,18 @@ class ModelRepo:
         """
         return self.__models[type]
 
-    def save_classfier(self, classifer: Classifier) -> None:
-        """Saves a classfier in the database.
+    def save_classifier(self, classifier: Classifier) -> None:
+        """Saves a classifier in the database.
 
         :param classifier: Classifier to save
         """
-        if self.__classifier_exists(classifer):
-            self.__log.info('Classifier already exists')
+        if self.__classifier_exists(classifier):
+            self.__log.info(f'Classifier with hash {classifier.model_hash} already exists')
             return
-        db.session.add(classifer)
+        db.session.add(classifier)
         db.session.commit()
 
-    def __classifier_exists(self, classifer: Classifier) -> bool:
+    def __classifier_exists(self, classifier: Classifier) -> bool:
         existing_classifiers = Classifier.query.\
-            filter(Classifier.model_hash == classifer.model_hash).all()
+            filter(Classifier.model_hash == classifier.model_hash).all()
         return len(existing_classifiers) > 0

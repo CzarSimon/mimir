@@ -1,5 +1,6 @@
 # Standard library
 import logging
+from typing import Dict, Optional
 
 # Internal modules
 from app.controllers import util, errors
@@ -10,7 +11,7 @@ from app.service import classification_svc
 _log = logging.getLogger(__name__)
 
 
-def is_spam():
+def is_spam() -> Dict[str, Optional[str]]:
     """Classifies an incomming text as spam or non-spam.
 
     :return: Labled SpamCandidate as dict.
@@ -21,7 +22,7 @@ def is_spam():
     return candidate.to_dict()
 
 
-def _get_spam_body():
+def _get_spam_body() -> SpamCandidate:
     """Gets spam candidate from request body.
 
     :return: SpamCandidate.
@@ -30,7 +31,7 @@ def _get_spam_body():
     return SpamCandidate.from_dict(body)
 
 
-def _get_model_type():
+def _get_model_type() -> ModelType:
     """Gets the model type to be used in classification.
 
     :return: ModelType
