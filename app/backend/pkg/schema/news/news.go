@@ -3,6 +3,7 @@ package news
 import (
 	"crypto/sha256"
 	"fmt"
+	"strings"
 	"time"
 )
 
@@ -30,12 +31,6 @@ func CreateURLHash(URL string) string {
 	return fmt.Sprintf("%x", sha256.Sum256([]byte(URL)))
 }
 
-// Author contains info about an article refererer.
-type Author struct {
-	ID            int64 `json:"id"`
-	FollowerCount int64 `json:"followerCount"`
-}
-
 // RankObject contains info to scrape and rank an article.
 type RankObject struct {
 	Urls     []string  `json:"urls"`
@@ -44,8 +39,34 @@ type RankObject struct {
 	Language string    `json:"language"`
 }
 
+func (ro RankObject) String() string {
+	urls := strings.Join(ro.Urls, ",")
+
+	subjects := make([]string, 0, len(ro.Subjects))
+	for _, subject := range ro.Subjects {
+		subjects = append(subjects, subject.String())
+	}
+
+	return fmt.Sprintf("RankObject(urls=[%s] subjects=[%s], author=%s, language=%s)",
+		urls, strings.Join(subjects, ","), ro.Author, ro.Language)
+}
+
+// Author contains info about an article refererer.
+type Author struct {
+	ID            string `json:"id"`
+	FollowerCount int64  `json:"followerCount"`
+}
+
+func (a Author) String() string {
+	return fmt.Sprintf("Author(id=%s followerCount=%d)", a.ID, a.FollowerCount)
+}
+
 // Subject subject which to look for in an article.
 type Subject struct {
 	Name   string `json:"name"`
 	Ticker string `json:"ticker"`
+}
+
+func (s Subject) String() string {
+	return fmt.Sprintf("Subject(name=%s ticker=%s)", s.Name, s.Ticker)
 }

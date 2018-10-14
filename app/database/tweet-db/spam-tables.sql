@@ -1,4 +1,5 @@
 INSERT INTO training_data (text, label, created_at) VALUES
+('RT @teslacito: Tesla possibly facing global recall for design fault in suspension. New forged part already replacing faulty cast iron parts', 'NON-SPAM', NOW());
 ('Try a multimillionaire traders chatroom and alerts for $49 !', 'SPAM', NOW()),
 ('Jason Bond wants u to try his trading alerts 4 *FREE* ', 'SPAM', NOW()),
 ('RT @Escells: $FDBL Friendable Inc.  Nice #SocialMedia App | $NFLX $FB $GOOGL $AAPL $YELP $MEET $MTCH', 'SPAM', NOW()),
@@ -218,4 +219,5 @@ INSERT INTO training_data (text, label, created_at) VALUES
 ('Yo follow the StockTwits Snapchat right now it''s just getting started. Tha takeover $SNAP', 'NON-SPAM', NOW()),
 ('If You Think Netflix, Amazon Disrupted Hollywood, You''ll Love $Snap https://t.co/LN6QgkRWb1', 'NON-SPAM', NOW()),
 ('When 2 personalities with the same fire and passion meet, they create $GOOG $SNAP ....; create #BetterLiving', 'NON-SPAM', NOW()),
-('$SNAP people still buying the hype when they shouldn''t  https://t.co/J9O4we5wBJ  $FB', 'NON-SPAM', NOW());
+('$SNAP people still buying the hype when they shouldn''t  https://t.co/J9O4we5wBJ  $FB', 'NON-SPAM', NOW()),
+('review I’ve been a member of Jason Bond Picks for 2 years and made some serious profits!', 'SPAM', NOW());
