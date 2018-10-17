@@ -1,38 +1,26 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"sync"
 
-	"github.com/CzarSimon/mimir/app/backend/pkg/schema/news"
+	"github.com/CzarSimon/mimir/app/backend/pkg/mq"
 )
 
 func main() {
-	env := setupEnv(newConfig())
-	env.listenForRankObjects()
+	conf := newConfig()
+	e := setupEnv(conf)
+	wg := &sync.WaitGroup{}
+
+	rankObjectHandler := e.newSubscriptionHandler(conf.MQ.RankQueue, e.handleRankObjectMessage)
+	articlesHandler := e.newSubscriptionHandler(conf.MQ.ScrapedQueue, emptyHandle)
+	go handleSubscription(rankObjectHandler, wg)
+	go handleSubscription(articlesHandler, wg)
+
+	wg.Wait()
 }
 
-func (env *env) listenForRankObjects() {
-	msgChan, err := env.mqClient.Subscribe(env.config.MQ.RankQueue, SERVICE_NAME)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-
-	for msg := range msgChan {
-		var ro news.RankObject
-		err = msg.Decode(&ro)
-		if err != nil {
-			log.Println(err)
-			continue
-		}
-
-		fmt.Println(ro)
-		msg.Ack()
-		if err != nil {
-			log.Println(err)
-		}
-	}
+func emptyHandle(msg mq.Message) error {
+	return nil
 }
 
 func newConfig() Config {

@@ -5,24 +5,27 @@ import (
 	"fmt"
 	"strings"
 	"time"
+
+	"github.com/CzarSimon/mimir/app/backend/pkg/id"
 )
 
 // Article contains article info.
 type Article struct {
-	URLHash      string    `json:"urlHash"`
-	URL          string    `json:"url"`
-	Title        string    `json:"title"`
-	Summary      string    `json:"summary"`
-	Body         string    `json:"body"`
-	DateInserted time.Time `json:"dateInserted"`
-	Keywords     []string  `json:"keywords"`
+	ID             string    `json:"id"`
+	URL            string    `json:"url"`
+	Title          string    `json:"title"`
+	Body           string    `json:"body"`
+	Keywords       []string  `json:"keywords"`
+	ReferenceScore float64   `json:"referenceScore"`
+	ArticleDate    time.Time `json:"dateInserted"`
+	CreatedAt      time.Time `json:"createdAt"`
 }
 
 // NewArticle creates a new article.
 func NewArticle(URL string) Article {
 	return Article{
-		URLHash: CreateURLHash(URL),
-		URL:     URL,
+		ID:  id.New(),
+		URL: URL,
 	}
 }
 
@@ -33,14 +36,14 @@ func CreateURLHash(URL string) string {
 
 // RankObject contains info to scrape and rank an article.
 type RankObject struct {
-	Urls     []string  `json:"urls"`
+	URLs     []string  `json:"urls"`
 	Subjects []Subject `json:"subjects"`
 	Author   Author    `json:"author"`
 	Language string    `json:"language"`
 }
 
 func (ro RankObject) String() string {
-	urls := strings.Join(ro.Urls, ",")
+	urls := strings.Join(ro.URLs, ",")
 
 	subjects := make([]string, 0, len(ro.Subjects))
 	for _, subject := range ro.Subjects {

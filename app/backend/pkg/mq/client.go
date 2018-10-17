@@ -8,28 +8,40 @@ import (
 )
 
 var (
-	emptyAMQPMessage = amqp.Publishing{}
+	emptyAMQPPublishing = amqp.Publishing{}
 )
 
+// Message interface for deliveries from an underlying queue.
 type Message interface {
 	Ack() error
+	Reject() error
 	Decode(v interface{}) error
 }
 
+// AMQPMessage AMQP implemenation for the Message interface.
 type AMQPMessage struct {
 	msg amqp.Delivery
 }
 
+// NewAMQPMessage wraps an amqp.Delivery into an AMQPMessage.
 func NewAMQPMessage(msg amqp.Delivery) AMQPMessage {
 	return AMQPMessage{
 		msg: msg,
 	}
 }
 
+// Ack acknowlages the delivery of a message.
 func (m AMQPMessage) Ack() error {
 	return m.msg.Ack(false)
 }
 
+// Reject informes the underlying mq that the delivered message
+// was invalid and should be discarded.
+func (m AMQPMessage) Reject() error {
+	return m.msg.Reject(false)
+}
+
+// Decode deserializes the delivery of a message into a supplied container.
 func (m AMQPMessage) Decode(v interface{}) error {
 	return json.Unmarshal(m.msg.Body, v)
 }
@@ -67,6 +79,7 @@ func NewClient(conf Config) (Client, error) {
 	return client, nil
 }
 
+// Subscribe creates Message channel that clients can use to consume messages from.
 func (c *AMQPClient) Subscribe(queue, client string) (chan Message, error) {
 	deliveryChan, err := c.channel.Consume(queue, client, false, false, false, false, nil)
 	if err != nil {
@@ -86,7 +99,7 @@ func (c *AMQPClient) Subscribe(queue, client string) (chan Message, error) {
 
 // Send serializes and sends a message to the specified queue.
 func (c *AMQPClient) Send(msg interface{}, exchange, queue string) error {
-	amqpMessage, err := newAMQPMessage(msg)
+	amqpMessage, err := newAMQPublishing(msg)
 	if err != nil {
 		return err
 	}
@@ -94,10 +107,11 @@ func (c *AMQPClient) Send(msg interface{}, exchange, queue string) error {
 	return c.channel.Publish(exchange, queue, false, false, amqpMessage)
 }
 
-func newAMQPMessage(msg interface{}) (amqp.Publishing, error) {
+// newAMQPublishing wraps message into an amqp.Publishing.
+func newAMQPublishing(msg interface{}) (amqp.Publishing, error) {
 	msgBody, err := json.Marshal(msg)
 	if err != nil {
-		return emptyAMQPMessage, err
+		return emptyAMQPPublishing, err
 	}
 
 	amqpMessage := amqp.Publishing{

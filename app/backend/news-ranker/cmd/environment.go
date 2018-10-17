@@ -3,12 +3,14 @@ package main
 import (
 	"log"
 
+	"github.com/CzarSimon/mimir/app/backend/news-ranker/pkg/repository"
 	"github.com/CzarSimon/mimir/app/backend/pkg/mq"
 )
 
 type env struct {
-	config   Config
-	mqClient mq.Client
+	config      Config
+	mqClient    mq.Client
+	articleRepo repository.ArticleRepo
 }
 
 func setupEnv(config Config) *env {
@@ -27,4 +29,8 @@ func (e *env) close() {
 	if err != nil {
 		log.Println(err)
 	}
+}
+
+func (e *env) newSubscriptionHandler(queue string, fn handlerFunc) handler {
+	return newHandler(queue, e.mqClient, fn)
 }

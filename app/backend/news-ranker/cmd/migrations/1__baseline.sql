@@ -3,16 +3,17 @@ CREATE TABLE article (
   id VARCHAR(50) PRIMARY KEY,
   url VARCHAR(350) NOT NULL,
   title VARCHAR(350) NOT NULL,
-  reference_score NUMERIC(9,5) NOT NULL,
   body TEXT,
-  article_date DATE,
   keywords TEXT,
+  reference_score NUMERIC(9,5) NOT NULL,
+  article_date DATE,
   created_at TIMESTAMP
 );
 
 CREATE TABLE twitter_references (
   id VARCHAR(50) PRIMARY KEY,
-  twitter_author BIGINT,
+  twitter_author VARCHAR(50),
+  follower_count INT,
   article_id REFERENCES article(id)
 )
 
