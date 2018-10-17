@@ -5,7 +5,7 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/CzarSimon/mimir/app/lib/go/schema/news"
+	"github.com/CzarSimon/mimir/app/backend/pkg/schema/news"
 )
 
 const (

@@ -5,7 +5,7 @@ import (
 
 	"github.com/CzarSimon/mimir/app/backend/news-ranker/pkg/repository"
 	"github.com/CzarSimon/mimir/app/backend/pkg/mq"
-	"github.com/CzarSimon/mimir/app/lib/go/schema/news"
+	"github.com/CzarSimon/mimir/app/backend/pkg/schema/news"
 )
 
 func (e *env) handleRankObjectMessage(msg mq.Message) error {
@@ -25,6 +25,7 @@ func (e *env) handleRankObjectMessage(msg mq.Message) error {
 		}
 		e.rankExistingArticle(article, rankObject)
 	}
+	return nil
 }
 
 func (e *env) rankNewArticle(article news.Article, rankObject news.RankObject) {
