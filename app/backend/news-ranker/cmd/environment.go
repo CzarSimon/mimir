@@ -25,6 +25,7 @@ func setupEnv(config Config) *env {
 	if err != nil {
 		log.Fatal(err)
 	}
+	runMigrations(db)
 
 	articleRepo := repository.NewArticleRepo(db)
 
@@ -37,7 +38,10 @@ func setupEnv(config Config) *env {
 }
 
 func runMigrations(db *sql.DB) error {
-
+	err := dbutil.Migrate("./migrations", "postgres", db)
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 func (e *env) close() {

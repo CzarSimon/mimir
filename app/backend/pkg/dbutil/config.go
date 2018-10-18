@@ -33,11 +33,11 @@ func (c Config) PgDSN() string {
 		c.Host, c.Username, c.Password, c.Database, c.Port, c.SSLMode)
 }
 
-func Migrate(migrationsPath, tableName, driverName string, db *sql.DB) error {
+func Migrate(migrationsPath, driverName string, db *sql.DB) error {
 	migrationSource := &migrate.PackrMigrationSource{
 		Box: packr.NewBox(migrationsPath),
 	}
-	migrate.SetTable("tableName")
+	migrate.SetTable("schema_version")
 
 	migrations, err := migrationSource.FindMigrations()
 	if err != nil {
