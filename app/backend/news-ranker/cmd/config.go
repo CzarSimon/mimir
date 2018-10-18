@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/CzarSimon/mimir/app/backend/pkg/dbutil"
 	"github.com/CzarSimon/mimir/app/backend/pkg/mq"
 	envConf "github.com/caarlos0/env"
 )

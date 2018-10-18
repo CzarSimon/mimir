@@ -5,39 +5,17 @@
   branch = "master"
   name = "github.com/CzarSimon/mimir"
   packages = [
-    "app/backend/pkg/dbutil",
     "app/backend/pkg/id",
     "app/backend/pkg/mq",
     "app/backend/pkg/schema/news"
   ]
-  revision = "ea30aea28224d09e716e2db47b57c9b4a4514859"
+  revision = "31f4b7fd029bc5fc03af5c78ebe6cb1af78ed571"
 
 [[projects]]
   name = "github.com/caarlos0/env"
   packages = ["."]
   revision = "7f73d6597823c7a0c39edd46e1998f90692b2add"
   version = "v3.4.0"
-
-[[projects]]
-  name = "github.com/gobuffalo/packr"
-  packages = ["."]
-  revision = "5a2cbb54c4e7d482e3f518c56f1f86f133d5204f"
-  version = "v1.13.7"
-
-[[projects]]
-  name = "github.com/pkg/errors"
-  packages = ["."]
-  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
-  version = "v0.8.0"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/rubenv/sql-migrate"
-  packages = [
-    ".",
-    "sqlparse"
-  ]
-  revision = "3f452fc0ebebbb784fdab91f7bc79a31dcacab5c"
 
 [[projects]]
   name = "github.com/satori/go.uuid"
@@ -51,15 +29,9 @@
   packages = ["."]
   revision = "70e15c650864f4fc47f5d3c82ea117285480895d"
 
-[[projects]]
-  name = "gopkg.in/gorp.v1"
-  packages = ["."]
-  revision = "c87af80f3cc5036b55b83d77171e156791085e2e"
-  version = "v1.7.1"
-
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "027129976fbfd55ab4c8ee6f40c1865a5553356325b8126b294f22ef6a8f60f4"
+  inputs-digest = "c6879de05b45bf878e3c156f64931183d3ba694a5c67dda4b7957f55b405b248"
   solver-name = "gps-cdcl"
   solver-version = 1

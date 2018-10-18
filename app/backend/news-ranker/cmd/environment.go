@@ -5,6 +5,7 @@ import (
 	"log"
 
 	"github.com/CzarSimon/mimir/app/backend/news-ranker/pkg/repository"
+	"github.com/CzarSimon/mimir/app/backend/pkg/dbutil"
 	"github.com/CzarSimon/mimir/app/backend/pkg/mq"
 )
 
@@ -37,7 +38,7 @@ func setupEnv(config Config) *env {
 	}
 }
 
-func runMigrations(db *sql.DB) error {
+func runMigrations(db *sql.DB) {
 	err := dbutil.Migrate("./migrations", "postgres", db)
 	if err != nil {
 		log.Fatal(err)
