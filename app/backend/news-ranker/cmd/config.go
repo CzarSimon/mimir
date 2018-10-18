@@ -1,7 +1,10 @@
 package main
 
 import (
+	"log"
+
 	"github.com/CzarSimon/mimir/app/backend/pkg/mq"
+	envConf "github.com/caarlos0/env"
 )
 
 const (
@@ -9,8 +12,9 @@ const (
 )
 
 type Config struct {
-	MQ           MQConfig `env:"MQ"`
-	TwitterUsers int64    `env:"TWITTER_USERS" envDefault:"320000000"`
+	MQ           MQConfig      `env:"MQ"`
+	DB           dbutil.Config `env:"DB"`
+	TwitterUsers int64         `env:"TWITTER_USERS" envDefault:"320000000"`
 }
 
 type MQConfig struct {
@@ -24,8 +28,13 @@ type MQConfig struct {
 	RankQueue    string `env:"RANK_QUEUE"`
 }
 
-func (c Config) Exchange() string {
-	return c.MQ.Exchange
+func getConfig() Config {
+	var conf Config
+	err := envConf.Parse(&conf)
+	if err != nil {
+		log.Fatal(err)
+	}
+	return conf
 }
 
 func (c Config) MQConfig() mq.Config {

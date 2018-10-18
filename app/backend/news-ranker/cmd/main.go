@@ -11,8 +11,8 @@ func main() {
 	e := setupEnv(conf)
 	wg := &sync.WaitGroup{}
 
-	rankObjectHandler := e.newSubscriptionHandler(conf.MQ.RankQueue, e.handleRankObjectMessage)
-	articlesHandler := e.newSubscriptionHandler(conf.MQ.ScrapedQueue, emptyHandle)
+	rankObjectHandler := e.newSubscriptionHandler(e.rankQueue(), e.handleRankObjectMessage)
+	articlesHandler := e.newSubscriptionHandler(e.scrapedQueue(), emptyHandle)
 	go handleSubscription(rankObjectHandler, wg)
 	go handleSubscription(articlesHandler, wg)
 

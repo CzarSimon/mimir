@@ -107,7 +107,7 @@ type SubjectScore struct {
 	ID        string  `json:"id"`
 	Symbol    string  `json:"symbol"`
 	Score     float64 `json:"score"`
-	ArticleID string  `json:"articleID"`
+	ArticleID string  `json:"articleId"`
 }
 
 func (s SubjectScore) String() string {
