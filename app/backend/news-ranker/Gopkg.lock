@@ -4,8 +4,12 @@
 [[projects]]
   branch = "master"
   name = "github.com/CzarSimon/mimir"
-  packages = ["app/backend/pkg/id"]
-  revision = "9945a57e86b8750e8bb642bdd135a0571c796d23"
+  packages = [
+    "app/backend/pkg/id",
+    "app/backend/pkg/mq",
+    "app/backend/pkg/schema/news"
+  ]
+  revision = "e495ecaf2d3e20849472acb894f0c64963f1da08"
 
 [[projects]]
   name = "github.com/satori/go.uuid"
@@ -22,6 +26,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "d5fb80756229c47ac3980ab8d44dd79b8e1ec6ecbb8dd751634f9d88afffcf6c"
+  inputs-digest = "867bc12aec629f18d30cf109af7c745fe7007ff4fa0f8ef706128ca2f7399ce0"
   solver-name = "gps-cdcl"
   solver-version = 1

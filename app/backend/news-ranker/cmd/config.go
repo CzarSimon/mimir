@@ -9,7 +9,8 @@ const (
 )
 
 type Config struct {
-	MQ MQConfig `env:"MQ"`
+	MQ           MQConfig `env:"MQ"`
+	TwitterUsers int64    `env:"TWITTER_USERS" envDefault:"320000000"`
 }
 
 type MQConfig struct {

@@ -1,7 +1,6 @@
 package news
 
 import (
-	"crypto/sha256"
 	"fmt"
 	"strings"
 	"time"
@@ -17,7 +16,7 @@ type Article struct {
 	Body           string    `json:"body"`
 	Keywords       []string  `json:"keywords"`
 	ReferenceScore float64   `json:"referenceScore"`
-	ArticleDate    time.Time `json:"dateInserted"`
+	ArticleDate    time.Time `json:"articleDate"`
 	CreatedAt      time.Time `json:"createdAt"`
 }
 
@@ -29,9 +28,10 @@ func NewArticle(URL string) Article {
 	}
 }
 
-// CreateURLHash creates a sha256 hash from a URL.
-func CreateURLHash(URL string) string {
-	return fmt.Sprintf("%x", sha256.Sum256([]byte(URL)))
+func (a Article) String() string {
+	return fmt.Sprintf(
+		"Article(id=%s url=%s title=%s keywords=[%s] referenceScore=%f)",
+		a.ID, a.URL, a.Title, strings.Join(a.Keywords, ","), a.ReferenceScore)
 }
 
 // RankObject contains info to scrape and rank an article.
@@ -44,14 +44,10 @@ type RankObject struct {
 
 func (ro RankObject) String() string {
 	urls := strings.Join(ro.URLs, ",")
-
-	subjects := make([]string, 0, len(ro.Subjects))
-	for _, subject := range ro.Subjects {
-		subjects = append(subjects, subject.String())
-	}
+	subjects := joinSubjects(ro.Subjects)
 
 	return fmt.Sprintf("RankObject(urls=[%s] subjects=[%s], author=%s, language=%s)",
-		urls, strings.Join(subjects, ","), ro.Author, ro.Language)
+		urls, subjects, ro.Author, ro.Language)
 }
 
 // Author contains info about an article refererer.
@@ -67,9 +63,63 @@ func (a Author) String() string {
 // Subject subject which to look for in an article.
 type Subject struct {
 	Name   string `json:"name"`
-	Ticker string `json:"ticker"`
+	Symbol string `json:"symbol"`
 }
 
 func (s Subject) String() string {
-	return fmt.Sprintf("Subject(name=%s ticker=%s)", s.Name, s.Ticker)
+	return fmt.Sprintf("Subject(name=%s ticker=%s)", s.Name, s.Symbol)
+}
+
+// ScrapeTarget article info needed to scrape and score an article.
+type ScrapeTarget struct {
+	URL            string    `json:"url"`
+	Subjects       []Subject `json:"subjects"`
+	ReferenceScore float64   `json:"referenceScore"`
+	Title          string    `json:"title"`
+	Body           string    `json:"body"`
+	ArticleID      string    `json:"articleId"`
+}
+
+func (s ScrapeTarget) String() string {
+	return fmt.Sprintf(
+		"ScrapeTarget(url=%s subjects=[%s] referenceScore=%f title=%s body=%s articleId=%s)",
+		s.URL, joinSubjects(s.Subjects), s.ReferenceScore, s.Title, s.Body, s.ArticleID)
+}
+
+// ScrapedArticle result of scraping and scoring an article.
+type ScrapedArticle struct {
+	Article  Article        `json:"article"`
+	Subjects []SubjectScore `json:"subjects"`
+}
+
+func (s ScrapedArticle) String() string {
+	subjectList := make([]string, 0, len(s.Subjects))
+	for _, subject := range s.Subjects {
+		subjectList = append(subjectList, subject.String())
+	}
+	subjects := strings.Join(subjectList, ",")
+
+	return fmt.Sprintf("ScrapedArticle(article=%s subjects=[%s])", s.Article.String(), subjects)
+}
+
+// SubjectScore scored subject in relation to an article.
+type SubjectScore struct {
+	ID        string  `json:"id"`
+	Symbol    string  `json:"symbol"`
+	Score     float64 `json:"score"`
+	ArticleID string  `json:"articleID"`
+}
+
+func (s SubjectScore) String() string {
+	return fmt.Sprintf(
+		"SubjectScore(id=%s symbol=%s score=%f articleId=%s)",
+		s.ID, s.Symbol, s.Score, s.ArticleID)
+}
+
+func joinSubjects(subjects []Subject) string {
+	subjectList := make([]string, 0, len(subjects))
+	for _, subject := range subjects {
+		subjectList = append(subjectList, subject.String())
+	}
+	return strings.Join(subjectList, ",")
 }

@@ -24,15 +24,14 @@
 #   go-tests = true
 #   unused-packages = true
 
-
 [prune]
   go-tests = true
   unused-packages = true
 
 [[constraint]]
-  name = "github.com/caarlos0/env"
-  version = "3.4.0"
+  branch = "master"
+  name = "github.com/rubenv/sql-migrate"
 
 [[constraint]]
-  branch = "master"
-  name = "github.com/streadway/amqp"
+  name = "github.com/gobuffalo/packr"
+  version = "1.13.7"
