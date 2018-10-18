@@ -5,8 +5,7 @@ import (
 	"log"
 
 	"github.com/CzarSimon/mimir/app/backend/news-ranker/pkg/repository"
-    "github.com/CzarSimon/mimir/app/backend/pkg/dbutil"
-    "github.com/CzarSimon/mimir/app/backend/pkg/mq"
+	"github.com/CzarSimon/mimir/app/backend/pkg/mq"
 )
 
 type env struct {

@@ -8,21 +8,6 @@ import (
 	"github.com/CzarSimon/mimir/app/backend/pkg/schema/news"
 )
 
-var (
-	NEW_SUBJECTS                updateScenario = "NEW_SUBJECTS"
-	NEW_REFERENCES                             = "NEW_REFERENCES"
-	NEW_SUBJECTS_AND_REFERENCES                = "NEW_SUBJECTS_AND_REFERENCES"
-)
-
-type updateScenario string
-
-type articleUpdate struct {
-	scenario   updateScenario
-	article    news.Article
-	subjects   []news.Subject
-	references []news.Author
-}
-
 func (e *env) handleRankObjectMessage(msg mq.Message) error {
 	rankObject, err := parseRankObject(msg)
 	if err != nil {

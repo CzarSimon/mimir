@@ -4,8 +4,7 @@ import (
 	"log"
 
 	"github.com/CzarSimon/mimir/app/backend/pkg/mq"
-    "github.com/CzarSimon/mimir/app/backend/pkg/dbutil"
-    envConf "github.com/caarlos0/env"
+	envConf "github.com/caarlos0/env"
 )
 
 const (
