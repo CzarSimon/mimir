@@ -24,10 +24,11 @@ CREATE TABLE compound_score (
   score NUMERIC(9,5) NOT NULL
 );
 
-CREATE TABLE subject_score (
+CREATE TABLE subject (
   id VARCHAR(50) PRIMARY KEY,
   article_id REFERENCES article(id),
   symbol VARCHAR(15),
+  name VARCHAR(50),
   score NUMERIC(9,5) NOT NULL
 );
 
@@ -51,7 +52,7 @@ CREATE TABLE cluster_member (
 -- +migrate Down
 DROP TABLE IF EXISTS cluster_member;
 DROP TABLE IF EXISTS article_cluster;
-DROP TABLE IF EXISTS subject_score;
+DROP TABLE IF EXISTS subject;
 DROP TABLE IF EXISTS compound_score;
 DROP TABLE IF EXISTS twitter_references;
 DROP TABLE IF EXISTS article;

@@ -15,10 +15,10 @@ func TestCreateArticleUpdate(t *testing.T) {
 		news.Subject{Name: "s-0"},
 		news.Subject{Name: "s-1"},
 	}
-	oneRef := []news.Author{
+	oneRef := []news.Referer{
 		news.Author{ID: "a-0"},
 	}
-	twoRefs := []news.Author{
+	twoRefs := []news.Referer{
 		news.Author{ID: "a-0"},
 		news.Author{ID: "a-1"},
 	}
@@ -52,7 +52,7 @@ func TestCreateArticleUpdate(t *testing.T) {
 	}
 }
 
-func assertArticleUpdate(t *testing.T, u ArticleUpdate, eA news.Article, eS []news.Subject, eR []news.Author) {
+func assertArticleUpdate(t *testing.T, u ArticleUpdate, eA news.Article, eS []news.Subject, eR []news.Referer) {
 	if u.Article.ID != eA.ID {
 		t.Errorf("Article.ID wrong. Expected: %s Got: %s", u.Article.ID, eA.ID)
 	}
@@ -67,9 +67,9 @@ func assertArticleUpdate(t *testing.T, u ArticleUpdate, eA news.Article, eS []ne
 	}
 
 	if len(u.References) != len(eR) {
-		t.Errorf("References length missmatch. Expected: %d Got: %d", len(u.References), len(eR))
+		t.Errorf("References length missmatch. Expected: %d Got: %d", len(u.Referers), len(eR))
 	}
-	for i, ref := range u.References {
+	for i, ref := range u.Referers {
 		if ref.ID != eR[i].ID {
 			t.Errorf("%d - Author.ID wrong. Expected: %s Got: %s", i, eR[i].ID, ref.ID)
 		}

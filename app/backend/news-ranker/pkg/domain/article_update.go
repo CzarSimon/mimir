@@ -17,27 +17,27 @@ type UpdateType int
 
 // ArticleUpdate bundles an update instruction with the data needed to perform it.
 type ArticleUpdate struct {
-	Type       UpdateType
-	Article    news.Article
-	Subjects   []news.Subject
-	References []news.Author
+	Type     UpdateType
+	Article  news.Article
+	Subjects []news.Subject
+	Referers []news.Referer
 }
 
 // CreateArticleUpdate dicerns how an article has been updated
 // and assembles the data needed to rank it again.
-func CreateArticleUpdate(article news.Article, oldSub, newSub []news.Subject, oldRefs, newRefs []news.Author) ArticleUpdate {
+func CreateArticleUpdate(article news.Article, oldSub, newSub []news.Subject, oldRefs, newRefs []news.Referer) ArticleUpdate {
 	hasNewSubjects := len(newSub) > len(oldSub)
-	hasNewReferences := len(newRefs) > len(oldRefs)
+	hasNewReferers := len(newRefs) > len(oldRefs)
 
 	return ArticleUpdate{
-		Type:       dicernUpdateType(hasNewSubjects, hasNewReferences),
+		Type:       dicernUpdateType(hasNewSubjects, hasNewReferers),
 		Article:    article,
 		Subjects:   newSub,
 		References: newRefs,
 	}
 }
 
-func dicernUpdateType(hasNewSubjects, hasNewReferences bool) UpdateType {
+func dicernUpdateType(hasNewSubjects, hasNewReferers bool) UpdateType {
 	if hasNewSubjects && hasNewReferences {
 		return NEW_SUBJECTS_AND_REFERENCES
 	} else if hasNewSubjects {

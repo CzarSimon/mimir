@@ -38,7 +38,7 @@ func (a Article) String() string {
 type RankObject struct {
 	URLs     []string  `json:"urls"`
 	Subjects []Subject `json:"subjects"`
-	Author   Author    `json:"author"`
+	Referer  Referer   `json:"referer"`
 	Language string    `json:"language"`
 }
 
@@ -47,27 +47,36 @@ func (ro RankObject) String() string {
 	subjects := joinSubjects(ro.Subjects)
 
 	return fmt.Sprintf("RankObject(urls=[%s] subjects=[%s], author=%s, language=%s)",
-		urls, subjects, ro.Author, ro.Language)
+		urls, subjects, ro.Referer, ro.Language)
 }
 
-// Author contains info about an article refererer.
-type Author struct {
+// Referer contains info about an article refererer.
+type Referer struct {
 	ID            string `json:"id"`
+	ExternalID    string `json:"externalId"`
 	FollowerCount int64  `json:"followerCount"`
+	ArticleID     string `json:"articleId"`
 }
 
-func (a Author) String() string {
-	return fmt.Sprintf("Author(id=%s followerCount=%d)", a.ID, a.FollowerCount)
+func (r Referer) String() string {
+	return fmt.Sprintf(
+		"Referer(id=%s externalId=%s followerCount=%d articleId=%s)",
+		r.ID, r.ExternalID, r.FollowerCount, r.ArticleID)
 }
 
 // Subject subject which to look for in an article.
 type Subject struct {
-	Name   string `json:"name"`
-	Symbol string `json:"symbol"`
+	ID        string  `json:"id"`
+	Symbol    string  `json:"symbol"`
+	Name      string  `json:"name"`
+	Score     float64 `json:"score"`
+	ArticleID string  `json:"articleId"`
 }
 
 func (s Subject) String() string {
-	return fmt.Sprintf("Subject(name=%s ticker=%s)", s.Name, s.Symbol)
+	return fmt.Sprintf(
+		"Subject(id=%s symbol=%s name=%s score=%f articleId=%s)",
+		s.ID, s.Symbol, s.Name, s.Score, s.ArticleID)
 }
 
 // ScrapeTarget article info needed to scrape and score an article.
@@ -88,8 +97,8 @@ func (s ScrapeTarget) String() string {
 
 // ScrapedArticle result of scraping and scoring an article.
 type ScrapedArticle struct {
-	Article  Article        `json:"article"`
-	Subjects []SubjectScore `json:"subjects"`
+	Article  Article   `json:"article"`
+	Subjects []Subject `json:"subjects"`
 }
 
 func (s ScrapedArticle) String() string {
@@ -100,20 +109,6 @@ func (s ScrapedArticle) String() string {
 	subjects := strings.Join(subjectList, ",")
 
 	return fmt.Sprintf("ScrapedArticle(article=%s subjects=[%s])", s.Article.String(), subjects)
-}
-
-// SubjectScore scored subject in relation to an article.
-type SubjectScore struct {
-	ID        string  `json:"id"`
-	Symbol    string  `json:"symbol"`
-	Score     float64 `json:"score"`
-	ArticleID string  `json:"articleId"`
-}
-
-func (s SubjectScore) String() string {
-	return fmt.Sprintf(
-		"SubjectScore(id=%s symbol=%s score=%f articleId=%s)",
-		s.ID, s.Symbol, s.Score, s.ArticleID)
 }
 
 func joinSubjects(subjects []Subject) string {
