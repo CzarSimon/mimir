@@ -29,6 +29,7 @@ func (u ArticleUpdate) ToScapeTarget() news.ScrapeTarget {
 	return news.ScrapeTarget{
 		URL:            article.URL,
 		Subjects:       u.Subjects,
+		Referer:        u.NewReferer,
 		ReferenceScore: article.ReferenceScore,
 		Title:          article.Title,
 		Body:           article.Body,

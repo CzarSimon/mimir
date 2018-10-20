@@ -2,8 +2,6 @@ package main
 
 import (
 	"sync"
-
-	"github.com/CzarSimon/mimir/app/backend/pkg/mq"
 )
 
 func main() {
@@ -12,15 +10,11 @@ func main() {
 	wg := &sync.WaitGroup{}
 
 	rankObjectHandler := e.newSubscriptionHandler(e.rankQueue(), e.handleRankObjectMessage)
-	articlesHandler := e.newSubscriptionHandler(e.scrapedQueue(), emptyHandle)
+	articlesHandler := e.newSubscriptionHandler(e.scrapedQueue(), e.handleScrapedArticleMessage)
 	go handleSubscription(rankObjectHandler, wg)
 	go handleSubscription(articlesHandler, wg)
 
 	wg.Wait()
-}
-
-func emptyHandle(msg mq.Message) error {
-	return nil
 }
 
 func newConfig() Config {

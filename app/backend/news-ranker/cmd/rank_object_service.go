@@ -12,7 +12,7 @@ import (
 func (e *env) handleRankObjectMessage(msg mq.Message) error {
 	rankObject, err := parseRankObject(msg)
 	if err != nil {
-		return nil
+		return err
 	}
 
 	for _, URL := range rankObject.URLs {
