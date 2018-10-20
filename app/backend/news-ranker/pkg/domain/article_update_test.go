@@ -2,6 +2,7 @@ package domain
 
 import (
 	"testing"
+	"time"
 
 	"github.com/CzarSimon/mimir/app/backend/pkg/schema/news"
 )
@@ -25,15 +26,15 @@ func TestCreateArticleUpdate(t *testing.T) {
 	}
 
 	oldRefs := []news.Referer{
-		news.Referer{ExternalID: "a-0"},
-		news.Referer{ExternalID: "a-1"},
+		news.Referer{ExternalID: "r-0"},
+		news.Referer{ExternalID: "r-1"},
 	}
-	newRef := news.Referer{ExternalID: "a-2"}
-	repeatedRef := news.Referer{ExternalID: "a-1"}
+	newRef := news.Referer{ExternalID: "r-2"}
+	repeatedRef := news.Referer{ExternalID: "r-1"}
 	mergedRefs := []news.Referer{
-		news.Referer{ExternalID: "a-0"},
-		news.Referer{ExternalID: "a-1"},
-		news.Referer{ExternalID: "a-2"},
+		news.Referer{ExternalID: "r-0"},
+		news.Referer{ExternalID: "r-1"},
+		news.Referer{ExternalID: "r-2"},
 	}
 
 	u1 := CreateArticleUpdate(a, oldSubj, repeatedSubjects, oldRefs, repeatedRef)
@@ -86,5 +87,54 @@ func assertArticleUpdate(t *testing.T, u ArticleUpdate, eA news.Article, eS []ne
 		if ref.ExternalID != eR[i].ExternalID {
 			t.Errorf("%d - Author.ExternalID wrong. Expected: %s Got: %s", i, eR[i].ExternalID, ref.ExternalID)
 		}
+	}
+}
+
+func TestToScrapeTarget(t *testing.T) {
+	articleTime, _ := time.Parse("2006-01-02", "2018-10-20")
+	update := ArticleUpdate{
+		Type: NEW_SUBJECTS,
+		Article: news.Article{
+			ID:    "a-id",
+			URL:   "a-url",
+			Title: "a-title",
+			Body:  "a-body",
+			Keywords: []string{
+				"k-0",
+				"k-1",
+			},
+			ReferenceScore: 0.5,
+			ArticleDate:    articleTime,
+			CreatedAt:      articleTime,
+		},
+		Subjects: []news.Subject{
+			news.Subject{Symbol: "s-0"},
+			news.Subject{Symbol: "s-1"},
+		},
+		Referers: []news.Referer{
+			news.Referer{ExternalID: "r-0"},
+			news.Referer{ExternalID: "r-1"},
+		},
+		NewReferer: news.Referer{ExternalID: "r-1"},
+	}
+
+	exptectedTarget := news.ScrapeTarget{
+		URL: "a-url",
+		Subjects: []news.Subject{
+			news.Subject{Symbol: "s-0"},
+			news.Subject{Symbol: "s-1"},
+		},
+		ReferenceScore: 0.5,
+		Title:          "a-title",
+		Body:           "a-body",
+		ArticleID:      "a-id",
+	}
+
+	actualTarget := update.ToScapeTarget()
+
+	if actualTarget.String() != exptectedTarget.String() {
+		t.Errorf(
+			"ArticleUpdate.ToScapeTarget failed.\nExpected=%s\nGot=%s",
+			exptectedTarget, actualTarget)
 	}
 }

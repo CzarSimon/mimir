@@ -9,6 +9,7 @@ import (
 	migrate "github.com/rubenv/sql-migrate"
 )
 
+// Config configuration for connection to a database.
 type Config struct {
 	Host     string `env:"HOST"`
 	Port     string `env:"PORT" envDefault:"5432"`
@@ -18,6 +19,7 @@ type Config struct {
 	SSLMode  bool   `env:"SSL_MODE" envDefault:"false"`
 }
 
+// ConnectPostgres connects to a postgres instance.
 func (c Config) ConnectPostgres() (*sql.DB, error) {
 	db, err := sql.Open("postgres", c.PgDSN())
 	if err != nil {
@@ -28,11 +30,13 @@ func (c Config) ConnectPostgres() (*sql.DB, error) {
 	return db, err
 }
 
+// PgDSN creates datasource name for compliant with whats expected by postgres.
 func (c Config) PgDSN() string {
 	return fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%t",
 		c.Host, c.Username, c.Password, c.Database, c.Port, c.SSLMode)
 }
 
+// Migrate runs database mirgrations.
 func Migrate(migrationsPath, driverName string, db *sql.DB) error {
 	migrationSource := &migrate.PackrMigrationSource{
 		Box: packr.NewBox(migrationsPath),
@@ -51,6 +55,19 @@ func Migrate(migrationsPath, driverName string, db *sql.DB) error {
 	_, err = migrate.Exec(db, driverName, migrationSource, migrate.Up)
 	if err != nil {
 		return fmt.Errorf("Error applying database migrations: %s", err)
+	}
+	return nil
+}
+
+// AssertRowsAffected check that the expected number of rows where affected by a database operation.
+func AssertRowsAffected(res sql.Result, expected int64, missmatchErr error) error {
+	rowsUpdated, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsUpdated != expected {
+		return missmatchErr
 	}
 	return nil
 }

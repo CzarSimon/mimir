@@ -17,10 +17,23 @@ type UpdateType int
 
 // ArticleUpdate bundles an update instruction with the data needed to perform it.
 type ArticleUpdate struct {
-	Type     UpdateType
-	Article  news.Article
-	Subjects []news.Subject
-	Referers []news.Referer
+	Type       UpdateType
+	Article    news.Article
+	Subjects   []news.Subject
+	Referers   []news.Referer
+	NewReferer news.Referer
+}
+
+func (u ArticleUpdate) ToScapeTarget() news.ScrapeTarget {
+	article := u.Article
+	return news.ScrapeTarget{
+		URL:            article.URL,
+		Subjects:       u.Subjects,
+		ReferenceScore: article.ReferenceScore,
+		Title:          article.Title,
+		Body:           article.Body,
+		ArticleID:      article.ID,
+	}
 }
 
 // CreateArticleUpdate dicerns how an article has been updated
@@ -33,10 +46,11 @@ func CreateArticleUpdate(article news.Article, oldSub, newSub []news.Subject, re
 	hasNewReferers := len(mergedReferers) > len(referers)
 
 	return ArticleUpdate{
-		Type:     dicernUpdateType(hasNewSubjects, hasNewReferers),
-		Article:  article,
-		Subjects: mergedSubjects,
-		Referers: mergedReferers,
+		Type:       dicernUpdateType(hasNewSubjects, hasNewReferers),
+		Article:    article,
+		Subjects:   mergedSubjects,
+		Referers:   mergedReferers,
+		NewReferer: newReferer,
 	}
 }
 

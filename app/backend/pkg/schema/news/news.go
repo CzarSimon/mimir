@@ -2,6 +2,7 @@ package news
 
 import (
 	"fmt"
+	"log"
 	"strings"
 	"time"
 
@@ -56,6 +57,14 @@ type Referer struct {
 	ExternalID    string `json:"externalId"`
 	FollowerCount int64  `json:"followerCount"`
 	ArticleID     string `json:"articleId"`
+}
+
+// SetID sets referer id if not already set.
+func (r Referer) SetID() {
+	if r.ID != "" {
+		log.Printf("ID already set for: %s\n", r)
+	}
+	r.ID = id.New()
 }
 
 func (r Referer) String() string {

@@ -60,15 +60,38 @@ func (e *env) rankExistingArticle(article news.Article, rankObject news.RankObje
 }
 
 func (e *env) rankWithNewSubjectsAndReferences(update domain.ArticleUpdate) {
+	newRefScore := calcReferenceScore(e.config.TwitterUsers, update.Referers...)
+	update.Article.ReferenceScore = newRefScore
 
+	e.rankWithNewSubjects(update)
 }
 
 func (e *env) rankWithNewSubjects(update domain.ArticleUpdate) {
+	scrapeTarget := update.ToScapeTarget()
 
+	err := e.mqClient.Send(scrapeTarget, e.exchange(), e.scrapeQueue())
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func (e *env) rankWithNewReferences(update domain.ArticleUpdate) {
+	newRefScore := calcReferenceScore(e.config.TwitterUsers, update.Referers...)
+	update.Article.ReferenceScore = newRefScore
 
+	err := e.articleRepo.Update(update.Article)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	err := e.articleRepo.SaveReferer(update.NewReferer)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	e.clusterArticle(update.Article)
 }
 
 func (e *env) getArticleUpdate(article news.Article, rankObject news.RankObject) (domain.ArticleUpdate, error) {
