@@ -134,10 +134,6 @@ const insertReferencesQuery = `
   VALUES ($1, $2, $3, $4)`
 
 func (r *pgArticleRepo) SaveReferer(referer news.Referer) error {
-	if referer.ID == "" {
-		referer.SetID()
-	}
-
 	res, err := r.db.Exec(
 		insertReferencesQuery, referer.ID, referer.ExternalID,
 		referer.FollowerCount, referer.ArticleID)
@@ -200,10 +196,6 @@ const insertReferencesIgnoreConflictsQuery = `
   ON CONFLICT DO NOTHING`
 
 func (r *pgArticleRepo) insertReferer(referer news.Referer, tx *sql.Tx) error {
-	if referer.ID == "" {
-		referer.SetID()
-	}
-
 	_, err := r.db.Exec(
 		insertReferencesIgnoreConflictsQuery,
 		referer.ID, referer.ExternalID, referer.FollowerCount, referer.ArticleID)
@@ -227,9 +219,6 @@ func (r *pgArticleRepo) insertSubjects(subjects []news.Subject, tx *sql.Tx) erro
 	defer stmt.Close()
 
 	for _, s := range subjects {
-		if s.ID == "" {
-			s.SetID()
-		}
 		_, err = stmt.Exec(s.ID, s.Symbol, s.Name, s.Score, s.ArticleID)
 		if err != nil {
 			return err

@@ -55,17 +55,25 @@ func CreateArticleUpdate(article news.Article, oldSub, newSub []news.Subject, re
 	}
 }
 
-func mergeSubjects(old, newSubjects []news.Subject) []news.Subject {
+func mergeSubjects(old, newSubjects []news.Subject, articleID string) []news.Subject {
 	subjectSet := createSubjectSet(old)
 	merged := make([]news.Subject, len(old))
 	copy(merged, old)
 
 	for _, newSub := range newSubjects {
 		if _, ok := subjectSet[newSub.Symbol]; !ok {
-			merged = append(merged, newSub)
+			merged = append(merged, copySubjectWithIDs(newSub, articleID))
 		}
 	}
 	return merged
+}
+
+func copySubjectWithIDs(subject news.Subject, articleID string) news.Subject {
+	subject.ArticleID = articleID
+	if subject.ID == "" {
+		subject.SetID()
+	}
+	return subject
 }
 
 func createSubjectSet(subjects []news.Subject) map[string]bool {
@@ -76,7 +84,7 @@ func createSubjectSet(subjects []news.Subject) map[string]bool {
 	return subjectSet
 }
 
-func mergeReferers(referers []news.Referer, newReferer news.Referer) []news.Referer {
+func mergeReferers(referers []news.Referer, newReferer news.Referer, articleID string) []news.Referer {
 	merged := make([]news.Referer, len(referers))
 	copy(merged, referers)
 
@@ -85,8 +93,15 @@ func mergeReferers(referers []news.Referer, newReferer news.Referer) []news.Refe
 			return merged
 		}
 	}
-	merged = append(merged, newReferer)
+	merged = append(merged, copyRefererWithIDs(newReferer, articleID))
 	return merged
+}
+
+func copyRefererWithIDs(referer news.Referer, articleID string) news.Referer {
+	referer.ArticleID = articleID
+	if referer.ID == "" {
+		referer.SetID()
+	}
 }
 
 func dicernUpdateType(hasNewSubjects, hasNewReferers bool) UpdateType {
