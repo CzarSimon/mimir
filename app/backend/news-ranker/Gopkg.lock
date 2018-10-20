@@ -10,7 +10,7 @@
     "app/backend/pkg/mq",
     "app/backend/pkg/schema/news"
   ]
-  revision = "249d7f3c0a6bfd4c2e6f0fa8fa639f5778fb89c4"
+  revision = "87c85acbe3593f4a074fe2452e86ace5a787f416"
 
 [[projects]]
   name = "github.com/caarlos0/env"

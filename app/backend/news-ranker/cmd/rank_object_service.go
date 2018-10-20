@@ -30,7 +30,7 @@ func (e *env) handleRankObjectMessage(msg mq.Message) error {
 }
 
 func (e *env) rankNewArticle(article news.Article, rankObject news.RankObject) {
-	article.ReferenceScore = calcReferenceScore(e.config.TwitterUsers, rankObject.Author)
+	article.ReferenceScore = calcReferenceScore(e.config.TwitterUsers, rankObject.Referer)
 	scrapeTarget := newScrapeTarget(article, rankObject)
 
 	err := e.mqClient.Send(scrapeTarget, e.exchange(), e.scrapeQueue())
@@ -72,8 +72,19 @@ func (e *env) rankWithNewReferences(update domain.ArticleUpdate) {
 }
 
 func (e *env) getArticleUpdate(article news.Article, rankObject news.RankObject) (domain.ArticleUpdate, error) {
+	subjects, err := e.articleRepo.FindArticleSubjects(article.ID)
+	if err != nil {
+		return domain.ArticleUpdate{}, err
+	}
 
-	return domain.ArticleUpdate{}, nil
+	referers, err := e.articleRepo.FindArticleReferers(article.ID)
+	if err != nil {
+		return domain.ArticleUpdate{}, err
+	}
+
+	articleUpdate := domain.CreateArticleUpdate(
+		article, subjects, rankObject.Subjects, referers, rankObject.Referer)
+	return articleUpdate, nil
 }
 
 func parseRankObject(msg mq.Message) (news.RankObject, error) {
@@ -82,7 +93,7 @@ func parseRankObject(msg mq.Message) (news.RankObject, error) {
 	return ro, err
 }
 
-func calcReferenceScore(twitterUsers int64, references ...news.Author) float64 {
+func calcReferenceScore(twitterUsers int64, references ...news.Referer) float64 {
 	var totalReferences int64
 	for _, reference := range references {
 		totalReferences += reference.FollowerCount
