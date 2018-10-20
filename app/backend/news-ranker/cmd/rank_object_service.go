@@ -85,7 +85,7 @@ func (e *env) rankWithNewReferences(update domain.ArticleUpdate) {
 		return
 	}
 
-	err := e.articleRepo.SaveReferer(update.NewReferer)
+	err = e.articleRepo.SaveReferer(update.NewReferer)
 	if err != nil {
 		log.Println(err)
 		return
