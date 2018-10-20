@@ -102,23 +102,20 @@ type ScrapeTarget struct {
 func (s ScrapeTarget) String() string {
 	return fmt.Sprintf(
 		"ScrapeTarget(url=%s subjects=[%s] referer=%s referenceScore=%f title=%s body=%s articleId=%s)",
-		s.URL, joinSubjects(s.Subjects), s.Referer s.ReferenceScore, s.Title, s.Body, s.ArticleID)
+		s.URL, joinSubjects(s.Subjects), s.Referer, s.ReferenceScore, s.Title, s.Body, s.ArticleID)
 }
 
 // ScrapedArticle result of scraping and scoring an article.
 type ScrapedArticle struct {
 	Article  Article   `json:"article"`
 	Subjects []Subject `json:"subjects"`
+	Referer  Referer   `json:"referer"`
 }
 
 func (s ScrapedArticle) String() string {
-	subjectList := make([]string, 0, len(s.Subjects))
-	for _, subject := range s.Subjects {
-		subjectList = append(subjectList, subject.String())
-	}
-	subjects := strings.Join(subjectList, ",")
-
-	return fmt.Sprintf("ScrapedArticle(article=%s subjects=[%s])", s.Article.String(), subjects)
+	return fmt.Sprintf(
+		"ScrapedArticle(article=%s subjects=[%s] referer=%s)",
+		s.Article, joinSubjects(s.Subjects), s.Referer)
 }
 
 func joinSubjects(subjects []Subject) string {
