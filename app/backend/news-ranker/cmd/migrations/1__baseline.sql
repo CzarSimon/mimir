@@ -19,17 +19,17 @@ CREATE TABLE twitter_references (
 
 CREATE TABLE compound_score (
   id VARCHAR(50) PRIMARY KEY,
-  article_id REFERENCES article(id),
   symbol VARCHAR(15),
-  score NUMERIC(9,5) NOT NULL
+  score NUMERIC(9,5) NOT NULL,
+  article_id REFERENCES article(id),
 );
 
 CREATE TABLE subject (
   id VARCHAR(50) PRIMARY KEY,
-  article_id REFERENCES article(id),
   symbol VARCHAR(15),
   name VARCHAR(50),
-  score NUMERIC(9,5) NOT NULL
+  score NUMERIC(9,5) NOT NULL,
+  article_id REFERENCES article(id),
 );
 
 CREATE TABLE article_cluster (
@@ -37,8 +37,8 @@ CREATE TABLE article_cluster (
   title VARCHAR(255),
   symbol VARCHAR(15),
   article_date DATE,
-  lead_article_id VARCHAR(50) REFERENCES article(id),
   score NUMERIC(9,5),
+  lead_article_id VARCHAR(50) REFERENCES article(id),
 );
 
 CREATE TABLE cluster_member (

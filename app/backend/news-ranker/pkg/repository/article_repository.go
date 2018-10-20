@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"strings"
+	"time"
 
 	"github.com/CzarSimon/mimir/app/backend/pkg/dbutil"
 	"github.com/CzarSimon/mimir/app/backend/pkg/schema/news"
@@ -26,6 +27,7 @@ type ArticleRepo interface {
 	FindArticleReferers(articleID string) ([]news.Referer, error)
 	Update(article news.Article) error
 	SaveReferer(referer news.Referer) error
+	SaveScrapedArticle(scrapedArticle news.ScrapedArticle) error
 }
 
 type pgArticleRepo struct {
@@ -144,6 +146,96 @@ func (r *pgArticleRepo) SaveReferer(referer news.Referer) error {
 	}
 
 	return dbutil.AssertRowsAffected(res, 1, ErrFailedInsert)
+}
+
+func (r *pgArticleRepo) SaveScrapedArticle(scrapedArticle news.ScrapedArticle) error {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
+
+	err = r.upsertArticle(scrapedArticle.Article, tx)
+	if err != nil {
+		dbutil.RollbackTx(tx)
+		return err
+	}
+
+	err = r.insertReferer(scrapedArticle.Referer, tx)
+	if err != nil {
+		dbutil.RollbackTx(tx)
+		return err
+	}
+
+	err = r.insertSubjects(scrapedArticle.Subjects, tx)
+	if err != nil {
+		dbutil.RollbackTx(tx)
+		return err
+	}
+
+	return tx.Commit()
+}
+
+const upsertArticleQuery = `
+  INSERT INTO
+  article(id, url, title, body, keywords, reference_score, article_date, created_at)
+  VALEUS ($1, $2, $3, $4, $5, $6, $7, $8)
+  ON CONFLICT UPDATE reference_score = $6`
+
+func (r *pgArticleRepo) upsertArticle(article news.Article, tx *sql.Tx) error {
+	keywords := joinKeywords(article.Keywords)
+	res, err := r.db.Exec(
+		upsertArticleQuery,
+		article.ID, article.URL, article.Title, article.Body, keywords,
+		article.ReferenceScore, article.ArticleDate, time.Now().UTC())
+	if err != nil {
+		return err
+	}
+
+	return dbutil.AssertRowsAffected(res, 1, ErrFailedInsert)
+}
+
+const insertReferencesIgnoreConflictsQuery = `
+  INSERT INTO twitter_references(id, twitter_author, follower_count, article_id)
+  VALUES ($1, $2, $3, $4)
+  ON CONFLICT DO NOTHING`
+
+func (r *pgArticleRepo) insertReferer(referer news.Referer, tx *sql.Tx) error {
+	if referer.ID == "" {
+		referer.SetID()
+	}
+
+	_, err := r.db.Exec(
+		insertReferencesIgnoreConflictsQuery,
+		referer.ID, referer.ExternalID, referer.FollowerCount, referer.ArticleID)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+const insertSubjectIgnoreConflictsQuery = `
+  INSERT INTO subject(id, symbol, name, score, article_id)
+  VALUES ($1, $2, $3, $4, $5)
+  ON CONFLICT DO NOTHING`
+
+func (r *pgArticleRepo) insertSubjects(subjects []news.Subject, tx *sql.Tx) error {
+	stmt, err := tx.Prepare(insertSubjectIgnoreConflictsQuery)
+	if err != nil {
+		return err
+	}
+	defer stmt.Close()
+
+	for _, s := range subjects {
+		if s.ID == "" {
+			s.SetID()
+		}
+		_, err = stmt.Exec(s.ID, s.Symbol, s.Name, s.Score, s.ArticleID)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func joinKeywords(keywords []string) string {

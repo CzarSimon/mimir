@@ -82,6 +82,14 @@ type Subject struct {
 	ArticleID string  `json:"articleId"`
 }
 
+// SetID sets referer id if not already set.
+func (s Subject) SetID() {
+	if s.ID != "" {
+		log.Printf("ID already set for: %s\n", s)
+	}
+	s.ID = id.New()
+}
+
 func (s Subject) String() string {
 	return fmt.Sprintf(
 		"Subject(id=%s symbol=%s name=%s score=%f articleId=%s)",

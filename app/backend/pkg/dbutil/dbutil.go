@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 
 	"github.com/gobuffalo/packr"
 	migrate "github.com/rubenv/sql-migrate"
@@ -70,4 +71,12 @@ func AssertRowsAffected(res sql.Result, expected int64, missmatchErr error) erro
 		return missmatchErr
 	}
 	return nil
+}
+
+// RollbackTx rolls back a transaction and logs any errors that occured.
+func RollbackTx(tx *sql.Tx) {
+	err := tx.Rollback()
+	if err != nil {
+		log.Println(err)
+	}
 }
