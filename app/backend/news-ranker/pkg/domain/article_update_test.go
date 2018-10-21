@@ -10,8 +10,16 @@ import (
 func TestCreateArticleUpdate(t *testing.T) {
 	a := news.Article{ID: "article-0"}
 	oldSubj := []news.Subject{
-		news.Subject{Symbol: "s-0"},
-		news.Subject{Symbol: "s-1"},
+		news.Subject{
+			ID:        "some-id-0",
+			Symbol:    "s-0",
+			ArticleID: "article-0",
+		},
+		news.Subject{
+			ID:        "some-id-1",
+			Symbol:    "s-1",
+			ArticleID: "article-0",
+		},
 	}
 	newSubj := []news.Subject{
 		news.Subject{Symbol: "s-2"},
@@ -20,21 +28,53 @@ func TestCreateArticleUpdate(t *testing.T) {
 		news.Subject{Symbol: "s-1"},
 	}
 	mergedSubjects := []news.Subject{
-		news.Subject{Symbol: "s-0"},
-		news.Subject{Symbol: "s-1"},
-		news.Subject{Symbol: "s-2"},
+		news.Subject{
+			ID:        "some-id-0",
+			Symbol:    "s-0",
+			ArticleID: "article-0",
+		},
+		news.Subject{
+			ID:        "some-id-0",
+			Symbol:    "s-1",
+			ArticleID: "article-0",
+		},
+		news.Subject{
+			ID:        "some-id-will-not-be-this-but-must-be-set",
+			Symbol:    "s-2",
+			ArticleID: "article-0",
+		},
 	}
 
 	oldRefs := []news.Referer{
-		news.Referer{ExternalID: "r-0"},
-		news.Referer{ExternalID: "r-1"},
+		news.Referer{
+			ID:         "some-id-0",
+			ExternalID: "r-0",
+			ArticleID:  "article-0",
+		},
+		news.Referer{
+			ID:         "some-id-0",
+			ExternalID: "r-1",
+			ArticleID:  "article-0",
+		},
 	}
 	newRef := news.Referer{ExternalID: "r-2"}
 	repeatedRef := news.Referer{ExternalID: "r-1"}
 	mergedRefs := []news.Referer{
-		news.Referer{ExternalID: "r-0"},
-		news.Referer{ExternalID: "r-1"},
-		news.Referer{ExternalID: "r-2"},
+		news.Referer{
+			ID:         "some-id-0",
+			ExternalID: "r-0",
+			ArticleID:  "article-0",
+		},
+		news.Referer{
+			ID:         "some-id-0",
+			ExternalID: "r-1",
+			ArticleID:  "article-0",
+		},
+		news.Referer{
+			ID:         "some-id-will-not-be-this-but-must-be-set",
+			ExternalID: "r-2",
+			ArticleID:  "article-0",
+		},
 	}
 
 	u1 := CreateArticleUpdate(a, oldSubj, repeatedSubjects, oldRefs, repeatedRef)
@@ -78,6 +118,12 @@ func assertArticleUpdate(t *testing.T, u ArticleUpdate, eA news.Article, eS []ne
 		if sub.Symbol != eS[i].Symbol {
 			t.Errorf("%d - Subject.Symbol wrong. Expected: %s Got: %s", i, eS[i].Symbol, sub.Symbol)
 		}
+		if sub.ArticleID != eA.ID {
+			t.Errorf("%d Wrong ArticleID on Subject. Expected: %s Got: %s", i, eA.ID, sub.ArticleID)
+		}
+		if sub.ID == "" {
+			t.Errorf("%d ID not set on subject: %s", i, sub)
+		}
 	}
 
 	if len(u.Referers) != len(eR) {
@@ -85,8 +131,21 @@ func assertArticleUpdate(t *testing.T, u ArticleUpdate, eA news.Article, eS []ne
 	}
 	for i, ref := range u.Referers {
 		if ref.ExternalID != eR[i].ExternalID {
-			t.Errorf("%d - Author.ExternalID wrong. Expected: %s Got: %s", i, eR[i].ExternalID, ref.ExternalID)
+			t.Errorf("%d - Referer.ExternalID wrong. Expected: %s Got: %s", i, eR[i].ExternalID, ref.ExternalID)
 		}
+		if ref.ArticleID != eA.ID {
+			t.Errorf("%d Wrong ArticleID on Referer. Expected: %s Got: %s", i, eA.ID, ref.ArticleID)
+		}
+		if ref.ID == "" {
+			t.Errorf("%d ID not set on referer: %s", i, ref)
+		}
+	}
+
+	if u.NewReferer.ArticleID != eA.ID {
+		t.Errorf("Wrong ArticleID on NewReferer. Expected: %s Got: %s", eA.ID, u.NewReferer.ArticleID)
+	}
+	if u.NewReferer.ID == "" {
+		t.Errorf("ID not set on NewReferer: %s", u.NewReferer)
 	}
 }
 

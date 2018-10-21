@@ -2,7 +2,6 @@ package news
 
 import (
 	"fmt"
-	"log"
 	"strings"
 	"time"
 
@@ -59,14 +58,6 @@ type Referer struct {
 	ArticleID     string `json:"articleId"`
 }
 
-// SetID sets referer id if not already set.
-func (r Referer) SetID() {
-	if r.ID != "" {
-		log.Printf("ID already set for: %s\n", r)
-	}
-	r.ID = id.New()
-}
-
 func (r Referer) String() string {
 	return fmt.Sprintf(
 		"Referer(id=%s externalId=%s followerCount=%d articleId=%s)",
@@ -80,14 +71,6 @@ type Subject struct {
 	Name      string  `json:"name"`
 	Score     float64 `json:"score"`
 	ArticleID string  `json:"articleId"`
-}
-
-// SetID sets referer id if not already set.
-func (s Subject) SetID() {
-	if s.ID != "" {
-		log.Printf("ID already set for: %s\n", s)
-	}
-	s.ID = id.New()
 }
 
 func (s Subject) String() string {

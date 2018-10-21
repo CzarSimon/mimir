@@ -48,7 +48,6 @@ func (e *env) rankExistingArticle(article news.Article, rankObject news.RankObje
 
 	switch update.Type {
 	case domain.NEW_SUBJECTS_AND_REFERENCES:
-		e.rankWithNewSubjectsAndReferences(update)
 	case domain.NEW_SUBJECTS:
 		e.rankWithNewSubjects(update)
 	case domain.NEW_REFERENCES:
@@ -57,13 +56,6 @@ func (e *env) rankExistingArticle(article news.Article, rankObject news.RankObje
 		log.Printf("Taking no action on update type: %d for article: %s\n",
 			update.Type, article.ID)
 	}
-}
-
-func (e *env) rankWithNewSubjectsAndReferences(update domain.ArticleUpdate) {
-	newRefScore := calcReferenceScore(e.config.TwitterUsers, update.Referers...)
-	update.Article.ReferenceScore = newRefScore
-
-	e.rankWithNewSubjects(update)
 }
 
 func (e *env) rankWithNewSubjects(update domain.ArticleUpdate) {

@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"github.com/CzarSimon/mimir/app/backend/pkg/id"
 	"github.com/CzarSimon/mimir/app/backend/pkg/schema/news"
 )
 
@@ -40,8 +41,8 @@ func (u ArticleUpdate) ToScapeTarget() news.ScrapeTarget {
 // CreateArticleUpdate dicerns how an article has been updated
 // and assembles the data needed to rank it again.
 func CreateArticleUpdate(article news.Article, oldSub, newSub []news.Subject, referers []news.Referer, newReferer news.Referer) ArticleUpdate {
-	mergedSubjects := mergeSubjects(oldSub, newSub)
-	mergedReferers := mergeReferers(referers, newReferer)
+	mergedSubjects := mergeSubjects(oldSub, newSub, article.ID)
+	mergedReferers := mergeReferers(referers, newReferer, article.ID)
 
 	hasNewSubjects := len(mergedSubjects) > len(oldSub)
 	hasNewReferers := len(mergedReferers) > len(referers)
@@ -51,7 +52,7 @@ func CreateArticleUpdate(article news.Article, oldSub, newSub []news.Subject, re
 		Article:    article,
 		Subjects:   mergedSubjects,
 		Referers:   mergedReferers,
-		NewReferer: newReferer,
+		NewReferer: copyRefererWithIDs(newReferer, article.ID),
 	}
 }
 
@@ -71,7 +72,7 @@ func mergeSubjects(old, newSubjects []news.Subject, articleID string) []news.Sub
 func copySubjectWithIDs(subject news.Subject, articleID string) news.Subject {
 	subject.ArticleID = articleID
 	if subject.ID == "" {
-		subject.SetID()
+		subject.ID = id.New()
 	}
 	return subject
 }
@@ -100,8 +101,9 @@ func mergeReferers(referers []news.Referer, newReferer news.Referer, articleID s
 func copyRefererWithIDs(referer news.Referer, articleID string) news.Referer {
 	referer.ArticleID = articleID
 	if referer.ID == "" {
-		referer.SetID()
+		referer.ID = id.New()
 	}
+	return referer
 }
 
 func dicernUpdateType(hasNewSubjects, hasNewReferers bool) UpdateType {
