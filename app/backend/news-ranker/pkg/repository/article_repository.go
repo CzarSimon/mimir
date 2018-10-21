@@ -162,7 +162,7 @@ func (r *pgArticleRepo) SaveScrapedArticle(scrapedArticle news.ScrapedArticle) e
 		return err
 	}
 
-	err = r.insertSubjects(scrapedArticle.Subjects, tx)
+	err = r.upsertSubjects(scrapedArticle.Subjects, tx)
 	if err != nil {
 		dbutil.RollbackTx(tx)
 		return err
@@ -206,13 +206,13 @@ func (r *pgArticleRepo) insertReferer(referer news.Referer, tx *sql.Tx) error {
 	return nil
 }
 
-const insertSubjectIgnoreConflictsQuery = `
+const upsertSubjectQuery = `
   INSERT INTO subject(id, symbol, name, score, article_id)
   VALUES ($1, $2, $3, $4, $5)
-  ON CONFLICT DO NOTHING`
+  ON CONFLICT UPDATE score = $4`
 
-func (r *pgArticleRepo) insertSubjects(subjects []news.Subject, tx *sql.Tx) error {
-	stmt, err := tx.Prepare(insertSubjectIgnoreConflictsQuery)
+func (r *pgArticleRepo) upsertSubjects(subjects []news.Subject, tx *sql.Tx) error {
+	stmt, err := tx.Prepare(upsertSubjectQuery)
 	if err != nil {
 		return err
 	}
