@@ -66,7 +66,7 @@ const findArticleSubjectsQuery = `
 func (r *pgArticleRepo) FindArticleSubjects(articleID string) ([]news.Subject, error) {
 	rows, err := r.db.Query(findArticleSubjectsQuery, articleID)
 	if err == sql.ErrNoRows {
-		return nil, ErrNoSubjects
+		return make([]news.Subject, 0), ErrNoSubjects
 	} else if err != nil {
 		return nil, err
 	}
@@ -94,7 +94,7 @@ const findArticleReferersQuery = `
 func (r *pgArticleRepo) FindArticleReferers(articleID string) ([]news.Referer, error) {
 	rows, err := r.db.Query(findArticleReferersQuery, articleID)
 	if err == sql.ErrNoRows {
-		return nil, ErrNoReferers
+		return make([]news.Referer, 0), ErrNoReferers
 	} else if err != nil {
 		return nil, err
 	}
