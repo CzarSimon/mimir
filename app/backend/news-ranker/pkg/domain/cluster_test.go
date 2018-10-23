@@ -53,9 +53,9 @@ func TestElectLeaderAndScore(t *testing.T) {
 		t.Errorf("ArticleCluster.ElectLeaderAndScore wrong score. Expected=6.0 Actual=%f",
 			cluster1.Score)
 	}
-	if cluster1.LeadArticleId != "member-3" {
+	if cluster1.LeadArticleID != "member-3" {
 		t.Errorf("ArticleCluster.ElectLeaderAndScore wrong LeadArticleId. Expected=member-3 Actual=%s",
-			cluster1.LeadArticleId)
+			cluster1.LeadArticleID)
 	}
 
 	members2 := []ClusterMember{
@@ -70,9 +70,9 @@ func TestElectLeaderAndScore(t *testing.T) {
 		t.Errorf("ArticleCluster.ElectLeaderAndScore wrong score. Expected=6.0 Actual=%f",
 			cluster2.Score)
 	}
-	if cluster2.LeadArticleId != "member-2" {
+	if cluster2.LeadArticleID != "member-2" {
 		t.Errorf("ArticleCluster.ElectLeaderAndScore wrong LeadArticleId. Expected=member-2 Actual=%s",
-			cluster2.LeadArticleId)
+			cluster2.LeadArticleID)
 	}
 }
 

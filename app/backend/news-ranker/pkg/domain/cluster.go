@@ -18,7 +18,7 @@ type ArticleCluster struct {
 	Title         string
 	Symbol        string
 	ArticleDate   time.Time
-	LeadArticleId string
+	LeadArticleID string
 	Score         float64
 	Members       []ClusterMember
 }
@@ -26,7 +26,7 @@ type ArticleCluster struct {
 // AddMember add an additional member to the article cluster.
 func (a *ArticleCluster) AddMember(newMember ClusterMember) {
 	for _, member := range a.Members {
-		if member.ArticleId == newMember.ArticleId {
+		if member.ArticleID == newMember.ArticleID {
 			log.Printf("Member=[%s] already present in cluster=[%s]\n", newMember.String(), a.String())
 			return
 		}
@@ -38,7 +38,7 @@ func (a *ArticleCluster) AddMember(newMember ClusterMember) {
 func (a *ArticleCluster) ElectLeaderAndScore() {
 	leader := selectHighestScoreMember(a.Members)
 	referenceSum := sumReferenceScore(a.Members)
-	a.LeadArticleId = leader.ArticleId
+	a.LeadArticleID = leader.ArticleID
 	a.Score = leader.SubjectScore + referenceSum
 }
 
@@ -69,7 +69,7 @@ func NewArticleCluster(title, symbol string, articleDate time.Time, leadArticleI
 		Title:         title,
 		Symbol:        symbol,
 		ArticleDate:   articleDate,
-		LeadArticleId: leadArticleId,
+		LeadArticleID: leadArticleId,
 		Score:         score,
 		Members:       members,
 	}
@@ -86,24 +86,24 @@ func CalcClusterHash(title, symbol string, date time.Time) string {
 
 func (c *ArticleCluster) String() string {
 	return fmt.Sprintf(
-		"ArticleCluster(ClusterHash=%s Title=%s Symbol=%s ArticleDate=%s LeadArticleId=%s Score=%f)",
-		c.ClusterHash, c.Title, c.Symbol, c.ArticleDate, c.LeadArticleId, c.Score)
+		"ArticleCluster(clusterHash=%s title=%s symbol=%s articleDate=%s leadArticleId=%s score=%f)",
+		c.ClusterHash, c.Title, c.Symbol, c.ArticleDate, c.LeadArticleID, c.Score)
 }
 
 // ClusterMember is a scored article that is part of a cluster.
 type ClusterMember struct {
-	Id             string
+	ID             string
 	ClusterHash    string
-	ArticleId      string
+	ArticleID      string
 	ReferenceScore float64
 	SubjectScore   float64
 }
 
 func NewClusterMember(clusterHash, articleId string, referenceScore, subjectScore float64) *ClusterMember {
 	return &ClusterMember{
-		Id:             id.New(),
+		ID:             id.New(),
 		ClusterHash:    clusterHash,
-		ArticleId:      articleId,
+		ArticleID:      articleId,
 		ReferenceScore: referenceScore,
 		SubjectScore:   subjectScore,
 	}
@@ -115,6 +115,6 @@ func (m *ClusterMember) Score() float64 {
 
 func (m *ClusterMember) String() string {
 	return fmt.Sprintf(
-		"ClusterMember(Id=%s ClusterHash=%s ArticleId=%s ReferenceScore=%f SubjectScore=%f)",
-		m.Id, m.ClusterHash, m.ArticleId, m.ReferenceScore, m.SubjectScore)
+		"ClusterMember(id=%s clusterHash=%s articleId=%s referenceScore=%f subjectScore=%f)",
+		m.ID, m.ClusterHash, m.ArticleID, m.ReferenceScore, m.SubjectScore)
 }

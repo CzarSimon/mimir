@@ -43,6 +43,7 @@ CREATE TABLE cluster_member (
   subject_score NUMERIC(9,5),
   cluster_hash VARCHAR(64) REFERENCES article_cluster(cluster_hash),
   article_id VARCHAR(50) REFERENCES article(id),
+  UNIQUE (cluster_hash, article_id)
 );
 
 -- +migrate Down

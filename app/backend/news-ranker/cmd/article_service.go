@@ -18,6 +18,7 @@ func (e *env) handleScrapedArticleMessage(msg mq.Message) error {
 		log.Println(err)
 		return nil
 	}
+
 	e.clusterArticle(article)
 	return nil
 }

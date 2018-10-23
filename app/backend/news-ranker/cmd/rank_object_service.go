@@ -122,5 +122,6 @@ func newScrapeTarget(article news.Article, ro news.RankObject) news.ScrapeTarget
 		Subjects:       ro.Subjects,
 		ReferenceScore: article.ReferenceScore,
 		ArticleID:      article.ID,
+		Referer:        ro.Referer,
 	}
 }

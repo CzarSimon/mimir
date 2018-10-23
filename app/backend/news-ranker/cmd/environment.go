@@ -13,6 +13,7 @@ type env struct {
 	config      Config
 	mqClient    mq.Client
 	articleRepo repository.ArticleRepo
+	clusterRepo repository.ClusterRepo
 	db          *sql.DB
 }
 
@@ -29,11 +30,13 @@ func setupEnv(config Config) *env {
 	runMigrations(db)
 
 	articleRepo := repository.NewArticleRepo(db)
+	clusterRepo := repository.NewClusterRepo(db)
 
 	return &env{
 		config:      config,
 		mqClient:    mqClient,
 		articleRepo: articleRepo,
+		clusterRepo: clusterRepo,
 		db:          db,
 	}
 }
