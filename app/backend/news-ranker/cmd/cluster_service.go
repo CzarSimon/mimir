@@ -50,7 +50,26 @@ func (e *env) createNewCluster(clusterHash string, article news.Article, subject
 }
 
 func (e *env) updateArticleCluster(cluster domain.ArticleCluster, article news.Article, subject news.Subject) {
+	updateClusterMembers(&cluster, article, subject)
+	cluster.ElectLeaderAndScore()
+	e.clusterRepo.Save(cluster)
+}
 
+func updateClusterMembers(cluster *domain.ArticleCluster, article news.Article, subject news.Subject) {
+	newMember := createNewClusterMember(cluster, article, subject)
+	members := make([]domain.ClusterMember, len(cluster.Members))
+	copy(members, cluster.Members)
+
+	for i, _ := range cluster.Members {
+		members[i].ReferenceScore = article.ReferenceScore
+		members[i].SubjectScore = subject.Score
+	}
+	cluster.Members = members
+	cluster.AddMember(newMember)
+}
+
+func createNewClusterMember(c *domain.ArticleCluster, a news.Article, s news.Subject) domain.ClusterMember {
+	return *domain.NewClusterMember(c.ClusterHash, a.ID, a.ReferenceScore, s.Score)
 }
 
 func createNewClusterMemebers(clusterHash string, article news.Article, subject news.Subject) []domain.ClusterMember {

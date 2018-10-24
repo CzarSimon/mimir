@@ -11,11 +11,13 @@ import (
 
 var (
 	ErrNoSuchCluster = errors.New("No such article")
+	ErrUpdateFailed  = errors.New("Update failed")
 )
 
 type ClusterRepo interface {
 	FindByHash(clusterHash string) (domain.ArticleCluster, error)
 	Save(cluster domain.ArticleCluster) error
+	Update(cluster domain.ArticleCluster) error
 }
 
 type pgClusterRepo struct {
@@ -92,6 +94,40 @@ func (r *pgClusterRepo) findCluster(clusterHash string, tx *sql.Tx) (domain.Arti
 		return domain.ArticleCluster{}, err
 	}
 	return c, nil
+}
+
+func (r *pgClusterRepo) Update(cluster domain.ArticleCluster) error {
+	tx, err := r.db.Begin()
+	if err != nil {
+		return err
+	}
+
+	err = updateCluster(cluster, tx)
+	if err != nil {
+		dbutil.RollbackTx(tx)
+		return err
+	}
+
+	err = upsertClusterMembers(cluster.Members, tx)
+	if err != nil {
+		dbutil.RollbackTx(tx)
+		return err
+	}
+
+	return tx.Commit()
+}
+
+const updateClusterQuery = `
+  UPDATE article_cluster SET
+    score = $1, lead_article_id = $2
+    WHERE cluster_hash = $3`
+
+func updateCluster(cluster domain.ArticleCluster, tx *sql.Tx) error {
+	res, err := tx.Exec(updateClusterQuery, cluster.Score, cluster.LeadArticleID, cluster.ClusterHash)
+	if err != nil {
+		return err
+	}
+	return dbutil.AssertRowsAffected(res, 1, ErrUpdateFailed)
 }
 
 func (r *pgClusterRepo) Save(cluster domain.ArticleCluster) error {
