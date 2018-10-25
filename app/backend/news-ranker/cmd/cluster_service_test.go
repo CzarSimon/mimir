@@ -72,16 +72,11 @@ func TestCreateNewCluster(t *testing.T) {
 	assert.Equal(clusterHash, clusterRepo.findByHashArg)
 	cluster := clusterRepo.saveArg
 
-	assert.Equal(clusterHash, cluster.ClusterHash)
-	assert.Equal(article.ID, cluster.LeadArticleID)
-	assert.Equal(article.Title, cluster.Title)
-	assert.Equal(subject.Symbol, cluster.Symbol)
-	assert.Equal(articleDate, cluster.ArticleDate)
+	assertArticleCluster(clusterHash, article, subject, cluster, t)
 	assert.Equal(0.8, cluster.Score)
 	assert.Equal(1, len(cluster.Members))
 
 	member := cluster.Members[0]
-	assert.NotEqual("", member.ID)
 	assert.Equal(article.ID, member.ArticleID)
 	assert.Equal(subject.Score, member.SubjectScore)
 	assert.Equal(article.ReferenceScore, member.ReferenceScore)
@@ -110,11 +105,91 @@ func TestCreateNewCluster(t *testing.T) {
 	assert.Equal(clusterHash, clusterRepo.findByHashArg)
 	cluster = clusterRepo.saveArg
 	assert.Equal("", cluster.ClusterHash)
-
 }
 
 func TestUpdateArticleCluster(t *testing.T) {
+	assert := assert.New(t)
 
+	articleDate, err := time.Parse("2006-01-02", "2018-10-25")
+	assert.Nil(err)
+	symbol := "symbol-0"
+	articleTitle := "title-0"
+	clusterHash := domain.CalcClusterHash(articleTitle, symbol, articleDate)
+
+	newArticle := news.Article{
+		ID:             "a-new",
+		URL:            "http://url.com",
+		Title:          articleTitle,
+		ReferenceScore: 0.5,
+		ArticleDate:    articleDate,
+	}
+
+	subject := news.Subject{
+		Symbol:    symbol,
+		Score:     0.3,
+		ArticleID: "a-new",
+	}
+
+	oldMembers := []domain.ClusterMember{
+		*domain.NewClusterMember(clusterHash, "a-0", 0.3, 0.1),
+		*domain.NewClusterMember(clusterHash, "a-1", 0.4, 0.2),
+	}
+
+	existingCluster := *domain.NewArticleCluster(newArticle.Title, symbol, articleDate, "a-1", 0.9, oldMembers)
+
+	clusterRepo := &mockClusterRepo{
+		findByHashCluster: existingCluster,
+		findByHashErr:     nil,
+		updateReturn:      nil,
+	}
+	mockEnv := newMockEnv(nil, clusterRepo, nil)
+	mockEnv.clusterArticleWithSubject(newArticle, subject)
+
+	assert.Equal(clusterHash, clusterRepo.findByHashArg)
+	cluster := clusterRepo.updateArg
+	assertArticleCluster(clusterHash, newArticle, subject, cluster, t)
+	assertScore(1.5, cluster.Score, t)
+	assert.Equal(3, len(cluster.Members))
+
+	for i, score := range []float64{0.4, 0.6, 0.8} {
+		member := cluster.Members[i]
+		assertScore(score, member.Score(), t)
+	}
+
+	clusterRepo = &mockClusterRepo{
+		findByHashCluster: existingCluster,
+		findByHashErr:     nil,
+		updateReturn:      mockError,
+	}
+	mockEnv = newMockEnv(nil, clusterRepo, nil)
+	mockEnv.clusterArticleWithSubject(newArticle, subject)
+
+	assert.Equal(clusterHash, clusterRepo.findByHashArg)
+	cluster = clusterRepo.updateArg
+	assertArticleCluster(clusterHash, newArticle, subject, cluster, t)
+	assertScore(1.5, cluster.Score, t)
+	assert.Equal(3, len(cluster.Members))
+}
+
+func assertScore(expected, actual float64, t *testing.T) {
+	expectedInt := int(expected * 10)
+	actualInt := int(actual * 10)
+	assert.Equal(t, expectedInt, actualInt)
+}
+
+func assertArticleCluster(eHash string, article news.Article, subject news.Subject,
+	cluster domain.ArticleCluster, t *testing.T) {
+
+	assert := assert.New(t)
+	assert.Equal(eHash, cluster.ClusterHash)
+	assert.Equal(article.ID, cluster.LeadArticleID)
+	assert.Equal(article.Title, cluster.Title)
+	assert.Equal(subject.Symbol, cluster.Symbol)
+	assert.Equal(article.ArticleDate, cluster.ArticleDate)
+
+	for _, member := range cluster.Members {
+		assert.NotEqual("", member.ID)
+	}
 }
 
 func newMockEnv(

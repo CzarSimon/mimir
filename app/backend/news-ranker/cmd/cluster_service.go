@@ -61,14 +61,6 @@ func (e *env) updateArticleCluster(cluster domain.ArticleCluster, article news.A
 
 func updateClusterMembers(cluster *domain.ArticleCluster, article news.Article, subject news.Subject) {
 	newMember := createNewClusterMember(cluster, article, subject)
-	members := make([]domain.ClusterMember, len(cluster.Members))
-	copy(members, cluster.Members)
-
-	for i, _ := range cluster.Members {
-		members[i].ReferenceScore = article.ReferenceScore
-		members[i].SubjectScore = subject.Score
-	}
-	cluster.Members = members
 	cluster.AddMember(newMember)
 }
 
