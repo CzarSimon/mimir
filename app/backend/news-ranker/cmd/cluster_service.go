@@ -52,7 +52,11 @@ func (e *env) createNewCluster(clusterHash string, article news.Article, subject
 func (e *env) updateArticleCluster(cluster domain.ArticleCluster, article news.Article, subject news.Subject) {
 	updateClusterMembers(&cluster, article, subject)
 	cluster.ElectLeaderAndScore()
-	e.clusterRepo.Save(cluster)
+
+	err := e.clusterRepo.Update(cluster)
+	if err != nil {
+		log.Println(err)
+	}
 }
 
 func updateClusterMembers(cluster *domain.ArticleCluster, article news.Article, subject news.Subject) {

@@ -32,3 +32,7 @@
 [[constraint]]
   name = "github.com/caarlos0/env"
   version = "3.4.0"
+
+[[constraint]]
+  name = "github.com/stretchr/testify"
+  version = "1.2.2"
