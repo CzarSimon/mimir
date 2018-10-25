@@ -14,7 +14,7 @@ const dateFormat = "2006-01-02"
 
 // ArticleCluster is a collection of articles.
 type ArticleCluster struct {
-	ClusterHash   string
+	Hash          string
 	Title         string
 	Symbol        string
 	ArticleDate   time.Time
@@ -65,7 +65,7 @@ func sumReferenceScore(members []ClusterMember) float64 {
 func NewArticleCluster(title, symbol string, articleDate time.Time, leadArticleId string,
 	score float64, members []ClusterMember) *ArticleCluster {
 	return &ArticleCluster{
-		ClusterHash:   CalcClusterHash(title, symbol, articleDate),
+		Hash:          CalcClusterHash(title, symbol, articleDate),
 		Title:         title,
 		Symbol:        symbol,
 		ArticleDate:   articleDate,
@@ -86,8 +86,8 @@ func CalcClusterHash(title, symbol string, date time.Time) string {
 
 func (c *ArticleCluster) String() string {
 	return fmt.Sprintf(
-		"ArticleCluster(clusterHash=%s title=%s symbol=%s articleDate=%s leadArticleId=%s score=%f)",
-		c.ClusterHash, c.Title, c.Symbol, c.ArticleDate, c.LeadArticleID, c.Score)
+		"ArticleCluster(hash=%s title=%s symbol=%s articleDate=%s leadArticleId=%s score=%f)",
+		c.Hash, c.Title, c.Symbol, c.ArticleDate, c.LeadArticleID, c.Score)
 }
 
 // ClusterMember is a scored article that is part of a cluster.

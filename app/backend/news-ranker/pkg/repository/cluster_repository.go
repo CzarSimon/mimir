@@ -87,7 +87,7 @@ const findClusterQuery = `
 func (r *pgClusterRepo) findCluster(clusterHash string, tx *sql.Tx) (domain.ArticleCluster, error) {
 	var c domain.ArticleCluster
 	err := tx.QueryRow(findClusterQuery, clusterHash).Scan(
-		&c.ClusterHash, &c.Title, &c.Symbol, &c.ArticleDate, &c.Score, &c.LeadArticleID)
+		&c.Hash, &c.Title, &c.Symbol, &c.ArticleDate, &c.Score, &c.LeadArticleID)
 	if err == sql.ErrNoRows {
 		return domain.ArticleCluster{}, ErrNoSuchCluster
 	} else if err != nil {
@@ -123,7 +123,7 @@ const updateClusterQuery = `
     WHERE cluster_hash = $3`
 
 func updateCluster(cluster domain.ArticleCluster, tx *sql.Tx) error {
-	res, err := tx.Exec(updateClusterQuery, cluster.Score, cluster.LeadArticleID, cluster.ClusterHash)
+	res, err := tx.Exec(updateClusterQuery, cluster.Score, cluster.LeadArticleID, cluster.Hash)
 	if err != nil {
 		return err
 	}
@@ -158,7 +158,7 @@ const saveClusterQuery = `
 
 func saveCluster(cluster domain.ArticleCluster, tx *sql.Tx) error {
 	res, err := tx.Exec(
-		saveClusterQuery, cluster.ClusterHash, cluster.Title, cluster.Symbol,
+		saveClusterQuery, cluster.Hash, cluster.Title, cluster.Symbol,
 		cluster.ArticleDate, cluster.Score, cluster.LeadArticleID)
 	if err != nil {
 		log.Println(err)

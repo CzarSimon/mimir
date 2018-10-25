@@ -7,6 +7,7 @@ import (
 
 	"github.com/CzarSimon/mimir/app/backend/news-ranker/pkg/domain"
 	"github.com/CzarSimon/mimir/app/backend/news-ranker/pkg/repository"
+	"github.com/CzarSimon/mimir/app/backend/pkg/id"
 	"github.com/CzarSimon/mimir/app/backend/pkg/mq"
 	"github.com/CzarSimon/mimir/app/backend/pkg/schema/news"
 	"github.com/stretchr/testify/assert"
@@ -14,31 +15,6 @@ import (
 
 var mockError = errors.New("mock error")
 var emptyCluster = domain.ArticleCluster{}
-
-type mockClusterRepo struct {
-	findByHashCluster domain.ArticleCluster
-	findByHashErr     error
-	findByHashArg     string
-	saveReturn        error
-	saveArg           domain.ArticleCluster
-	updateReturn      error
-	updateArg         domain.ArticleCluster
-}
-
-func (r *mockClusterRepo) FindByHash(arg string) (domain.ArticleCluster, error) {
-	r.findByHashArg = arg
-	return r.findByHashCluster, r.findByHashErr
-}
-
-func (r *mockClusterRepo) Save(arg domain.ArticleCluster) error {
-	r.saveArg = arg
-	return r.saveReturn
-}
-
-func (r *mockClusterRepo) Update(arg domain.ArticleCluster) error {
-	r.updateArg = arg
-	return r.updateReturn
-}
 
 func TestCreateNewCluster(t *testing.T) {
 	assert := assert.New(t)
@@ -92,7 +68,7 @@ func TestCreateNewCluster(t *testing.T) {
 
 	assert.Equal(clusterHash, clusterRepo.findByHashArg)
 	cluster = clusterRepo.saveArg
-	assert.Equal(clusterHash, cluster.ClusterHash)
+	assert.Equal(clusterHash, cluster.Hash)
 
 	clusterRepo = &mockClusterRepo{
 		findByHashCluster: emptyCluster,
@@ -104,7 +80,7 @@ func TestCreateNewCluster(t *testing.T) {
 
 	assert.Equal(clusterHash, clusterRepo.findByHashArg)
 	cluster = clusterRepo.saveArg
-	assert.Equal("", cluster.ClusterHash)
+	assert.Equal("", cluster.Hash)
 }
 
 func TestUpdateArticleCluster(t *testing.T) {
@@ -171,6 +147,74 @@ func TestUpdateArticleCluster(t *testing.T) {
 	assert.Equal(3, len(cluster.Members))
 }
 
+func TestClusterArticle(t *testing.T) {
+	// Test setup
+	assert := assert.New(t)
+
+	articleDate, err := time.Parse("2006-01-02", "2018-10-25")
+	assert.Nil(err)
+	articleTitle := "title-0"
+
+	article := news.Article{
+		ID:             "a-new",
+		URL:            "http://url.com",
+		Title:          articleTitle,
+		ReferenceScore: 0.5,
+		ArticleDate:    articleDate,
+	}
+
+	// Mocking
+	articleRepo := &mockArticleRepo{
+		articleSubjects:        nil,
+		findArticleSubjectsErr: mockError,
+	}
+
+	mockEnv := newMockEnv(articleRepo, nil, nil)
+
+	// Method call
+	mockEnv.clusterArticle(article)
+
+	// Tests
+	assert.Equal(article.ID, articleRepo.findArticleSubjectsArg)
+
+	// Test setup
+	subjects := []news.Subject{
+		news.Subject{
+			ID:        id.New(),
+			Symbol:    "symbol-0",
+			Name:      "First symbol",
+			Score:     0.3,
+			ArticleID: article.ID,
+		},
+		news.Subject{
+			ID:        id.New(),
+			Symbol:    "symbol-1",
+			Name:      "Second symbol",
+			Score:     0.4,
+			ArticleID: article.ID,
+		},
+	}
+
+	// Mocking
+	articleRepo = &mockArticleRepo{
+		articleSubjects:        subjects,
+		findArticleSubjectsErr: nil,
+	}
+	clusterRepo := &mockClusterRepo{
+		findByHashCluster: emptyCluster,
+		findByHashErr:     mockError,
+	}
+	mockEnv = newMockEnv(articleRepo, clusterRepo, nil)
+
+	// Method call
+	mockEnv.clusterArticle(article)
+
+	// Tests
+	assert.Equal(article.ID, articleRepo.findArticleSubjectsArg)
+	expectedHash := domain.CalcClusterHash(article.Title, subjects[1].Symbol, articleDate)
+	assert.Equal(expectedHash, clusterRepo.findByHashArg)
+}
+
 func assertScore(expected, actual float64, t *testing.T) {
 	expectedInt := int(expected * 10)
 	actualInt := int(actual * 10)
@@ -181,7 +225,7 @@ func assertArticleCluster(eHash string, article news.Article, subject news.Subje
 	cluster domain.ArticleCluster, t *testing.T) {
 
 	assert := assert.New(t)
-	assert.Equal(eHash, cluster.ClusterHash)
+	assert.Equal(eHash, cluster.Hash)
 	assert.Equal(article.ID, cluster.LeadArticleID)
 	assert.Equal(article.Title, cluster.Title)
 	assert.Equal(subject.Symbol, cluster.Symbol)
@@ -210,4 +254,31 @@ func newMockEnv(
 		clusterRepo: clusterRepo,
 		mqClient:    mqClient,
 	}
+}
+
+type mockClusterRepo struct {
+	findByHashArg     string
+	findByHashCluster domain.ArticleCluster
+	findByHashErr     error
+
+	saveArg    domain.ArticleCluster
+	saveReturn error
+
+	updateArg    domain.ArticleCluster
+	updateReturn error
+}
+
+func (r *mockClusterRepo) FindByHash(arg string) (domain.ArticleCluster, error) {
+	r.findByHashArg = arg
+	return r.findByHashCluster, r.findByHashErr
+}
+
+func (r *mockClusterRepo) Save(arg domain.ArticleCluster) error {
+	r.saveArg = arg
+	return r.saveReturn
+}
+
+func (r *mockClusterRepo) Update(arg domain.ArticleCluster) error {
+	r.updateArg = arg
+	return r.updateReturn
 }

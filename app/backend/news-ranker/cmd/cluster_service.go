@@ -65,7 +65,7 @@ func updateClusterMembers(cluster *domain.ArticleCluster, article news.Article, 
 }
 
 func createNewClusterMember(c *domain.ArticleCluster, a news.Article, s news.Subject) domain.ClusterMember {
-	return *domain.NewClusterMember(c.ClusterHash, a.ID, a.ReferenceScore, s.Score)
+	return *domain.NewClusterMember(c.Hash, a.ID, a.ReferenceScore, s.Score)
 }
 
 func createNewClusterMemebers(clusterHash string, article news.Article, subject news.Subject) []domain.ClusterMember {
