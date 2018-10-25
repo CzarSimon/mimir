@@ -96,8 +96,8 @@ def create_rank_object(content: TweetContent, subjects: List[TrackedStock]) -> D
     return {
         'urls': [link.url for link in content.links if allowed_link(link)],
         'subjects': [sub.asdict() for sub in subjects],
-        'author': {
-            'id': tweet.author_id,
+        'referer': {
+            'externalId': tweet.author_id,
             'followerCount': tweet.author_followers
         },
         'language': tweet.language

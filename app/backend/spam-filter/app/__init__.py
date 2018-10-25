@@ -31,7 +31,7 @@ error_log = logging.getLogger('ErrorHandler')
 def add_request_id() -> None:
     """Adds a request id to an incomming request."""
     incomming_id: Optional[str] = request.headers.get(REQUEST_ID_HEADER)
-    request.id: str = incomming_id if incomming_id != None else str(uuid4())
+    request.id = incomming_id if incomming_id != None else str(uuid4())
 
 
 @app.after_request

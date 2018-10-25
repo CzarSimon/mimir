@@ -28,3 +28,5 @@ FORBIDDEN_DOMAINS = set([
     'cityfalcon.com',
     'mixlr.com'
 ])
+
+REQUEST_ID_HEADER = 'x-request-id'
