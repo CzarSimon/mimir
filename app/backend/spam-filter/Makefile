@@ -6,7 +6,7 @@ export DB_PASSWORD=password
 export CASHTAG_THRESHOLD=0.8
 export TRAIN_MODEL=FALSE
 
-VERSION=2.1
+VERSION=2.2
 
 run:
 	sh start.sh

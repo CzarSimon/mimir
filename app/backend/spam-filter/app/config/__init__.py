@@ -12,6 +12,7 @@ from app.config import util
 
 CASHTAG_THRESHOLD: float = float(os.getenv('CASHTAG_THRESHOLD', '0.8'))
 TRAIN_MODEL: bool = os.getenv('TRAIN_MODEL', 'TRUE') == 'TRUE'
+REQUEST_ID_HEADER = 'x-request-id'
 
 
 class AppConfig:

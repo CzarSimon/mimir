@@ -1,3 +1,11 @@
+# Standard library
+import json
+from uuid import uuid4
+from typing import Dict, Any
+
+# 3rd party modules
+from flask import request
+
 # Internal modules
 from app.controllers import status
 
@@ -9,10 +17,20 @@ class RequestError(Exception):
     """
 
     def __init__(self, message: str) -> None:
+        self.id = str(uuid4())
         self.message = message
 
     def __str__(self) -> str:
-        return self.message
+        return json.dumps(self.asdict())
+
+    def asdict(self) -> Dict[str, Any]:
+        return {
+            'errorId': self.id,
+            'status': self.status(),
+            'message': self.message,
+            'path': request.path,
+            'requestId': request.id
+        }
 
     def status(self) -> int:
         return status.HTTP_500_INTERNAL_SERVER_ERROR
@@ -51,7 +69,7 @@ class InternalServerError(RequestError):
     message: Error message as a string.
     """
     def __init__(self, message='Internal error'):
-        self.message = message
+        super().__init__(message)
 
 
 class NotImplementedError(RequestError):
@@ -61,7 +79,7 @@ class NotImplementedError(RequestError):
     message: Error message as a string.
     """
     def __init__(self) -> None:
-        self.message = 'Not implemented'
+        super().__init__('Not implemented')
 
     def status(self) -> int:
         return status.HTTP_501_NOT_IMPLEMENTED
